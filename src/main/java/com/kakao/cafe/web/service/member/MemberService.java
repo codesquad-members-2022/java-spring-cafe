@@ -1,10 +1,13 @@
 package com.kakao.cafe.web.service.member;
 
-import lombok.RequiredArgsConstructor;
+import com.kakao.cafe.core.repository.member.MemberRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class MemberService {
+    private final MemberRepository memberRepository;
 
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 }

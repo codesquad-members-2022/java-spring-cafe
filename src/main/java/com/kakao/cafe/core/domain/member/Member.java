@@ -1,15 +1,12 @@
 package com.kakao.cafe.core.domain.member;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
-@Entity
+import java.time.LocalDateTime;
+
 public class Member {
 
-    @Id
     private Long id;
-
-    @Column(name = "name")
+    private String email;
     private String nickName;
+    private LocalDateTime createAt;
 }

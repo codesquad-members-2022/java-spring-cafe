@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../css/user/form.css" rel="stylesheet">
+    <link href="../css/user/login_success.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -31,23 +31,11 @@
 
     <div class="container" id="main">
         <header class="post-header">
-            <p class="title">회원가입</p>
+            <p class="title">가입이 완료되었습니다!</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
-            <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
-            </div>
-            <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네입을 입력하세요">
-            </div>
-            <div class="form-group">
-                <label for="password">비밀번호</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
-            </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
-        </form>
+        <p class="user-info"> 이메일: sam@codesquad.kr</p>
+        <p class="user-info"> 닉네임: 멋진삼</p>
+        <a href="../index.html" class="btn">홈으로</a>
     </div>
 </div>
 </body>
