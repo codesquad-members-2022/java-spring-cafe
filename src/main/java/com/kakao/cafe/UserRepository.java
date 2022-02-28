@@ -12,8 +12,12 @@ public class UserRepository {
     private Integer userNum = 0;
 
     public void insert(User user) {
-        user.setUserNum(userNum++);
+        user.setUserNum(++userNum);
         users.add(user);
+    }
+
+    public List<User> findAll() {
+        return users;
     }
 
 }
