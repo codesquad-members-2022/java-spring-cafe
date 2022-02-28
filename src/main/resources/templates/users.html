@@ -83,9 +83,15 @@
         </tr>
         </thead>
         <tbody>
+        {{#members}}
         <tr>
-          <th scope="row">1</th> <td>테스트아이디</td> <td>피오</td> <td>test@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+          <td>{{id}}</td>
+          <td>{{UserId}}</td>
+          <td>{{name}}</td>
+          <td>{{email}}</td>
+          <td><a href="#" class="btn btn-success" role="button">수정</a></td>
         </tr>
+        {{/members}}
         </tbody>
       </table>
     </div>

@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Member;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +14,8 @@ public class MemoryMemberRepository implements MemberRepository{
 
     @Override
     public Member save(Member member) {
-
+        member.setId(++sequence);
+        store.put(member.getId(), member);
         return null;
     }
 
@@ -29,6 +31,6 @@ public class MemoryMemberRepository implements MemberRepository{
 
     @Override
     public List<Member> findAll() {
-        return null;
+        return new ArrayList<>(store.values());
     }
 }
