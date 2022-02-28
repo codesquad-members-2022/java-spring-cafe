@@ -44,7 +44,7 @@ class MemoryUserRepositoryTest {
         class User_객체가_주어지면 {
 
             @Test
-            @DisplayName("주어진_객체를_저장하고_저장된_객체를_리턴한다")
+            @DisplayName("주어진 객체를 저장하고 저장된 객체를 리턴한다")
             void 주어진_객체를_저장하고_저장된_객체를_리턴한다() {
                 assertThat(givenUser.getId())
                     .as("저장되지 않은 객체는 아이디가 null 이다")
