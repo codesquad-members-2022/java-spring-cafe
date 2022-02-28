@@ -35,7 +35,7 @@
 <br>
 
 #### 구현 사항
-- [ ] 목록 페이지를 templates로 이동(list.html)
+- [X] 목록 페이지를 templates로 이동(list.html)
 - [ ] 회원 목록 요청(GET) 메서드 추가
 - [ ] 사용자가 전달한 값을 List에 저장
 - [ ] Model을 메서드의 인자로 받은 후 여기에 사용자 목록을 `users`라는 이름으로 전달
