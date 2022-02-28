@@ -8,4 +8,12 @@ public class UserProfileDto {
         this.name = name;
         this.email = email;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

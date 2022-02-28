@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +24,8 @@ class UserRepositoryTest {
     @Test
     void findAll_Test() {
         // given
-        User user1 = new User("lucid", "1234", "leejohy@naver.com", "leejo");
-        User user2 = new User("tesla", "0000", "elon@naver.com", "elon");
-
+        User user1 = new User("lucid", "1234", "leejo", "leejohy@naver.com");
+        User user2 = new User("tesla", "0000", "elon", "elon@naver.com");
         userRepository.save(user1);
         userRepository.save(user2);
 
@@ -36,6 +37,35 @@ class UserRepositoryTest {
         for (UserDto user : users) {
             assertThat(user).isInstanceOf(UserDto.class);
         }
+    }
+
+    @DisplayName("findByUserId를 호출하면 UserProfileDto로 해당 유저의 프로파일을 받는다.")
+    @Test
+    void findByUserId_test() {
+        // given
+        User user1 = new User("lucid", "1234", "leejo", "leejohy@naver.com");
+        User user2 = new User("tesla", "0000", "elon", "elon@naver.com");
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        // when
+        UserProfileDto userDto = userRepository.findByUserId("lucid");
+
+        // then
+        assertThat(userDto.getEmail()).isEqualTo("leejohy@naver.com");
+    }
+
+    @DisplayName("findByUserId로 없는 id를 조회하면 예외가 발생한다.")
+    @Test
+    void findByUserId_No_User_Test() {
+        // given
+        User user1 = new User("lucid", "1234", "leejo", "leejohy@naver.com");
+        userRepository.save(user1);
+
+        // when & then
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            userRepository.findByUserId("lee");
+        });
     }
 
 }
