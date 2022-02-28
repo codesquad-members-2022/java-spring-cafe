@@ -1,10 +1,12 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
     private static final List<User> users = new ArrayList<>();
     private static Long sequence = 0L;
