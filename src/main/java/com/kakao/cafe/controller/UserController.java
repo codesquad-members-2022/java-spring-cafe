@@ -22,7 +22,6 @@ public class UserController {
 
     @PostMapping("/users")
     public String addUser(User user) {
-        logger.info("user name = {}", user.getName());
         userRepository.save(user);
         return "redirect:/users";
     }

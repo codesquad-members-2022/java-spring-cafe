@@ -16,8 +16,9 @@ public class UserRepository {
 
     public List<UserDto> findAll() {
         List<UserDto> userDtoList = new ArrayList<>();
+        int number = 1;
         for (User user : users) {
-            userDtoList.add(new UserDto(user.getUserId(), user.getName(), user.getEmail()));
+            userDtoList.add(new UserDto(number++, user.getUserId(), user.getName(), user.getEmail()));
         }
         return userDtoList;
     }
