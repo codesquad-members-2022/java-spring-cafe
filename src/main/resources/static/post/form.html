@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>kakao Java Web Programming</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href="../css/reset.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="../css/post/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    <nav class="navbar navbar-fixed-top header">
+        <div class="col-md-12">
+            <div class="navbar-header">
+                <a href="../index.html" class="navbar-brand">
+                    <img src="../images/KakaoCI.png" />
+                </a>
+
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="../user/list.html">멤버 리스트</a></li>
+                <li><a class="black-component" href="../user/login.html" role="button">로그인</a></li>
+                <li><a class="black-component" href="../user/form.html" role="button">회원가입</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">글쓰기</p>
+        </header>
+        <form class="submit-write" method="get" action="../index.html ">
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-title">제목</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="title" name="title" placeholder="제목을 입력하세요"></textarea>
+                </div>
+            </div>
+
+            <div class="text-box">
+                <div class="comment-writer-container">
+                    <p class="post-content">내용</p>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="content" name="content" placeholder="내용을 입력하세요"></textarea>
+                </div>
+            </div>
+            <input class="post-write-btn" type="submit" value="등록"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
