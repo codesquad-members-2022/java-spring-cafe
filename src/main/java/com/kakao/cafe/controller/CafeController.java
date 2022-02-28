@@ -24,11 +24,6 @@ public class CafeController {
         member.setEmail(form.getEmail());
         member.setPassword(form.getPassword());
 
-        logger.info("회원가입 호출");
-        System.out.println("form.getUserId = " + form.getUserId());
-        System.out.println("form.getName = " + form.getName());
-        System.out.println("form.getEmail = " + form.getEmail());
-        System.out.println("form.getPassword = " + form.getPassword());
         memberService.join(member);
 
         return "redirect:/users";
