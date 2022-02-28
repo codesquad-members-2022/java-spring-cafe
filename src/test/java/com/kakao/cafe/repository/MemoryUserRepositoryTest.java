@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import static org.assertj.core.api.Assertions.*;
 
 import com.kakao.cafe.domain.User;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -87,6 +88,27 @@ class MemoryUserRepositoryTest {
                 final Optional<User> result = repository.findByEmail(nonPresentEmail);
                 assertThat(result.isEmpty()).isTrue();
             }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+    class findAll_메소드는 {
+
+        private final User givenUser = new User();
+
+        @BeforeEach
+        void beforeEach() {
+            givenUser.setEmail("new@test.user");
+            givenUser.setNickname("test user1");
+            givenUser.setPassword("password1");
+        }
+
+        @Test
+        @DisplayName("가입한 회원들의 리스트를 리턴한다")
+        void 가입한_회원들의_리스트를_리턴한다() {
+            final List<User> result = repository.findAll();
+            assertThat(result.size()).isEqualTo(1);
         }
     }
 }

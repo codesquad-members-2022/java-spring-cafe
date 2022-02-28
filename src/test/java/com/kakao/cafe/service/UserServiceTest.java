@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -70,6 +71,23 @@ class UserServiceTest {
             void 주어진_회원을_저장하고_저장된_회원의_id를_리턴한다() {
                 assertThat(userService.signUp(givenNonDuplicatedUser)).isEqualTo(2);
             }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+    class findUsers_메소드는 {
+
+        @Test
+        @DisplayName("가입한 회원들의 리스트를 리턴한다")
+        void 가입한_회원들의_리스트를_리턴한다() {
+            final List<User> result = userRepository.findAll();
+            final int[] i = {1};
+            result.forEach(user -> {
+                assertThat(user.getNickname())
+                    .isEqualTo("already present user" + i[0]);
+                i[0]++;
+            });
         }
     }
 }
