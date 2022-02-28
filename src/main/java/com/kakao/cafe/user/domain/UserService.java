@@ -19,6 +19,9 @@ public class UserService {
 
 	public void register(UserDto userDto) {
 		User user = new User(userDto.getId(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
+		if (userRepository.existByUserId(userDto.getUserId()) || userRepository.existByName(userDto.getName())) {
+			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
+		}
 		userRepository.save(user);
 	}
 

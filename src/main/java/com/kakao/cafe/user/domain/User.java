@@ -15,6 +15,14 @@ public class User {
 		this.password = password;
 	}
 
+	public boolean hasId(String userId) {
+		return this.userId.equals(userId);
+	}
+
+	public boolean hasName(String name) {
+		return this.name.equals(name);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -48,6 +56,4 @@ public class User {
 			", email='" + email + '\'' +
 			'}';
 	}
-
-
 }
