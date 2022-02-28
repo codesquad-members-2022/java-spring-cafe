@@ -23,4 +23,11 @@ public class UserRepository {
         return userDtoList;
     }
 
+    public UserProfileDto findByUserId(String userId) {
+        User user = users.stream()
+            .filter(u -> u.getUserId().equals(userId))
+            .findAny()
+            .orElseThrow();
+        return new UserProfileDto(user.getName(), user.getEmail());
+    }
 }

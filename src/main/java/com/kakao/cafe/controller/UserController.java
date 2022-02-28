@@ -8,10 +8,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kakao.cafe.domain.users.User;
 import com.kakao.cafe.domain.users.UserDto;
+import com.kakao.cafe.domain.users.UserProfileDto;
 import com.kakao.cafe.domain.users.UserRepository;
 
 @Controller
@@ -31,5 +35,12 @@ public class UserController {
         List<UserDto> userDtoList = userRepository.findAll();
         model.addAttribute("users", userDtoList);
         return "list";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String showUserProfile(@PathVariable String userId, Model model) {
+        UserProfileDto userProfileDto = userRepository.findByUserId(userId);
+        model.addAttribute("userProfile", userProfileDto);
+        return "profile";
     }
 }
