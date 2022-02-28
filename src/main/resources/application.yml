@@ -1,0 +1,7 @@
+spring:
+  mustache:
+    cache: false
+
+logging:
+  level:
+    com: debug
