@@ -8,4 +8,5 @@ public interface UserRepository {
     void save(User user);
     Optional<User> findById(String id);
     List<User> findAll();
+    void clear();
 }

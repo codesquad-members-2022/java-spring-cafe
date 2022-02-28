@@ -24,4 +24,9 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return users.values().stream().collect(Collectors.toUnmodifiableList());
     }
+
+    @Override
+    public void clear() {
+        users.clear();
+    }
 }
