@@ -1,6 +1,7 @@
 spring:
   mustache:
     cache: false
+    suffix: .html
 
 logging:
   level:
