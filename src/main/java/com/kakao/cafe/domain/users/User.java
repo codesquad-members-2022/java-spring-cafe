@@ -1,9 +1,5 @@
 package com.kakao.cafe.domain.users;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Data
 public class User {
 
     private String userId;
@@ -11,11 +7,22 @@ public class User {
     private String name;
     private String email;
 
-    @Builder
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

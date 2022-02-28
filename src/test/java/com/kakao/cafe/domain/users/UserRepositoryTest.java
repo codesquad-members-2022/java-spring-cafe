@@ -1,12 +1,10 @@
 package com.kakao.cafe.domain.users;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,19 +22,8 @@ class UserRepositoryTest {
     @Test
     void findAll_Test() {
         // given
-        User user1 = User.builder()
-            .userId("lucid")
-            .password("1234")
-            .email("lucid@gmail.com")
-            .name("leejo")
-            .build();
-
-        User user2 = User.builder()
-            .userId("tesla")
-            .password("1111")
-            .email("tesla@gmail.com")
-            .name("elon")
-            .build();
+        User user1 = new User("lucid", "1234", "leejohy@naver.com", "leejo");
+        User user2 = new User("tesla", "0000", "elon@naver.com", "elon");
 
         userRepository.save(user1);
         userRepository.save(user2);

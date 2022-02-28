@@ -11,12 +11,7 @@ class UserTest {
     @Test
     void makeUser() {
         // given & when
-        User user = User.builder()
-            .userId("lucid")
-            .password("1234")
-            .email("leejohy@naver.com")
-            .name("leejo")
-            .build();
+        User user = new User("lucid", "1234", "leejohy@naver.com", "leejo");
 
         // then
         assertThat(user).isInstanceOf(User.class);
