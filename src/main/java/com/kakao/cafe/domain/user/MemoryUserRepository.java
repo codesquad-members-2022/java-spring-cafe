@@ -1,11 +1,14 @@
 package com.kakao.cafe.domain.user;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository
 public class MemoryUserRepository implements UserRepository{
 
     private static Map<String, User> users = new HashMap<>();
