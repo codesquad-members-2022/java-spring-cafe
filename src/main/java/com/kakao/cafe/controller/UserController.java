@@ -10,13 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Controller
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/users/create")
+    @PostMapping("/users")
     public String createUser(User user) {
         userService.join(user);
         return "redirect:/users";
