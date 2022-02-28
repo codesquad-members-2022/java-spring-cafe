@@ -41,3 +41,18 @@
 - [X] Model을 메서드의 인자로 받은 후 여기에 사용자 목록을 `users`라는 이름으로 전달
 - [X] user/list.html에서 사용자 목록을 출력한다.(using mustache)
 
+<br>
+
+### 3. 회원 프로필 정보 보기
+
+#### API
+
+| method |       url       |           기능           |
+|:------:|:---------------:|:----------------------:|
+|  GET   | /users/{userId} | userId를 통해 User 프로필 조회 |
+
+<br>
+
+#### 구현 사항
+- [X] userId 기반 조회 기능 추가
+- [X] html 중복 제거
