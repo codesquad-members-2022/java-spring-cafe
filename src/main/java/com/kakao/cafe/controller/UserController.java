@@ -56,6 +56,13 @@ public class UserController {
         return modelAndView;
     }
 
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User user = userService.findUser(userId);
+        model.addAttribute("user", user);
+        return "user/update_form";
+    }
+
     @PostConstruct
     public void setUp() {
         userService.register(new User("rxdcxdrnine", "1234", "강창구", "rkckr1@naver.com"));

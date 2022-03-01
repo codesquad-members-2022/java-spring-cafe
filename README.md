@@ -70,3 +70,12 @@
 - [X] Controller에 상세 페이지 접근 method를 추가하고 URL은 /articles/{index}로 매핑한다.
 - [X] ArrayList에서 index - 1 해당하는 데이터를 조회한 후 Model에 저장해 /qna/show.html에 전달한다.
 - [X] /qna/show.html에서는 Controller에서 전달한 데이터를 활용해 html을 생성한다.
+
+### 회원정보 수정 화면
+
+- [X] /user/form.html 파일을 /user/updateForm.html로 복사한 후 수정화면을 생성한다.
+- [X] URL 매핑을 할 때 "/users/{id}/form"와 같이 URL을 통해 인자를 전달하는 경우 @PathVariable 애노테이션을 활용해 인자 값을 얻을 수 있다.
+- [X] public String updateForm(@PathVariable String id)와 같이 구현 가능하다.
+- [X] Controller에서 전달한 값을 입력 폼에서 출력하려면 value를 사용하면 된다.
+
+

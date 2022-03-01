@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.controller.UserController;
@@ -141,6 +142,25 @@ class UserControllerTest {
         actions.andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
             .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
             .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 아이디로 유저 정보 수정 페이지를 출력한다")
+    public void updateUserFormTest() throws Exception {
+        // given
+        User user = new User("userId", "password", "name", "email@example.com");
+
+        given(userService.findUser(any()))
+            .willReturn(user);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("user", user))
+            .andExpect(view().name("user/update_form"));
     }
 
 

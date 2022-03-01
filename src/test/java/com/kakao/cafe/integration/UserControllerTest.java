@@ -105,7 +105,7 @@ public class UserControllerTest {
     @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
     public void createUserValidateTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(this.user);
+        User savedUser = userSetUp.saveUser(user);
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
@@ -132,6 +132,22 @@ public class UserControllerTest {
         actions.andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
             .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 아이디로 유저 정보 수정 페이지를 출력한다")
+    public void updateUserFormTest() throws Exception {
+        // given
+        userSetUp.saveUser(user);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("user", user))
+            .andExpect(view().name("user/update_form"));
     }
 }
 
