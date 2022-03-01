@@ -32,9 +32,16 @@ public class CafeController {
     @GetMapping("/users")
     public String list(Model model) {
         List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
+        model.addAttribute("users", members);
         System.out.println(members);
-        return "users";
+        return "/users/list";
     }
 
+    @GetMapping("/test")
+    public String list2(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        System.out.println(members);
+        return "members/list";
+    }
 }
