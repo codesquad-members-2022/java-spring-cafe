@@ -23,7 +23,7 @@ class UserControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Test
     @DisplayName("모든 유저를 조회한다")
@@ -31,7 +31,7 @@ class UserControllerTest {
         // given
         List<User> users = List.of(new User("userId", "password", "name", "email@example.com"));
 
-        given(userRepository.findAll())
+        given(userService.findUsers())
             .willReturn(users);
 
         // when
@@ -49,7 +49,7 @@ class UserControllerTest {
         // given
         User user = new User("userId", "password", "name", "email@example.com");
 
-        given(userRepository.findByUserId("userId"))
+        given(userService.findUser("userId"))
             .willReturn(user);
 
         // when
@@ -78,7 +78,7 @@ class UserControllerTest {
         // given
         User user = new User("userId", "password", "name", "email@example.com");
 
-        given(userRepository.save(user))
+        given(userService.register(user))
             .willReturn(user);
 
         // when
@@ -90,7 +90,9 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(view().name("redirect:/users"));
+        actions
+            .andExpect(model().attribute("user", user))
+            .andExpect(view().name("redirect:/users"));
     }
 
 }

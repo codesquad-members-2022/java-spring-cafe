@@ -8,27 +8,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping
     public String getUsers(Model model) {
-        List<User> users = userRepository.findAll();
+        List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String getUser(@PathVariable String userId, Model model) {
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -39,16 +40,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String postRegister(@RequestParam String userId,
+    public ModelAndView postRegister(@RequestParam String userId,
         @RequestParam String password,
         @RequestParam String name,
         @RequestParam String email) {
 
         User user = new User(userId, password, name, email);
-        userRepository.save(user);
+        User savedUser = userService.register(user);
 
-        // TODO: redirect 시 메서드 등록한 user 에 대한 테스트를 어떻게 작성해야할까?
-        return "redirect:/users";
+        ModelAndView modelAndView = new ModelAndView("redirect:/users");
+        modelAndView.addObject("user", savedUser);
+        return modelAndView;
     }
 
 }
