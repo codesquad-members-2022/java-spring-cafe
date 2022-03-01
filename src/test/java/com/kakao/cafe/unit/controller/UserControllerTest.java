@@ -88,7 +88,7 @@ class UserControllerTest {
             .willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/users/form")
+        ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", user.getUserId())
             .param("password", user.getPassword())
             .param("name", user.getName())
@@ -111,7 +111,7 @@ class UserControllerTest {
             .willThrow(exception);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/users/form")
+        ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", "userId")
             .param("password", "password")
             .param("name", "name")

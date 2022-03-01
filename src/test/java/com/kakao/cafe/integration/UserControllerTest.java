@@ -89,7 +89,7 @@ public class UserControllerTest {
     @DisplayName("유저 회원 가입을 진행한다.")
     public void createUserTest() throws Exception {
         // when
-        ResultActions actions = mockMvc.perform(post("/users/form")
+        ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", user.getUserId())
             .param("password", user.getPassword())
             .param("name", user.getName())
@@ -108,7 +108,7 @@ public class UserControllerTest {
         User savedUser = userSetUp.saveUser(this.user);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/users/form")
+        ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", user.getUserId())
             .param("password", "secret")
             .param("name", "other")
