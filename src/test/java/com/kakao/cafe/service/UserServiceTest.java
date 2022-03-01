@@ -53,4 +53,18 @@ class UserServiceTest {
         assertThat(users.stream().map(UserResponseDto::getUserId).anyMatch(user2::isSameId)).isTrue();
     }
 
+    @Test
+    @DisplayName("findUser(userId)메서드를 호출하면 UserResponseDto를 반환한다.")
+    void findUserTest() {
+        User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
+        User user2 = new User("ron3", "1111", "니로", "3ron@naver.com");
+
+        userService.join(user1);
+        userService.join(user2);
+
+        UserResponseDto dto = userService.findUser("ron2");
+
+        assertThat(dto.getUserId()).isEqualTo(user1.getUserId());
+    }
+
 }
