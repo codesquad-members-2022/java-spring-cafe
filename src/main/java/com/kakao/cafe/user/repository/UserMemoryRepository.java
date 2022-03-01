@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserMemoryRepository implements UserRepository {
@@ -24,5 +25,10 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return userList;
+    }
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        return userList.stream().filter(s -> s.getUserId().equals(userId)).findFirst();
     }
 }
