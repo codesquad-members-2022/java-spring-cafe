@@ -5,20 +5,27 @@ import com.kakao.cafe.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    @GetMapping("/users")
+    public String userList(Model model) {
+        model.addAttribute("users", userService.findUsers());
+        return "user/list";
+    }
+
     @GetMapping("/users/join")
-    public String showJoinPage() {
+    public String joinPage() {
         return "user/form";
     }
 
