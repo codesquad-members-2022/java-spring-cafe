@@ -2,8 +2,10 @@ package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,7 +26,7 @@ public class UserController {
 	}
 
 //	@PostMapping("/user/create")
-//	public String join(UserForm form) {
+//	public String join(@RequestBody UserForm form) {
 //		User user = new User();
 //		user.setUserId(form.getUserId());
 //		user.setPassword(form.getPassword());
@@ -53,12 +55,16 @@ public class UserController {
 	}
 
 	@GetMapping("/user/list")
-	public String list() {
+	public String list(Model model) {
+		List<User> users = userService.findAllUsers();
+		model.addAttribute("users", users);
 		return "user/list";
 	}
 
 	@GetMapping("/users")
-	public String users() {
+	public String users(Model model) {
+		List<User> users = userService.findAllUsers();
+		model.addAttribute("users", users);
 		return "/user/list";
 	}
 
