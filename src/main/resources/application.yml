@@ -1,7 +1,6 @@
 spring:
   mustache:
     cache: false
-    suffix: .html
   devtools:
     livereload:
       enabled: true
