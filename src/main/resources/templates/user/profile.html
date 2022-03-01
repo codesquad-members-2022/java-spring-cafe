@@ -17,9 +17,12 @@
                                 <img class="media-object" src="/images/80-text.png">
                             </a>
                             <div class="media-body">
-                                <h4 class="media-heading">자바지기</h4>
+                                <h4 th:text="${user.name}" class="media-heading">자바지기</h4>
                                 <p>
-                                    <a href="#" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-envelope"></span>&nbsp;javajigi@slipp.net</a>
+                                    <a th:href="${user.email}" href="#" class="btn btn-xs btn-default">
+                                        <span class="glyphicon glyphicon-envelope"/>
+                                        <span th:text="${user.email}">javajigi@slipp.net</span>
+                                    </a>
                                 </p>
                             </div>
                         </div>
