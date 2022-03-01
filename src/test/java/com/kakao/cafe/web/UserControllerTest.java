@@ -1,5 +1,7 @@
 package com.kakao.cafe.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserResponseDto;
@@ -8,13 +10,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -33,6 +39,16 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("form"));
     }
+
+    @Test
+    @DisplayName("리다이렉션 테스트..")
+    void joinUser() throws Exception {
+
+        mockMvc.perform(post("/user/create").)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/users"));
+    }
+
 
     @Test
     @DisplayName("list.html get 테스트")

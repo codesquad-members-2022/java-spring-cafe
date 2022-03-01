@@ -43,11 +43,11 @@ class UserServiceTest {
     void findAllTest() {
         User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
         User user2 = new User("ron3", "1111", "니로", "3ron@naver.com");
-
         userService.join(user1);
         userService.join(user2);
 
         List<UserResponseDto> users = userService.findAll();
+
         assertThat(users.size()).isEqualTo(2);
         assertThat(users.stream().map(UserResponseDto::getUserId).anyMatch(user1::isSameId)).isTrue();
         assertThat(users.stream().map(UserResponseDto::getUserId).anyMatch(user2::isSameId)).isTrue();
@@ -58,7 +58,6 @@ class UserServiceTest {
     void findUserTest() {
         User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
         User user2 = new User("ron3", "1111", "니로", "3ron@naver.com");
-
         userService.join(user1);
         userService.join(user2);
 
