@@ -1,18 +1,17 @@
 package com.kakao.cafe.web.controller.member;
 
 import com.kakao.cafe.core.domain.member.Member;
+import com.kakao.cafe.web.controller.member.dto.JoinRequest;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("members")
@@ -26,10 +25,20 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-
     @GetMapping("join")
-    public String join(Model model) {
+    public String join(@ModelAttribute("member") JoinRequest request) {
         return "user/form";
+    }
+
+    @PostMapping("join")
+    public String join(@ModelAttribute("member") JoinRequest request, BindingResult bindingResult) {
+        System.out.println(memberService.size());
+        if (bindingResult.hasErrors()) {
+            return "user/list";
+        }
+        memberService.join(request);
+        System.out.println(memberService.size());
+        return "redirect:/";
     }
 
     @GetMapping("login")
@@ -39,17 +48,19 @@ public class MemberController {
 
     @GetMapping("{id}")
     public String findMemberById(Model model, @PathVariable(value = "id") Long id) {
-        Optional<Member> findMember = memberService.findById(id);
+        Member findMember = memberService.findById(id).orElseThrow();
         model.addAttribute("findMember", findMember);
-        System.out.println(findMember);
         return "user/profile";
     }
 
     @GetMapping("profile")
     public String getMemberProfile(Model model) {
-        return "user/profile";
+        return "profilessf";
     }
 
+    /**
+     * 임시 조회를 위해 만든 메서드
+     */
     @GetMapping("")
     public String findAll(Model model) {
         List<Member> members = memberService.findAll();

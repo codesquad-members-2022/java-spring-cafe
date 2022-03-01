@@ -33,20 +33,20 @@
         <header class="post-header">
             <p class="title">회원가입</p>
         </header>
-        <form name="question" class="info-container" method="post" action="/users">
+        <form th:action="@{/members/join}" name="question" class="info-container" method="post" action="">
             <div class="form-group">
                 <label for="email">이메일</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
+                <input type="text" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
             </div>
             <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네입을 입력하세요">
+                <label for="nickName">닉네임</label>
+                <input type="text" class="form-control" id="nickName" name="nickName" placeholder="닉네입을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
             </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+            <button th:onclick="|location.href='@{/members}'|" type="submit" class="btn btn-success clearfix pull-right">완료</button>
         </form>
     </div>
 </div>

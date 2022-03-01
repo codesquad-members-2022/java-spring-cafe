@@ -1,4 +1,7 @@
-package com.kakao.cafe.web.controller.member;
+package com.kakao.cafe.web.controller.member.dto;
+
+import com.kakao.cafe.core.domain.member.Member;
+import com.kakao.cafe.core.repository.member.MemberRepositoryImpl;
 
 public class JoinRequest {
     private String email;
@@ -33,5 +36,9 @@ public class JoinRequest {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public Member toEntity(){
+        return new Member(MemberRepositoryImpl.sequence.incrementAndGet(), this.getEmail(), this.getPassword(), this.getNickName());
     }
 }
