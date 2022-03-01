@@ -6,11 +6,11 @@ import java.util.Optional;
 
 public interface UserService {
 
-	Long join(User user);
+	void join(User user);
 
 	List<User> findAllUsers();
 
-	Optional<User> findOne(Long userId);
+	Optional<User> findById(Long userId);
 
 	Optional<User> findByUserId(String userId);
 

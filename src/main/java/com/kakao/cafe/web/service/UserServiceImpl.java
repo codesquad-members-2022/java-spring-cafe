@@ -18,15 +18,21 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Long join(User user) {
+	public void join(User user) {
 		validateDuplicateEmail(user);
+		validateDuplicateUserId(user);
 		userRepository.save(user);
-		return user.getId();
 	}
 
 	private void validateDuplicateEmail(User user) {
 		userRepository.findByEmail(user.getEmail()).ifPresent(m -> {
 			throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+		});
+	}
+
+	private void validateDuplicateUserId(User user) {
+		userRepository.findByUserId(user.getUserId()).ifPresent(m -> {
+			throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
 		});
 	}
 
@@ -36,7 +42,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Optional<User> findOne(Long id) {
+	public Optional<User> findById(Long id) {
 		return userRepository.findById(id);
 	}
 
