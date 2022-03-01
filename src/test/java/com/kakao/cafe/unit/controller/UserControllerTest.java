@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -36,7 +37,9 @@ class UserControllerTest {
     @DisplayName("모든 유저를 조회한다")
     public void listUsersTest() throws Exception {
         // given
-        List<User> users = List.of(new User("userId", "password", "name", "email@example.com"));
+        User user = new User("userId", "password", "name", "email@example.com");
+        user.setUserNum(1);
+        List<User> users = List.of(user);
 
         given(userService.findUsers())
             .willReturn(users);
@@ -163,6 +166,74 @@ class UserControllerTest {
             .andExpect(view().name("user/update_form"));
     }
 
+    @Test
+    @DisplayName("유저 정보 업데이트 후에 메인 페이지로 전환한다")
+    public void updateUserTest() throws Exception {
+        // given
+        User user = new User("userId", "password", "name", "email@example.com");
+
+        given(userService.updateUser(any()))
+            .willReturn(user);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
+            .param("password", user.getPassword())
+            .param("name", "other")
+            .param("email", "other@example.com")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute("user", user))
+            .andExpect(view().name("redirect:/users"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserPasswordTest() throws Exception {
+        // given
+        CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
+
+        given(userService.updateUser(any()))
+            .willThrow(exception);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/other")
+            .param("password", "password")
+            .param("name", "other")
+            .param("email", "other@example.com")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+
+    @Test
+    @DisplayName("유저 정보 업데이트 중 아이디 혹은 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserPasswordIncorrectTest() throws Exception {
+        // given
+        CustomException exception = new CustomException(ErrorCode.INCORRECT_USER);
+
+        given(userService.updateUser(any()))
+            .willThrow(exception);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/userId")
+            .param("password", "secret")
+            .param("name", "other")
+            .param("email", "other@example.com")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
 
 }
 

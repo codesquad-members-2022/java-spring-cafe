@@ -50,7 +50,10 @@ public class UserServiceTest {
         User savedUser = userService.register(user);
 
         // then
-        assertThat(user).isEqualTo(savedUser);
+        assertThat(savedUser.getUserId()).isEqualTo("userId");
+        assertThat(savedUser.getPassword()).isEqualTo("password");
+        assertThat(savedUser.getName()).isEqualTo("name");
+        assertThat(savedUser.getEmail()).isEqualTo("email@example.com");
     }
 
     @Test
@@ -67,7 +70,7 @@ public class UserServiceTest {
             CustomException.class, () -> userService.register(other));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.DUPLICATE_USER.getMessage());
     }
 
     @Test
@@ -108,6 +111,45 @@ public class UserServiceTest {
         // when
         CustomException exception = assertThrows(
             CustomException.class, () -> userService.findUser(any()));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("변경할 유저 정보를 입력하면, 저장소의 유저 정보를 변경한다")
+    public void updateUserTest() {
+        // given
+        User other = new User(user);
+        other.setName("other");
+        other.setEmail("other@example.com");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        given(userRepository.save(any()))
+            .willReturn(other);
+
+        // when
+        User updatedUser = userService.updateUser(other);
+
+        assertThat(updatedUser.getUserNum()).isEqualTo(other.getUserNum());
+        assertThat(updatedUser.getUserId()).isEqualTo(other.getUserId());
+        assertThat(updatedUser.getPassword()).isEqualTo(other.getPassword());
+        assertThat(updatedUser.getName()).isEqualTo(other.getName());
+        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
+    }
+
+    @Test
+    @DisplayName("변경할 유저가 존재하지 않으면 예외를 반환한다")
+    public void updateUserNotFoundTest() {
+        // given
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.empty());
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(user));
 
         // then
         assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());

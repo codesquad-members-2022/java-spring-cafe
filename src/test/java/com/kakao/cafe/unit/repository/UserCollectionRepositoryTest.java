@@ -1,17 +1,24 @@
 package com.kakao.cafe.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserCollectionRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 
 @ExtendWith(MockitoExtension.class)
 class UserCollectionRepositoryTest {
@@ -29,7 +36,7 @@ class UserCollectionRepositoryTest {
 
     @Test
     @DisplayName("유저 객체를 저장한다")
-    public void saveTest() {
+    public void savePersistTest() {
         // then
         assertThat(user.getUserId()).isEqualTo("userId");
         assertThat(user.getPassword()).isEqualTo("password");
@@ -57,4 +64,36 @@ class UserCollectionRepositoryTest {
         assertThat(findUser).hasValue(user);
     }
 
+    @Test
+    @DisplayName("유저 번호를 가지고 변경된 유저 객체를 저장한다")
+    public void saveMergeTest() {
+        // given
+        User other = new User("userId", "password", "other", "other@example.com");
+        User updatedUser = user.update(other);
+
+        // when
+        userRepository.save(updatedUser);
+
+        // then
+        assertThat(user.getUserNum()).isEqualTo(updatedUser.getUserNum());
+        assertThat(user.getUserId()).isEqualTo(updatedUser.getUserId());
+        assertThat(user.getPassword()).isEqualTo(updatedUser.getPassword());
+        assertThat(user.getName()).isEqualTo(updatedUser.getName());
+        assertThat(user.getEmail()).isEqualTo(updatedUser.getEmail());
+    }
+
+    @Test
+    @DisplayName("유저 번호를 가지고, 등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
+    public void updateTest() {
+        // given
+        User user = new User("other", "secret", "other", "other@example.com");
+        user.setUserNum(1);
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userRepository.save(user));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
 }

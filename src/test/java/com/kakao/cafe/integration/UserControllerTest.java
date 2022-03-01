@@ -1,12 +1,19 @@
 package com.kakao.cafe.integration;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -149,5 +156,87 @@ public class UserControllerTest {
             .andExpect(model().attribute("user", user))
             .andExpect(view().name("user/update_form"));
     }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 후에 메인 페이지로 전환한다")
+    public void updateUserTest() throws Exception {
+        // given
+        userSetUp.saveUser(user);
+
+        User other = new User(user);
+        other.setName("other");
+        other.setEmail("other@example.com");
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
+            .param("password", user.getPassword())
+            .param("name", other.getName())
+            .param("email", other.getEmail())
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute("user", allOf(
+                hasProperty("name", is(other.getName())),
+                hasProperty("email", is(other.getEmail()))
+                ))
+            ).andExpect(view().name("redirect:/users"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserPasswordTest() throws Exception {
+        // given
+        userSetUp.saveUser(user);
+
+        User other = new User(user);
+        other.setUserId("otherId");
+        other.setName("other");
+        other.setEmail("other@example.com");
+
+        CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/" + other.getUserId())
+            .param("password", user.getPassword())
+            .param("name", other.getName())
+            .param("email", other.getEmail())
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 중 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserPasswordIncorrectTest() throws Exception {
+        // given
+        userSetUp.saveUser(user);
+
+        User other = new User(user);
+        other.setPassword("secret");
+        other.setName("other");
+        other.setEmail("other@example.com");
+
+        CustomException exception = new CustomException(ErrorCode.INCORRECT_USER);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
+            .param("password", other.getPassword())
+            .param("name", other.getName())
+            .param("email", other.getEmail())
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+
 }
 
