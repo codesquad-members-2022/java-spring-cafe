@@ -1,34 +1,29 @@
 <!DOCTYPE HTML>
 <html lang="kr" class="container">
 <head>
-    <title>회원 가입 페이지</title>
+    <title>Home Page</title>
 </head>
 
 <body class="main">
     <div>
-        <form action="/user/create" method="post">
-
         <div>
-            <h4 class="h4">아이디 입력</h4>
-            <label for="name"></label>
-            <input type="text" name="name" id="name" placeholder="아이디를 입력하세요">
+            <li><a href="user/create">회원 가입</a></li>
+            <li><a href="user/list">유저 리스트</a></li>
         </div>
-
-        <div>
-            <h4 class="h4">비밀번호 입력</h4>
-            <label for="password"></label>
-            <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
-        </div>
-
-            <button type="submit" class="padding">회원가입</button>
-
-        </form>
     </div>
 </body>
 
 </html>
 
 <style>
+    li {
+        list-style: none;
+    }
+
+    a {
+        text-decoration-line: none;
+    }
+
     .container {
         height: 100%;
         width: 100%;
@@ -57,10 +52,6 @@
         align-items: flex-start;
         justify-content: center;
         margin-bottom: 5px;
-    }
-
-    .padding {
-        margin-top: 10px;
     }
 
 </style>
