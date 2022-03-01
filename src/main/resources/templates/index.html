@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -29,7 +29,7 @@
 
     <div class="description">
         <div class="desc-container">
-            <p class="desc-small">안녕하세요</p>
+            <p th:text="${name}" class="desc-small">안녕하세요</p>
             <p class="desc-big">코드스쿼드 백엔드 게시판입니다.</p>
         </div>
     </div>

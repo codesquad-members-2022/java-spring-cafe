@@ -4,4 +4,7 @@ import com.kakao.cafe.core.domain.member.Member;
 
 public interface MemberRepository {
     Member insert(Member member);
+
+
+
 }
