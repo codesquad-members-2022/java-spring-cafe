@@ -74,11 +74,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="member, memberStat : ${members}">
-                    <th th:text="${memberStat.count}" scope="row">1</th>
-                    <td th:text="${member.getUserId()}">javajigi</td>
-                    <td th:text="${member.getName()}">자바지기</td>
-                    <td th:text="${member.getEmail()}">javajigi@sample.net</td>
+                <tr th:each="user, userStat : ${users}">
+                    <th th:text="${userStat.count}" scope="row">1</th>
+                    <td><a th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.userId}">javajigi</a></td>
+                    <td th:text="${user.name}">자바지기</td>
+                    <td th:text="${user.email}">javajigi@sample.net</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
