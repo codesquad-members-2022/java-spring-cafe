@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArticleCollectionRepository implements ArticleRepository {
 
-    private final List<Article> articles = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>();
 
     @Override
     public Article save(Article article) {
@@ -19,7 +19,7 @@ public class ArticleCollectionRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return null;
+        return articles;
     }
 
     @Override
@@ -29,6 +29,6 @@ public class ArticleCollectionRepository implements ArticleRepository {
 
     @Override
     public void deleteAll() {
-
+        articles = new ArrayList<>();
     }
 }

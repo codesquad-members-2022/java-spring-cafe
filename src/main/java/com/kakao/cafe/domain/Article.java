@@ -6,13 +6,13 @@ public class Article {
 
     private String writer;
     private String title;
-    private String content;
+    private String contents;
     private LocalDateTime createdDate;
 
-    public Article(String writer, String title, String content) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.createdDate = LocalDateTime.now();
     }
 
@@ -25,7 +25,7 @@ public class Article {
     }
 
     public String getContent() {
-        return content;
+        return contents;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class Article {
 
         return writer.equals(article.writer)
             && title.equals(article.title)
-            && content.equals(article.content);
+            && contents.equals(article.contents);
     }
 
 }
