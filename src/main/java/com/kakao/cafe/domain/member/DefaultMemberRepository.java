@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.users;
+package com.kakao.cafe.domain.member;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DefaultUserRepository implements UserRepository {
+public class DefaultMemberRepository implements MemberRepository {
 
     private static final String INSERT_CAFE_USERS_SQL = "INSERT INTO cafe_users (userid, passwd, name, email, created_date, modified_date) values (?,?,?,?,NOW(),NOW())";
     private static final String SELECT_ALL_CAFE_USERS_SQL = "SELECT id, userid, passwd, name, email, created_date, modified_date FROM cafe_users";
@@ -25,12 +25,12 @@ public class DefaultUserRepository implements UserRepository {
     private final DataSource ds;
 
     @Autowired
-    public DefaultUserRepository(DataSource ds) {
+    public DefaultMemberRepository(DataSource ds) {
         this.ds = ds;
     }
 
     @Override
-    public Optional<Long> save(User user) {
+    public Optional<Long> save(Member user) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -58,7 +58,7 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<Member> findById(Long id) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -81,7 +81,7 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUserId(String userId) {
+    public Optional<Member> findByUserId(String userId) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -104,7 +104,7 @@ public class DefaultUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<List<User>> findAll() {
+    public Optional<List<Member>> findAll() {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -112,7 +112,7 @@ public class DefaultUserRepository implements UserRepository {
             conn = ds.getConnection();
             stmt = conn.prepareStatement(SELECT_ALL_CAFE_USERS_SQL);
             ResultSet rs = stmt.executeQuery();
-            List<User> users = new ArrayList<>();
+            List<Member> users = new ArrayList<>();
 
             while (rs.next()) {
                 users.add(buildUser(rs));
@@ -143,8 +143,8 @@ public class DefaultUserRepository implements UserRepository {
         }
     }
 
-    private User buildUser(ResultSet rs) throws SQLException, NullPointerException {
-        return new User.Builder()
+    private Member buildUser(ResultSet rs) throws SQLException, NullPointerException {
+        return new Member.Builder()
                 .setId(rs.getLong("id"))
                 .setUserId(rs.getString("userid"))
                 .setPasswd(rs.getString("passwd"))
