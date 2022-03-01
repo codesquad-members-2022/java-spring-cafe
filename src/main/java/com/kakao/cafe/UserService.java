@@ -1,5 +1,7 @@
 package com.kakao.cafe;
 
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,13 @@ public class UserService {
 
     public User findUser(String userId) {
         return userRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저 아이디입니다."));
+            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     public void validateUserId(String userId) {
         userRepository.findByUserId(userId)
             .ifPresent((user) -> {
-                throw new IllegalArgumentException("이미 등록된 유저 아이디입니다.");
+                throw new CustomException(ErrorCode.DUPLICATE_USER);
             });
     }
 
