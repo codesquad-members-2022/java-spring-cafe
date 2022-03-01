@@ -11,8 +11,8 @@ import java.util.Optional;
 @Repository
 public class UserMemoryRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(UserMemoryRepository.class);
-    private static final List<User> userList = new ArrayList<>();
-    private static long id = 0L;
+    private final List<User> userList = new ArrayList<>();
+    private long id = 0L;
 
     @Override
     public void save(User user) {
