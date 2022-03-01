@@ -28,6 +28,8 @@ public class UserController {
     public String userList(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
+
+
 }
