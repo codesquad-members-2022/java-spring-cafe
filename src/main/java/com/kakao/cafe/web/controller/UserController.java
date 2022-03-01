@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
@@ -21,34 +20,13 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/user/form")
-	public String form() {
-		return "user/form";
-	}
-
-//	@PostMapping("/user/create")
-//	public String join(@RequestBody UserForm form) {
-//		User user = new User();
-//		user.setUserId(form.getUserId());
-//		user.setPassword(form.getPassword());
-//		user.setName(form.getName());
-//		user.setEmail(form.getEmail());
-//
-//		userService.join(user);
-//
-//		return "redirect:/users";
-//	}
-
 	@PostMapping("/user/create")
-	public String join(@RequestParam String userId,
-		@RequestParam String password,
-		@RequestParam String name,
-		@RequestParam String email) {
+	public String join(UserForm form) {
 		User user = new User();
-		user.setUserId(userId);
-		user.setPassword(password);
-		user.setName(name);
-		user.setEmail(email);
+		user.setUserId(form.getUserId());
+		user.setPassword(form.getPassword());
+		user.setName(form.getName());
+		user.setEmail(form.getEmail());
 
 		userService.join(user);
 
@@ -63,21 +41,14 @@ public class UserController {
 	}
 
 	@GetMapping("/users")
-	public String users(Model model) {
-		List<User> users = userService.findAllUsers();
-		model.addAttribute("users", users);
-		return "/user/list";
+	public String users() {
+		return "redirect:/user/list";
 	}
 
 	@GetMapping("/users/{userId}")
 	public String getUserByUserId(@PathVariable String userId, Model model) {
 		User user = userService.findByUserId(userId).get();
 		model.addAttribute("user", user);
-		return "user/profile";
-	}
-
-	@GetMapping("/user/profile")
-	public String profile() {
 		return "user/profile";
 	}
 
