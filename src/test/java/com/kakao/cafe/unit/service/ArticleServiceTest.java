@@ -1,11 +1,14 @@
 package com.kakao.cafe.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.atIndex;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.service.ArticleService;
+import java.util.List;
+import org.assertj.core.data.Index;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +30,7 @@ public class ArticleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "content");
+        article = new Article("writer", "title", "contents");
     }
 
     @Test
@@ -42,5 +45,19 @@ public class ArticleServiceTest {
 
         // then
         assertThat(savedArticle).isEqualTo(article);
+    }
+
+    @Test
+    @DisplayName("저장소에 저장된 모든 글을 조회한다")
+    public void findArticlesTest() {
+        // given
+        given(articleRepository.findAll())
+            .willReturn(List.of(article));
+
+        // when
+        List<Article> articles = articleService.findArticles();
+
+        // then
+        assertThat(articles).containsExactlyElementsOf(List.of(article));
     }
 }
