@@ -2,19 +2,22 @@ package com.kakao.cafe.web.repository;
 
 import com.kakao.cafe.web.domain.user.User;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
-	private static final Map<Long, User> store = new HashMap<>();
-	private static long sequence = 0L;
+	private static final Map<Long, User> store = new ConcurrentHashMap<>();
+	private static final AtomicLong sequence = new AtomicLong();
 
 	@Override
 	public User save(User user) {
-		user.setId(++sequence);
+		user.setId(sequence.incrementAndGet());
 		store.put(user.getId(), user);
 		return user;
 	}
