@@ -42,3 +42,17 @@
 - [X] URL을 통해 전달한 사용자 아이디 값은 @PathVariable 애노테이션을 활용해 전달 받을 수 있다. 
 - [X] ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장한다.
 - [X] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.
+
+
+## 스프링 카페 2단계 - 글 쓰기 기능 구현
+
+### 글쓰기
+
+- [X] 게시글 페이지는 static/qna/form.html을 수정해서 사용한다.
+- [X] static에 있는 html을 templates로 이동한다.
+- [X] 게시글 기능 구현을 담당할 ArticleController를 추가하고 애노테이션 매핑한다.
+- [X] 게시글 작성 요청(POST 요청)을 처리할 메소드를 추가하고 매핑한다.
+- [X] 사용자가 전달한 값을 Article 클래스를 생성해 저장한다.
+- [X] 게시글 목록을 관리하는 ArrayList를 생성한 후 앞에서 생성한 Article 인스턴스를 ArrayList에 저장한다.
+- [X] 게시글 추가를 완료한 후 메인 페이지(“redirect:/”)로 이동한다.
+
