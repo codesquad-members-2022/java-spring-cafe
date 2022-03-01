@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepository {
 
-    private final List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     private int userNum = 0;
 
@@ -29,7 +29,15 @@ public class UserRepository {
             .findAny();
     }
 
+    public void deleteAll() {
+        users = new ArrayList<>();
+    }
+
     public Integer getUserNum() {
         return userNum;
+    }
+
+    public void setUserNum(int userNum) {
+        this.userNum = userNum;
     }
 }

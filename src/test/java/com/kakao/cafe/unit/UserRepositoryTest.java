@@ -1,7 +1,9 @@
-package com.kakao.cafe;
+package com.kakao.cafe.unit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.kakao.cafe.User;
+import com.kakao.cafe.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;

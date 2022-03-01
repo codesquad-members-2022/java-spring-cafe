@@ -50,11 +50,20 @@ public class User {
 
         User user = (User) o;
 
-        return userNum == user.userNum
-            && userId.equals(user.userId)
+        return userId.equals(user.userId)
             && password.equals(user.password)
             && name.equals(user.name)
             && email.equals(user.email);
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+            "userNum=" + userNum +
+            ", userId='" + userId + '\'' +
+            ", password='" + password + '\'' +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            '}';
+    }
 }
