@@ -28,7 +28,7 @@ public class UserServiceTest {
 
     @DisplayName("사용자가 회원가입을 요청했을 때 사용자 정보가 정상적으로 저장되는가?")
     @Test
-    void 회원가입() throws Exception {
+    void 회원가입() {
         // given
         UserInformation userInformation = new UserInformation();
         userInformation.setUserId("ikjo");
@@ -46,7 +46,7 @@ public class UserServiceTest {
 
     @DisplayName("사용자가 이미 존재하는 ID로 회원가입을 요청했을 때 예외 처리가 되는가?")
     @Test
-    void 중복_회원_예외() throws Exception {
+    void 중복_회원_예외() {
         // given
         UserInformation userInformation = new UserInformation();
         userInformation.setUserId("ikjo");

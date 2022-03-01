@@ -2,10 +2,15 @@ package com.kakao.cafe.domain;
 
 public class UserInformation {
 
+    private Long id;
     private String userId;
     private String password;
     private String name;
     private String email;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;

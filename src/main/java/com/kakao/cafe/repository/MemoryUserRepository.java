@@ -11,18 +11,24 @@ import java.util.Optional;
 public class MemoryUserRepository implements UserRepository {
 
     private List<UserInformation> userInformationList = new ArrayList<>();
+    private long id = 0L;
 
     @Override
-    public UserInformation savaUserInformation(UserInformation userInformation) {
+    public void savaUserInformation(UserInformation userInformation) {
+        userInformation.setId(++id);
         userInformationList.add(userInformation);
-        return userInformation;
     }
 
     @Override
     public Optional<UserInformation> findUserInformationById(String userId) {
         return userInformationList.stream()
-               .filter(userInformation -> userInformation.getUserId()
-               .equals(userId)).findAny();
+                .filter(userInformation -> userInformation.getUserId()
+                        .equals(userId)).findAny();
+    }
+
+    @Override
+    public List<UserInformation> findAllUserInformation() {
+        return new ArrayList<>(userInformationList);
     }
 
     public void clearUserInformationList() {
