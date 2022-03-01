@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html lang="kr" class="container">
+<head>
+    <title>회원 가입 페이지</title>
+</head>
+
+<body class="main">
+    <div>
+        <form action="/user/create" method="post">
+
+        <div>
+            <h4 class="h4">아이디 입력</h4>
+            <label for="name"></label>
+            <input type="text" name="name" id="name" placeholder="아이디를 입력하세요">
+        </div>
+
+        <div>
+            <h4 class="h4">비밀번호 입력</h4>
+            <label for="password"></label>
+            <input type="password" name="password" id="password" placeholder="비밀번호를 입력하세요">
+        </div>
+
+            <button type="submit" class="padding">회원가입</button>
+
+        </form>
+    </div>
+</body>
+
+</html>
+
+<style>
+    .container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .main {
+        width: 50%;
+        height: 33%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid black;
+        border-radius: 8px;
+
+    }
+
+    .h4 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .padding {
+        margin-top: 10px;
+    }
+
+</style>
