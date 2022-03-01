@@ -6,7 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.kakao.cafe.User;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.domain.User;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,12 +96,42 @@ public class UserControllerTest {
             .param("email", user.getEmail())
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
-
         // then
-        actions
-            .andExpect(model().attribute("user", user))
+        actions.andExpect(model().attribute("user", user))
             .andExpect(view().name("redirect:/users"));
     }
 
+    @Test
+    @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
+    public void postRegisterValidateTest() throws Exception {
+        // given
+        User savedUser = userSetUp.saveUser(this.user);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/users/register")
+            .param("userId", user.getUserId())
+            .param("password", "secret")
+            .param("name", "other")
+            .param("email", "other@example.com")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(model().attribute("status", ErrorCode.DUPLICATE_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.DUPLICATE_USER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("등록되지 않은 유저 아이디로 유저를 조회하면 예외 페이지로 이동한다")
+    public void findUserValidateTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/userId")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
 }
 

@@ -1,14 +1,17 @@
-package com.kakao.cafe.unit;
+package com.kakao.cafe.unit.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.kakao.cafe.User;
-import com.kakao.cafe.UserController;
-import com.kakao.cafe.UserService;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.controller.UserController;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -97,6 +100,49 @@ class UserControllerTest {
             .andExpect(model().attribute("user", user))
             .andExpect(view().name("redirect:/users"));
     }
+
+    @Test
+    @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
+    public void postRegisterValidateTest() throws Exception {
+        // given
+        CustomException exception = new CustomException(ErrorCode.DUPLICATE_USER);
+
+        given(userService.register(any()))
+            .willThrow(exception);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/users/register")
+            .param("userId", "userId")
+            .param("password", "password")
+            .param("name", "name")
+            .param("email", "email@example.com")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("등록되지 않은 유저 아이디로 유저를 조회하면 예외 페이지로 이동한다")
+    public void findUserValidateTest() throws Exception {
+        // given
+        CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
+
+        given(userService.findUser(any()))
+            .willThrow(exception);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/userId")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
 
 }
 
