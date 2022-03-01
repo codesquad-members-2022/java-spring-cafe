@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,6 +54,12 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
         modelAndView.addObject("user", savedUser);
         return modelAndView;
+    }
+
+    @PostConstruct
+    public void setUp() {
+        userService.register(new User("rxdcxdrnine", "1234", "강창구", "rkckr1@naver.com"));
+        userService.register(new User("Miller", "abcd", "밀러", "rkckr1@github.com"));
     }
 
 }
