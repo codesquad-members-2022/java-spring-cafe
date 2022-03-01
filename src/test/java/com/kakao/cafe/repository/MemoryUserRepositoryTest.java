@@ -28,7 +28,7 @@ class MemoryUserRepositoryTest {
         Long saveId = repository.save(user1);
 
         // then
-        User findUser = repository.findById(saveId);
+        User findUser = repository.findById(saveId).get();
         assertThat(user1).isEqualTo(findUser);
     }
 
@@ -70,7 +70,7 @@ class MemoryUserRepositoryTest {
         repository.update(1L, updateUserInfo);
 
         // then
-        User findUser = repository.findById(1L);
+        User findUser = repository.findById(1L).get();
         assertThat(findUser.getUserId()).isEqualTo("testB");
     }
 
