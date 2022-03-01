@@ -9,13 +9,14 @@ public class UserRepository {
 
     private final List<User> users = new ArrayList<>();
 
-    private Integer userNum = 0;
+    private int userNum = 0;
 
-    public void insert(User user) {
+    public User save(User user) {
         validateUserId(user.getUserId());
 
         user.setUserNum(++userNum);
         users.add(user);
+        return user;
     }
 
     public List<User> findAll() {
@@ -28,7 +29,7 @@ public class UserRepository {
             .count();
 
         if (count > 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("이미 등록된 유저 아이디입니다.");
         }
 
     }
@@ -37,7 +38,10 @@ public class UserRepository {
         return users.stream()
             .filter(user -> user.getUserId().equals(userId))
             .findAny()
-            .orElseThrow(IllegalArgumentException::new);
+            .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 유저 아이디입니다."));
     }
 
+    public Integer getUserNum() {
+        return userNum;
+    }
 }

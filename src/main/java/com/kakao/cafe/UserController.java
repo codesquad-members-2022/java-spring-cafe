@@ -45,8 +45,9 @@ public class UserController {
         @RequestParam String email) {
 
         User user = new User(userId, password, name, email);
-        userRepository.insert(user);
+        userRepository.save(user);
 
+        // TODO: redirect 시 메서드 등록한 user 에 대한 테스트를 어떻게 작성해야할까?
         return "redirect:/users";
     }
 

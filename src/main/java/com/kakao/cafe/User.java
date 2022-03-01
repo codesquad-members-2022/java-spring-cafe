@@ -2,7 +2,7 @@ package com.kakao.cafe;
 
 public class User {
 
-    private Integer userNum;
+    private int userNum;
     private String userId;
     private String password;
     private String name;
@@ -15,12 +15,46 @@ public class User {
         this.email = email;
     }
 
+    public int getUserNum() {
+        return userNum;
+    }
+
     public String getUserId() {
         return userId;
     }
 
-    public void setUserNum(Integer userNum) {
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setUserNum(int userNum) {
         this.userNum = userNum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        return userNum == user.userNum
+            && userId.equals(user.userId)
+            && password.equals(user.password)
+            && name.equals(user.name)
+            && email.equals(user.email);
     }
 
 }
