@@ -1,6 +1,5 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Controller
 public class UserController {
@@ -30,22 +29,15 @@ public class UserController {
 
     @PostMapping("/user/create")
     public String joinUser(UserDto userDto) {
-        User user = new User();
-        user.setUserId(userDto.getUserId());
-        user.setPassword(userDto.getPassword());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-
-        userService.join(user);
+        userService.join(userDto.toEntity());
 
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String showUsersAll(Model model) {
-        List<User> users = userService.findAll();
-        List<UserResponseDto> dtos = users.stream().map(UserResponseDto::new).collect(Collectors.toList());
-        model.addAttribute("users", dtos);
+        List<UserResponseDto> userResponseDtos = userService.findAll();
+        model.addAttribute("users", userResponseDtos);
 
         return "list";
     }

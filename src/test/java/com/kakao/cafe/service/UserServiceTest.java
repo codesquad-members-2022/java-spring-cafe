@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.MemoryUserRepository;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,7 +31,7 @@ class UserServiceTest {
     void join_duplicateId() {
         User user = new User("ron2", "1234", "로니", "ron2@gmail.com");
 
-        assertThatNoException().isThrownBy(()->userService.join(user));
+        assertThatNoException().isThrownBy(() -> userService.join(user));
 
         User duplicatedUser = new User("ron2", "1111", "니로", "2ron@naver.com");
 
@@ -38,7 +39,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findAll()메서드를 호출하면 List<User>를 반환한다.")
+    @DisplayName("findAll()메서드를 호출하면 List<UserResponseDto>를 반환한다.")
     void findAllTest() {
         User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
         User user2 = new User("ron3", "1111", "니로", "3ron@naver.com");
@@ -46,10 +47,10 @@ class UserServiceTest {
         userService.join(user1);
         userService.join(user2);
 
-        List<User> users = userService.findAll();
+        List<UserResponseDto> users = userService.findAll();
         assertThat(users.size()).isEqualTo(2);
-        assertThat(users.contains(user1)).isTrue();
-        assertThat(users.contains(user2)).isTrue();
+        assertThat(users.stream().map(UserResponseDto::getUserId).anyMatch(user1::isSameId)).isTrue();
+        assertThat(users.stream().map(UserResponseDto::getUserId).anyMatch(user2::isSameId)).isTrue();
     }
 
 }
