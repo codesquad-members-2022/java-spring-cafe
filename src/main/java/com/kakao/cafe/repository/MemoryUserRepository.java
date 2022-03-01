@@ -17,7 +17,8 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Long save(User user) {
         if (user != null) {
-            store.put(++sequence, user);
+            user.setId(++sequence);
+            store.put(user.getId(), user);
             return sequence;
         }
         return -1L;
