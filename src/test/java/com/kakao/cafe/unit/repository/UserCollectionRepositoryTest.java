@@ -54,7 +54,7 @@ class UserCollectionRepositoryTest {
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).isNotEmpty().isEqualTo(findUser);
+        assertThat(findUser).hasValue(user);
     }
 
 }

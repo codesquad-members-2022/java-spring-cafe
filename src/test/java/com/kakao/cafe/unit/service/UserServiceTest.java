@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -66,7 +67,7 @@ public class UserServiceTest {
             CustomException.class, () -> userService.register(other));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo("이미 등록된 유저 아이디입니다.");
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -109,7 +110,7 @@ public class UserServiceTest {
             CustomException.class, () -> userService.findUser(any()));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo("등록되지 않은 유저 아이디입니다.");
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
 }
