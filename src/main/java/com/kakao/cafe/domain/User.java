@@ -15,10 +15,6 @@ public class User {
         this.email = email;
     }
 
-    public int getUserNum() {
-        return userNum;
-    }
-
     public String getUserId() {
         return userId;
     }

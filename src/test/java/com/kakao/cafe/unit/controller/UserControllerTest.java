@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import com.kakao.cafe.controller.UserController;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;

@@ -9,7 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ModelAndView handleCustomException(HttpServletRequest request, CustomException exception) {
+    public ModelAndView handleCustomException(HttpServletRequest request,
+        CustomException exception) {
         ErrorCode errorCode = exception.getErrorCode();
 
         ModelAndView mav = new ModelAndView("error/index");

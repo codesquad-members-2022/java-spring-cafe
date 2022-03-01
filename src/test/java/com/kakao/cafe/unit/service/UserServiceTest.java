@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
