@@ -16,11 +16,18 @@ public class UserServiceTest {
 
     UserService service;
     MemoryUserRepository repository;
+    UserInformation userInformation;
 
     @BeforeEach
     void beforeEach() {
         repository = new MemoryUserRepository();
         service = new UserService(repository);
+
+        userInformation = new UserInformation();
+        userInformation.setUserId("ikjo");
+        userInformation.setPassword("1234");
+        userInformation.setName("조명익");
+        userInformation.setEmail("auddlr100@naver.com");
     }
 
     @AfterEach
@@ -28,17 +35,10 @@ public class UserServiceTest {
         repository.clearUserInformationList();
     }
 
-    @DisplayName("사용자가 회원가입을 요청했을 때 사용자 정보가 정상적으로 저장되는가?")
+    @DisplayName("사용자가 회원가입 요청 시 사용자 정보가 저장된다.")
     @Test
-    void 회원가입() {
-        // given
-        UserInformation userInformation = new UserInformation();
-        userInformation.setUserId("ikjo");
-        userInformation.setPassword("1234");
-        userInformation.setName("조명익");
-        userInformation.setEmail("auddlr100@naver.com");
-
-        // when
+    void 회원_가입() {
+        // given, when
         service.join(userInformation);
 
         // then
@@ -46,32 +46,22 @@ public class UserServiceTest {
         assertThat(result).isEqualTo(userInformation);
     }
 
-    @DisplayName("사용자가 이미 존재하는 ID로 회원가입을 요청했을 때 예외 처리가 되는가?")
+    @DisplayName("이미 존재하는 ID로 회원가입 요청 시 예외가 발생한다.")
     @Test
     void 중복_회원_예외() {
-        // given
-        UserInformation userInformation = new UserInformation();
-        userInformation.setUserId("ikjo");
-        userInformation.setPassword("1234");
-        userInformation.setName("조명익");
-        userInformation.setEmail("auddlr100@naver.com");
-
-        // when, then
+        // given, when
         service.join(userInformation);
+
+        // then
         assertThatThrownBy(() -> service.join(userInformation))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("이미 존재하는 사용자입니다.");
     }
 
-    @DisplayName("특정 사용자 ID에 해당하는 UserInformation 객체의 사용자 정보 데이터를 조회할 수 있는가?")
+    @DisplayName("특정 사용자 ID로 해당 사용자 정보 데이터를 조회한다.")
     @Test
     void 특정_사용자_정보_조회() {
         // given
-        UserInformation userInformation = new UserInformation();
-        userInformation.setUserId("ikjo");
-        userInformation.setPassword("1234");
-        userInformation.setName("조명익");
-        userInformation.setEmail("auddlr100@naver.com");
         repository.savaUserInformation(userInformation);
 
         // when
@@ -81,7 +71,7 @@ public class UserServiceTest {
         assertThat(result).isEqualTo(userInformation);
     }
 
-    @DisplayName("저장된 사용자 정보가 2개일 때 사용자 정보 데이터 2개를 모두 조회할 수 있는가?")
+    @DisplayName("저장된 사용자 정보 2개를 모두 조회한다.")
     @Test
     void 모든_사용자_정보_조회() {
         // given
@@ -90,14 +80,8 @@ public class UserServiceTest {
         userInformation1.setPassword("1234");
         userInformation1.setName("조명익");
         userInformation1.setEmail("auddlr100@naver.com");
+        repository.savaUserInformation(userInformation);
         repository.savaUserInformation(userInformation1);
-
-        UserInformation userInformation2 = new UserInformation();
-        userInformation2.setUserId("ikjo");
-        userInformation2.setPassword("1234");
-        userInformation2.setName("조명익");
-        userInformation2.setEmail("auddlr100@naver.com");
-        repository.savaUserInformation(userInformation2);
 
         // when
         List<UserInformation> userInformation = service.findAllUsers();
