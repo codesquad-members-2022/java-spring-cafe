@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,10 @@ public class UserService {
 	}
 
 	public void register(UserDto userDto) {
-		User user = new User(userDto.getId(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		if (userRepository.existByUserId(userDto.getUserId()) || userRepository.existByName(userDto.getName())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
+		User user = new User(userDto.getId(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		userRepository.save(user);
 	}
 

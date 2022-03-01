@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	/*
-		(jQuery 까진 할게 아닌거 같아) 에러메시지 반환과 에러화면으로 끝납니다.
+		에러메시지 반환과 에러화면으로 끝납니다.
 	 */
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
