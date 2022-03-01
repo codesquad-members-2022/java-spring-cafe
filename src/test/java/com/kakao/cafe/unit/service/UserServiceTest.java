@@ -36,7 +36,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("유저가 회원가입한다")
+    @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
         given(userRepository.save(user))

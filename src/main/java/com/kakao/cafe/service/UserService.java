@@ -30,7 +30,7 @@ public class UserService {
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public void validateUserId(String userId) {
+    private void validateUserId(String userId) {
         userRepository.findByUserId(userId)
             .ifPresent((user) -> {
                 throw new CustomException(ErrorCode.DUPLICATE_USER);

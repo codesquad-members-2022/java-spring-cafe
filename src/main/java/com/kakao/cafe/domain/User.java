@@ -46,10 +46,7 @@ public class User {
 
         User user = (User) o;
 
-        return userId.equals(user.userId)
-            && password.equals(user.password)
-            && name.equals(user.name)
-            && email.equals(user.email);
+        return userId.equals(user.userId);
     }
 
     @Override

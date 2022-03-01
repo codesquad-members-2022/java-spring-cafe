@@ -23,26 +23,26 @@ public class UserController {
     }
 
     @GetMapping
-    public String getUsers(Model model) {
+    public String list(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String getUser(@PathVariable String userId, Model model) {
+    public String show(@PathVariable String userId, Model model) {
         User user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
-    @GetMapping("/register")
-    public String getRegister() {
+    @GetMapping("/form")
+    public String createForm() {
         return "user/form";
     }
 
-    @PostMapping("/register")
-    public ModelAndView postRegister(@RequestParam String userId,
+    @PostMapping
+    public ModelAndView create(@RequestParam String userId,
         @RequestParam String password,
         @RequestParam String name,
         @RequestParam String email) {
