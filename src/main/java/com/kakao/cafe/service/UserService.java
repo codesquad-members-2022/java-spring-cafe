@@ -15,6 +15,7 @@ public class UserService {
     }
 
     public void join(User user) {
+        validateDuplicatedUserId(user);
         userRepository.save(user);
     }
 
@@ -25,5 +26,11 @@ public class UserService {
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
+    }
+
+    private void validateDuplicatedUserId(User user) {
+        userRepository.findByUserId(user.getUserId()).ifPresent(m -> {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        });
     }
 }
