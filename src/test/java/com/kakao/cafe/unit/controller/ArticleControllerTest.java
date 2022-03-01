@@ -1,5 +1,6 @@
 package com.kakao.cafe.unit.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -9,6 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -80,6 +83,46 @@ public class ArticleControllerTest {
         actions.andExpect(status().isOk())
             .andExpect(model().attribute("articles", List.of(article)))
             .andExpect(view().name("qna/list"));
+    }
+
+    @Test
+    @DisplayName("질문 id 로 선택한 질문을 화면에 출력한다")
+    public void showArticleTest() throws Exception {
+        // given
+        Article article = new Article("writer", "title", "contents");
+        article.setArticleId(1);
+
+        given(articleService.findArticle(any()))
+            .willReturn(article);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/articles/" + article.getArticleId())
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("article", article))
+            .andExpect(view().name("qna/show"));
+    }
+
+    @Test
+    @DisplayName("존재하지 않은 질문 id 로 질문을 조회하면 예외 페이지로 이동한다")
+    public void showArticleValidateTest() throws Exception {
+        // given
+        CustomException exception = new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
+
+        given(articleService.findArticle(any()))
+            .willThrow(exception);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/articles/1")
+            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(view().name("error/index"));
     }
 
 }

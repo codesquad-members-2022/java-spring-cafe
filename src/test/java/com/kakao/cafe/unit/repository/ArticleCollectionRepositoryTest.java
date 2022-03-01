@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleCollectionRepository;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,7 +42,17 @@ public class ArticleCollectionRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles).containsExactlyElementsOf(articles);
+        assertThat(articles).containsExactly(article);
+    }
+
+    @Test
+    @DisplayName("질문 id 로 질문 객체를 조회한다")
+    public void findByArticleIdTest() {
+        // when
+        Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
+
+        // then
+        assertThat(findArticle).hasValue(article);
     }
 
 }
