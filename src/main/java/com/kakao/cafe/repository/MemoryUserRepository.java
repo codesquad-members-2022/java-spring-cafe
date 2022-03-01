@@ -1,16 +1,18 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
     private static final String NO_MEMBER_ID_MESSAGE = "해당 회원 id는 없는 번호 입니다.";
     private static final Map<Long, User> store = new ConcurrentHashMap<>();
-    private static Long sequence = 0L;
+    private Long sequence = 0L;
 
     @Override
     public Long save(User user) {
