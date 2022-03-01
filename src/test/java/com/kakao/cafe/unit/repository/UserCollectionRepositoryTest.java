@@ -22,7 +22,7 @@ class UserCollectionRepositoryTest {
     User user;
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
         user = userRepository.save(
             new User("userId", "password", "name", "email@example.com"));
     }

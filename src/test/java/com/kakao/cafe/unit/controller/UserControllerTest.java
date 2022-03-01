@@ -33,7 +33,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("모든 유저를 조회한다")
-    public void getUsersTest() throws Exception {
+    public void listUsersTest() throws Exception {
         // given
         List<User> users = List.of(new User("userId", "password", "name", "email@example.com"));
 
@@ -51,7 +51,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 아이디로 유저를 조회한다")
-    public void getUserTest() throws Exception {
+    public void showUserTest() throws Exception {
         // given
         User user = new User("userId", "password", "name", "email@example.com");
 
@@ -69,9 +69,9 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 회원 가입 화면을 보여준다")
-    public void getRegisterTest() throws Exception {
+    public void createUserFormTest() throws Exception {
         // when
-        ResultActions actions = mockMvc.perform(get("/users/register")
+        ResultActions actions = mockMvc.perform(get("/users/form")
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -80,7 +80,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 회원 가입을 진행한다")
-    public void postRegisterTest() throws Exception {
+    public void createUserTest() throws Exception {
         // given
         User user = new User("userId", "password", "name", "email@example.com");
 
@@ -88,7 +88,7 @@ class UserControllerTest {
             .willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/users/register")
+        ResultActions actions = mockMvc.perform(post("/users/form")
             .param("userId", user.getUserId())
             .param("password", user.getPassword())
             .param("name", user.getName())
@@ -103,7 +103,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
-    public void postRegisterValidateTest() throws Exception {
+    public void createUserValidateTest() throws Exception {
         // given
         CustomException exception = new CustomException(ErrorCode.DUPLICATE_USER);
 
@@ -111,7 +111,7 @@ class UserControllerTest {
             .willThrow(exception);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/users/register")
+        ResultActions actions = mockMvc.perform(post("/users/form")
             .param("userId", "userId")
             .param("password", "password")
             .param("name", "name")
@@ -126,7 +126,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("등록되지 않은 유저 아이디로 유저를 조회하면 예외 페이지로 이동한다")
-    public void findUserValidateTest() throws Exception {
+    public void showUserValidateTest() throws Exception {
         // given
         CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
 

@@ -31,7 +31,7 @@ public class UserServiceTest {
     User user;
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
         user = new User("userId", "password", "name", "email@example.com");
     }
 
