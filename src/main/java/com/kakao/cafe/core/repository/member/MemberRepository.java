@@ -7,4 +7,5 @@ import java.util.List;
 public interface MemberRepository {
     Member insert(Member member);
     List<Member> findAll();
+    void update(Member member);
 }
