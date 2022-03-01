@@ -5,7 +5,9 @@ import com.kakao.cafe.core.domain.member.Member;
 import java.util.List;
 
 public interface MemberRepository {
+
     Member insert(Member member);
     List<Member> findAll();
+    int size();
     void update(Member member);
 }
