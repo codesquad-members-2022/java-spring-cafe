@@ -23,4 +23,9 @@ public class MemoryUserRepository implements UserRepository {
             .filter(user -> user.getEmail().equals(email))
             .findAny();
     }
+
+    @Override
+    public List<User> findAll() {
+        return List.copyOf(store);
+    }
 }
