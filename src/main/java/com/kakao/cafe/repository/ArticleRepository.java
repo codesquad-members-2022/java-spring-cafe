@@ -10,7 +10,7 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Optional<Article> findById(int articleId);
+    Optional<Article> findById(Integer articleId);
 
     void deleteAll();
 

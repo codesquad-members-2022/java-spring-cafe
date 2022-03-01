@@ -1,9 +1,11 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Article {
 
+    private Integer articleId;
     private String writer;
     private String title;
     private String contents;
@@ -14,6 +16,10 @@ public class Article {
         this.title = title;
         this.contents = contents;
         this.createdDate = LocalDateTime.now();
+    }
+
+    public Integer getArticleId() {
+        return articleId;
     }
 
     public String getWriter() {
@@ -28,6 +34,10 @@ public class Article {
         return contents;
     }
 
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -39,9 +49,7 @@ public class Article {
 
         Article article = (Article) o;
 
-        return writer.equals(article.writer)
-            && title.equals(article.title)
-            && contents.equals(article.contents);
+        return articleId.equals(article.articleId);
     }
 
 }

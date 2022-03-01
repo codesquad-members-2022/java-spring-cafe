@@ -13,6 +13,7 @@ public class ArticleCollectionRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
+        article.setArticleId(articles.size() + 1);
         articles.add(article);
         return article;
     }
@@ -23,8 +24,10 @@ public class ArticleCollectionRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(int articleId) {
-        return Optional.empty();
+    public Optional<Article> findById(Integer articleId) {
+        return articles.stream()
+            .filter(article -> article.getArticleId().equals(articleId))
+            .findAny();
     }
 
     @Override
