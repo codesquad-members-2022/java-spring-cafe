@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 class UserControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
     private UserService userService;

@@ -32,23 +32,23 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 아이디를 입력해 유저 객체를 조회한다")
-    public void findBytUserIdTest() {
-        // when
-        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
-
-        // then
-        assertThat(findUser).isNotEmpty().isEqualTo(findUser);
-    }
-
-    @Test
-    @DisplayName("모든 유저를 조회한다")
+    @DisplayName("모든 유저 객체를 조회한다")
     public void findAllTest() {
         // when
         List<User> users = userRepository.findAll();
 
         // then
         assertThat(users).containsExactly(user);
+    }
+
+    @Test
+    @DisplayName("유저 아이디를 입력해 유저 객체를 조회한다")
+    public void findByUserIdTest() {
+        // when
+        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
+
+        // then
+        assertThat(findUser).isNotEmpty().isEqualTo(findUser);
     }
 
 }

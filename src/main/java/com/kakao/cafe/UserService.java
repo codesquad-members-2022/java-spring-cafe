@@ -28,7 +28,9 @@ public class UserService {
 
     public void validateUserId(String userId) {
         userRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("이미 등록된 유저 아이디입니다."));
+            .ifPresent((user) -> {
+                throw new IllegalArgumentException("이미 등록된 유저 아이디입니다.");
+            });
     }
 
 }
