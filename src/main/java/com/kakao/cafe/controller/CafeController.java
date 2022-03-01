@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Member;
-import com.kakao.cafe.service.MemberService;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,34 +14,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CafeController {
 
     Logger logger = LoggerFactory.getLogger(CafeController.class);
-    MemberService memberService = new MemberService();
+    UserService userService = new UserService();
 
     @PostMapping("/users")
-    public String create(Member form) {
-        Member member = new Member();
-        member.setUserId(form.getUserId());
-        member.setName(form.getName());
-        member.setEmail(form.getEmail());
-        member.setPassword(form.getPassword());
+    public String create(User form) {
+        User user = new User();
+        user.setUserId(form.getUserId());
+        user.setName(form.getName());
+        user.setEmail(form.getEmail());
+        user.setPassword(form.getPassword());
 
-        memberService.join(member);
+        userService.join(user);
 
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("users", members);
-        System.out.println(members);
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
+        System.out.println(users);
         return "/users/list";
     }
 
     @GetMapping("/test")
     public String list2(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("members", members);
-        System.out.println(members);
-        return "members/list";
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
+        System.out.println(users);
+        return "users/list";
     }
 }

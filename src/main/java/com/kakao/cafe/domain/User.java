@@ -1,9 +1,9 @@
 package com.kakao.cafe.domain;
 
-public class Member {
+public class User {
 
     private Long id;
-    private String UserId;
+    private String userId;
     private String password;
     private String name;
     private String email;
@@ -17,11 +17,11 @@ public class Member {
     }
 
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        userId = userId;
     }
 
     public String getPassword() {
