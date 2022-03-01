@@ -20,3 +20,12 @@
 
 
 
+#### URL convention
+
+| URL            | 기능        |
+|----------------|-----------|
+| GET /users     | 회원 목록 조회  |
+| POST /users    | 회원 가입     |
+| GET /users/:id | 회원 프로필 조회 |
+
+
