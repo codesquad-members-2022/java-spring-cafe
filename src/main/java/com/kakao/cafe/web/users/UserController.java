@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping
-    public String users(Model model){
+    public String users(Model model) {
         List<User> members = repository.findAll();
         log.info("users list = {}", members);
         model.addAttribute("members", members);
@@ -33,13 +33,13 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String addForm(){
+    public String addForm() {
         log.info("create form 접근");
         return "/user/form";
     }
 
     @PostMapping("/create")
-    public String saveUser(@ModelAttribute User user){
+    public String saveUser(@ModelAttribute User user) {
         repository.save(user);
         log.info("save user = {}", user);
         return "redirect:/users";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment/head :: headFragment">
 </head>
 <body>
@@ -56,7 +56,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../index.html">Posts</a></li>
                 <li><a href="../user/login.html" role="button">로그인</a></li>
-                <li><a href="../user/form.html" role="button">회원가입</a></li>
+                <li><a href="../user/form.html" th:href="@{users/create}" role="button">회원가입</a></li>
                 <li><a href="#" role="button">로그아웃</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
@@ -74,11 +74,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                    <th scope="row">1</th> <td>javajigi</td> <td>자바지기</td> <td>javajigi@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th> <td>slipp</td> <td>슬립</td> <td>slipp@sample.net</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                <tr th:each="member, memberStat : ${members}">
+                    <th th:text="${memberStat.count}" scope="row">1</th>
+                    <td th:text="${member.getUserId()}">javajigi</td>
+                    <td th:text="${member.getName()}">자바지기</td>
+                    <td th:text="${member.getEmail()}">javajigi@sample.net</td>
+                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
           </table>
