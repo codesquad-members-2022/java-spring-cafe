@@ -1,8 +1,11 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
+
 public class User {
 
-    private int userNum;
+    private Integer userNum;
     private String userId;
     private String password;
     private String name;
@@ -13,6 +16,18 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public User(User other) {
+        this.userNum = other.userNum;
+        this.userId = other.userId;
+        this.password = other.password;
+        this.name = other.name;
+        this.email = other.email;
+    }
+
+    public Integer getUserNum() {
+        return userNum;
     }
 
     public String getUserId() {
@@ -31,8 +46,35 @@ public class User {
         return email;
     }
 
-    public void setUserNum(int userNum) {
+    public void setUserNum(Integer userNum) {
         this.userNum = userNum;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public User update(User user) {
+        if (!userId.equals(user.userId) || !password.equals(user.password)) {
+            throw new CustomException(ErrorCode.INCORRECT_USER);
+        }
+
+        this.name = user.name;
+        this.email = user.email;
+
+        return this;
     }
 
     @Override
@@ -59,4 +101,5 @@ public class User {
             ", email='" + email + '\'' +
             '}';
     }
+
 }

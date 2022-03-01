@@ -78,4 +78,10 @@
 - [X] public String updateForm(@PathVariable String id)와 같이 구현 가능하다.
 - [X] Controller에서 전달한 값을 입력 폼에서 출력하려면 value를 사용하면 된다.
 
+### 회원정보 수정
 
+- [X] URL 매핑을 할 때 "/users/{id}"와 같이 URL을 통해 인자를 전달하는 경우 @PathVariable 애노테이션을 활용해 인자 값을 얻을 수 있다.
+- [X] UserController의 사용자가 수정한 정보를 User 클래스에 저장한다.
+- [X] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
+- [X] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
+- [X] UserRepository의 save() 메소드를 사용해 업데이트한다.

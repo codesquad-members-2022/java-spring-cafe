@@ -37,4 +37,11 @@ public class UserService {
             });
     }
 
+    public User updateUser(User user) {
+        User findUser = findUser(user.getUserId());
+        User updatedUser = findUser.update(user);
+
+        return userRepository.save(updatedUser);
+    }
+
 }
