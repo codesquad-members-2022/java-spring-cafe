@@ -1,13 +1,14 @@
-package com.kakao.cafe.unit;
+package com.kakao.cafe.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.User;
-import com.kakao.cafe.UserRepository;
-import com.kakao.cafe.UserService;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.service.UserService;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,8 +62,8 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class, () -> userService.register(other));
+        CustomException exception = assertThrows(
+            CustomException.class, () -> userService.register(other));
 
         // then
         assertThat(exception.getMessage()).isEqualTo("이미 등록된 유저 아이디입니다.");
@@ -104,8 +105,8 @@ public class UserServiceTest {
             .willReturn(Optional.empty());
 
         // when
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class, () -> userService.findUser(any()));
+        CustomException exception = assertThrows(
+            CustomException.class, () -> userService.findUser(any()));
 
         // then
         assertThat(exception.getMessage()).isEqualTo("등록되지 않은 유저 아이디입니다.");

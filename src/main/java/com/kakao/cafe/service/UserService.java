@@ -1,7 +1,9 @@
-package com.kakao.cafe;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import org.springframework.stereotype.Service;
 

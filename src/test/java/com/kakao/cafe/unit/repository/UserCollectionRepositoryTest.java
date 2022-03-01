@@ -1,18 +1,23 @@
-package com.kakao.cafe.unit;
+package com.kakao.cafe.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kakao.cafe.User;
-import com.kakao.cafe.UserRepository;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserCollectionRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-class UserRepositoryTest {
+@ExtendWith(MockitoExtension.class)
+class UserCollectionRepositoryTest {
 
-    private final UserRepository userRepository = new UserRepository();
+    @InjectMocks
+    private UserCollectionRepository userRepository;
 
     User user;
 
@@ -26,7 +31,6 @@ class UserRepositoryTest {
     @DisplayName("유저 객체를 저장한다")
     public void saveTest() {
         // then
-        assertThat(user.getUserNum()).isEqualTo(userRepository.getUserNum());
         assertThat(user.getUserId()).isEqualTo("userId");
         assertThat(user.getPassword()).isEqualTo("password");
         assertThat(user.getName()).isEqualTo("name");

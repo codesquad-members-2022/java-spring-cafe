@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.domain;
 
 public class User {
 
