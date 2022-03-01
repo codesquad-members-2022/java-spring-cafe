@@ -206,6 +206,7 @@ class MemberRepositoryTest {
             repository.findById(savedId)
                     .ifPresentOrElse(findMember -> {
                         assertThat(findMember.getUserId()).isEqualTo(member.getUserId());
+                        assertThat(findMember.getPasswd()).isEqualTo(member.getPasswd());
                         assertThat(findMember.getName()).isEqualTo(member.getName());
                         assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
                     }, Assertions::fail);
@@ -255,6 +256,7 @@ class MemberRepositoryTest {
             repository.findByUserId(expectedUserId)
                     .ifPresentOrElse(findMember -> {
                         assertThat(findMember.getUserId()).isEqualTo(member.getUserId());
+                        assertThat(findMember.getPasswd()).isEqualTo(member.getPasswd());
                         assertThat(findMember.getName()).isEqualTo(member.getName());
                         assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
                     }, Assertions::fail);
@@ -309,6 +311,7 @@ class MemberRepositoryTest {
 
             // then
             assertThat(findMember.getUserId()).isEqualTo(member.getUserId());
+            assertThat(findMember.getPasswd()).isEqualTo(member.getPasswd());
             assertThat(findMember.getName()).isEqualTo(member.getName());
             assertThat(findMember.getEmail()).isEqualTo(member.getEmail());
         }
@@ -344,9 +347,11 @@ class MemberRepositoryTest {
 
             // then
             assertThat(findMember1.getUserId()).isEqualTo(member1.getUserId());
+            assertThat(findMember1.getPasswd()).isEqualTo(member1.getPasswd());
             assertThat(findMember1.getName()).isEqualTo(member1.getName());
             assertThat(findMember1.getEmail()).isEqualTo(member1.getEmail());
             assertThat(findMember2.getUserId()).isEqualTo(member2.getUserId());
+            assertThat(findMember2.getPasswd()).isEqualTo(member2.getPasswd());
             assertThat(findMember2.getName()).isEqualTo(member2.getName());
             assertThat(findMember2.getEmail()).isEqualTo(member2.getEmail());
         }
