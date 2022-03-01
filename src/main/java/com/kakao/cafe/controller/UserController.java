@@ -19,22 +19,23 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("users")
+    @GetMapping("/users")
     public String getUserList(Model model) {
         model.addAttribute("users", userService.findAllUsers());
-        return "user/list";
+        return "/user/list";
     }
 
-    @GetMapping("users/{userId}")
-    public String getUserProfile(@PathVariable String userId) {
-        return "user/profile";
+    @GetMapping("/users/{userId}")
+    public String getUserProfile(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.findOneUser(userId).get());
+        return "/user/profile";
     }
 
-    @PostMapping("users")
+    @PostMapping("/users")
     public String createUserInformation(UserInformation userInformation) {
 
         userService.join(userInformation);
 
-        return "redirect:users";
+        return "redirect:/users";
     }
 }
