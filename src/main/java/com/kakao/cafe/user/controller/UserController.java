@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -34,5 +33,11 @@ public class UserController {
         log.info("User: {}", user);
         userService.join(user);
         return "redirect:/users";
+    }
+
+    @GetMapping("/users/{userId}")
+    public String profile(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.findByUserId(userId));
+        return "user/profile";
     }
 }
