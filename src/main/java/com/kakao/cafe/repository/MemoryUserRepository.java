@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +16,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         user.setId(++sequence);
+        user.setCreatedAt(LocalDateTime.now());
         store.add(user);
         return user;
     }
