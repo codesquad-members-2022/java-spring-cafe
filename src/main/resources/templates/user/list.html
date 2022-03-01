@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -22,9 +22,9 @@
 
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">메인 페이지</a></li>
-                <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
+                <li><a class="black-component" th:onclick="|location.href='@{/}'|" type="button">메인 페이지</a></li>
+                <li><a class="black-component" th:onclick="|location.href='@{/}'|">로그인</a></li>
+                <li><a class="black-component" th:onclick="|location.href='@{/members/join}'|">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -44,6 +44,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th>No</th>
                         <th>닉네임</th>
                         <th>이메일</th>
                         <th>회원가입일</th>
@@ -52,6 +53,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="member : ${members}">
+                        <td th:text="${member.id}">No</td>
                         <td th:text="${member.nickName}">닉네임</td>
                         <td th:text="${member.email}"></td>
                         <td th:text="${member.createAt}"></td>

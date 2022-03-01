@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("members")
@@ -26,16 +28,34 @@ public class MemberController {
 
 
     @GetMapping("join")
-    public String join(Model model){
-        return "users/form";
+    public String join(Model model) {
+        return "user/form";
+    }
+
+    @GetMapping("login")
+    public String login(Model model) {
+        return "user/login";
+    }
+
+    @GetMapping("{id}")
+    public String findMemberById(Model model, @PathVariable(value = "id") Long id) {
+        Optional<Member> findMember = memberService.findById(id);
+        model.addAttribute("findMember", findMember);
+        System.out.println(findMember);
+        return "user/profile";
+    }
+
+    @GetMapping("profile")
+    public String getMemberProfile(Model model) {
+        return "user/profile";
     }
 
     @GetMapping("")
-    public String findAll(Model model){
+    public String findAll(Model model) {
         List<Member> members = memberService.findAll();
         int memberSize = memberService.size();
         model.addAttribute("members", members);
         model.addAttribute("memberSize", memberSize);
-        return "users/list";
+        return "user/list";
     }
 }
