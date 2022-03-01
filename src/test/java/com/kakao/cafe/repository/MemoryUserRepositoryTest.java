@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.model.User;
-import org.assertj.core.api.Assertions;
+import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
 
