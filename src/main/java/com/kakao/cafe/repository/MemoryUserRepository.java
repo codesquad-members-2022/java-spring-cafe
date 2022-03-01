@@ -4,7 +4,9 @@ import com.kakao.cafe.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
