@@ -1,8 +1,16 @@
-package com.kakao.cafe.domain.users;
+package com.kakao.cafe.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
+import com.kakao.cafe.domain.exception.DuplicatedIdException;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.UserDto;
+import com.kakao.cafe.domain.dto.UserProfileDto;
+
+@Repository
 public class UserRepository {
     private final List<User> users;
 
@@ -11,7 +19,20 @@ public class UserRepository {
     }
 
     public void save(User user) {
+        duplicateUsernameCheck(user);
         users.add(user);
+    }
+
+    private void duplicateUsernameCheck(User inputUser) {
+        for (User user : users) {
+            checkIfTheNameIsSame(inputUser, user);
+        }
+    }
+
+    private void checkIfTheNameIsSame(User inputUser, User user) {
+        if (user.getUserId().equals(inputUser.getUserId())) {
+            throw new DuplicatedIdException();
+        }
     }
 
     public List<UserDto> findAll() {

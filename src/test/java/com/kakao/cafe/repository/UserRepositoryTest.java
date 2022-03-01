@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.users;
+package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -10,6 +10,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.kakao.cafe.domain.exception.DuplicatedIdException;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.UserDto;
+import com.kakao.cafe.domain.dto.UserProfileDto;
 
 class UserRepositoryTest {
 
@@ -65,6 +70,19 @@ class UserRepositoryTest {
         // when & then
         Assertions.assertThrows(NoSuchElementException.class, () -> {
             userRepository.findByUserId("lee");
+        });
+    }
+
+    @DisplayName("동일한 아이디로 가입하면 예외가 발생한다.")
+    @Test
+    void duplicate_id_error() {
+        User user1 = new User("lucid", "1234", "leejo", "leejohy@naver.com");
+        User user2 = new User("lucid", "0000", "leejo", "leej@naver.com");
+
+        userRepository.save(user1);
+
+        Assertions.assertThrows(DuplicatedIdException.class, () -> {
+            userRepository.save(user2);
         });
     }
 

@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.users;
+package com.kakao.cafe.domain.dto;
 
 public class UserDto {
     private int number;
