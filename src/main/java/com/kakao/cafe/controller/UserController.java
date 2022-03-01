@@ -1,12 +1,13 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
@@ -29,9 +30,9 @@ public class UserController {
     }
 
     @PostMapping("/users/create")
-    public String join(User user) {
-        log.info("User: {}", user);
-        userService.join(user);
+    public String join(UserJoinRequestDto requestDto) {
+        log.info("UserJoinRequestDto: {}", requestDto);
+        userService.join(requestDto);
         return "redirect:/users";
     }
 

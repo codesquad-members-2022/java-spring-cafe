@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserJoinRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public void join(UserJoinRequestDto requestDto) {
+        User user = requestDto.toEntity();
         validateDuplicatedUserId(user);
         userRepository.save(user);
     }
