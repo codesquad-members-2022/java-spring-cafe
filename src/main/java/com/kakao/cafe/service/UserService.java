@@ -1,7 +1,7 @@
-package com.kakao.cafe.user.service;
+package com.kakao.cafe.service;
 
-import com.kakao.cafe.user.model.User;
-import com.kakao.cafe.user.repository.UserRepository;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +24,6 @@ public class UserService {
 
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
-                .orElseThrow(() -> {throw new IllegalArgumentException("해당 회원이 존재하지 않습니다.");});
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원이 존재하지 않습니다."));
     }
 }

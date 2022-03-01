@@ -1,4 +1,4 @@
-package com.kakao.cafe.user.model;
+package com.kakao.cafe.domain.user;
 
 public class User {
     private Long id;

@@ -1,6 +1,5 @@
-package com.kakao.cafe.user.repository;
+package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.user.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
