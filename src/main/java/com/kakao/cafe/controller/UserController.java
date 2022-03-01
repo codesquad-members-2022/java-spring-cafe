@@ -18,12 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public String createUser(User user) {
-        userService.join(user);
-        return "redirect:/users";
-    }
-
     @GetMapping("/users")
     public String userList(Model model) {
         List<User> users = userService.findUsers();
@@ -31,5 +25,10 @@ public class UserController {
         return "user/list";
     }
 
+    @PostMapping("/users")
+    public String createUser(User user) {
+        userService.join(user);
+        return "redirect:/users";
+    }
 
 }
