@@ -1,0 +1,6 @@
+spring:
+  mustache:
+    cache: false
+  devtools:
+    livereload:
+      enabled: true
