@@ -13,12 +13,10 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'mysql:mysql-connector-java:5.1.49'
 }
 
 test {
