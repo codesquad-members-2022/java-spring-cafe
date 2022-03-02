@@ -1,5 +1,6 @@
 spring:
   thymeleaf:
-    prefix: classpath:/static/
-    suffix: .html
     cache: false
+  devtools:
+    livereload:
+      enabled: true
