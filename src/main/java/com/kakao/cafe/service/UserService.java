@@ -1,11 +1,8 @@
 package com.kakao.cafe.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 
-@Service
 public class UserService {
     private final UserRepository userRepository;
 
@@ -13,7 +10,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-public void join(User user){
+    public void join(User user) {
+        validateDuplicateUser(user);
+        userRepository.save(user);
+    }
 
-}
+    private void validateDuplicateUser(User user) {
+        userRepository.findByNickName(user.getNickname())
+            .ifPresent(m -> {
+                throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+            });
+    }
 }

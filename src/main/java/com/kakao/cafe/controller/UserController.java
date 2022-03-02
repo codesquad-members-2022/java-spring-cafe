@@ -10,7 +10,7 @@ import com.kakao.cafe.service.UserService;
 
 @Controller
 public class UserController {
-private final UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -18,21 +18,15 @@ private final UserService userService;
     }
 
     @GetMapping("/user/form")
-    public String createForm(){
+    public String createForm() {
         return "user/form";
     }
 
     @PostMapping("/user/form")
-    public String create(UserForm form){
-        User user = new User();
-        user.setEmail(form.getEmail());
-        user.setNickname(form.getUserId());
-        user.setPassword(form.getPassword());
+    public String create(User user) {
 
         userService.join(user);
-
         return "redirect:/";
-
     }
 
     @GetMapping("/create")
