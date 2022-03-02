@@ -30,15 +30,9 @@ public class UserController {
     public String createForm() {
         return "/user/create";
     }
-
+    
     @PostMapping("/user/create")
-    public String createUser(UserForm form) {
-        User user = new User();
-        user.setUserName(form.getUserName());
-        user.setUserPassword(form.getUserPassword());
-        user.setUserEmail(form.getUserEmail());
-
-        // service 객체로 매핑된 user 객체 전달
+    public String createUser(User user) {
         userService.createUser(user);
 
         return "redirect:/user/list";
