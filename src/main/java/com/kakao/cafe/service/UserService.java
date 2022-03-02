@@ -30,4 +30,14 @@ public class UserService {
     public List<User> findUsers() {
         return userRepository.findAllUser();
     }
+
+    public User findIdUser(String userId) {
+        return userRepository.findUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
+
+    public User findEmailUser(String userEmail) {
+        return userRepository.findEmail(userEmail)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
 }
