@@ -1,14 +1,12 @@
 package com.kakao.cafe.repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-import com.kakao.cafe.domain.exception.DuplicatedIdException;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
+import com.kakao.cafe.domain.exception.DuplicatedIdException;
 
 @Repository
 public class UserRepository {
@@ -16,6 +14,15 @@ public class UserRepository {
 
     public UserRepository(List<User> users) {
         this.users = users;
+    }
+
+    public Optional<User> findByUserId(String userId) {
+        return users.stream()
+            .filter(u -> u.getUserId().equals(userId))
+            .findAny();
+    }
+    public List<User> findAll() {
+        return List.copyOf(users);
     }
 
     public void save(User user) {
@@ -33,22 +40,5 @@ public class UserRepository {
         if (user.getUserId().equals(inputUser.getUserId())) {
             throw new DuplicatedIdException();
         }
-    }
-
-    public List<UserDto> findAll() {
-        List<UserDto> userDtoList = new ArrayList<>();
-        int number = 1;
-        for (User user : users) {
-            userDtoList.add(new UserDto(number++, user.getUserId(), user.getName(), user.getEmail()));
-        }
-        return userDtoList;
-    }
-
-    public UserProfileDto findByUserId(String userId) {
-        User user = users.stream()
-            .filter(u -> u.getUserId().equals(userId))
-            .findAny()
-            .orElseThrow();
-        return new UserProfileDto(user.getName(), user.getEmail());
     }
 }
