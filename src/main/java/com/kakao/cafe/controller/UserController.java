@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.controller.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(User user) {
+    public String createUser(UserDto userDto) {
+        User user = userDto.createUser();
         userService.join(user);
         return "redirect:/users";
     }
@@ -38,4 +40,5 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/profile";
     }
+
 }
