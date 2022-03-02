@@ -21,12 +21,14 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return Optional.ofNullable(store.get(userId));
+        return store.values().stream()
+            .filter(user -> user.getUserId().equals(userId))
+            .findAny();
     }
 
     @Override
