@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.DuplicateUserException;
-import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +37,6 @@ public class UserService {
 
     public User findUserById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION));
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
 }
