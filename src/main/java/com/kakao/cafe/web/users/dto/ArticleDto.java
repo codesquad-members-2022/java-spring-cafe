@@ -1,25 +1,25 @@
 package com.kakao.cafe.web.users.dto;
 
 public class ArticleDto {
-    private String userId;
+    private String writer;
     private String title;
-    private String content;
+    private String contents;
 
-    public ArticleDto(String userId, String title, String content) {
-        this.userId = userId;
+    public ArticleDto(String writer, String title, String contents) {
+        this.writer = writer;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getWriter() {
+        return writer;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 }

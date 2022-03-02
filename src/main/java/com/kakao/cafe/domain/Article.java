@@ -6,13 +6,13 @@ public class Article {
     private Long id;
     private String userId;
     private String title;
-    private String content;
+    private String contents;
     private LocalDateTime localDateTime;
 
-    public Article(String userId, String title, String content, LocalDateTime localDateTime) {
+    public Article(String userId, String title, String contents, LocalDateTime localDateTime) {
         this.userId = userId;
         this.title = title;
-        this.content = content;
+        this.contents = contents;
         this.localDateTime = localDateTime;
     }
 
@@ -40,12 +40,12 @@ public class Article {
         this.title = title;
     }
 
-    public String getContent() {
-        return content;
+    public String getContents() {
+        return contents;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public LocalDateTime getLocalDateTime() {
