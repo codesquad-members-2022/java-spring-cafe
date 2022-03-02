@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemoryUserRepositoryTest {
 
@@ -16,14 +15,14 @@ class MemoryUserRepositoryTest {
     User user1, user2;
 
     @BeforeEach
-    void init(){
+    void init() {
         // given
         user1 = new User("testA", "1234", "testA", "testA@naver.com");
         user2 = new User("testB", "5678", "testB", "testB@gamil.com");
     }
 
     @Test
-    void saveTest(){
+    void saveTest() {
         // when
         Long saveId = repository.save(user1);
 
@@ -33,13 +32,13 @@ class MemoryUserRepositoryTest {
     }
 
     @Test
-    void InvalidFindTest(){
-        assertThatThrownBy(() -> repository.findById(0L)).isInstanceOf(IllegalArgumentException.class);
-        assertThatThrownBy(() -> repository.findById(3L)).isInstanceOf(IllegalArgumentException.class);
+    void InvalidFindTest() {
+        assertThat(repository.findById(0L).isEmpty()).isTrue();
+        assertThat(repository.findById(3L).isEmpty()).isTrue();
     }
 
     @Test
-    void findAllTest(){
+    void findAllTest() {
         // when
         repository.save(user1);
         repository.save(user2);
@@ -50,7 +49,7 @@ class MemoryUserRepositoryTest {
     }
 
     @Test
-    void deleteTest(){
+    void deleteTest() {
         // when
         Long userId = repository.save(user1);
         repository.save(user2);
@@ -58,11 +57,11 @@ class MemoryUserRepositoryTest {
 
         // then
         assertThat(isDeleted).isTrue();
-        assertThatThrownBy(() -> repository.findById(userId)).isInstanceOf(IllegalArgumentException.class);
+        assertThat(repository.findById(userId).isEmpty()).isTrue();
     }
 
     @Test
-    void updateTest(){
+    void updateTest() {
         // when
         repository.save(user1);
         repository.save(user2);
@@ -75,7 +74,7 @@ class MemoryUserRepositoryTest {
     }
 
     @AfterEach
-    void afterEach(){
+    void afterEach() {
         repository.clearStore();
     }
 
