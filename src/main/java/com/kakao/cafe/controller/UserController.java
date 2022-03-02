@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+@RequestMapping("/users")
 @Controller
 public class UserController {
 
@@ -20,21 +22,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public String userList(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public String createUser(UserDto userDto) {
         User user = userDto.createUser();
         userService.join(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String userProfile(@PathVariable Long userId, Model model) {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
