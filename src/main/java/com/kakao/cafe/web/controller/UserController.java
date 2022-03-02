@@ -1,7 +1,9 @@
 package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.web.domain.user.User;
+import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.service.UserService;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,11 @@ public class UserController {
 
 	@GetMapping("/user/list")
 	public String list(Model model) {
-		List<User> users = userService.findAllUsers();
+		List<User> originUsers = userService.findAllUsers();
+		List<UserDto> users = new ArrayList<>();
+		for (User user : originUsers) {
+			users.add(UserDto.create(user));
+		}
 		model.addAttribute("users", users);
 		return "user/list";
 	}
@@ -47,7 +53,8 @@ public class UserController {
 
 	@GetMapping("/users/{userId}")
 	public String getUserByUserId(@PathVariable String userId, Model model) {
-		User user = userService.findByUserId(userId).get();
+		User originUser = userService.findByUserId(userId).get();
+		UserDto user = UserDto.create(originUser);
 		model.addAttribute("user", user);
 		return "user/profile";
 	}
