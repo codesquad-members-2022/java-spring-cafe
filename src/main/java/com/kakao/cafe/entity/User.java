@@ -19,6 +19,10 @@ public class User {
         this.userRegistrationDate = LocalDate.now();
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public String getName() {
         return name;
     }
