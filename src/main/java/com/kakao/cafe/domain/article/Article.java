@@ -13,6 +13,10 @@ public class Article {
         this.contents = contents;
     }
 
+    public boolean isTheSameId(Long id) {
+        return this.id.equals(id);
+    }
+
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
