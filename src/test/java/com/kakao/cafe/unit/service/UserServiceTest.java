@@ -141,7 +141,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("변경할 유저가 존재하지 않으면 예외를 반환한다")
+    @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
         given(userRepository.findByUserId(any()))
@@ -153,6 +153,42 @@ public class UserServiceTest {
 
         // then
         assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
+    public void updateUserIncorrectUserIdTest() {
+        // given
+        User other = new User(user);
+        other.setUserId("otherId");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(other));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
+    public void updateUserIncorrectPasswordTest() {
+        // given
+        User other = new User(user);
+        other.setPassword("secret");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(other));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
     }
 
 }

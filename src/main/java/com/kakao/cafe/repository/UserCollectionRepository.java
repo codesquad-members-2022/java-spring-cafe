@@ -1,6 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,8 +21,12 @@ public class UserCollectionRepository implements UserRepository {
             // persist
             user.setUserNum(users.size() + 1);
             users.add(user);
+        } else {
+            // merge
+            User findUser = findByUserId(user.getUserId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+            findUser.update(user);
         }
-        // collection 에서는 별도의 merge 필요없이 도메인 로직만으로 업데이트 완료
         return user;
     }
 

@@ -1,5 +1,8 @@
 package com.kakao.cafe.unit.controller;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +52,8 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("users", users))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("users", users))
             .andExpect(view().name("user/list"));
     }
 
@@ -67,7 +71,8 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("user", user))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("user", user))
             .andExpect(view().name("user/profile"));
     }
 
@@ -79,7 +84,8 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(view().name("user/form"));
+        actions.andExpect(status().isOk())
+            .andExpect(view().name("user/form"));
     }
 
     @Test
@@ -100,8 +106,13 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions
-            .andExpect(model().attribute("user", user))
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute("user", allOf(
+                hasProperty("userId", is(user.getUserId())),
+                hasProperty("password", is(user.getPassword())),
+                hasProperty("name", is(user.getName())),
+                hasProperty("email", is(user.getEmail()))
+            )))
             .andExpect(view().name("redirect:/users"));
     }
 
@@ -123,7 +134,8 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
             .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
             .andExpect(view().name("error/index"));
     }
@@ -142,7 +154,8 @@ class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
             .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
             .andExpect(view().name("error/index"));
     }
@@ -172,25 +185,32 @@ class UserControllerTest {
         // given
         User user = new User("userId", "password", "name", "email@example.com");
 
+        User other = new User(user);
+        other.setName("other");
+        other.setEmail("other@example.com");
+
         given(userService.updateUser(any()))
-            .willReturn(user);
+            .willReturn(other);
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
             .param("password", user.getPassword())
-            .param("name", "other")
-            .param("email", "other@example.com")
+            .param("name", other.getName())
+            .param("email", other.getEmail())
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(model().attribute("user", user))
+            .andExpect(model().attribute("user", allOf(
+                    hasProperty("name", is(other.getName())),
+                    hasProperty("email", is(other.getEmail()))
+                )))
             .andExpect(view().name("redirect:/users"));
     }
 
     @Test
-    @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
-    public void updateUserPasswordTest() throws Exception {
+    @DisplayName("유저 정보 변경 시 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserIncorrectUserIdTest() throws Exception {
         // given
         CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
 
@@ -213,8 +233,8 @@ class UserControllerTest {
 
 
     @Test
-    @DisplayName("유저 정보 업데이트 중 아이디 혹은 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
-    public void updateUserPasswordIncorrectTest() throws Exception {
+    @DisplayName("유저 정보 변경 시 아이디 혹은 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserIncorrectPasswordTest() throws Exception {
         // given
         CustomException exception = new CustomException(ErrorCode.INCORRECT_USER);
 

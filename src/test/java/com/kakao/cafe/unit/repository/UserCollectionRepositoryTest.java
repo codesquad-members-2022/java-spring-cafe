@@ -68,30 +68,33 @@ class UserCollectionRepositoryTest {
     @DisplayName("유저 번호를 가지고 변경된 유저 객체를 저장한다")
     public void saveMergeTest() {
         // given
-        User other = new User("userId", "password", "other", "other@example.com");
-        User updatedUser = user.update(other);
+        User other = new User(user);
+        other.setName("other");
+        other.setEmail("other@example.com");
+
+        user.update(other);
 
         // when
-        userRepository.save(updatedUser);
+        User updatedUser = userRepository.save(user);
 
         // then
-        assertThat(user.getUserNum()).isEqualTo(updatedUser.getUserNum());
-        assertThat(user.getUserId()).isEqualTo(updatedUser.getUserId());
-        assertThat(user.getPassword()).isEqualTo(updatedUser.getPassword());
-        assertThat(user.getName()).isEqualTo(updatedUser.getName());
-        assertThat(user.getEmail()).isEqualTo(updatedUser.getEmail());
+        assertThat(updatedUser.getUserNum()).isEqualTo(user.getUserNum());
+        assertThat(updatedUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
+        assertThat(updatedUser.getName()).isEqualTo(other.getName());
+        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
     }
 
     @Test
-    @DisplayName("유저 번호를 가지고, 등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
+    @DisplayName("등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
     public void updateTest() {
         // given
-        User user = new User("other", "secret", "other", "other@example.com");
-        user.setUserNum(1);
+        User other = new User(user);
+        other.setUserId("otherId");
 
         // when
         CustomException exception = assertThrows(CustomException.class,
-            () -> userRepository.save(user));
+            () -> userRepository.save(other));
 
         // then
         assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());

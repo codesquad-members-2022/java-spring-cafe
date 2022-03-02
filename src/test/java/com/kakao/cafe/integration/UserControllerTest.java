@@ -89,7 +89,8 @@ public class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(view().name("user/form"));
+        actions.andExpect(status().isOk())
+            .andExpect(view().name("user/form"));
     }
 
     @Test
@@ -104,7 +105,13 @@ public class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("user", user))
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(model().attribute("user", allOf(
+                hasProperty("userId", is(user.getUserId())),
+                hasProperty("password", is(user.getPassword())),
+                hasProperty("name", is(user.getName())),
+                hasProperty("email", is(user.getEmail()))
+            )))
             .andExpect(view().name("redirect:/users"));
     }
 
@@ -112,7 +119,7 @@ public class UserControllerTest {
     @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
     public void createUserValidateTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(user);
+        userSetUp.saveUser(user);
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
@@ -123,7 +130,8 @@ public class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("status", ErrorCode.DUPLICATE_USER.getHttpStatus()))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.DUPLICATE_USER.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.DUPLICATE_USER.getMessage()))
             .andExpect(view().name("error/index"));
     }
@@ -136,7 +144,8 @@ public class UserControllerTest {
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
-        actions.andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
             .andExpect(view().name("error/index"));
     }
@@ -179,8 +188,8 @@ public class UserControllerTest {
             .andExpect(model().attribute("user", allOf(
                 hasProperty("name", is(other.getName())),
                 hasProperty("email", is(other.getEmail()))
-                ))
-            ).andExpect(view().name("redirect:/users"));
+                )))
+            .andExpect(view().name("redirect:/users"));
     }
 
     @Test
