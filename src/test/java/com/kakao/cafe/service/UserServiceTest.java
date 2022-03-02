@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,11 +26,14 @@ class UserServiceTest {
     UserService userService;
     @Autowired
     UserRepository userRepository;
-    private UserCreateDto userCreateDto;
+    private List<UserCreateDto> userCreateDtos;
 
     @BeforeEach
     void setup() {
-        userCreateDto = new UserCreateDto("test", "1234", "박우진", "abc@naver.com");
+        userCreateDtos = new ArrayList<>();
+        userCreateDtos.add(new UserCreateDto("test1", "1234", "박우진", "abc@naver.com"));
+        userCreateDtos.add(new UserCreateDto("test2", "1234", "김우진", "abc@google.com"));
+        userCreateDtos.add(new UserCreateDto("test3", "1234", "최우진", "abc@kakao.com"));
     }
 
     @AfterEach
@@ -39,10 +45,10 @@ class UserServiceTest {
     @DisplayName("회원가입용 데이터가 정상적으로 주어지면 회원가입이 성공한다")
     void joinSuccessTest() {
         // given
-        User user = new User(userService.nextUserSequence(), userCreateDto);
+        User user = new User(userService.nextUserSequence(), userCreateDtos.get(0));
 
         // when
-        User resultUser = userService.join(user);
+        User resultUser = userService.save(user);
 
         // then
         assertThat(resultUser.getUserId()).isEqualTo(user.getUserId());
@@ -52,14 +58,16 @@ class UserServiceTest {
     @DisplayName("이미 가입된 userId로 다시 가입을 시도하면 DuplicateUserIdException이 발생한다")
     void joinDuplicateTest() {
         // given
-        UserCreateDto userCreateDto2 = new UserCreateDto("test", "1234", "박우진", "abc@naver.com");
+        UserCreateDto userCreateDto = new UserCreateDto("test", "1234", "박우진", "abc@naver.com");
         User user = new User(userService.nextUserSequence(), userCreateDto);
-        User user2 = new User(userService.nextUserSequence(), userCreateDto2);
+        for (UserCreateDto createDto : userCreateDtos) {
+            userService.save(new User(userService.nextUserSequence(), createDto));
+        }
 
         // when
-        User resultUser = userService.join(user);
+        userService.save(user);
         DuplicateUserIdException e = assertThrows(DuplicateUserIdException.class,
-                () -> userService.join(user2));
+                () -> userService.save(user));
 
         // then
         assertThat(e.getMessage()).isEqualTo("이미 가입된 ID입니다. 새로운 ID로 가입해주세요.");
