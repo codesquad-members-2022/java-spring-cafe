@@ -31,6 +31,18 @@ public class User {
         this.id = id;
     }
 
+    public boolean isSameUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isSameUserEmail(String userEmail) {
+        return this.email.equals(userEmail);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
