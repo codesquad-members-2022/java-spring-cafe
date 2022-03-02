@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -53,12 +54,13 @@ public class UserController {
 
     @GetMapping("/user/{userName}")
     public String userProfile(@PathVariable String userName, Model model) {
-
-        // userName 으로 user 를 찾고 있다면 model 에 적재해서 view 단에서 사용
+        userService.findUser(userName);
         userService.findUser(userName)
-            .ifPresent(user -> {
-                model.addAttribute("foundUser", user);
-            });
+                .ifPresentOrElse(user -> {
+                    model.addAttribute("foundUser", user);
+                }, () -> {
+                    throw new IllegalStateException("찾을 수 없는 유저입니다.");
+                });
 
         return "user/profile";
     }
