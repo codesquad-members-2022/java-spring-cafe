@@ -1,8 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
-import com.kakao.cafe.exception.ErrorCode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
