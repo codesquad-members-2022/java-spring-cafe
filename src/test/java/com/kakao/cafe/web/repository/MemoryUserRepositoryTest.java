@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class MemoryUserRepositoryTest {
 
-	static MemoryUserRepository repository;
+	static UserRepository repository;
 	static User user;
 
 	@BeforeAll
@@ -33,7 +33,7 @@ class MemoryUserRepositoryTest {
 		User result = repository.findByEmail("jeremy0405@naver.com").get();
 
 		//then
-		assertThat(result).isSameAs(user);
+		assertThat(result).hasToString(String.valueOf(user));
 	}
 
 	@Test
@@ -45,7 +45,7 @@ class MemoryUserRepositoryTest {
 		User result = repository.findById(user.getId()).get();
 
 		//then
-		assertThat(result).isSameAs(user);
+		assertThat(result).hasToString(String.valueOf(user));
 	}
 
 	@Test
@@ -57,7 +57,7 @@ class MemoryUserRepositoryTest {
 		User result = repository.findByEmail(user.getEmail()).get();
 
 		//then
-		assertThat(result).isSameAs(user);
+		assertThat(result).hasToString(String.valueOf(user));
 	}
 
 	@Test
@@ -75,8 +75,8 @@ class MemoryUserRepositoryTest {
 		List<User> result = repository.findAll();
 
 		//then
-		assertThat(result.contains(user)).isTrue();
-		assertThat(result.contains(user1)).isTrue();
+		assertThat(result.get(0)).hasToString(String.valueOf(user));
+		assertThat(result.get(1)).hasToString(String.valueOf(user1));
 		assertThat(result).hasSize(2);
 	}
 
