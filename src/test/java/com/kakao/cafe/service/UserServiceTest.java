@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.repository.MemoryUserRepository;
