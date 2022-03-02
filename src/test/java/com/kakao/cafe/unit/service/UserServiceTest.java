@@ -117,7 +117,7 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("변경할 유저 정보를 입력하면, 저장소의 유저 정보를 변경한다")
+    @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
     public void updateUserTest() {
         // given
         User other = new User(user);

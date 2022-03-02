@@ -1,7 +1,5 @@
 package com.kakao.cafe.integration;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -9,9 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
-import com.kakao.cafe.exception.ErrorCode;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -109,23 +104,6 @@ public class ArticleControllerTest {
         actions.andExpect(status().isOk())
             .andExpect(model().attribute("article", savedArticle))
             .andExpect(view().name("qna/show"));
-    }
-
-    @Test
-    @DisplayName("존재하지 않은 질문 id 로 질문을 조회하면 예외 페이지로 이동한다")
-    public void showArticleValidateTest() throws Exception {
-        // given
-        CustomException exception = new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
-
-        // when
-        ResultActions actions = mockMvc.perform(get("/articles/1")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
-
-        // then
-        actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
-            .andExpect(view().name("error/index"));
     }
 
 }
