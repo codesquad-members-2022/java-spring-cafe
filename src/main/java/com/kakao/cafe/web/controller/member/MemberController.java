@@ -32,29 +32,27 @@ public class MemberController {
 
     @PostMapping("join")
     public String join(@ModelAttribute("member") JoinRequest request, BindingResult bindingResult) {
-        System.out.println(memberService.size());
         if (bindingResult.hasErrors()) {
             return "user/list";
         }
         memberService.join(request);
-        System.out.println(memberService.size());
         return "redirect:/";
     }
 
     @GetMapping("login")
-    public String login(Model model) {
+    public String login() {
         return "user/login";
     }
 
     @GetMapping("{id}")
-    public String findMemberById(Model model, @PathVariable(value = "id") Long id) {
+    public String findMemberById(Model model, @PathVariable Long id) {
         Member findMember = memberService.findById(id).orElseThrow();
         model.addAttribute("findMember", findMember);
         return "user/profile";
     }
 
-    @GetMapping("profile")
-    public String getMemberProfile(Model model) {
+    @PutMapping("")
+    public String edit(Model model) {
         return "profilessf";
     }
 
