@@ -8,6 +8,13 @@ public class User {
     private String name;
     private String email;
 
+    public User(User form) {
+        userId = form.getUserId();
+        password = form.getPassword();
+        name = form.getName();
+        email = form.getEmail();
+    }
+
     public Long getId() {
         return id;
     }
@@ -21,7 +28,7 @@ public class User {
     }
 
     public void setUserId(String userId) {
-        userId = userId;
+        this.userId = userId;
     }
 
     public String getPassword() {
