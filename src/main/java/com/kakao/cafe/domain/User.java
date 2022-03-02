@@ -39,8 +39,9 @@ public class User {
         return email;
     }
 
-    // builder pattern
-    public static class UserBuilder{
+    // Builder pattern
+    public static class UserBuilder {
+
         private String userId;
         private String password;
         private String name;

@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String,User> userHashMap = new LinkedHashMap<>();
+    private final Map<String, User> userHashMap = new LinkedHashMap<>();
     private Long userNum = 0L;
 
     @Override
     public void save(User user) {
         user.setUserNum(++userNum);
-        userHashMap.put(user.getUserId(),user);
+        userHashMap.put(user.getUserId(), user);
     }
 
     @Override

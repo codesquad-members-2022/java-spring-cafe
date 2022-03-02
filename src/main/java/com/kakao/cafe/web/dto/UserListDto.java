@@ -4,11 +4,11 @@ import com.kakao.cafe.domain.User;
 
 public class UserListDto {
 
-    private Long userNum;
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    private final Long userNum;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public UserListDto(User user) {
         this.userNum = user.getUserNum();
