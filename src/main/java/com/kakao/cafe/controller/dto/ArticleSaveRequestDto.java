@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller.dto;
 
-import com.kakao.cafe.domain.posts.Article;
+import com.kakao.cafe.domain.article.Article;
 
 public class ArticleSaveRequestDto {
     private String writer;

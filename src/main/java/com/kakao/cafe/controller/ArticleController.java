@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.ArticleSaveRequestDto;
-import com.kakao.cafe.domain.posts.Article;
+import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

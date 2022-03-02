@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.posts;
+package com.kakao.cafe.domain.article;
 
 import org.springframework.stereotype.Repository;
 
