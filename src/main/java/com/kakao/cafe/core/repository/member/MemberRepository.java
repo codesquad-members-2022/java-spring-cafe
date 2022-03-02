@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository {
-
     Member insert(Member member);
     List<Member> findAll();
-    int size();
-    void update(Member member);
-
     Optional<Member> findById(Long userId);
 }

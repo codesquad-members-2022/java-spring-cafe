@@ -13,7 +13,7 @@ public class Member {
 
     public Member (Long id){
         this.id = id;
-    };
+    }
 
     public Member(Long id, String email, String password, String nickName) {
         this.id = id;
@@ -21,6 +21,11 @@ public class Member {
         this.password = password;
         this.nickName = nickName;
         this.createAt = getSignUpDate();
+    }
+
+    public Member (String email, String nickName){
+        this.email = email;
+        this.nickName = nickName;
     }
 
     private LocalDateTime getSignUpDate() {
@@ -35,10 +40,6 @@ public class Member {
         return email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public String getNickName() {
         return nickName;
     }
@@ -47,14 +48,20 @@ public class Member {
         return createAt;
     }
 
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changeNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
     public static class Builder {
         private Long id;
         private String email;
         private String password;
         private String nickName;
         private LocalDateTime createAt;
-
-        public Builder(){};
 
         public Builder(Member member) {
             this.id = member.id;
