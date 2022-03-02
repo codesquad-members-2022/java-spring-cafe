@@ -60,6 +60,36 @@ class MemoryUserRepositoryTest {
 
     @Nested
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+    class findById_메소드는 {
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 존재하는_아이디를_입력_받으면 {
+
+            @Test
+            @DisplayName("해당 아이디를 가진 User 객체를 찾아서 리턴한다")
+            void 해당_아이디를_가진_User_객체를_찾아서_리턴한다() {
+                final Optional<User> result = repository.findById(1L);
+                assertThat(result.isPresent()).isTrue();
+                assertThat(result.get().getId()).isEqualTo(1L);
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 존재하지_않는_아이디를_입력_받으면 {
+
+            @Test
+            @DisplayName("Optional.EMPTY를 리턴한다")
+            void Optional_EMPTY를_리턴한다() {
+                final Optional<User> result = repository.findById(100L);
+                assertThat(result.isEmpty()).isTrue();
+            }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class findByEmail_메소드는 {
 
         private final String presentEmail = "already@present.user";

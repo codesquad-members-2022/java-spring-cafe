@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -70,6 +71,35 @@ class UserServiceTest {
             @DisplayName("주어진 회원을 저장하고 저장된 회원의 id를 리턴한다")
             void 주어진_회원을_저장하고_저장된_회원의_id를_리턴한다() {
                 assertThat(userService.signUp(givenNonDuplicatedUser)).isEqualTo(2);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+    class findUser_메소드는 {
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 존재하는_아이디가_주어지면 {
+
+            @Test
+            @DisplayName("해당 아이디를 가진 회원 객체를 리턴한다")
+            void 해당_아이디를_가진_회원_객체를_리턴한다() {
+                assertThat(userService.findUser(1L).getId()).isEqualTo(1L);
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 존재하지_않는_아이디가_주어지면 {
+
+            @Test
+            @DisplayName("\"해당 아이디를 가진 회원이 존재하지 않습니다.\"라는 NoSuchElementException 던진다")
+            void 해당_아이디를_가진_회원이_존재하지_않습니다_라는_NoSuchElementException을_던진다() {
+                assertThatThrownBy(() -> userService.findUser(100L))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessage("해당 아이디를 가진 회원이 존재하지 않습니다.");
             }
         }
     }
