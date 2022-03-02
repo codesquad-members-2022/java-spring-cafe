@@ -20,7 +20,15 @@ public class UserService {
 
     // 1. 회원 가입 기능
     // TODO 중복 회원 체크 후 가입 시작하도록 로직을 추가해야 한다.
+    //  1. 받아온 user.getUserName 을 통해 userStore 에서 User 를 찾는다.
+    //  2. 이미 있다면 예외 발생
+    //  3. 없다면 받아온 user 생성
     public void createUser(User user) {
+        userRepository.findUser(user.getUserName())
+                .ifPresent(foundUser -> {
+                    throw new IllegalStateException("중복으로 가입할 수 없습니다.");
+                });
+
         userRepository.createUser(user);
     }
 
