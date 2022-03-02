@@ -15,7 +15,11 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+	compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.22'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.22.0'
 }
 
 test {
