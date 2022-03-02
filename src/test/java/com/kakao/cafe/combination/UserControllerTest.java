@@ -24,8 +24,12 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserControllerTest(UserService userService) {
+        this.userService = userService;
+    }
 
     @AfterEach
     void close() {
