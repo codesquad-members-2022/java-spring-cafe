@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserJoinRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;

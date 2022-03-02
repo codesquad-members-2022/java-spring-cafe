@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.dto;
 
 import com.kakao.cafe.domain.user.User;
 
