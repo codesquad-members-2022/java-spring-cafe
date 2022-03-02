@@ -15,6 +15,7 @@ import com.kakao.cafe.user.domain.UserRepository;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 	public static final String ERROR_OF_USER_ID = "user id";
+
 	private Map<Long, User> data = new LinkedHashMap<>();
 
 	@Override
