@@ -1,7 +1,6 @@
 package com.kakao.cafe.user.domain;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
@@ -9,10 +8,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.kakao.cafe.common.exception.NotFoundDomainException;
+import com.kakao.cafe.common.exception.DomainNotFoundException;
 import com.kakao.cafe.user.infra.MemoryUserRepository;
 
 class UserServiceTest {
@@ -58,7 +56,7 @@ class UserServiceTest {
 	@DisplayName("없는 사용자 정보에 대한 요청에 대해 예외 발생한다.")
 	void invalid_request_user_info_excpetion() {
 		assertThatThrownBy(() -> userService.findUser(1L))
-			.isInstanceOf(NotFoundDomainException.class);
+			.isInstanceOf(DomainNotFoundException.class);
 	}
 
 	private UserDto getUserDto() {

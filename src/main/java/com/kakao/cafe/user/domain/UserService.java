@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kakao.cafe.common.exception.NotFoundDomainException;
+import com.kakao.cafe.common.exception.DomainNotFoundException;
 
 @Service
 public class UserService {
@@ -31,7 +31,7 @@ public class UserService {
 	public User findUser(Long id) {
 		return userRepository.findById(id)
 			.orElseThrow(() -> {
-				throw new NotFoundDomainException("user");
+				throw new DomainNotFoundException("user");
 			});
 	}
 }
