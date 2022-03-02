@@ -91,11 +91,9 @@ class MemberControllerTest {
             // then
             MvcResult mvcResult = actions.andExpect(status().is4xxClientError()).andReturn();
 
-            // when
             ModelAndView modelAndView = mvcResult.getModelAndView();
             Map<String, Object> model = modelAndView.getModel();
 
-            // then
             assertThat(model.containsKey("errorMessage")).isTrue();
             assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
             assertThat(modelAndView.getViewName()).isEqualTo("member/form");
