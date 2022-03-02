@@ -23,10 +23,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        return userMap.keySet().stream()
-                .filter(userId -> userId.equals(id))
-                .map(userMap::get)
-                .findAny();
+        return Optional.ofNullable(userMap.get(id));
     }
 
     @Override

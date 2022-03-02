@@ -23,10 +23,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(Long id) {
-        return articleMap.keySet().stream()
-                .filter(key -> key.equals(id))
-                .map(articleMap::get)
-                .findAny();
+        return Optional.ofNullable(articleMap.get(id));
     }
 
     @Override
