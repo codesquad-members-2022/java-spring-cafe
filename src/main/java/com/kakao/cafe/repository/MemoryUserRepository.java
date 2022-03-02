@@ -28,4 +28,12 @@ public class MemoryUserRepository implements UserRepository {
                 .filter(user -> user.getUserName().equals(userName))
                 .findAny();
     }
+
+    public Map<Long, User> getUserStore() {
+        return userStore;
+    }
+
+    public void clear() {
+        userStore.clear();
+    }
 }
