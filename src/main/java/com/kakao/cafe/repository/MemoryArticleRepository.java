@@ -48,7 +48,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         if (findById(id).isPresent()) {
             Article find = findById(id).get();
             find.setTitle(article.getTitle());
-            find.setContent(article.getContent());
+            find.setContents(article.getContents());
         }
     }
 }

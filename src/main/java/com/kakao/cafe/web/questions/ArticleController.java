@@ -6,10 +6,8 @@ import com.kakao.cafe.web.users.dto.ArticleDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -33,9 +31,18 @@ public class ArticleController {
 
     @PostMapping
     public String saveForm(@ModelAttribute ArticleDto dto) {
-        Article article = new Article(dto.getUserId(), dto.getTitle(), dto.getContent(), LocalDateTime.now());
+        Article article = new Article(dto.getWriter(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
         articleService.addArticle(article);
         log.info("save form = {}", article.getTitle());
         return "redirect:/";
+    }
+
+    @GetMapping("/{index}")
+    public String getArticle(@PathVariable Long index, Model model){
+        Article findArticle = articleService.findArticleById(index);
+        model.addAttribute("article", findArticle);
+        log.info("get article title = {}", findArticle.getTitle());
+        log.info("get article content = {}", findArticle.getContents());
+        return "/qna/show";
     }
 }
