@@ -2,21 +2,26 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.DuplicateUserIdException;
+import com.kakao.cafe.exception.NoMatchUserException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
 
+    private final String DUPLICATE_USERID_MESSAGE = "이미 가입된 ID입니다. 다른 ID로 가입해주세요.";
+    private final String NO_MATCH_USER_MESSAGE = "일치하는 회원이 없습니다. 확인 후 다시 시도해주세요.";
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User join(User user) {
+    public User save(User user) {
         validateDuplicateUser(user);
-        return userRepository.join(user);
+        return userRepository.save(user);
     }
 
     public Long nextUserSequence() {
@@ -24,9 +29,18 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        User findUser = userRepository.findByUserId(user.getUserId());
-        if (findUser != null) {
-            throw new DuplicateUserIdException("이미 가입된 ID입니다. 새로운 ID로 가입해주세요.");
-        }
+        userRepository.findByUserId(user.getUserId())
+                .ifPresent(findUser -> {
+                    throw new DuplicateUserIdException(DUPLICATE_USERID_MESSAGE);
+                });
+    }
+
+    public List<User> findUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoMatchUserException(NO_MATCH_USER_MESSAGE));
     }
 }
