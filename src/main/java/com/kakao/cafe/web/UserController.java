@@ -36,7 +36,7 @@ public class UserController {
     @GetMapping("/users")
     public String list(Model model) {
         log.info("[LOG] request to show user list");
-        model.addAttribute(userService.showAllUsers());
-        return "";
+        model.addAttribute("users",userService.showAllUsers());
+        return "user/list";
     }
 }

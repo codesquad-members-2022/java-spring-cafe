@@ -1,17 +1,20 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String,User> userHashMap = new HashMap<>();
+    private final Map<String,User> userHashMap = new LinkedHashMap<>();
+    private Long userNum = 0L;
 
     @Override
     public void save(User user) {
+        user.setUserNum(++userNum);
         userHashMap.put(user.getUserId(),user);
     }
 
@@ -22,6 +25,6 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return (List<User>) userHashMap.values();
+        return new ArrayList<>(userHashMap.values());
     }
 }
