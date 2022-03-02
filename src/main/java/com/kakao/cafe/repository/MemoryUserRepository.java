@@ -5,15 +5,16 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
     private static final List<User> users = new ArrayList<>();
-    private static Long sequence = 0L;
+    private static AtomicLong sequence = new AtomicLong();
 
     @Override
     public void save(User user) {
-        user.setId(sequence++);
+        user.setId(sequence.getAndIncrement());
         users.add(user);
     }
 
