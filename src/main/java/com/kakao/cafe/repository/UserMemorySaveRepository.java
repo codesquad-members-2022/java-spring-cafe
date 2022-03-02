@@ -2,12 +2,15 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.User;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Repository
 public class UserMemorySaveRepository implements UserRepository {
 
     private static final Map<Long, User> userStore = new HashMap<>();
