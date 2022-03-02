@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html lang="kr" class="container">
+<head>
+    <title>유저 프로필 페이지</title>
+</head>
+
+<body class="main">
+<div>
+    {{#foundUser}}
+    <div>
+        <h4 class="h4">아이디</h4>
+        <p>{{userName}}</p>
+    </div>
+
+    <div>
+        <h4 class="h4">비밀번호</h4>
+        <p>{{userPassword}}</p>
+    </div>
+
+    <div>
+        <h4 class="h4">이메일</h4>
+        <p>{{userEmail}}</p>
+    </div>
+    {{/foundUser}}
+</div>
+</body>
+
+</html>
+
+<style>
+    .container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .main {
+        width: 50%;
+        height: 33%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid black;
+        border-radius: 8px;
+
+    }
+
+    .h4 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .padding {
+        margin-top: 10px;
+    }
+
+</style>
