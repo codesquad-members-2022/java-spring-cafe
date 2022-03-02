@@ -6,43 +6,28 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private static final String NO_MEMBER_ID_MESSAGE = "해당 회원 id는 없는 번호 입니다.";
-    private static final Map<Long, User> store = new ConcurrentHashMap<>();
+    private final Map<Long, User> store = new ConcurrentHashMap<>();
     private Long sequence = 0L;
 
     @Override
     public Long save(User user) {
-        if (user != null) {
-            user.setId(++sequence);
-            store.put(user.getId(), user);
-            return sequence;
-        }
-        return -1L;
+        user.setId(++sequence);
+        store.put(user.getId(), user);
+        return user.getId();
     }
 
     @Override
-    public User findById(Long id) {
-        if (!isValidRangeId(id)) {
-            throw new IllegalArgumentException(NO_MEMBER_ID_MESSAGE);
-        }
-        if (!isExistedId(id)) {
-            throw new IllegalArgumentException(NO_MEMBER_ID_MESSAGE);
-        }
-        return store.get(id);
+    public Optional<User> findById(Long id) {
+        return store.keySet().stream()
+                .filter(userId -> userId.equals(id))
+                .map(store::get)
+                .findAny();
     }
-
-    private boolean isValidRangeId(Long id) {
-        return id > 0 && id <= sequence;
-    }
-
-    private boolean isExistedId(Long id) {
-        return store.containsKey(id);
-    }
-
 
     @Override
     public List<User> findAll() {
@@ -60,11 +45,13 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void update(Long id, User updateParam) {
-        User findUser = findById(id);
-        findUser.setUserId(updateParam.getUserId());
-        findUser.setPassword(updateParam.getPassword());
-        findUser.setName(updateParam.getName());
-        findUser.setEmail(updateParam.getEmail());
+        if (findById(id).isPresent()) {
+            User findUser = findById(id).get();
+            findUser.setUserId(updateParam.getUserId());
+            findUser.setPassword(updateParam.getPassword());
+            findUser.setName(updateParam.getName());
+            findUser.setEmail(updateParam.getEmail());
+        }
     }
 
     public void clearStore() {
