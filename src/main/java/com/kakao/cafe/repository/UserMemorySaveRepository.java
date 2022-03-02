@@ -45,4 +45,8 @@ public class UserMemorySaveRepository implements UserRepository {
     public List<User> findAllUser() {
         return new ArrayList<>(userStore.values());
     }
+
+    public void clearStore() {
+        userStore.clear();
+    }
 }
