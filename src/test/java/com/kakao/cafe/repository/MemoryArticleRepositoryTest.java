@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +23,8 @@ class MemoryArticleRepositoryTest {
     void init(){
         // given
         repository = new MemoryArticleRepository();
-        article1 = new Article("test1", "test1", "test1234567899123446아아아아아아아");
-        article2 = new Article("test2", "test1", "test1234567899123446아아아아아아아");
+        article1 = new Article("test1", "test1", "test1234567899123446아아아아아아아", LocalDateTime.now());
+        article2 = new Article("test2", "test1", "test1234567899123446아아아아아아아", LocalDateTime.now());
     }
 
     @Test
@@ -76,7 +77,7 @@ class MemoryArticleRepositoryTest {
         // when
         repository.save(article1);
         repository.save(article2);
-        Article change = new Article("test1", "after", "change");
+        Article change = new Article("test1", "after", "change", LocalDateTime.now());
         repository.update(1L, change);
 
         // then
