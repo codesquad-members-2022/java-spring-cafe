@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    void savaUserInformation(UserInformation userInformation);
+    UserInformation savaUserInformation(UserInformation userInformation);
     Optional<UserInformation> findUserInformationById(String userId);
     List<UserInformation> findAllUserInformation();
+    void clearUserInformationList();
 }

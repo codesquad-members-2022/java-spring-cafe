@@ -10,9 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
+
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -21,12 +24,11 @@ public class UserController {
         this.userService = userService;
     }
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @GetMapping("/users")
     public String getUserList(Model model) {
         logger.info("GET /users");
         model.addAttribute("users", userService.findAllUsers());
+
         return "/user/list";
     }
 
@@ -34,16 +36,19 @@ public class UserController {
     public String getUserProfile(@PathVariable String userId, Model model) {
         logger.info("GET /users/{}", userId);
         model.addAttribute("user", userService.findOneUser(userId).get());
+
         return "/user/profile";
     }
 
     @PostMapping("/users")
-    public String createUserInformation(UserInformation userInformation) {
+    public ModelAndView createUserInformation(UserInformation userInformation) {
         logger.info("POST /users userId = {} password = {} name = {} email = {}"
-                , userInformation.getUserId(), userInformation.getPassword()
-                , userInformation.getName(), userInformation.getEmail());
-        userService.join(userInformation);
+              , userInformation.getUserId(), userInformation.getPassword()
+              , userInformation.getName(), userInformation.getEmail());
 
-        return "redirect:/users";
+        ModelAndView modelAndView = new ModelAndView("redirect:/users");
+        modelAndView.addObject("joinedUserId", userService.join(userInformation).getUserId());
+
+        return modelAndView;
     }
 }

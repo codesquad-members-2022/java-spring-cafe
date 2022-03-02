@@ -1,27 +1,22 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.UserInformation;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    @Autowired
-    public UserService(MemoryUserRepository memoryUserRepository) {
-        this.userRepository = memoryUserRepository;
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public void join(UserInformation userInformation) {
+    public UserInformation join(UserInformation userInformation) {
         validateDuplicateUser(userInformation.getUserId());
-        userRepository.savaUserInformation(userInformation);
+        return userRepository.savaUserInformation(userInformation);
     }
 
     private void validateDuplicateUser(String userId) {
@@ -36,5 +31,9 @@ public class UserService {
 
     public Optional<UserInformation> findOneUser(String userId) {
         return userRepository.findUserInformationById(userId);
+    }
+
+    public void deleteAllUsers() {
+        userRepository.clearUserInformationList();
     }
 }
