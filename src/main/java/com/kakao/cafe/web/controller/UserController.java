@@ -35,7 +35,7 @@ public class UserController {
 		return "redirect:/users";
 	}
 
-	@GetMapping("/user/list")
+	@GetMapping("/users")
 	public String list(Model model) {
 		List<User> originUsers = userService.findAllUsers();
 		List<UserDto> users = new ArrayList<>();
@@ -44,11 +44,6 @@ public class UserController {
 		}
 		model.addAttribute("users", users);
 		return "user/list";
-	}
-
-	@GetMapping("/users")
-	public String users() {
-		return "redirect:/user/list";
 	}
 
 	@GetMapping("/users/{userId}")
