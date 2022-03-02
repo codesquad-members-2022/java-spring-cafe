@@ -5,6 +5,7 @@ import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,11 +38,9 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String list(Model model) {
-		List<User> originUsers = userService.findAllUsers();
-		List<UserDto> users = new ArrayList<>();
-		for (User user : originUsers) {
-			users.add(UserDto.create(user));
-		}
+		List<UserDto> users = userService.findAllUsers().stream()
+			.map(UserDto::create)
+			.collect(Collectors.toList());
 		model.addAttribute("users", users);
 		return "user/list";
 	}
