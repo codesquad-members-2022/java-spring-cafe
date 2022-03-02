@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class UserServiceImplTest {
 
-	static UserServiceImpl userService;
+	static UserService userService;
 	static MemoryUserRepository repository;
 
 	@BeforeAll
@@ -22,7 +22,7 @@ class UserServiceImplTest {
 		user.setName("Jerry");
 		user.setEmail("jeremy0405@naver.com");
 		repository.save(user);
-		userService = new UserServiceImpl(repository);
+		userService = new UserService(repository);
 	}
 
 	@Test
