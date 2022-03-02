@@ -30,14 +30,14 @@ public class MemoryUserRepository implements UserRepository {
 	@Override
 	public Optional<User> findByEmail(String email) {
 		return store.values().stream()
-			.filter(user -> user.getEmail().equals(email))
+			.filter(user -> user.isEqualEmail(email))
 			.findAny();
 	}
 
 	@Override
 	public Optional<User> findByUserId(String userId) {
 		return store.values().stream()
-			.filter(user -> user.getUserId().equals(userId))
+			.filter(user -> user.isEqualUserId(userId))
 			.findAny();
 	}
 

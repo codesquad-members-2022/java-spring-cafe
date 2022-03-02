@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{userId}")
-	public String getUserByUserId(@PathVariable String userId, Model model) {Z
+	public String getUserByUserId(@PathVariable String userId, Model model) {
 		User originUser = userService.findByUserId(userId)
 			.orElseThrow(() -> new IllegalStateException("해당 userId를 가진 회원은 존재하지 않습니다."));
 		UserDto user = UserDto.create(originUser);
