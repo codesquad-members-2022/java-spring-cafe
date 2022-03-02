@@ -7,6 +7,9 @@ public class UserCreateDto {
     private String name;
     private String email;
 
+    public UserCreateDto() {
+    }
+
     public UserCreateDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
@@ -32,5 +35,15 @@ public class UserCreateDto {
 
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserCreateDto{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

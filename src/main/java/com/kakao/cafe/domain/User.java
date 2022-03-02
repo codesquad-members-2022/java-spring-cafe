@@ -61,4 +61,17 @@ public class User {
     public LocalDateTime getUpdated_date() {
         return updated_date;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", created_date=" + created_date +
+                ", updated_date=" + updated_date +
+                '}';
+    }
 }
