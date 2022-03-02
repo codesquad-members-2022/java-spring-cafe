@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class DefaultMemberRepository implements MemberRepository {
+public class JDBCMemberRepository implements MemberRepository {
 
     private static final String INSERT_CAFE_USERS_SQL = "INSERT INTO cafe_users (userid, passwd, name, email, created_date, modified_date) values (?,?,?,?,NOW(),NOW())";
     private static final String SELECT_ALL_CAFE_USERS_SQL = "SELECT id, userid, passwd, name, email, created_date, modified_date FROM cafe_users";
@@ -25,7 +25,7 @@ public class DefaultMemberRepository implements MemberRepository {
     private final DataSource ds;
 
     @Autowired
-    public DefaultMemberRepository(DataSource ds) {
+    public JDBCMemberRepository(DataSource ds) {
         this.ds = ds;
     }
 
