@@ -42,4 +42,13 @@ public class UserDto {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
