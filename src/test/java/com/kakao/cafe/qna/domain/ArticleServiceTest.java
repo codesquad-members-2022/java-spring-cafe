@@ -3,15 +3,9 @@ package com.kakao.cafe.qna.domain;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.qna.infra.MemoryArticleRepository;
@@ -44,6 +38,8 @@ class ArticleServiceTest {
 			() -> assertThat(actual.getWriter()).isNotBlank());
 	}
 
+/*
+
 	@ParameterizedTest
 	@DisplayName("글쓰기한 작성자, 제목, 내용 중 null or 공백 등이 있을시에는 예외처리 한다.")
 	@MethodSource("providerInvalidWritingArticle")
@@ -61,7 +57,7 @@ class ArticleServiceTest {
 			Arguments.of(TEST_WRITER, TEST_TITLE, null),
 			Arguments.of(TEST_WRITER, "  ", TEST_CONTENT)
 		);
-	}
+	}*/
 
 	private ArticleDto getArticleDto(String writer, String title, String content) {
 		ArticleDto articleDto = new ArticleDto();

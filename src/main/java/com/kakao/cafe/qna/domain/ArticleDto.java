@@ -2,6 +2,8 @@ package com.kakao.cafe.qna.domain;
 
 import java.util.Objects;
 
+import org.slf4j.Logger;
+
 public class ArticleDto {
 	public static final String ERROR_OF_WRITER_BLANK = "작성자를 입력하세요.";
 	public static final String ERROR_OF_TITLE_BLANK = "제목을 입력하세요.";
@@ -36,7 +38,14 @@ public class ArticleDto {
 		this.contents = contents;
 	}
 
-	public boolean isOneMoreBlank() {
+	public void isValid(ArticleDto articleDto, Logger logger) {
+		if (articleDto.isOneMoreBlank()) {
+			logger.warn("request question : {}", articleDto);
+			throw new IllegalArgumentException(articleDto.getErrorMessageWithBlank());
+		}
+	}
+
+	private boolean isOneMoreBlank() {
 		return isWriterBlank() || isTitleBlank() || isContentsBlank();
 	}
 

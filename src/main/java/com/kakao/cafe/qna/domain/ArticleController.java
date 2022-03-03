@@ -1,5 +1,7 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.common.utils.MessageFormatter.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ public class ArticleController {
 
 	@PostMapping()
 	public String askQuestion(ArticleDto articleDto) {
+		articleDto.isValid(articleDto, logger);
 		logger.info("request question : {}", articleDto);
 		articleService.write(articleDto);
 		return "redirect:/";
@@ -36,15 +39,9 @@ public class ArticleController {
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
 		String requestURI = request.getRequestURI();
+		System.out.println(requestURI);
 		ModelAndView mav = new ModelAndView(requestURI);
 		mav.addObject("message", toMessageLines(exception.getMessage()));
 		return mav;
-	}
-
-	private String[] toMessageLines(String message) {
-		if (message.contains(",")) {
-			return message.split(",");
-		}
-		return new String[] {message};
 	}
 }

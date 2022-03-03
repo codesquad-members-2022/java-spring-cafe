@@ -1,8 +1,12 @@
 package com.kakao.cafe.qna.infra;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +54,13 @@ public class MemoryArticleRepository implements ArticleRepository {
 		}
 		Article article = data.get(id);
 		return Optional.of(article);
+	}
+
+	@Override
+	public List<Article> findAll() {
+		return this.data.keySet().stream()
+			.map(id -> this.data.get(id))
+			.collect(toUnmodifiableList());
 	}
 
 	@Override
