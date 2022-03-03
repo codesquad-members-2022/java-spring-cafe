@@ -2,7 +2,7 @@ package com.kakao.cafe.Controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.dto.UserCreateDto;
-import com.kakao.cafe.domain.dto.UserListDto;
+import com.kakao.cafe.domain.dto.UserDto;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,8 +32,6 @@ public class UserController {
 
     @PostMapping("/users")
     public String create(UserCreateDto userCreateDto) {
-        System.out.println("userCreateDto.toString() = " + userCreateDto.toString());
-        
         User user = new User(userService.nextUserSequence(), userCreateDto);
 
         userService.save(user);
@@ -43,17 +41,9 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        for (User user : userService.findUsers()) {
-            System.out.println("user.toString() = " + user.toString());
-        }
-        
-        List<UserListDto> allUsers = userService.findUsers().stream()
-                .map(user -> new UserListDto(user))
+        List<UserDto> allUsers = userService.findUsers().stream()
+                .map(user -> new UserDto(user))
                 .collect(Collectors.toList());
-
-        for (UserListDto allUser : allUsers) {
-            System.out.println(allUser.getUserId() + " " + allUser.getName() + " " + allUser.getEmail());
-        }
 
         model.addAttribute("allUsers", allUsers);
 
@@ -62,7 +52,7 @@ public class UserController {
 
     @GetMapping("users/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        User findUser = userService.findByUserId(userId);
+        UserDto findUser = new UserDto(userService.findByUserId(userId));
 
         model.addAttribute("findUser", findUser);
 
