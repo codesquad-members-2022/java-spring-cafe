@@ -24,6 +24,14 @@ public class ProfileChangeResponse {
         return id;
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

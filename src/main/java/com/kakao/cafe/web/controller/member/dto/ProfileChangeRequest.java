@@ -16,11 +16,6 @@ public class ProfileChangeRequest {
         this.createAt = createAt;
     }
 
-    public ProfileChangeRequest(String nickName, String email) {
-        this.nickName = nickName;
-        this.email = email;
-    }
-
     public String getNickName() {
         return nickName;
     }
