@@ -2,6 +2,7 @@ package com.kakao.cafe.web.domain.article;
 
 public class Article {
 
+	private Long id;
 	private final String writer;
 	private String title;
 	private String contents;
@@ -10,6 +11,10 @@ public class Article {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getWriter() {
@@ -22,6 +27,10 @@ public class Article {
 
 	public String getContents() {
 		return contents;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setTitle(String title) {
