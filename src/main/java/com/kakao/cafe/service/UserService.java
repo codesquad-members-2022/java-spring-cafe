@@ -1,5 +1,7 @@
 package com.kakao.cafe.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import com.kakao.cafe.domain.User;
@@ -27,13 +29,17 @@ public class UserService {
     }
 
     private void validateDuplicateNickname(User user) {
-        userRepository.findByNickName(user.getNickname())
+        userRepository.findByNickname(user.getNickname())
             .ifPresent(m -> {
                 throw new IllegalStateException(ErrorMessage.EXISTING_NICKNAME.get());
             });
     }
 
-    public Optional<User> findOne(Long userId) {
-        return userRepository.findById(userId);
+    public Optional<User> findOne(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public List<User> findUsers(){
+        return new ArrayList<>(userRepository.findAll());
     }
 }
