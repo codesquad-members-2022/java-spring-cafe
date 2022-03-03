@@ -2,19 +2,19 @@ package com.kakao.cafe.domain.dto;
 
 import com.kakao.cafe.domain.User;
 
-public class UserListDto {
+public class UserDto {
 
     private String userId;
     private String name;
     private String email;
 
-    public UserListDto(String userId, String name, String email) {
+    public UserDto(String userId, String name, String email) {
         this.userId = userId;
         this.name = name;
         this.email = email;
     }
 
-    public UserListDto(User user) {
+    public UserDto(User user) {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.email = user.getEmail();

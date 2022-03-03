@@ -21,8 +21,16 @@ public class UserCreateDto {
         return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -37,13 +45,7 @@ public class UserCreateDto {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "UserCreateDto{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
