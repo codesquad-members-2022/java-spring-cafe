@@ -16,16 +16,8 @@ public class UserService {
     }
 
     public void join(User user){
-        validateDuplicateEmail(user);
         validateDuplicateNickname(user);
         userRepository.save(user);
-    }
-
-    private void validateDuplicateEmail(User user) {
-        userRepository.findByEmail(user.getEmail())
-            .ifPresent(m -> {
-                throw new IllegalStateException(ErrorMessage.EXISTING_EMAIL.get());
-            });
     }
 
     private void validateDuplicateNickname(User user) {

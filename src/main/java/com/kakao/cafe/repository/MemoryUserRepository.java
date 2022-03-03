@@ -27,13 +27,6 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        return store.values().stream()
-            .filter(m -> m.getEmail().equals(email))
-            .findAny();
-    }
-
-    @Override
     public Optional<User> findByNickname(String nickname) {
         return store.values().stream()
             .filter(m -> m.getNickname().equals(nickname))

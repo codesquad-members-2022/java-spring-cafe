@@ -5,26 +5,26 @@
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../../static/css/reset.css" rel="stylesheet">
+    <link href="static/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="../../static/css/user/list.css" rel="stylesheet">
+    <link href="static/css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
 <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
         <div class="navbar-header">
-            <a href="../index.html" class="navbar-brand">
-                <img src="../../static/images/KakaoCI.png" />
+            <a href="index.html" class="navbar-brand">
+                <img src="static/images/KakaoCI.png" />
             </a>
 
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="../index.html">메인 페이지</a></li>
+            <li class="active"><a href="/">메인 페이지</a></li>
             <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-            <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
+            <li><a class="black-component" href="/" role="button">회원가입</a></li>
         </ul>
     </div>
 </nav>
@@ -43,15 +43,13 @@
                     <tr>
                         <th>ID</th>
                         <th>닉네임</th>
-                        <th>이메일</th>
                     </tr>
                     </thead>
                     <tbody>
                     {{#users}}
                     <tr>
                         <td>{{id}}</td>
-                        <td>{{nickname}}</td>
-                        <td>{{email}}</td>
+                        <td><a href="/users/{{nickname}}">{{nickname}}</a></td>
                     </tr>
                     {{/users}}
 
