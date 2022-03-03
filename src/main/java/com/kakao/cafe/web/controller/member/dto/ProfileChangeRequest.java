@@ -4,13 +4,14 @@ import com.kakao.cafe.core.domain.member.Member;
 
 import java.time.LocalDateTime;
 
-public class ProfileFormRequest {
+public class ProfileChangeRequest {
+
     private Long id;
     private String nickName;
     private String email;
     private LocalDateTime createAt;
 
-    public ProfileFormRequest(String nickName, String email) {
+    public ProfileChangeRequest(String nickName, String email) {
         this.nickName = nickName;
         this.email = email;
     }

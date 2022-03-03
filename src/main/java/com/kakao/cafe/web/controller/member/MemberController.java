@@ -2,7 +2,7 @@ package com.kakao.cafe.web.controller.member;
 
 import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
-import com.kakao.cafe.web.controller.member.dto.ProfileFormRequest;
+import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,18 +56,14 @@ public class MemberController {
     }
 
     @GetMapping("{id}/edit")
-    public String getDetailMember(Model model, @PathVariable Long id, ProfileFormRequest request) {
-        Member findMember = memberService.findById(id);
-        request.setId(findMember.getId());
-        request.setEmail(findMember.getEmail());
-        request.setNickName(findMember.getNickName());
-        request.setCreateAt(findMember.getCreateAt());
-        model.addAttribute("request", request);
+    public String edit(Model model, @PathVariable Long id, ProfileChangeRequest request) {
+        ProfileChangeRequest response = memberService.getMemberDetails(id, request);
+        model.addAttribute("response", request);
         return "user/profileedit";
     }
 
     @PostMapping("{id}/edit")
-    public String edit(ProfileFormRequest request) {
+    public String edit(ProfileChangeRequest request) {
         memberService.edit(request);
         return "redirect:/";
     }

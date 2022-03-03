@@ -29,14 +29,14 @@
 
     <div class="description">
         <div class="desc-container">
-            <p th:text="|${request.nickName} 님의|" class="desc-small">안녕하세요</p>
+            <p th:text="|${response.nickName} 님의|" class="desc-small">안녕하세요</p>
             <p class="desc-big">회원정보 상세보기</p>
         </div>
     </div>
 
-    <p class="total_num" th:text="|${request.createAt} 님의 최근 접속 정보|">최근 접속 정보</p>
+    <p class="total_num" th:text="|${response.createAt} 님의 최근 접속 정보|">최근 접속 정보</p>
 
-    <form th:object="${request}" method="post">
+    <form th:object="${response}" method="post">
         <div class="container" id="main">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
