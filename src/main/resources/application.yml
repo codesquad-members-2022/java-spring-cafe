@@ -1,7 +1,7 @@
 # active profile
 spring:
   profiles:
-    active: dev
+    active: "dev,mustache"
 
 ---
 # dev profile
@@ -38,3 +38,13 @@ spring:
   h2:
     console:
       enabled: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: mustache
+  mustache:
+    suffix: .html
+    cache: false
