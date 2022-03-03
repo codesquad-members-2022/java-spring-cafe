@@ -10,22 +10,26 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 
 @Component
-public class UserRepository {
+public class UserRepository implements CustomRepository<User> {
     private final List<User> users;
 
     public UserRepository(List<User> users) {
         this.users = users;
     }
 
+    @Override
     public Optional<User> findByUserId(String userId) {
         return users.stream()
             .filter(u -> u.getUserId().equals(userId))
             .findAny();
     }
+
+    @Override
     public List<User> findAll() {
         return List.copyOf(users);
     }
 
+    @Override
     public void save(User user) {
         duplicateUsernameCheck(user);
         users.add(user);
