@@ -34,7 +34,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByNickName(String nickname) {
+    public Optional<User> findByNickname(String nickname) {
         return store.values().stream()
             .filter(m -> m.getNickname().equals(nickname))
             .findAny();
