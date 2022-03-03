@@ -9,10 +9,6 @@
 <div markdown="1">
 <br/>
 
-
-
-
-
 ### ✍🏻 기능요구사항
 
 - static 폴더에 있는 기존 자료(QA 게시판) 를 수정하거나 아래 디자인 기획서를 참고해서 구현한다.
@@ -23,16 +19,13 @@
 
 <br/><br/><br/><br/>
 
-
-
 ### 💻 프로그래밍 요구사항
 
-프로그래밍 요구사항은 아래 규칙을 따른다. 
+프로그래밍 요구사항은 아래 규칙을 따른다.
 
 <br/><br/>
 
-
-### 회원 가입 기능 구현 
+### 회원 가입 기능 구현
 
 - 가입하기 페이지에서 회원 가입 폼을 표시한다.
 - 개인정보를 입력하고 확인을 누르면 회원 목록 조회 페이지로 이동한다.
@@ -40,7 +33,6 @@
 <br/>
 
 ![ex_screenshot](src/main/resources/images/register.png)
-
 
 <br/><br/><br/><br/>
 
@@ -54,14 +46,11 @@
 
 <br/><br/><br/><br/>
 
-
 ### 회원 프로필 조회 기능 구현
 
 - 회원 프로필 페이지에서는 개별 회원의 프로필 정보를 출력한다.
 
 ![ex_screenshot](src/main/resources/images/user-profile.png)
-
-
 
 <br/><br/><br/><br/>
 
@@ -69,11 +58,11 @@
 
 - 먼저 각 기능에 대한 대표 url을 결정한다.
 
-  - 예를 들어 회원관리와 관련한 기능의 대표 URL은 "/users"와 같이 설계한다.
+    - 예를 들어 회원관리와 관련한 기능의 대표 URL은 "/users"와 같이 설계한다.
 
 - 기능의 세부 기능에 대해 일반적으로 구현하는 기능(목록, 상세보기, 수정, 삭제)에 대해서는 URL convention을 결정한 후 사용할 것을 추천한다.
 
-  - 예를 들어 todo 앱에 대한 URL convention을 다음과 같은 기준으로 잡을 수 있다.
+    - 예를 들어 todo 앱에 대한 URL convention을 다음과 같은 기준으로 잡을 수 있다.
 
 <br/>
 
@@ -90,8 +79,6 @@
 
 <br/><br/><br/><br/>
 
-
-
 ### 회원가입 기능 구현
 
 - 가입하기 페이지는 static/user/form.html을 사용한다.
@@ -100,15 +87,15 @@
 
 - 사용자 관리 기능 구현을 담당할 UserController를 추가하고 애노테이션 매핑한다.
 
-  - @Controller 애노테이션 추가
+    - @Controller 애노테이션 추가
 
 - 회원가입하기 요청(POST 요청)을 처리할 메소드를 추가하고 매핑한다.
 
-  - @PostMapping 추가하고 URL 매핑한다.
+    - @PostMapping 추가하고 URL 매핑한다.
 
 - 사용자가 전달한 값을 User 클래스를 생성해 저장한다.
 
-  - 회원가입할 때 전달한 값을 저장할 수 있는 필드를 생성한 후 setter와 getter 메소드를 생성한다.
+    - 회원가입할 때 전달한 값을 저장할 수 있는 필드를 생성한 후 setter와 getter 메소드를 생성한다.
 
 - 사용자 목록을 관리하는 ArrayList를 생성한 후 앞에서 생성한 User 인스턴스를 ArrayList에 저장한다.
 
@@ -117,6 +104,7 @@
 <br/><br/><br/><br/>
 
 ### 회원목록 기능 구현
+
 - 회원목록 페이지는 static/user/list.html을 사용한다.
 
 - static에 있는 html을 templates로 이동한다.
@@ -125,7 +113,7 @@
 
 - 회원목록 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
 
-  - @GetMapping을 추가하고 URL 매핑한다.
+    - @GetMapping을 추가하고 URL 매핑한다.
 
 - Model을 메소드의 인자로 받은 후 Model에 사용자 목록을 users라는 이름으로 전달한다.
 
@@ -151,24 +139,23 @@
 
 - 앞 단계의 사용자 목록 html인 user/list.html 파일에 닉네임을 클릭하면 프로필 페이지로 이동하도록 한다.
 
-  - html에서 페이지 이동은 <a /> 태그를 이용해 가능하다.
+    - html에서 페이지 이동은 <a /> 태그를 이용해 가능하다.
 
-  - <a href="/users/{{userId}}" />와 같이 구현한다.
+    - <a href="/users/{{userId}}" />와 같이 구현한다.
 
 - Controller 클래스는 앞 단계에서 사용한 UserController를 그대로 사용한다.
 
 - 회원프로필 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
 
-  - @GetMapping을 추가하고 URL 매핑한다.
+    - @GetMapping을 추가하고 URL 매핑한다.
 
-  - URL은 "/users/{userId}"와 같이 매핑한다.
+    - URL은 "/users/{userId}"와 같이 매핑한다.
 
 - URL을 통해 전달한 사용자 아이디 값은 @PathVariable 애노테이션을 활용해 전달 받을 수 있다.
 
 - ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장한다.
 
 - user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.
-
 
 <br/><br/><br/><br/>
 
@@ -180,7 +167,7 @@
 
 ### 추가학습거리
 
-템플릿 엔진(mustache)의 사용법을 익힌다. 
+템플릿 엔진(mustache)의 사용법을 익힌다.
 
 <br/><br/>
 
@@ -188,7 +175,8 @@
 
 - HTML 문법 만으로는 if/for/while과 같은 프로그래밍이 가능하지 않다. 즉, HTML만 활용하는 경우 항상 같은 데이터(정적인)만 서비스가 가능하다.
 
-- 사용자에 따라 다른 HTML, 데이터에 따라 다른 HTML을 제공하려면 if/for/while과 같은 프로그래밍이 가능해야 한다. 이와 같이 서로 다른 HTML(동적인)을 제공하기 위한 도구가 template engine이다.
+- 사용자에 따라 다른 HTML, 데이터에 따라 다른 HTML을 제공하려면 if/for/while과 같은 프로그래밍이 가능해야 한다. 이와 같이 서로 다른 HTML(동적인)을 제공하기 위한 도구가 template
+  engine이다.
 
 - template engine의 역할은 JSP, ASP, PHP가 하는 역할과 같다고 생각하면 된다.
 
@@ -245,7 +233,6 @@ user.mustache
 {{/names}}
 ```
 
-
 <br/><br/><br/><br/>
 
 ### URL과 html 쉽게 연결하기
@@ -257,18 +244,18 @@ templates 폴더로 이동하고 URL 매핑을 해야 한다. 그런데 이와 �
 - base package 아래에 config와 같은 새로운 패키지 생성한다.
 - MvcConfig 이름으로 클래스를 생성해 다음과 같은 형태로 구현한다.
 
-
 <br/><br/><br/>
 
 아래의 Adapter가 deprecated되었는데 이유와 해결책에 대해 생각해 보고 해결하자.
 
 ````java
+
 @Configuration
 public class MvcConfig extends WebMvcConfigurerAdapter {
-	@Override
+    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+
         registry.addViewController("/users/form").setViewName("user/form");
         registry.addViewController("/users/login").setViewName("user/login");
         registry.addViewController("/questions/form").setViewName("qna/form");
@@ -324,4 +311,13 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
 <br/><br/>
 
+### 고민사항
 
+`테스트를 어디서부터 시작해야 할 지` 조금 막막했습니다. 어떤 인자를 받아야 할 지, 어떤 결과를 비교해야 할지, 그 과정에서 어떤 예외들이 발생할지 등 다양한 상황이 있는데 기준을 잘 잡지 못하겠습니다.
+
+<br/>
+
+- 인자
+- 어떤 결과를 비교할 지
+- 어떤 예외가 발생할 지
+- 에러 페이지를 어떻게 처리할 지

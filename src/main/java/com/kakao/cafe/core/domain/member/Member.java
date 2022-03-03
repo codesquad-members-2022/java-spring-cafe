@@ -2,6 +2,7 @@ package com.kakao.cafe.core.domain.member;
 
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Member {
 
@@ -84,5 +85,18 @@ public class Member {
         public Member build() {
             return new Member(id);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Member member = (Member) o;
+        return Objects.equals(id, member.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

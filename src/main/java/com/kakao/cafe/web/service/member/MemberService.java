@@ -3,7 +3,9 @@ package com.kakao.cafe.web.service.member;
 import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.core.repository.member.MemberRepository;
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
+import com.kakao.cafe.web.controller.member.dto.JoinResponse;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
+import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Service
 public class MemberService {
-    
+
     private final MemberRepository memberRepository;
     private final EntityManager entityCheckManager;
 
@@ -32,8 +34,8 @@ public class MemberService {
         return memberRepository.findById(userId).orElseThrow();
     }
 
-    public Member join(JoinRequest request) {
-        return memberRepository.insert(request.toEntity());
+    public JoinResponse join(JoinRequest request) {
+        return new JoinResponse(memberRepository.insert(request.toEntity()));
     }
 
     public Member edit(ProfileChangeRequest request) {
@@ -43,12 +45,12 @@ public class MemberService {
         return findMember;
     }
 
-    public ProfileChangeRequest getMemberDetails(Long id, ProfileChangeRequest request) {
+    public ProfileChangeResponse getMemberDetails(Long id, ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(id).orElseThrow();
         request.setId(findMember.getId());
         request.setEmail(findMember.getEmail());
         request.setNickName(findMember.getNickName());
         request.setCreateAt(findMember.getCreateAt());
-        return request;
+        return new ProfileChangeResponse(request);
     }
 }
