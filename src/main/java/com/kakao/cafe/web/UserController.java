@@ -22,23 +22,23 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String create(UserRegisterFormDto userSignUpFormDto) {
-        log.info("[LOG] user request to sign up : {}", userSignUpFormDto);
-        userService.register(userSignUpFormDto);
+    public String create(UserRegisterFormDto userRegisterFormDto) {
+        log.info("[LOG] user request to sign up : {}", userRegisterFormDto);
+        userService.register(userRegisterFormDto);
         return "redirect:users";
     }
 
     @GetMapping("/users")
     public String list(Model model) {
         log.info("[LOG] request to show user list");
-        model.addAttribute("users",userService.showAllUsers());
+        model.addAttribute("users",userService.showAll());
         return "user/list";
     }
 
     @GetMapping("/users/{userId}")
     public String show(@PathVariable String userId, Model model) {
         log.info("[LOG] request to show {}'s profile", userId);
-        UserProfileDto userProfileDto = userService.showOneUser(userId);
+        UserProfileDto userProfileDto = userService.showOne(userId);
         model.addAttribute("userId", userProfileDto.getUserId());
         model.addAttribute("email", userProfileDto.getEmail());
         return "user/profile";
