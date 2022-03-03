@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.repository.user;
 
 import com.kakao.cafe.web.domain.user.User;
 import java.util.ArrayList;

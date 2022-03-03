@@ -3,7 +3,7 @@ package com.kakao.cafe.web.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.kakao.cafe.web.domain.user.User;
-import com.kakao.cafe.web.repository.MemoryUserRepository;
+import com.kakao.cafe.web.repository.user.MemoryUserRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

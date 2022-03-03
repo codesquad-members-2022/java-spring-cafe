@@ -3,6 +3,8 @@ package com.kakao.cafe.web.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.web.domain.user.User;
+import com.kakao.cafe.web.repository.user.MemoryUserRepository;
+import com.kakao.cafe.web.repository.user.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
