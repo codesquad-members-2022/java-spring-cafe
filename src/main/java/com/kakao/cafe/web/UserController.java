@@ -21,11 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String createForm() {
-        return "user/form";
-    }
-
     @PostMapping("/users")
     public String create(UserRegisterFormDto userSignUpFormDto) {
         log.info("[LOG] user request to sign up : {}", userSignUpFormDto);

@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package com.kakao.cafe.config;
 
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
