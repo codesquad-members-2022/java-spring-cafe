@@ -22,6 +22,9 @@ public class UserService {
                 , dto.getName(), dto.getEmail()));
     }
 
+    public User findUser(String userId) {
+        return userRepository.findByUserId(userId);
+    }
     public List<User> findUsers() {
         return userRepository.findAll();
     }
