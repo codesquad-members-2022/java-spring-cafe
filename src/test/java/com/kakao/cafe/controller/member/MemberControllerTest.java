@@ -99,4 +99,69 @@ class MemberControllerTest {
             assertThat(modelAndView.getViewName()).isEqualTo("member/form");
         }
     }
+
+    @Nested
+    @DisplayName("회원 목록 조회는")
+    class FindMembersTest {
+        @Test
+        @DisplayName("회원이 있으면, 회원목록 데이터와 함께 회원 목록 화면으로 이동한다.")
+        void findMembers_moveToView() throws Exception {
+            // given
+            String memberListViewName = "member/list";
+            String membersKey = "members";
+            List<Member> members = getMembers();
+            when(memberService.findMembers()).thenReturn(Optional.of(members));
+
+            // when
+            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
+
+            // then
+            ModelAndView modelAndView = actions.andExpect(status().isOk())
+                    .andReturn()
+                    .getModelAndView();
+            assertThat(modelAndView.getViewName()).isEqualTo(memberListViewName);
+            assertThat(modelAndView.getModel().containsKey(membersKey)).isTrue();
+            assertThat(modelAndView.getModel().get(membersKey)).isNotNull();
+        }
+
+        @Test
+        @DisplayName("회원이 없어도, 회원 목록 화면으로 이동한다.")
+        void findMembersReturnEmpty_moveToView() throws Exception {
+            // given
+            String memberListViewName = "member/list";
+            when(memberService.findMembers()).thenReturn(Optional.empty());
+
+            // when
+            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
+
+            // then
+            ModelAndView modelAndView = actions.andExpect(status().isOk())
+                    .andReturn()
+                    .getModelAndView();
+            assertThat(modelAndView.getViewName()).isEqualTo(memberListViewName);
+        }
+
+        private List<Member> getMembers() {
+            return List.of(new Member.Builder()
+                            .setId(1L)
+                            .setUserId("jwkim")
+                            .setPasswd("1234")
+                            .setName("김진완")
+                            .setEmail("wlsdhks0423@naver.com")
+                            .setCreatedDate(LocalDateTime.now())
+                            .setModifiedDate(LocalDateTime.now())
+                            .build(),
+                    new Member.Builder()
+                            .setId(2L)
+                            .setUserId("jay")
+                            .setPasswd("1234")
+                            .setName("김제이")
+                            .setEmail("jay@naver.com")
+                            .setCreatedDate(LocalDateTime.now())
+                            .setModifiedDate(LocalDateTime.now())
+                            .build());
+        }
+
+    }
+
 }
