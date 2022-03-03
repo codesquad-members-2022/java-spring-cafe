@@ -16,6 +16,7 @@ class UserMemorySaveRepositoryTest {
 
     @BeforeEach
     void testSetUp() {
+        // given
         userRepository = new UserMemorySaveRepository();
         userA = new User("emailA", "userIdA", "nameA", "pawA");
         userB = new User("emailB", "userIdB", "nameB", "pawB");
@@ -40,10 +41,8 @@ class UserMemorySaveRepositoryTest {
     void findUserId() {
         // when
         User saveUserA = userRepository.userSave(userA);
-        User saveUserB = userRepository.userSave(userB);
         // then
         assertThat(saveUserA.isSameUserId(userA.getUserId())).isTrue();
-        assertThat(saveUserB.isSameUserId(userB.getUserId())).isTrue();
     }
 
     @DisplayName("유저 저장소에 일치하는 UserEmail이 있는 경우 true를 반환해야 한다.")
@@ -51,20 +50,20 @@ class UserMemorySaveRepositoryTest {
     void findEmail() {
         // when
         User saveUserA = userRepository.userSave(userA);
-        User saveUserB = userRepository.userSave(userB);
         // then
         assertThat(saveUserA.isSameUserEmail(userA.getEmail())).isTrue();
-        assertThat(saveUserB.isSameUserEmail(userB.getEmail())).isTrue();
     }
 
     @DisplayName("유저 저장소에 저장되어 있는 유저 수를 반환해야 한다.")
     @Test
     void findAllUser() {
         // given
-        int userCount = 2;
+        User[] users = {userA, userB};
+        int userCount = users.length;
         // when
-        userRepository.userSave(userA);
-        userRepository.userSave(userB);
+        for (var user : users) {
+            userRepository.userSave(user);
+        }
         // then
         assertThat(userCount).isEqualTo(userRepository.findAllUser().size());
     }
