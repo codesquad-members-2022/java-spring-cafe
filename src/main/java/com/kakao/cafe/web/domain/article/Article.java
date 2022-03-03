@@ -1,16 +1,21 @@
 package com.kakao.cafe.web.domain.article;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Article {
 
 	private Long id;
 	private final String writer;
 	private String title;
 	private String contents;
+	private String localDateTime;
 
 	public Article(String writer, String title, String contents) {
 		this.writer = writer;
 		this.title = title;
 		this.contents = contents;
+		this.localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd  hh:mm"));
 	}
 
 	public Long getId() {
@@ -27,6 +32,10 @@ public class Article {
 
 	public String getContents() {
 		return contents;
+	}
+
+	public String getLocalDateTime() {
+		return localDateTime;
 	}
 
 	public void setId(Long id) {
