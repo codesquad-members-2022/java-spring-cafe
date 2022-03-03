@@ -39,20 +39,28 @@ public class UserController {
 		return "/user/list";
 	}
 
-	@GetMapping("/{userId}")
-	public String readProfile(@PathVariable Long userId, Model model) {
-		logger.info("profile : {}", userId);
-		User user = userService.findUser(userId);
+	@GetMapping("/{id}")
+	public String readProfile(@PathVariable Long id, Model model) {
+		logger.info("profile : {}", id);
+		User user = userService.find(id);
 		model.addAttribute("user", user);
 		return "/user/profile";
 	}
 
-	@GetMapping("/{userId}/form")
-	public String update(@PathVariable Long userId, Model model) {
-		logger.info("update profile: {}", userId);
-		User user = userService.findUser(userId);
+	@GetMapping("/{id}/form")
+	public String updateView(@PathVariable Long id, Model model) {
+		logger.info("view profile: {}", id);
+		User user = userService.find(id);
 		model.addAttribute("user", user);
 		return "/user/updateForm";
+	}
+
+	@PostMapping("/{id}/update")
+	public String update(@PathVariable Long id, UserDto userDto, Model model) {
+		userDto.isValid(logger);
+		logger.info("update profile: {}", id);
+		userService.changeProfile(userDto);
+		return "redirect:/users/";
 	}
 
 	/*

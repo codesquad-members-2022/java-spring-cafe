@@ -23,6 +23,14 @@ public class User {
 		return this.name.equals(name);
 	}
 
+	public void update(UserDto userDto) {
+		// 입력값 제한이 있었다면, 변경시에도 검증절차가 있어야 한다.
+		this.userId = userDto.getUserId();
+		this.name = userDto.getName();
+		this.email = userDto.getEmail();
+		this.password = userDto.getPassword();
+	}
+
 	public Long getId() {
 		return id;
 	}

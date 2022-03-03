@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserDto;
+import com.kakao.cafe.user.domain.UserRepository;
+import com.kakao.cafe.user.domain.UserService;
 import com.kakao.cafe.user.infra.MemoryUserRepository;
 
 class UserServiceTest {
@@ -55,7 +59,7 @@ class UserServiceTest {
 	@Test
 	@DisplayName("없는 사용자 정보에 대한 요청에 대해 예외 발생한다.")
 	void invalid_request_user_info_excpetion() {
-		assertThatThrownBy(() -> userService.findUser(1L))
+		assertThatThrownBy(() -> userService.find(1L))
 			.isInstanceOf(DomainNotFoundException.class);
 	}
 

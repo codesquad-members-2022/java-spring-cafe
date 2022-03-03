@@ -1,5 +1,7 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.common.utils.TypeFormatter.*;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -102,7 +104,7 @@ public class ArticleDto {
 		private LocalDate writingDate;
 
 		public WriteResponse(Article article) {
-			this.id = String.valueOf(article.getId());
+			this.id = toTextFromLong(article.getId());
 			this.writer = article.getWriter();
 			this.title = article.getTitle();
 			this.contents = article.getContent();
