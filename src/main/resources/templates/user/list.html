@@ -20,7 +20,7 @@
                     <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}">javajigi</a></td>
                     <td th:text="${user.name}">자바지기</td>
                     <td th:text="${user.email}">javajigi@sample.net</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="#" th:href="@{/users/{userId}/form(userId=${user.userId})}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
           </table>

@@ -38,4 +38,8 @@ public class UserService {
         return repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
+
+    public boolean userUpdate(User user){
+        return repository.update(user.getUserId(), user);
+    }
 }

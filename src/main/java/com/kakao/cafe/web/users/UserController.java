@@ -30,8 +30,9 @@ public class UserController {
     }
 
     @GetMapping("/create")
-    public String addForm() {
+    public String addForm(Model model) {
         log.info("create form 접근");
+        model.addAttribute("user", new User());
         return "/user/form";
     }
 
@@ -48,5 +49,19 @@ public class UserController {
         log.info("user profile = {}", findUser);
         model.addAttribute("user", findUser);
         return "/user/profile";
+    }
+
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model){
+        User findUser = userService.findUserById(userId);
+        log.info("get profile update form");
+        model.addAttribute("user", findUser);
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String updateProfile(@ModelAttribute User user){
+        userService.userUpdate(user);
+        return "redirect:/users";
     }
 }

@@ -14,5 +14,5 @@ public interface UserRepository {
 
     boolean delete(String userId);
 
-    void update(String userId, User updateParam);
+    boolean update(String userId, User updateParam);
 }

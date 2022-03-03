@@ -41,14 +41,16 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void update(String userId, User updateParam) {
+    public boolean update(String userId, User updateParam) {
         if (findById(userId).isPresent()) {
             User findUser = findById(userId).get();
             findUser.setUserId(updateParam.getUserId());
             findUser.setPassword(updateParam.getPassword());
             findUser.setName(updateParam.getName());
             findUser.setEmail(updateParam.getEmail());
+            return true;
         }
+        return false;
     }
 
     public void clearStore() {
