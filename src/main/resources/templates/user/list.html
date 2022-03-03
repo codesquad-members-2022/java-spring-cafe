@@ -16,7 +16,7 @@
               <tbody>
                 <tr th:each="user : ${users}">
                     <th scope="row" th:text="${user.getId()}">1</th>
-                    <td th:text="${user.getUserId()}">javajigi</td>
+                    <td><a th:href="@{/user/{userId}(userId=${user.getUserId()})}" th:text="${user.getUserId()}">javajigi</a></td>
                     <td th:text="${user.getName()}">자바지기</td>
                     <td th:text="${user.getEmail()}">javajigi@sample.net</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
