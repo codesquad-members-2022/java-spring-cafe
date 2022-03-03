@@ -22,8 +22,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.getId()}"></td>
+                <tr th:each="user, index : ${users}">
+                    <td th:text="${index.count}"></td>
                     <td style="cursor: pointer"
                         th:onclick="|location.href = '@{/users/{userId}(userId=${user.getUserId()})}'|"
                         th:text="${user.getUserId()}"></td>

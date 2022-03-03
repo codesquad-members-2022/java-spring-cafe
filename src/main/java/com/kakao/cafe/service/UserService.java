@@ -20,11 +20,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long signUp(User user) {
+    public String signUp(User user) {
         UserSignUpValidation.validateDuplicateUserEmail(userRepository, user);
         userRepository.userSave(user);
         log.info("가입 성공: {}", user.getEmail());
-        return user.getId();
+        return user.getUserId();
     }
 
     public List<User> findUsers() {
