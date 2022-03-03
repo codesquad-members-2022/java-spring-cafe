@@ -15,6 +15,6 @@ public class ArticleService {
     }
 
     public void save(Article article) {
-        // articleRepository.save();
+        articleRepository.save(article);
     }
 }
