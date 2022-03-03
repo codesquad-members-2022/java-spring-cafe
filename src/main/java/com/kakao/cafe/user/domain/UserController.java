@@ -40,9 +40,19 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	public String update(@PathVariable Long userId, Model model) {
-		model.addAttribute("user",userService.findUser(userId));
+	public String readProfile(@PathVariable Long userId, Model model) {
+		logger.info("profile : {}", userId);
+		User user = userService.findUser(userId);
+		model.addAttribute("user", user);
 		return "/user/profile";
+	}
+
+	@GetMapping("/{userId}/form")
+	public String update(@PathVariable Long userId, Model model) {
+		logger.info("update profile: {}", userId);
+		User user = userService.findUser(userId);
+		model.addAttribute("user", user);
+		return "/user/updateForm";
 	}
 
 	/*
