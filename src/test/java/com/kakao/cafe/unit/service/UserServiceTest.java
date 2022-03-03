@@ -7,6 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -22,6 +23,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    private static final String USER_ID = "userId";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_EMAIL = "user@example.com";
+
+    private static final String OTHER_ID = "otherId";
+    private static final String OTHER_PASSWORD = "secret";
+    private static final String OTHER_NAME = "other";
+    private static final String OTHER_EMAIL = "other@example.com";
+
     @InjectMocks
     private UserService userService;
 
@@ -31,12 +42,12 @@ public class UserServiceTest {
     User user;
 
     @BeforeEach
-    public void init() {
-        user = new User("userId", "password", "name", "email@example.com");
+    public void setUp() {
+        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
     }
 
     @Test
-    @DisplayName("유저가 회원가입한다")
+    @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
         given(userRepository.save(user))
@@ -49,14 +60,17 @@ public class UserServiceTest {
         User savedUser = userService.register(user);
 
         // then
-        assertThat(user).isEqualTo(savedUser);
+        assertThat(savedUser.getUserId()).isEqualTo(USER_ID);
+        assertThat(savedUser.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(savedUser.getName()).isEqualTo(USER_NAME);
+        assertThat(savedUser.getEmail()).isEqualTo(USER_EMAIL);
     }
 
     @Test
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        User other = new User("userId", "secret", "other", "other@example.com");
+        User other = new User(USER_ID, OTHER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
 
         given(userRepository.findByUserId(other.getUserId()))
             .willReturn(Optional.of(user));
@@ -66,7 +80,7 @@ public class UserServiceTest {
             CustomException.class, () -> userService.register(other));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo("이미 등록된 유저 아이디입니다.");
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.DUPLICATE_USER.getMessage());
     }
 
     @Test
@@ -91,7 +105,7 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        User findUser = userService.findUser(user.getUserId());
+        User findUser = userService.findUser(USER_ID);
 
         // then
         assertThat(findUser).isEqualTo(user);
@@ -109,7 +123,81 @@ public class UserServiceTest {
             CustomException.class, () -> userService.findUser(any()));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo("등록되지 않은 유저 아이디입니다.");
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
+    public void updateUserTest() {
+        // given
+        User other = new User(user);
+        other.setName(OTHER_NAME);
+        other.setEmail(OTHER_EMAIL);
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        given(userRepository.save(any()))
+            .willReturn(other);
+
+        // when
+        User updatedUser = userService.updateUser(other);
+
+        assertThat(updatedUser.getUserId()).isEqualTo(USER_ID);
+        assertThat(updatedUser.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(updatedUser.getName()).isEqualTo(OTHER_NAME);
+        assertThat(updatedUser.getEmail()).isEqualTo(OTHER_EMAIL);
+    }
+
+    @Test
+    @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
+    public void updateUserNotFoundTest() {
+        // given
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.empty());
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(user));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
+    public void updateUserIncorrectUserIdTest() {
+        // given
+        User other = new User(user);
+        other.setUserId(OTHER_ID);
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(other));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
+    public void updateUserIncorrectPasswordTest() {
+        // given
+        User other = new User(user);
+        other.setPassword(OTHER_PASSWORD);
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        CustomException exception = assertThrows(CustomException.class,
+            () -> userService.updateUser(other));
+
+        // then
+        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
     }
 
 }

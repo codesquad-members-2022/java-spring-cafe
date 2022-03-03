@@ -26,7 +26,7 @@
           <td><a href="/users/{{&userId}}">{{userId}}</a></td>
           <td>{{name}}</td>
           <td>{{email}}</td>
-          <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+          <td><a href="/users/{{&userId}}/form" class="btn btn-success" role="button">수정</a></td>
         </tr>
         {{/users}}
         </tbody>
@@ -35,9 +35,6 @@
   </div>
 </div>
 
-<!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
+{{> /components/reference}}
 </body>
 </html>

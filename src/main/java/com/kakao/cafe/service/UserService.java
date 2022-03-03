@@ -30,11 +30,18 @@ public class UserService {
             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
-    public void validateUserId(String userId) {
+    private void validateUserId(String userId) {
         userRepository.findByUserId(userId)
             .ifPresent((user) -> {
                 throw new CustomException(ErrorCode.DUPLICATE_USER);
             });
+    }
+
+    public User updateUser(User user) {
+        User findUser = findUser(user.getUserId());
+        User updatedUser = findUser.update(user);
+
+        return userRepository.save(updatedUser);
     }
 
 }
