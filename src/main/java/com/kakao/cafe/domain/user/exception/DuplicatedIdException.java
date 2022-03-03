@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.exception;
+package com.kakao.cafe.domain.user.exception;
 
 public class DuplicatedIdException extends RuntimeException {
 

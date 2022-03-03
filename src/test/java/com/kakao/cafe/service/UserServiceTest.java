@@ -14,9 +14,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.dto.UserDto;
+import com.kakao.cafe.domain.user.dto.UserProfileDto;
 import com.kakao.cafe.repository.UserRepository;
 
 // @ExtendWith(MockitoExtension.class)

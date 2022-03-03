@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
-import com.kakao.cafe.domain.exception.DuplicatedIdException;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.dto.UserDto;
+import com.kakao.cafe.domain.user.dto.UserProfileDto;
+import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 import com.kakao.cafe.service.UserService;
 
 @Controller

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.dto.UserDto;
+import com.kakao.cafe.domain.user.dto.UserProfileDto;
 import com.kakao.cafe.repository.UserRepository;
 
 @Service

@@ -3,12 +3,13 @@ package com.kakao.cafe.repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.exception.DuplicatedIdException;
+import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 
-@Repository
+@Component
 public class UserRepository {
     private final List<User> users;
 

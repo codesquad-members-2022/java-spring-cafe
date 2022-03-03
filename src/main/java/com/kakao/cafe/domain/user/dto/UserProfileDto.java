@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.domain.user.dto;
 
 public class UserProfileDto {
     private String name;
