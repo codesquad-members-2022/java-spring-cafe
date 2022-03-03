@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import java.util.Optional;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.ErrorMessage;
 import com.kakao.cafe.repository.UserRepository;
 
 public class UserService {
@@ -12,19 +13,27 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
-        validateDuplicateUser(user);
+    public void join(User user){
+        validateDuplicateEmail(user);
+        validateDuplicateNickname(user);
         userRepository.save(user);
     }
 
-    private void validateDuplicateUser(User user) {
-        userRepository.findByNickName(user.getNickname())
+    private void validateDuplicateEmail(User user) {
+        userRepository.findByEmail(user.getEmail())
             .ifPresent(m -> {
-                throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
+                throw new IllegalStateException(ErrorMessage.EXISTING_EMAIL.get());
             });
     }
 
-    public Optional<User> findOne(Long userId){
+    private void validateDuplicateNickname(User user) {
+        userRepository.findByNickName(user.getNickname())
+            .ifPresent(m -> {
+                throw new IllegalStateException(ErrorMessage.EXISTING_NICKNAME.get());
+            });
+    }
+
+    public Optional<User> findOne(Long userId) {
         return userRepository.findById(userId);
     }
 }
