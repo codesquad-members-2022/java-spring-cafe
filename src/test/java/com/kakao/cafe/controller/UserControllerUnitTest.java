@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.service.VolatilityUserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +26,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.kakao.cafe.message.UserMessage.EXISTENT_ID_MESSAGE;
+import static com.kakao.cafe.message.UserMessage.NON_EXISTENT_ID_MESSAGE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -126,8 +128,8 @@ public class UserControllerUnitTest {
 
     @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4SignUpSuccess")
-    void getUserProfile(User user) throws Exception {
+    @MethodSource("params4SignUpFail")
+    void getUserProfileSuccess(User user) throws Exception {
         String userId = user.getUserId();
         when(service.findUser(userId)).thenReturn(user);
         mvc.perform(get("/users/" + userId))
@@ -137,6 +139,21 @@ public class UserControllerUnitTest {
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
                         content().encoding(StandardCharsets.UTF_8),
                         status().isOk()
+                );
+
+        verify(service).findUser(userId);
+    }
+
+    @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
+    @ParameterizedTest(name ="{index} {displayName} user={0}")
+    @MethodSource("params4SignUpSuccess")
+    void getUserProfileFail(User user) throws Exception {
+        String userId = user.getUserId();
+        when(service.findUser(userId)).thenThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+        mvc.perform(get("/users/" + userId))
+                .andExpectAll(
+                        content().string(NON_EXISTENT_ID_MESSAGE),
+                        status().isBadRequest()
                 );
 
         verify(service).findUser(userId);
