@@ -7,13 +7,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.kakao.cafe.service.UserService;
 
 @WebMvcTest(controllers = UserController.class)
 class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private UserService userService;
 
     @DisplayName("users에 post 요청을 하면 /users로 리다이렉트된다.")
     @Test
