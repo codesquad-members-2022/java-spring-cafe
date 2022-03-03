@@ -5,11 +5,13 @@ import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.lang.model.SourceVersion;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -32,19 +34,19 @@ public class UserController {
                             request.getParameter("password"),
                             request.getParameter("name"),
                             request.getParameter("email"));
-        userService.save(user);
+        userService.join(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
-    public String userList() {
-
+    public String userList(Model model) {
+        List<User> userList = userService.findAllUser();
+        model.addAttribute("userList", userList);
         return "user/list";
     }
 
     @GetMapping("/users/profile")
     public String userProfile() {
-
         return "user/profile";
     }
 

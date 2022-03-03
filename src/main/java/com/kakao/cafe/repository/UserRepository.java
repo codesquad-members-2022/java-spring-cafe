@@ -15,4 +15,8 @@ public class UserRepository {
         userList.add(user);
     }
 
+    public List<User> getUserList() {
+        return userList;
+    }
+
 }
