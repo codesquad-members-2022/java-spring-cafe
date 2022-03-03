@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,21 +28,26 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return Optional.empty();
+        return store.values().stream()
+            .filter(m -> m.getEmail().equals(email))
+            .findAny();
     }
 
     @Override
     public Optional<User> findByNickName(String nickname) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<User> findByPassword(String password) {
-        return Optional.empty();
+        return store.values().stream()
+            .filter(m -> m.getNickname().equals(nickname))
+            .findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return null;
+        return new ArrayList<>(store.values());
     }
+
+    @Override
+    public void clearStore() {
+        store.clear();
+    }
+
 }

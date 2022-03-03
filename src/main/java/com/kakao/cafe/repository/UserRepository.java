@@ -14,7 +14,7 @@ public interface UserRepository {
 
     Optional<User> findByNickName(String userId);
 
-    Optional<User> findByPassword(String password);
-
     List<User> findAll();
+
+    void clearStore();
 }
