@@ -26,12 +26,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/signup")
-    public String signup() {
-        log.info("회원가입 페이지 접속");
-        return "user/form";
-    }
-
     @GetMapping("/list")
     public String findAllUser(Model model) {
         List<User> users = userService.findUsers();
@@ -47,9 +41,8 @@ public class UserController {
         return "redirect:list";
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/profile/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        System.out.println(userId);
         User findUser = userService.findIdUser(userId);
         log.info("findUser = {}", findUser);
         model.addAttribute("user", findUser);
