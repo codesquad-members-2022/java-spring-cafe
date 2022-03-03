@@ -4,7 +4,9 @@ import com.kakao.cafe.web.domain.article.Article;
 import com.kakao.cafe.web.repository.article.ArticleRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ArticleService {
 
 	private final ArticleRepository articleRepository;
