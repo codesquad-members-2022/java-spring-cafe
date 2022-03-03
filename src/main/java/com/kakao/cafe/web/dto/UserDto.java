@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 public class UserDto {
 
@@ -13,6 +14,7 @@ public class UserDto {
     private final String password;
     @NotBlank
     private final String name;
+    @NotEmpty
     @Email
     private final String email;
 
