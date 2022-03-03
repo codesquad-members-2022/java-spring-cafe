@@ -17,33 +17,34 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void register(UserRegisterFormDto userSignUpFormDto) {
-        validateDuplicateUserId(userSignUpFormDto);
-        userRepository.save(userSignUpFormDto.toEntity());
+    public void register(UserRegisterFormDto userRegisterFormDto) {
+        String userId = userRegisterFormDto.getUserId();
+        validateDuplicateUserId(userId);
+        userRepository.save(userRegisterFormDto.toEntity());
     }
 
-    public void validateDuplicateUserId(UserRegisterFormDto userSignUpFormDto) {
-        userRepository.findById(userSignUpFormDto.getUserId())
+    public void validateDuplicateUserId(String userId) {
+        userRepository.findById(userId)
             .ifPresent(user -> {
                 throw new IllegalStateException("동일한 ID를 가지는 회원이 이미 존재합니다.");
             });
     }
 
-    public List<UserListDto> showAllUsers() {
+    public List<UserListDto> showAll() {
         return userRepository.findAll()
             .stream()
             .map(UserListDto::new)
             .collect(Collectors.toList());
     }
 
-    public UserProfileDto showOneUser(String userId) {
+    public UserProfileDto showOne(String userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         return new UserProfileDto(validateExistenceUserId(optionalUser));
     }
 
     public User validateExistenceUserId(Optional<User> optionalUser) {
         return optionalUser.orElseThrow(() -> {
-            throw new IllegalStateException("해당 ID를 자니는 회원이 존재하지 않습니다.");
+            throw new IllegalStateException("해당 ID를 가지는 회원이 존재하지 않습니다.");
         });
     }
 }

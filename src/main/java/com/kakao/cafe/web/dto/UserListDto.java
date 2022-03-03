@@ -17,4 +17,24 @@ public class UserListDto {
         this.name = user.getName();
         this.email = user.getEmail();
     }
+
+    public Long getUserNum() {
+        return userNum;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
