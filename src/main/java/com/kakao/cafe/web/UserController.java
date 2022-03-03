@@ -18,7 +18,7 @@ import java.util.List;
 @Controller
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -50,7 +50,7 @@ public class UserController {
         return "list";
     }
 
-@GetMapping("/users/{userid}")
+    @GetMapping("/users/{userid}")
     public String showProfile(@PathVariable String userid, Model model) {
         logger.info("search {}",userid);
         UserResponseDto userResponseDto = userService.findUser(userid);

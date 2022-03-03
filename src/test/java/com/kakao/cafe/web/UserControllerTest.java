@@ -1,29 +1,20 @@
 package com.kakao.cafe.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.verification.VerificationMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import javax.servlet.ServletContext;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,11 +29,8 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    @MockBean
-    private UserRepository userRepository;
-
     @Test
-    @DisplayName("form.html get 테스트")
+    @DisplayName("GetMapping 회원가입버튼을 누르면 회원가입폼으로 이동한다.")
     void joinForm() throws Exception {
         mockMvc.perform(get("/user/create"))
                 .andExpect(status().isOk())
@@ -50,7 +38,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("/user/create post and 리다이렉션 테스트")
+    @DisplayName("PostMapping 회원가입폼 작성 후 버튼을 누르고 회원가입이 성공하면 유저 목록으로 리다이렉션된다.")
     void joinUser() throws Exception {
 
         mockMvc.perform(post("/user/create")
@@ -65,7 +53,7 @@ class UserControllerTest {
 
 
     @Test
-    @DisplayName("list.html get 테스트")
+    @DisplayName("GetMapping 유저목록을 model로 받아서 뷰에서 보여준다.")
     void showUsersAll() throws Exception {
         User user = new User("ron2", "1234", "ron2", "ron2@gmail.com");
         UserResponseDto userResponseDto = new UserResponseDto(user);
@@ -80,7 +68,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("profile.html get 테스트")
+    @DisplayName("GetMapping UserResponseDTO를 모델로 받아서 뷰에서 보여준다.")
     void showProfile() throws Exception {
         User user = new User("ron2", "1234", "ron2", "ron2@gmail.com");
         UserResponseDto userResponseDto = new UserResponseDto(user);

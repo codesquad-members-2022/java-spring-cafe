@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.web.dto.UserDto;
+
 public class User {
 
     private String userId;
@@ -14,6 +16,13 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public User(UserDto userDto) {
+        this.userId = userDto.getUserId();
+        this.password = userDto.getPassword();
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
     }
 
     public boolean isSameId(String id) {
@@ -36,19 +45,4 @@ public class User {
         return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,11 +31,9 @@ public class UserService {
     }
 
     public UserResponseDto findUser(String userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isPresent()) {
-            return new UserResponseDto(optionalUser.get());
-        }
-        throw new IllegalArgumentException();
+        User user = userRepository.findById(userId)
+                .orElseThrow(IllegalArgumentException::new);
+        return new UserResponseDto(user);
     }
 
     public void clearRepository() {

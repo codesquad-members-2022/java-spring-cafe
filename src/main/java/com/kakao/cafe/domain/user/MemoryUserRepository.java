@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private static Map<String, User> users = new HashMap<>();
+    private final Map<String, User> users = new HashMap<>();
 
     @Override
     public void save(User user) {

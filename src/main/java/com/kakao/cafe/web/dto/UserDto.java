@@ -17,13 +17,7 @@ public class UserDto {
     }
 
     public User toEntity() {
-        User user = new User();
-        user.setUserId(userId);
-        user.setPassword(password);
-        user.setName(name);
-        user.setEmail(email);
-
-        return user;
+        return new User(this);
     }
 
     public String getUserId() {
