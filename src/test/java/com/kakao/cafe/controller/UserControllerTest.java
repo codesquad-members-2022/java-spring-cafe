@@ -56,9 +56,7 @@ class UserControllerTest {
     @BeforeEach
     void setUp() {
         userRepository.clear();
-        for (User user : users) {
-            userRepository.insertUser(user);
-        }
+        users.stream().forEach(userRepository::insertUser);
     }
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
