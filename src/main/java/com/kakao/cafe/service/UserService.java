@@ -27,16 +27,15 @@ public class UserService {
     }
 
     private boolean isDuplicateUserId(String userId) {
-        return repository.findAll().stream()
-                .anyMatch(u -> userId.equals(u.getUserId()));
+        return repository.findById(userId).isPresent();
     }
 
     public List<User> findUsers() {
         return repository.findAll();
     }
 
-    public User findUserById(Long id) {
-        return repository.findById(id)
+    public User findUserById(String userId) {
+        return repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
 }

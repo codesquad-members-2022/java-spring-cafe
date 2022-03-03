@@ -11,19 +11,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final Map<Long, User> userMap = new ConcurrentHashMap<>();
+    private final Map<String, User> userMap = new ConcurrentHashMap<>();
     private Long sequence = 0L;
 
     @Override
     public Long save(User user) {
         user.setId(++sequence);
-        userMap.put(user.getId(), user);
+        userMap.put(user.getUserId(), user);
         return user.getId();
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return Optional.ofNullable(userMap.get(id));
+    public Optional<User> findById(String userId) {
+        return Optional.ofNullable(userMap.get(userId));
     }
 
     @Override
@@ -32,18 +32,18 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (userMap.containsKey(id)) {
-            userMap.remove(id);
+    public boolean delete(String userId) {
+        if (userMap.containsKey(userId)) {
+            userMap.remove(userId);
             return true;
         }
         return false;
     }
 
     @Override
-    public void update(Long id, User updateParam) {
-        if (findById(id).isPresent()) {
-            User findUser = findById(id).get();
+    public void update(String userId, User updateParam) {
+        if (findById(userId).isPresent()) {
+            User findUser = findById(userId).get();
             findUser.setUserId(updateParam.getUserId());
             findUser.setPassword(updateParam.getPassword());
             findUser.setName(updateParam.getName());
