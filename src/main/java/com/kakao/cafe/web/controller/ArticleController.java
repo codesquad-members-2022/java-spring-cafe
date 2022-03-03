@@ -1,0 +1,21 @@
+package com.kakao.cafe.web.controller;
+
+import com.kakao.cafe.web.domain.article.Article;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class ArticleController {
+
+	@PostMapping("/questions")
+	public String createArticle(
+		@RequestParam String writer,
+		@RequestParam String title,
+		@RequestParam String contents) {
+		Article article = new Article(writer, title, contents);
+
+		return "redirect:/";
+	}
+
+}
