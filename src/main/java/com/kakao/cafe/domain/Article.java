@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Article {
 
@@ -48,7 +49,17 @@ public class Article {
 
         Article article = (Article) o;
 
-        return articleId.equals(article.articleId);
+        return Objects.equals(articleId, article.articleId);
     }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+            "articleId=" + articleId +
+            ", writer='" + writer + '\'' +
+            ", title='" + title + '\'' +
+            ", contents='" + contents + '\'' +
+            ", createdDate=" + createdDate +
+            '}';
+    }
 }

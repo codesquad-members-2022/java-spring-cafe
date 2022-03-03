@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import java.util.Objects;
 
 public class User {
 
@@ -88,7 +89,7 @@ public class User {
 
         User user = (User) o;
 
-        return userId.equals(user.userId);
+        return Objects.equals(userId, user.userId);
     }
 
     @Override

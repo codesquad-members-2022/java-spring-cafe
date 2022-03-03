@@ -3,7 +3,6 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +38,7 @@ public class ArticleController {
         return mav;
     }
 
-    @GetMapping(value = {"/", "articles"})
+    @GetMapping("/")
     public String list(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
@@ -51,12 +50,6 @@ public class ArticleController {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";
-    }
-
-    @PostConstruct
-    public void setUp() {
-        articleService.write(new Article("rxdcxdrnine", "GitHub", "difficult rebase"));
-        articleService.write(new Article("Miller", "Code Squad", "spring cafe"));
     }
 
 }

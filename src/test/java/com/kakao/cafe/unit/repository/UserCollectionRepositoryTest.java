@@ -23,6 +23,16 @@ import org.springframework.http.HttpStatus;
 @ExtendWith(MockitoExtension.class)
 class UserCollectionRepositoryTest {
 
+    private static final String USER_ID = "userId";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_EMAIL = "user@example.com";
+
+    private static final String OTHER_ID = "otherId";
+    private static final String OTHER_PASSWORD = "secret";
+    private static final String OTHER_NAME = "other";
+    private static final String OTHER_EMAIL = "other@example.com";
+
     @InjectMocks
     private UserCollectionRepository userRepository;
 
@@ -31,17 +41,17 @@ class UserCollectionRepositoryTest {
     @BeforeEach
     public void setUp() {
         user = userRepository.save(
-            new User("userId", "password", "name", "email@example.com"));
+            new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL));
     }
 
     @Test
     @DisplayName("유저 객체를 저장한다")
     public void savePersistTest() {
         // then
-        assertThat(user.getUserId()).isEqualTo("userId");
-        assertThat(user.getPassword()).isEqualTo("password");
-        assertThat(user.getName()).isEqualTo("name");
-        assertThat(user.getEmail()).isEqualTo("email@example.com");
+        assertThat(user.getUserId()).isEqualTo(USER_ID);
+        assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(user.getName()).isEqualTo(USER_NAME);
+        assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
     }
 
     @Test
@@ -69,8 +79,8 @@ class UserCollectionRepositoryTest {
     public void saveMergeTest() {
         // given
         User other = new User(user);
-        other.setName("other");
-        other.setEmail("other@example.com");
+        other.setName(OTHER_NAME);
+        other.setEmail(OTHER_EMAIL);
 
         user.update(other);
 
@@ -90,7 +100,7 @@ class UserCollectionRepositoryTest {
     public void updateTest() {
         // given
         User other = new User(user);
-        other.setUserId("otherId");
+        other.setUserId(OTHER_ID);
 
         // when
         CustomException exception = assertThrows(CustomException.class,

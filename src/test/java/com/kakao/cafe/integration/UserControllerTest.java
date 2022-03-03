@@ -31,6 +31,17 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureMockMvc
 public class UserControllerTest {
 
+    private static final String USER_ID = "userId";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_EMAIL = "user@example.com";
+
+    private static final String OTHER_ID = "otherId";
+    private static final String OTHER_PASSWORD = "secret";
+    private static final String OTHER_NAME = "other";
+    private static final String OTHER_EMAIL = "other@example.com";
+
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -41,7 +52,7 @@ public class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "password", "name", "email@example.com");
+        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
     }
 
     @AfterEach
@@ -72,7 +83,7 @@ public class UserControllerTest {
         User savedUser = userSetUp.saveUser(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId())
+        ResultActions actions = mockMvc.perform(get("/users/" + USER_ID)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -98,19 +109,19 @@ public class UserControllerTest {
     public void createUserTest() throws Exception {
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", user.getUserId())
-            .param("password", user.getPassword())
-            .param("name", user.getName())
-            .param("email", user.getEmail())
+            .param("userId", USER_ID)
+            .param("password", USER_PASSWORD)
+            .param("name", USER_NAME)
+            .param("email", USER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                hasProperty("userId", is(user.getUserId())),
-                hasProperty("password", is(user.getPassword())),
-                hasProperty("name", is(user.getName())),
-                hasProperty("email", is(user.getEmail()))
+                hasProperty("userId", is(USER_ID)),
+                hasProperty("password", is(USER_PASSWORD)),
+                hasProperty("name", is(USER_NAME)),
+                hasProperty("email", is(USER_EMAIL))
             )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -123,10 +134,10 @@ public class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", user.getUserId())
-            .param("password", "secret")
-            .param("name", "other")
-            .param("email", "other@example.com")
+            .param("userId", USER_ID)
+            .param("password", OTHER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -157,7 +168,7 @@ public class UserControllerTest {
         userSetUp.saveUser(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+        ResultActions actions = mockMvc.perform(get("/users/" + USER_ID + "/form")
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -173,21 +184,21 @@ public class UserControllerTest {
         userSetUp.saveUser(user);
 
         User other = new User(user);
-        other.setName("other");
-        other.setEmail("other@example.com");
+        other.setName(OTHER_NAME);
+        other.setEmail(OTHER_EMAIL);
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
-            .param("password", user.getPassword())
-            .param("name", other.getName())
-            .param("email", other.getEmail())
+            .param("password", USER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                hasProperty("name", is(other.getName())),
-                hasProperty("email", is(other.getEmail()))
+                hasProperty("name", is(OTHER_NAME)),
+                hasProperty("email", is(OTHER_EMAIL))
                 )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -198,18 +209,13 @@ public class UserControllerTest {
         // given
         userSetUp.saveUser(user);
 
-        User other = new User(user);
-        other.setUserId("otherId");
-        other.setName("other");
-        other.setEmail("other@example.com");
-
         CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/" + other.getUserId())
-            .param("password", user.getPassword())
-            .param("name", other.getName())
-            .param("email", other.getEmail())
+        ResultActions actions = mockMvc.perform(put("/users/" + OTHER_ID)
+            .param("password", USER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -225,18 +231,13 @@ public class UserControllerTest {
         // given
         userSetUp.saveUser(user);
 
-        User other = new User(user);
-        other.setPassword("secret");
-        other.setName("other");
-        other.setEmail("other@example.com");
-
         CustomException exception = new CustomException(ErrorCode.INCORRECT_USER);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
-            .param("password", other.getPassword())
-            .param("name", other.getName())
-            .param("email", other.getEmail())
+        ResultActions actions = mockMvc.perform(put("/users/" + USER_ID)
+            .param("password", OTHER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then

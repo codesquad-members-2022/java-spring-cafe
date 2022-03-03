@@ -23,6 +23,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    private static final String USER_ID = "userId";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_EMAIL = "user@example.com";
+
+    private static final String OTHER_ID = "otherId";
+    private static final String OTHER_PASSWORD = "secret";
+    private static final String OTHER_NAME = "other";
+    private static final String OTHER_EMAIL = "other@example.com";
+
     @InjectMocks
     private UserService userService;
 
@@ -33,7 +43,7 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "password", "name", "email@example.com");
+        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
     }
 
     @Test
@@ -50,17 +60,17 @@ public class UserServiceTest {
         User savedUser = userService.register(user);
 
         // then
-        assertThat(savedUser.getUserId()).isEqualTo("userId");
-        assertThat(savedUser.getPassword()).isEqualTo("password");
-        assertThat(savedUser.getName()).isEqualTo("name");
-        assertThat(savedUser.getEmail()).isEqualTo("email@example.com");
+        assertThat(savedUser.getUserId()).isEqualTo(USER_ID);
+        assertThat(savedUser.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(savedUser.getName()).isEqualTo(USER_NAME);
+        assertThat(savedUser.getEmail()).isEqualTo(USER_EMAIL);
     }
 
     @Test
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        User other = new User("userId", "secret", "other", "other@example.com");
+        User other = new User(USER_ID, OTHER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
 
         given(userRepository.findByUserId(other.getUserId()))
             .willReturn(Optional.of(user));
@@ -95,7 +105,7 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        User findUser = userService.findUser(user.getUserId());
+        User findUser = userService.findUser(USER_ID);
 
         // then
         assertThat(findUser).isEqualTo(user);
@@ -121,8 +131,8 @@ public class UserServiceTest {
     public void updateUserTest() {
         // given
         User other = new User(user);
-        other.setName("other");
-        other.setEmail("other@example.com");
+        other.setName(OTHER_NAME);
+        other.setEmail(OTHER_EMAIL);
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
@@ -133,11 +143,10 @@ public class UserServiceTest {
         // when
         User updatedUser = userService.updateUser(other);
 
-        assertThat(updatedUser.getUserNum()).isEqualTo(other.getUserNum());
-        assertThat(updatedUser.getUserId()).isEqualTo(other.getUserId());
-        assertThat(updatedUser.getPassword()).isEqualTo(other.getPassword());
-        assertThat(updatedUser.getName()).isEqualTo(other.getName());
-        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
+        assertThat(updatedUser.getUserId()).isEqualTo(USER_ID);
+        assertThat(updatedUser.getPassword()).isEqualTo(USER_PASSWORD);
+        assertThat(updatedUser.getName()).isEqualTo(OTHER_NAME);
+        assertThat(updatedUser.getEmail()).isEqualTo(OTHER_EMAIL);
     }
 
     @Test
@@ -160,7 +169,7 @@ public class UserServiceTest {
     public void updateUserIncorrectUserIdTest() {
         // given
         User other = new User(user);
-        other.setUserId("otherId");
+        other.setUserId(OTHER_ID);
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
@@ -178,7 +187,7 @@ public class UserServiceTest {
     public void updateUserIncorrectPasswordTest() {
         // given
         User other = new User(user);
-        other.setPassword("secret");
+        other.setPassword(OTHER_PASSWORD);
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));

@@ -18,6 +18,7 @@ import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,18 +31,35 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
+    private static final Integer USER_NUM = 1;
+    private static final String USER_ID = "userId";
+    private static final String USER_PASSWORD = "password";
+    private static final String USER_NAME = "user";
+    private static final String USER_EMAIL = "user@example.com";
+
+    private static final String OTHER_ID = "otherId";
+    private static final String OTHER_PASSWORD = "secret";
+    private static final String OTHER_NAME = "other";
+    private static final String OTHER_EMAIL = "other@example.com";
+
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
     private UserService userService;
 
+    User user;
+
+    @BeforeEach
+    public void setUp() {
+        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
+    }
+
     @Test
     @DisplayName("모든 유저를 조회한다")
     public void listUsersTest() throws Exception {
         // given
-        User user = new User("userId", "password", "name", "email@example.com");
-        user.setUserNum(1);
+        user.setUserNum(USER_NUM);
         List<User> users = List.of(user);
 
         given(userService.findUsers())
@@ -61,9 +79,7 @@ class UserControllerTest {
     @DisplayName("유저 아이디로 유저를 조회한다")
     public void showUserTest() throws Exception {
         // given
-        User user = new User("userId", "password", "name", "email@example.com");
-
-        given(userService.findUser("userId"))
+        given(userService.findUser(any()))
             .willReturn(user);
 
         // when
@@ -92,26 +108,24 @@ class UserControllerTest {
     @DisplayName("유저 회원 가입을 진행한다")
     public void createUserTest() throws Exception {
         // given
-        User user = new User("userId", "password", "name", "email@example.com");
-
-        given(userService.register(user))
+        given(userService.register(any()))
             .willReturn(user);
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", user.getUserId())
-            .param("password", user.getPassword())
-            .param("name", user.getName())
-            .param("email", user.getEmail())
+            .param("userId", USER_ID)
+            .param("password", USER_PASSWORD)
+            .param("name", USER_NAME)
+            .param("email", USER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                hasProperty("userId", is(user.getUserId())),
-                hasProperty("password", is(user.getPassword())),
-                hasProperty("name", is(user.getName())),
-                hasProperty("email", is(user.getEmail()))
+                hasProperty("userId", is(USER_ID)),
+                hasProperty("password", is(USER_PASSWORD)),
+                hasProperty("name", is(USER_NAME)),
+                hasProperty("email", is(USER_EMAIL))
             )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -127,10 +141,10 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", "userId")
-            .param("password", "password")
-            .param("name", "name")
-            .param("email", "email@example.com")
+            .param("userId", USER_ID)
+            .param("password", USER_PASSWORD)
+            .param("name", USER_NAME)
+            .param("email", USER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -164,8 +178,6 @@ class UserControllerTest {
     @DisplayName("유저 아이디로 유저 정보 수정 페이지를 출력한다")
     public void updateUserFormTest() throws Exception {
         // given
-        User user = new User("userId", "password", "name", "email@example.com");
-
         given(userService.findUser(any()))
             .willReturn(user);
 
@@ -183,27 +195,25 @@ class UserControllerTest {
     @DisplayName("유저 정보 업데이트 후에 메인 페이지로 전환한다")
     public void updateUserTest() throws Exception {
         // given
-        User user = new User("userId", "password", "name", "email@example.com");
-
         User other = new User(user);
-        other.setName("other");
-        other.setEmail("other@example.com");
+        other.setName(OTHER_NAME);
+        other.setEmail(OTHER_EMAIL);
 
         given(userService.updateUser(any()))
             .willReturn(other);
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
-            .param("password", user.getPassword())
-            .param("name", other.getName())
-            .param("email", other.getEmail())
+            .param("password", USER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                    hasProperty("name", is(other.getName())),
-                    hasProperty("email", is(other.getEmail()))
+                    hasProperty("name", is(OTHER_NAME)),
+                    hasProperty("email", is(OTHER_EMAIL))
                 )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -219,9 +229,9 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/other")
-            .param("password", "password")
-            .param("name", "other")
-            .param("email", "other@example.com")
+            .param("password", USER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
@@ -243,9 +253,9 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
-            .param("password", "secret")
-            .param("name", "other")
-            .param("email", "other@example.com")
+            .param("password", OTHER_PASSWORD)
+            .param("name", OTHER_NAME)
+            .param("email", OTHER_EMAIL)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then

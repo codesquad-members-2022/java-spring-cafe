@@ -1,5 +1,8 @@
 package com.kakao.cafe.integration;
 
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -23,6 +26,10 @@ import org.springframework.test.web.servlet.ResultActions;
 @AutoConfigureMockMvc
 public class ArticleControllerTest {
 
+    private static final String WRITER = "writer";
+    private static final String TITLE = "title";
+    private static final String CONTENTS = "contents";
+
     @Autowired
     MockMvc mockMvc;
 
@@ -33,14 +40,13 @@ public class ArticleControllerTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "contents");
+        article = new Article(WRITER, TITLE, CONTENTS);
     }
 
     @AfterEach
     public void exit() {
         articleSetUp.rollback();
     }
-
 
     @Test
     @DisplayName("글을 작성하는 화면을 보여준다")
@@ -54,23 +60,22 @@ public class ArticleControllerTest {
             .andExpect(view().name("qna/form"));
     }
 
-
     @Test
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
-        // given
-        Article article = new Article("writer", "title", "contents");
-
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
-            .param("writer", article.getWriter())
-            .param("title", article.getTitle())
-            .param("content", article.getContent())
+            .param("writer", WRITER)
+            .param("title", TITLE)
+            .param("contents", CONTENTS)
             .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(model().attribute("article", article))
+            .andExpect(model().attribute("article", allOf(
+                hasProperty("writer", is(WRITER)),
+                hasProperty("title", is(TITLE))
+            )))
             .andExpect(view().name("redirect:/"));
     }
 

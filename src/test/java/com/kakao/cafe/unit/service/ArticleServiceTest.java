@@ -1,7 +1,6 @@
 package com.kakao.cafe.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.atIndex;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -13,7 +12,6 @@ import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import java.util.Optional;
-import org.assertj.core.data.Index;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +23,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
 
+    private static final String WRITER = "writer";
+    private static final String TITLE = "title";
+    private static final String CONTENTS = "contents";
+
     @InjectMocks
     private ArticleService articleService;
 
@@ -35,7 +37,7 @@ public class ArticleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "contents");
+        article = new Article(WRITER, TITLE, CONTENTS);
         article.setArticleId(1);
     }
 

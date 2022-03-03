@@ -16,6 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ArticleCollectionRepositoryTest {
 
+    private static final String WRITER = "writer";
+    private static final String TITLE = "title";
+    private static final String CONTENTS = "contents";
+
     @InjectMocks
     private ArticleCollectionRepository articleRepository;
 
@@ -23,16 +27,16 @@ public class ArticleCollectionRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = articleRepository.save(new Article("writer", "title", "contents"));
+        article = articleRepository.save(new Article(WRITER, TITLE, CONTENTS));
     }
 
     @Test
     @DisplayName("질문 객체를 저장소에 저장한다")
     public void saveTest() {
         // then
-        assertThat(article.getWriter()).isEqualTo("writer");
-        assertThat(article.getTitle()).isEqualTo("title");
-        assertThat(article.getContent()).isEqualTo("contents");
+        assertThat(article.getWriter()).isEqualTo(WRITER);
+        assertThat(article.getTitle()).isEqualTo(TITLE);
+        assertThat(article.getContent()).isEqualTo(CONTENTS);
     }
 
     @Test
