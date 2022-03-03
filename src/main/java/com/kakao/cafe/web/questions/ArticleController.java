@@ -2,7 +2,7 @@ package com.kakao.cafe.web.questions;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.web.users.dto.ArticleDto;
+import com.kakao.cafe.web.questions.dto.ArticleDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

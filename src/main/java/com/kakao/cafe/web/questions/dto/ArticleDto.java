@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.users.dto;
+package com.kakao.cafe.web.questions.dto;
 
 public class ArticleDto {
     private String writer;
