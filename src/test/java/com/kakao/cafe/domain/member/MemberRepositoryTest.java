@@ -33,7 +33,7 @@ class MemberRepositoryTest {
             @Transactional
             @Rollback
             void insert_Success() {
-                // given
+                // arrange
                 Member member = new Member.Builder()
                         .setUserId("jwkim")
                         .setPasswd("1234")
@@ -54,7 +54,7 @@ class MemberRepositoryTest {
             @Transactional
             @Rollback
             void differentUserId_Success() {
-                // given
+                // arrange
                 Member member1 = new Member.Builder()
                         .setUserId("Jay")
                         .setPasswd("1234")
@@ -81,7 +81,7 @@ class MemberRepositoryTest {
             @Test
             @DisplayName("userId 가 중복된 두 사용자를 저장하는 경우, 등록에 실패한다.")
             void duplicatedUserId_Success() {
-                // given
+                // arrange
                 Member member1 = new Member.Builder()
                         .setUserId("jwkim")
                         .setPasswd("1234")
@@ -108,7 +108,7 @@ class MemberRepositoryTest {
             @Test
             @DisplayName("사용자 정보에서 userId 가 빠졌을 경우, 등록에 실패한다.")
             void userIdNull_throwSQLException() {
-                // given
+                // arrange
                 Member member = new Member.Builder()
                         .setUserId(null)
                         .setPasswd("1234")
@@ -127,7 +127,7 @@ class MemberRepositoryTest {
             @Test
             @DisplayName("사용자 정보에서 Passwd 가 빠졌을 경우, 등록에 실패한다.")
             void passwdNull_throwSQLException() {
-                // given
+                // arrange
                 Member member = new Member.Builder()
                         .setUserId("jwkim")
                         .setPasswd(null)
@@ -146,7 +146,7 @@ class MemberRepositoryTest {
             @Test
             @DisplayName("사용자 정보에서 name 이 빠졌을 경우, 등록에 실패한다.")
             void nameNull_throwSQLException() {
-                // given
+                // arrange
                 Member member = new Member.Builder()
                         .setUserId("jwkim")
                         .setPasswd("1234")
@@ -165,7 +165,7 @@ class MemberRepositoryTest {
             @Test
             @DisplayName("사용자 정보에서 email 이 빠졌을 경우, 등록에 실패한다.")
             void emailNull_throwSQLException() {
-                // given
+                // arrange
                 Member member = new Member.Builder()
                         .setUserId("jwkim")
                         .setPasswd("1234")
@@ -191,7 +191,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("1명의 User 가 있을때, 저장된 id 로 조회하면 정상적으로 결과를 반환한다.")
         void oneUserSaved_findByIdSuccess() {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -199,7 +199,7 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             Long savedId = repository.save(member).orElseThrow();
 
             // then
@@ -215,7 +215,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("1명의 User 가 있을때, 다른 id 로 조회하면 조회되지 않는다.")
         void oneUserSaved_findByIdFailed() {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -223,7 +223,7 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             Long savedId = repository.save(member).orElseThrow();
 
             // then
@@ -240,7 +240,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("저장된 userId 로 조회하면 정상적으로 결과를 반환한다.")
         void oneUserSaved_findByUserIdSuccess() {
-            // given
+            // arrange
             String expectedUserId = "jwkim";
             Member member = new Member.Builder()
                     .setUserId(expectedUserId)
@@ -249,7 +249,7 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             repository.save(member).orElseThrow();
 
             // then
@@ -265,7 +265,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("저장된 userId 와 다른 userId 로 조회하면 조회되지 않는다.")
         void oneUserSaved_findByIdFailed() {
-            // given
+            // arrange
             String expectedUserId = "jwkim";
             Member member = new Member.Builder()
                     .setUserId(expectedUserId)
@@ -274,7 +274,7 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             repository.save(member).orElseThrow();
 
             // then
@@ -291,7 +291,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("1명의 User 가 있을때, 길이가 1개인 User 리스트를 반환한다.")
         void oneUserSaved_findAllReturnList_size_1 () {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -299,14 +299,14 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             repository.save(member);
             List<Member> members = repository.findAll().orElseThrow();
 
             // then
             assertThat(members).size().isEqualTo(1);
 
-            // when
+            // act
             Member findMember = members.get(0);
 
             // then
@@ -319,7 +319,7 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("2명의 User 가 있을때, 길이가 2개인 User 리스트를 반환한다.")
         void twoUserSaved_findAllReturnList_size_2() {
-            // given
+            // arrange
             Member member1 = new Member.Builder()
                     .setUserId("jwkim1")
                     .setPasswd("1234")
@@ -333,7 +333,7 @@ class MemberRepositoryTest {
                     .setEmail("wlsdhks0423@naver.com")
                     .build();
 
-            // when
+            // act
             repository.save(member1);
             repository.save(member2);
             List<Member> members = repository.findAll().orElseThrow();
@@ -341,7 +341,7 @@ class MemberRepositoryTest {
             // then
             assertThat(members).size().isEqualTo(2);
 
-            // when
+            // act
             Member findMember1 = members.get(0);
             Member findMember2 = members.get(1);
 
@@ -359,10 +359,10 @@ class MemberRepositoryTest {
         @Test
         @DisplayName("User 가 없을때, 비어있는 리스트를 반환한다.")
         void notSaved_findAllReturnEmpty() {
-            // when
+            // act
             List<Member> members = repository.findAll().orElseThrow();
 
-            // then
+            // assert
             assertThat(members).size().isEqualTo(0);
         }
     }

@@ -39,7 +39,7 @@ class MemberServiceTest {
         @Test
         @DisplayName("userId 가 중복되지 않으면, 회원가입에 성공한다.")
         void nonDuplicatedUserId_joinSuccess() {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
@@ -52,17 +52,17 @@ class MemberServiceTest {
             when(memberRepository.save(member)).thenReturn(Optional.of(member.getId()));
             when(memberRepository.findByUserId(any())).thenReturn(Optional.empty()); // 중복된 회원이 없음
 
-            // when
+            // act
             Long id = memberService.join(member).orElseThrow();
 
-            // then
+            // assert
             assertThat(id).isEqualTo(member.getId());
         }
 
         @Test
         @DisplayName("userId 가 중복되면, 회원가입에 실패한다.")
         void duplicatedUserId_joinSuccess() {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
@@ -74,7 +74,7 @@ class MemberServiceTest {
                     .build();
             when(memberRepository.findByUserId(any())).thenReturn(Optional.of(member)); // 중복된 회원 있음
 
-            // then
+            // assert
             assertThatThrownBy(() -> memberService.join(member))
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessageContaining("이미 존재하는 회원입니다.");
@@ -88,7 +88,7 @@ class MemberServiceTest {
         @Test
         @DisplayName("저장된 Member 의 id 를 조회하면, Member 를 반환한다.")
         void savedMember_findSuccess() {
-            // given
+            // arrange
             Long savedMemberId = 1L;
             Member member = new Member.Builder()
                     .setId(savedMemberId)
@@ -101,21 +101,21 @@ class MemberServiceTest {
                     .build();
             when(memberRepository.findById(any())).thenReturn(Optional.of(member));
 
-            // when
+            // act
             Member findMember = memberService.findOne(savedMemberId).orElseThrow();
 
-            // then
+            // assert
             assertThatIsEqualToAllMemberField(findMember, member);
         }
 
         @Test
         @DisplayName("저장되지 않은 Member 의 id 를 조회하면, Optional.empty() 를 반환한다.")
         void duplicatedUserId_joinSuccess() {
-            // given
+            // arrange
             Long unsavedMemberId = 1L;
             when(memberRepository.findById(anyLong())).thenReturn(Optional.empty()); // 중복된 회원 있음
 
-            // then
+            // assert
             memberService.findOne(unsavedMemberId)
                     .ifPresent(findMember -> fail());
         }
@@ -127,7 +127,7 @@ class MemberServiceTest {
         @Test
         @DisplayName("Member 가 저장되어 있으면, List<Member> 를 반환한다.")
         void memberExist_findMembersReturnsList() {
-            // given
+            // arrange
             Member member = new Member.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
@@ -139,7 +139,7 @@ class MemberServiceTest {
                     .build();
             when(memberRepository.findAll()).thenReturn(Optional.of(List.of(member)));
 
-            // then
+            // assert
             memberService.findMembers()
                     .ifPresentOrElse(
                             members -> {
@@ -154,13 +154,13 @@ class MemberServiceTest {
         @Test
         @DisplayName("Member 가 저장되어 있으면, List<Member> 를 반환한다.")
         void memberNotExist_findMembersReturnsEmptyList() {
-            // given
+            // arrange
             when(memberRepository.findAll()).thenReturn(Optional.of(Collections.emptyList())); // 중복된 회원 있음
 
-            // when
+            // act
             List<Member> members = memberService.findMembers().orElseThrow();
 
-            // then
+            // assert
             assertThat(members).size().isEqualTo(0);
         }
     }

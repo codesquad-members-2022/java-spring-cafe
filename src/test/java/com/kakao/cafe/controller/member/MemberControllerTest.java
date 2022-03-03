@@ -52,12 +52,12 @@ class MemberControllerTest {
         @Test
         @DisplayName("모든 데이터를 정상적으로 넣으면 성공한다.")
         void join_success() throws Exception {
-            // given
+            // arrange
             Long registeredId = 1L;
             String expectedRedirectUrl = "/users";
             when(memberService.join(any())).thenReturn(Optional.of(registeredId));
 
-            // when
+            // act
             ResultActions actions = mockMvc.perform(
                     MockMvcRequestBuilders.post("/users")
                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -67,7 +67,7 @@ class MemberControllerTest {
                             .param("email", "jay@naver.com")
             );
 
-            // then
+            // assert
             actions.andExpect(status().is3xxRedirection())
                     .andExpect(redirectedUrl(expectedRedirectUrl));
         }
@@ -75,10 +75,10 @@ class MemberControllerTest {
         @Test
         @DisplayName("중복된 userId 로 시도하면 실패하고, 회원가입 화면으로 돌아간다.")
         void join_failed() throws Exception {
-            // given
+            // arrange
             when(memberService.join(any())).thenThrow(new IllegalStateException("이미 존재하는 회원입니다."));
 
-            // when
+            // act
             ResultActions actions = mockMvc.perform(
                     MockMvcRequestBuilders.post("/users")
                             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -88,7 +88,7 @@ class MemberControllerTest {
                             .param("email", "jay@naver.com")
             );
 
-            // then
+            // assert
             MvcResult mvcResult = actions.andExpect(status().is4xxClientError()).andReturn();
 
             ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -106,16 +106,16 @@ class MemberControllerTest {
         @Test
         @DisplayName("회원이 있으면, 회원목록 데이터와 함께 회원 목록 화면으로 이동한다.")
         void findMembers_moveToView() throws Exception {
-            // given
+            // arrange
             String memberListViewName = "member/list";
             String membersKey = "members";
             List<Member> members = getMembers();
             when(memberService.findMembers()).thenReturn(Optional.of(members));
 
-            // when
+            // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
 
-            // then
+            // assert
             ModelAndView modelAndView = actions.andExpect(status().isOk())
                     .andReturn()
                     .getModelAndView();
@@ -127,14 +127,14 @@ class MemberControllerTest {
         @Test
         @DisplayName("회원이 없어도, 회원 목록 화면으로 이동한다.")
         void findMembersReturnEmpty_moveToView() throws Exception {
-            // given
+            // arrange
             String memberListViewName = "member/list";
             when(memberService.findMembers()).thenReturn(Optional.empty());
 
-            // when
+            // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
 
-            // then
+            // assert
             ModelAndView modelAndView = actions.andExpect(status().isOk())
                     .andReturn()
                     .getModelAndView();
@@ -161,7 +161,6 @@ class MemberControllerTest {
                             .setModifiedDate(LocalDateTime.now())
                             .build());
         }
-
     }
 
 }
