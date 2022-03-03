@@ -27,7 +27,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("user를 join 시키면 user 정보들이 MemoryUserRepository에 저장된다")
+    @DisplayName("회원가입을 하면 정보들이 MemoryUserRepository에 저장된다")
     void join_success() {
         User user1 = new User();
         user1.setEmail("bc@naver.com");
@@ -42,7 +42,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입 시 중복되는 이메일을 입력하면 예외를 발생시킨다")
+    @DisplayName("회원가입을 할 때 이미 등록되어있는 이메일을 입력하면 예외를 발생시킨다")
     void join_validateDuplicateEmail() {
         User user1 = new User();
         user1.setEmail("bc@naver.com");
@@ -61,7 +61,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입 시 중복되는 닉메임을 입력하면 예외를 발생시킨다")
+    @DisplayName("회원가입을 할 때 이미 등록되어있는 닉네임을 입력하면 예외를 발생시킨다")
     void join_validateDuplicateNickname() {
         User user1 = new User();
         user1.setEmail("bc@naver.com");
@@ -77,5 +77,25 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.join(user2))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage(ErrorMessage.EXISTING_NICKNAME.get());
+    }
+
+    @Test
+    @DisplayName("회원가입을 하면 id가 1부터 오름차순으로 배정된다")
+    void join_assign_id(){
+        User user1 = new User();
+        user1.setEmail("bc@naver.com");
+        user1.setNickname("bc");
+        user1.setPassword("1234");
+        userService.join(user1);
+
+        User user2 = new User();
+        user2.setEmail("BBBBB@naver.com");
+        user2.setNickname("BBBB");
+        user2.setPassword("1234555");
+        userService.join(user2);
+
+        assertThat(user1.getId()).isEqualTo(1 );
+        assertThat(user2.getId()).isEqualTo(2 );
+
     }
 }
