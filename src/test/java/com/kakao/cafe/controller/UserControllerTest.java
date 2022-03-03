@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.VolatilityUserRepository;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,8 @@ class UserControllerTest {
 
     static List<User> users;
 
-    static {
+    @BeforeAll
+    static void init() {
         users = new ArrayList<>();
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
             users.add(User.builder("user" + (i + 1))

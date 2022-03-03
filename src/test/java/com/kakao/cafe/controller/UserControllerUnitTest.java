@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.service.VolatilityUserService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,7 +46,8 @@ public class UserControllerUnitTest {
 
     static List<User> users;
 
-    static {
+    @BeforeAll
+    static void init() {
         users = new ArrayList<>();
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
             users.add(User.builder("user" + (i + 1))
