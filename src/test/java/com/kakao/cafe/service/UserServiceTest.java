@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.dto.UserCreateDto;
 import com.kakao.cafe.exception.DuplicateUserIdException;
+import com.kakao.cafe.exception.NoMatchUserException;
 import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
 class UserServiceTest {
 
     @Autowired
@@ -70,6 +69,33 @@ class UserServiceTest {
                 () -> userService.save(user));
 
         // then
-        assertThat(e.getMessage()).isEqualTo("이미 가입된 ID입니다. 새로운 ID로 가입해주세요.");
+        assertThat(e.getMessage()).isEqualTo("이미 가입된 ID입니다. 다른 ID로 가입해주세요.");
+    }
+
+    @Test
+    @DisplayName("기존에 가입된 userId로 회원검색을 시도하면 해당하는 회원을 리턴한다")
+    void findByUserIdTest() {
+        // given
+        User user = new User(userService.nextUserSequence(), userCreateDtos.get(0));
+        userService.save(user);
+
+        // when
+        User findUser = userService.findByUserId(user.getUserId());
+
+        // then
+        assertThat(findUser.getUserId()).isEqualTo(user.getUserId());
+    }
+
+    @Test
+    @DisplayName("가입되지 않은 userId로 회원검색을 시도하면 NoMatchUserException이 발생한다")
+    void noMatchUserTest() {
+        // given
+
+        // when
+        NoMatchUserException e = assertThrows(NoMatchUserException.class,
+                () -> userService.findByUserId("noUserId"));
+
+        // then
+        assertThat(e.getMessage()).isEqualTo("일치하는 회원이 없습니다. 확인 후 다시 시도해주세요.");
     }
 }
