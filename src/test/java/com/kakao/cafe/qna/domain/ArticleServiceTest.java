@@ -29,7 +29,7 @@ class ArticleServiceTest {
 	@Test
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
-		ArticleDto articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
+		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 		this.articleService.write(articleDto);
 
 		Article actual = this.articleRepository.findById(1L).get();
@@ -59,8 +59,8 @@ class ArticleServiceTest {
 		);
 	}*/
 
-	private ArticleDto getArticleDto(String writer, String title, String content) {
-		ArticleDto articleDto = new ArticleDto();
+	private ArticleDto.WriteRequest getArticleDto(String writer, String title, String content) {
+		ArticleDto.WriteRequest articleDto = new ArticleDto.WriteRequest();
 		articleDto.setWriter(writer);
 		articleDto.setTitle(title);
 		articleDto.setContents(content);

@@ -22,5 +22,4 @@ public class MainController {
 		model.addAttribute("articles", articleService.getAllArticles());
 		return "index";
 	}
-
 }

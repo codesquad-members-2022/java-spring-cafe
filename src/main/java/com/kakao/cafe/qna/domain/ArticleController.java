@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,11 +31,19 @@ public class ArticleController {
 	}
 
 	@PostMapping()
-	public String askQuestion(ArticleDto articleDto) {
-		articleDto.isValid(articleDto, logger);
+	public String askQuestion(ArticleDto.WriteRequest articleDto) {
+		articleDto.isValid(logger);
 		logger.info("request question : {}", articleDto);
 		articleService.write(articleDto);
 		return "redirect:/";
+	}
+
+	@GetMapping("/{id}")
+	public String lookAtTheDetailsOfTheQuestion(@PathVariable Long id, Model model) {
+		logger.info("request details of question: {}", id);
+		ArticleDto.WriteResponse question = articleService.read(id);
+		model.addAttribute("question", question);
+		return "qna/show";
 	}
 
 	@ExceptionHandler(value = IllegalArgumentException.class)
