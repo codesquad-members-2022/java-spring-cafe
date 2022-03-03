@@ -2,11 +2,18 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.user.User;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class UserDto {
 
+    @NotBlank
     private final String userId;
+    @NotBlank
     private final String password;
+    @NotBlank
     private final String name;
+    @Email
     private final String email;
 
     public UserDto(String userId, String password, String name, String email) {
@@ -45,4 +52,5 @@ public class UserDto {
                 ", email='" + email + '\'' +
                 '}';
     }
+
 }
