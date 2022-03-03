@@ -3,8 +3,6 @@ package com.kakao.cafe.integration;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -199,7 +197,7 @@ public class UserControllerTest {
             .andExpect(model().attribute("user", allOf(
                 hasProperty("name", is(OTHER_NAME)),
                 hasProperty("email", is(OTHER_EMAIL))
-                )))
+            )))
             .andExpect(view().name("redirect:/users"));
     }
 

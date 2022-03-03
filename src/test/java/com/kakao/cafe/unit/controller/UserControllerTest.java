@@ -212,9 +212,9 @@ class UserControllerTest {
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                    hasProperty("name", is(OTHER_NAME)),
-                    hasProperty("email", is(OTHER_EMAIL))
-                )))
+                hasProperty("name", is(OTHER_NAME)),
+                hasProperty("email", is(OTHER_EMAIL))
+            )))
             .andExpect(view().name("redirect:/users"));
     }
 
