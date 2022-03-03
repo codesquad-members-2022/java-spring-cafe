@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("users")
-public class CafeController {
+public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(CafeController.class);
+    Logger logger = LoggerFactory.getLogger(UserController.class);
     UserService userService = new UserService();
 
     @PostMapping
-    public String create(User form) {
-        userService.signUp(new User(form));
+    public String create(UserDto requestDto) {
+        userService.signUp(requestDto);
 
         return "redirect:/users";
     }

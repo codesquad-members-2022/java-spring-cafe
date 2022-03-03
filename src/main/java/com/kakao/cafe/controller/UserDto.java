@@ -1,21 +1,12 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.UserDto;
-
-public class User {
+public class UserDto {
 
     private Long id;
     private String userId;
     private String password;
     private String name;
     private String email;
-
-    public User(UserDto form) {
-        userId = form.getUserId();
-        password = form.getPassword();
-        name = form.getName();
-        email = form.getEmail();
-    }
 
     public Long getId() {
         return id;

@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.repository.MemoryUserRepository;
@@ -12,14 +13,13 @@ public class UserService {
     private final UserRepository userRepository = new MemoryUserRepository();
 
     //회원가입
-    public Long signUp(User user) {
-        //optional getOrElse를 알아볼 것.
+    public Long signUp(UserDto user) {
         validateDuplicateUser(user);
-        userRepository.save(user);
+        userRepository.save(new User(user));
         return user.getId();
     }
 
-    private void validateDuplicateUser(User user) {
+    private void validateDuplicateUser(UserDto user) {
         userRepository.findByUserId(user.getUserId())
             .ifPresent(m -> {
                 throw new IllegalStateException("이미 존재하는 회원입니다.");
