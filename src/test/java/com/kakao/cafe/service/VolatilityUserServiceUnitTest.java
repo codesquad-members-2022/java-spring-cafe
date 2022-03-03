@@ -41,8 +41,9 @@ class VolatilityUserServiceUnitTest {
 
         User newUser = userService.addUser(user);
 
-        verify(userRepository).selectUser(user.getUserId());
         assertThat(newUser).isEqualTo(user);
+
+        verify(userRepository).selectUser(user.getUserId());
     }
 
     @Test
@@ -54,5 +55,7 @@ class VolatilityUserServiceUnitTest {
         assertThatThrownBy(() -> userService.addUser(user))
                 .isInstanceOf(DuplicateUserIdException.class)
                 .hasMessage(EXISTENT_ID_MESSAGE);
+
+        verify(userRepository).selectUser(any(String.class));
     }
 }

@@ -48,6 +48,8 @@ class VolatilityUserServiceTest {
 
         //when
         userService.addUser(user1);
+
+        // then
         assertThatThrownBy(() -> userService.addUser(user2))
                 .isInstanceOf(DuplicateUserIdException.class)
                         .hasMessage(EXISTENT_ID_MESSAGE);

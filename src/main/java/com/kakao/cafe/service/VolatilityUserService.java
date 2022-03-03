@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.repository.VolatilityUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

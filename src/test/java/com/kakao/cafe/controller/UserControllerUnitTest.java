@@ -19,7 +19,6 @@ import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -62,7 +61,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
         when(service.addUser(user)).thenReturn(user);
-        mvc.perform(post("/users/join").params(convertMultiValueMap(user)))
+        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -83,7 +82,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
         when(service.addUser(user)).thenThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
-        mvc.perform(post("/users/join").params(convertMultiValueMap(user)))
+        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
@@ -99,7 +98,7 @@ public class UserControllerUnitTest {
                 Arguments.of(User.builder("user4").name("name4").email("user4@gmail.com").build())
         );
     }
-    private MultiValueMap<String, String> convertMultiValueMap(Object obj) {
+    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
         Map<String, String> map = new ObjectMapper().convertValue(obj, Map.class);
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.setAll(map);
@@ -110,15 +109,16 @@ public class UserControllerUnitTest {
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
     void getUserList() throws Exception {
-        given(service.findAll()).willReturn(Collections.emptyList());
+        given(service.findAll()).willReturn(users);
         mvc.perform(get("/users"))
                 .andExpectAll(
                         model().attributeExists("users"),
-                        model().attribute("users", Collections.emptyList()),
+                        model().attribute("users", users),
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
                         content().encoding(StandardCharsets.UTF_8),
                         status().isOk()
                 );
+
         verify(service).findAll();
     }
 
@@ -136,6 +136,7 @@ public class UserControllerUnitTest {
                         content().encoding(StandardCharsets.UTF_8),
                         status().isOk()
                 );
+
         verify(service).findUser(userId);
     }
 }
