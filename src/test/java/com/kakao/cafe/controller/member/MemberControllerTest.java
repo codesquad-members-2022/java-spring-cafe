@@ -163,4 +163,62 @@ class MemberControllerTest {
         }
     }
 
+    @Nested
+    @DisplayName("회원 프로필 조회는")
+    class FindProfileTest {
+
+        @Test
+        @DisplayName("존재하는 회원의 userId 가 path 로 들어오면, 회원 프로필 조회 페이지로 이동한다.")
+        void findProfile_success() throws Exception {
+            // arrange
+            Member member = getMember();
+            Long id = member.getId();
+            when(memberService.findOne(any())).thenReturn(Optional.of(member));
+
+            // act
+            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id));
+
+            // assert
+            ModelAndView modelAndView = actions.andExpect(status().isOk())
+                    .andReturn()
+                    .getModelAndView();
+            assertThat(modelAndView.getViewName()).isEqualTo("member/profile");
+            assertThat(modelAndView.getModel().containsKey("member")).isTrue();
+            assertThat(modelAndView.getModel().get("member")).isNotNull();
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 회원의 userId 가 path 로 들어오면 에러 메세지와 함께, 회원 목록 페이지로 이동한다.")
+        void findProfile_failed() throws Exception {
+            // arrange
+            when(memberService.findOne(any())).thenReturn(Optional.empty());
+
+            // act
+            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
+
+            // assert
+            MvcResult mvcResult = actions.andExpect(status().is4xxClientError()).andReturn();
+
+            ModelAndView modelAndView = mvcResult.getModelAndView();
+            Map<String, Object> model = modelAndView.getModel();
+
+            assertThat(modelAndView.getViewName()).isEqualTo("member/list");
+            assertThat(model.containsKey("errorMessage")).isTrue();
+//            assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
+        }
+
+        private Member getMember() {
+            return new Member.Builder()
+                    .setId(1L)
+                    .setUserId("jwkim")
+                    .setPasswd("1234")
+                    .setName("김진완")
+                    .setEmail("wlsdhks0423@naver.com")
+                    .setCreatedDate(LocalDateTime.now())
+                    .setModifiedDate(LocalDateTime.now())
+                    .build();
+        }
+
+    }
+
 }

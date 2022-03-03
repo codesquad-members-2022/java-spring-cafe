@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,6 +42,22 @@ public class MemberController {
         memberService.findMembers()
                 .ifPresent(members -> modelAndView.addObject("members", members));
         modelAndView.setViewName("member/list");
+        return modelAndView;
+    }
+
+    @GetMapping("/users/{id}")
+    public ModelAndView findProfile(@PathVariable("id") Long id, ModelAndView modelAndView) {
+
+        memberService.findOne(id)
+                .ifPresentOrElse(member -> {
+                    modelAndView.setViewName("member/profile");
+                    modelAndView.addObject(member);
+                }, () -> {
+                    modelAndView.setViewName("member/list");
+                    modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+                    modelAndView.addObject("errorMessage", "회원이 없습니다.");
+                });
+
         return modelAndView;
     }
 
