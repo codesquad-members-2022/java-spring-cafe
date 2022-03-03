@@ -15,7 +15,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        sequence++;
+        sequence ++;
         user.setId(sequence);
         store.put(sequence,user);
 

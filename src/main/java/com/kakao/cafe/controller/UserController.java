@@ -17,20 +17,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
-    public String createForm() {
-        return "user/form";
-    }
-
-    @PostMapping("/user/form")
-    public String create(User user) {
-
-        userService.join(user);
-        return "redirect:/";
-    }
-
-    @GetMapping("/create")
+    @GetMapping("/users")
     public String create() {
-        return "create";
+        return "/user/list";
+    }
+
+    @PostMapping("/users")
+    public String list(User user) {
+        userService.join(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/user/list")
+    public String list() {
+        return "user/list";
     }
 }

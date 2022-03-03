@@ -52,8 +52,8 @@ class UserServiceTest {
 
         User user2 = new User();
         user2.setEmail("bc@naver.com");
-        user2.setNickname("bc123");
-        user2.setPassword("1234555");
+        user2.setNickname("BBBBBB");
+        user2.setPassword("1234");
 
         assertThatThrownBy(() -> userService.join(user2))
             .isInstanceOf(IllegalStateException.class)
@@ -70,8 +70,8 @@ class UserServiceTest {
         userService.join(user1);
 
         User user2 = new User();
-        user2.setEmail("bc@naver.com");
-        user2.setNickname("bc123");
+        user2.setEmail("BBBBB@naver.com");
+        user2.setNickname("bc");
         user2.setPassword("1234555");
 
         assertThatThrownBy(() -> userService.join(user2))
