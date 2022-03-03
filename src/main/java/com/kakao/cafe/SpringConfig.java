@@ -9,14 +9,14 @@ import com.kakao.cafe.service.UserService;
 
 @Configuration
 public class SpringConfig {
-    @Bean
-    public UserRepository userRepository() {
-        return new MemoryUserRepository();
-    }
 
     @Bean
     public UserService userService() {
         return new UserService(userRepository());
+    }
+    @Bean
+    public UserRepository userRepository() {
+        return new MemoryUserRepository();
     }
 
 }

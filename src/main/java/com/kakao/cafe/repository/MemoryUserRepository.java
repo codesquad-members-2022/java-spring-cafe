@@ -13,13 +13,16 @@ public class MemoryUserRepository implements UserRepository {
     private static long sequence = 0L;
 
     @Override
-    public User save(User user) {
-        return null;
+    public void save(User user) {
+        sequence++;
+        user.setId(sequence);
+        store.put(sequence,user);
+
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(store.get(id));
     }
 
     @Override
