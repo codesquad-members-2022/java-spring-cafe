@@ -2,9 +2,11 @@ package com.kakao.cafe.users.domain;
 
 import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
 import com.kakao.cafe.exception.repository.RequiredFieldNotFoundException;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,20 +25,21 @@ public class MemoryUserRepository implements UserRepository {
         validateRequiredField(user);
         validateUserIdUnique(user);
 
-        User idGeneratedUser = getIdGeneratedUser(user);
-        userRegistry.add(idGeneratedUser);
-        return Optional.of(idGeneratedUser.getId());
+        User preparedUser = prepareFirstAddUserAndGet(user);
+        userRegistry.add(preparedUser);
+        LoggerFactory.getLogger(getClass()).info("userRegistry : {}", userRegistry);
+        return Optional.of(preparedUser.getId());
     }
 
-    private User getIdGeneratedUser(User user) {
+    private User prepareFirstAddUserAndGet(User user) {
         return new User.Builder()
                 .setId(idGenerator.getAndIncrement())
                 .setUserId(user.getUserId())
                 .setPasswd(user.getPasswd())
                 .setName(user.getName())
                 .setEmail(user.getEmail())
-                .setCreatedDate(user.getCreatedDate())
-                .setModifiedDate(user.getModifiedDate())
+                .setCreatedDate(LocalDateTime.now())
+                .setModifiedDate(LocalDateTime.now())
                 .build();
     }
 
