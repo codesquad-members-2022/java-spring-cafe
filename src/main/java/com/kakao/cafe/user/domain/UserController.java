@@ -27,6 +27,7 @@ public class UserController {
 
 	@PostMapping()
 	public String signUp(UserDto.Request userDto) {
+		userDto.isValid(logger);
 		logger.info("user sign up {}",userDto);
 		userService.register(userDto);
 		return "redirect:/users";
