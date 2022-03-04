@@ -1,15 +1,19 @@
 package com.kakao.cafe.domain.posts;
 
+import java.time.LocalDateTime;
+
 public class Posts {
     private Long id;
     private String writer;
     private String title;
     private String contents;
+    private LocalDateTime localDateTime;
 
-    public Posts(String writer, String title, String contents) {
+    public Posts(String writer, String title, String contents, LocalDateTime localDateTime) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.localDateTime = localDateTime;
     }
 
     public Long getId() {
@@ -30,5 +34,13 @@ public class Posts {
 
     public String getContents() {
         return contents;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 }

@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.posts;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -12,6 +13,7 @@ public class PostsRepository {
 
     public void save(Posts posts) {
         posts.setId(++seq);
+        posts.setLocalDateTime(LocalDateTime.now());
         postsMap.put(posts.getId(), posts);
     }
 
