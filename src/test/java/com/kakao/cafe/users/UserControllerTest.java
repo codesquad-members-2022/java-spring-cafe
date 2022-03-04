@@ -1,8 +1,6 @@
 package com.kakao.cafe.users;
 
-import com.kakao.cafe.users.domain.Member;
-import com.kakao.cafe.users.MemberController;
-import com.kakao.cafe.users.MemberService;
+import com.kakao.cafe.users.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -31,20 +29,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("MemberController 단위 테스트")
-class MemberControllerTest {
+@DisplayName("UserController 단위 테스트")
+class UserControllerTest {
 
     @Mock
-    private MemberService memberService;
+    private UserService userService;
 
     @InjectMocks
-    private MemberController memberController;
+    private UserController userController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(memberController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
     @Nested
@@ -56,7 +54,7 @@ class MemberControllerTest {
             // arrange
             Long registeredId = 1L;
             String expectedRedirectUrl = "/users";
-            when(memberService.join(any())).thenReturn(Optional.of(registeredId));
+            when(userService.join(any())).thenReturn(Optional.of(registeredId));
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -77,7 +75,7 @@ class MemberControllerTest {
         @DisplayName("중복된 userId 로 시도하면 실패하고, 회원가입 화면으로 돌아간다.")
         void join_failed() throws Exception {
             // arrange
-            when(memberService.join(any())).thenThrow(new IllegalStateException("이미 존재하는 회원입니다."));
+            when(userService.join(any())).thenThrow(new IllegalStateException("이미 존재하는 회원입니다."));
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -103,15 +101,15 @@ class MemberControllerTest {
 
     @Nested
     @DisplayName("회원 목록 조회는")
-    class FindMembersTest {
+    class FindUsersTest {
         @Test
         @DisplayName("회원이 있으면, 회원목록 데이터와 함께 회원 목록 화면으로 이동한다.")
-        void findMembers_moveToView() throws Exception {
+        void findUsers_moveToView() throws Exception {
             // arrange
-            String memberListViewName = "user/list";
-            String membersKey = "members";
-            List<Member> members = getMembers();
-            when(memberService.findMembers()).thenReturn(Optional.of(members));
+            String userListViewName = "user/list";
+            String usersKey = "users";
+            List<User> users = getUsers();
+            when(userService.findUsers()).thenReturn(Optional.of(users));
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -120,17 +118,17 @@ class MemberControllerTest {
             ModelAndView modelAndView = actions.andExpect(status().isOk())
                     .andReturn()
                     .getModelAndView();
-            assertThat(modelAndView.getViewName()).isEqualTo(memberListViewName);
-            assertThat(modelAndView.getModel().containsKey(membersKey)).isTrue();
-            assertThat(modelAndView.getModel().get(membersKey)).isNotNull();
+            assertThat(modelAndView.getViewName()).isEqualTo(userListViewName);
+            assertThat(modelAndView.getModel().containsKey(usersKey)).isTrue();
+            assertThat(modelAndView.getModel().get(usersKey)).isNotNull();
         }
 
         @Test
         @DisplayName("회원이 없어도, 회원 목록 화면으로 이동한다.")
-        void findMembersReturnEmpty_moveToView() throws Exception {
+        void findUsersReturnEmpty_moveToView() throws Exception {
             // arrange
-            String memberListViewName = "user/list";
-            when(memberService.findMembers()).thenReturn(Optional.empty());
+            String userListViewName = "user/list";
+            when(userService.findUsers()).thenReturn(Optional.empty());
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -139,11 +137,11 @@ class MemberControllerTest {
             ModelAndView modelAndView = actions.andExpect(status().isOk())
                     .andReturn()
                     .getModelAndView();
-            assertThat(modelAndView.getViewName()).isEqualTo(memberListViewName);
+            assertThat(modelAndView.getViewName()).isEqualTo(userListViewName);
         }
 
-        private List<Member> getMembers() {
-            return List.of(new Member.Builder()
+        private List<User> getUsers() {
+            return List.of(new User.Builder()
                             .setId(1L)
                             .setUserId("jwkim")
                             .setPasswd("1234")
@@ -152,7 +150,7 @@ class MemberControllerTest {
                             .setCreatedDate(LocalDateTime.now())
                             .setModifiedDate(LocalDateTime.now())
                             .build(),
-                    new Member.Builder()
+                    new User.Builder()
                             .setId(2L)
                             .setUserId("jay")
                             .setPasswd("1234")
@@ -172,9 +170,9 @@ class MemberControllerTest {
         @DisplayName("존재하는 회원의 userId 가 path 로 들어오면, 회원 프로필 조회 페이지로 이동한다.")
         void findProfile_success() throws Exception {
             // arrange
-            Member member = getMember();
-            Long id = member.getId();
-            when(memberService.findOne(any())).thenReturn(Optional.of(member));
+            User user = getUser();
+            Long id = user.getId();
+            when(userService.findOne(any())).thenReturn(Optional.of(user));
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id));
@@ -184,15 +182,15 @@ class MemberControllerTest {
                     .andReturn()
                     .getModelAndView();
             assertThat(modelAndView.getViewName()).isEqualTo("user/profile");
-            assertThat(modelAndView.getModel().containsKey("member")).isTrue();
-            assertThat(modelAndView.getModel().get("member")).isNotNull();
+            assertThat(modelAndView.getModel().containsKey("user")).isTrue();
+            assertThat(modelAndView.getModel().get("user")).isNotNull();
         }
 
         @Test
         @DisplayName("존재하지 않는 회원의 userId 가 path 로 들어오면 에러 메세지와 함께, 회원 목록 페이지로 이동한다.")
         void findProfile_failed() throws Exception {
             // arrange
-            when(memberService.findOne(any())).thenReturn(Optional.empty());
+            when(userService.findOne(any())).thenReturn(Optional.empty());
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
@@ -208,8 +206,8 @@ class MemberControllerTest {
 //            assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
         }
 
-        private Member getMember() {
-            return new Member.Builder()
+        private User getUser() {
+            return new User.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
                     .setPasswd("1234")

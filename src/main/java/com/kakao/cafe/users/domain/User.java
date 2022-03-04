@@ -2,7 +2,7 @@ package com.kakao.cafe.users.domain;
 
 import java.time.LocalDateTime;
 
-public class Member {
+public class User {
 
     private final Long id;
     private final String userId;
@@ -12,7 +12,7 @@ public class Member {
     private final LocalDateTime createdDate;
     private final LocalDateTime modifiedDate;
 
-    private Member(Long id, String userId, String passwd, String name, String email, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    private User(Long id, String userId, String passwd, String name, String email, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
         this.userId = userId;
         this.passwd = passwd;
@@ -94,8 +94,8 @@ public class Member {
             return this;
         }
 
-        public Member build() {
-            return new Member(id, userId, passwd, name, email, createdDate, modifiedDate);
+        public User build() {
+            return new User(id, userId, passwd, name, email, createdDate, modifiedDate);
         }
     }
 

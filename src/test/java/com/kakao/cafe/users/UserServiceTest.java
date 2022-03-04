@@ -1,8 +1,7 @@
 package com.kakao.cafe.users;
 
-import com.kakao.cafe.users.domain.Member;
-import com.kakao.cafe.users.domain.MemberRepository;
-import com.kakao.cafe.users.MemberService;
+import com.kakao.cafe.users.domain.User;
+import com.kakao.cafe.users.domain.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,13 +24,13 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MemberServiceTest {
+class UserServiceTest {
 
     @Mock
-    private MemberRepository memberRepository;
+    private UserRepository userRepository;
 
     @InjectMocks
-    private MemberService memberService;
+    private UserService userService;
 
     @Nested
     @DisplayName("join 메소드는")
@@ -41,7 +40,7 @@ class MemberServiceTest {
         @DisplayName("userId 가 중복되지 않으면, 회원가입에 성공한다.")
         void nonDuplicatedUserId_joinSuccess() {
             // arrange
-            Member member = new Member.Builder()
+            User user = new User.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -50,21 +49,21 @@ class MemberServiceTest {
                     .setCreatedDate(LocalDateTime.now())
                     .setModifiedDate(LocalDateTime.now())
                     .build();
-            when(memberRepository.save(member)).thenReturn(Optional.of(member.getId()));
-            when(memberRepository.findByUserId(any())).thenReturn(Optional.empty()); // 중복된 회원이 없음
+            when(userRepository.save(user)).thenReturn(Optional.of(user.getId()));
+            when(userRepository.findByUserId(any())).thenReturn(Optional.empty()); // 중복된 회원이 없음
 
             // act
-            Long id = memberService.join(member).orElseThrow();
+            Long id = userService.join(user).orElseThrow();
 
             // assert
-            assertThat(id).isEqualTo(member.getId());
+            assertThat(id).isEqualTo(user.getId());
         }
 
         @Test
         @DisplayName("userId 가 중복되면, 회원가입에 실패한다.")
         void duplicatedUserId_joinSuccess() {
             // arrange
-            Member member = new Member.Builder()
+            User user = new User.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -73,10 +72,10 @@ class MemberServiceTest {
                     .setCreatedDate(LocalDateTime.now())
                     .setModifiedDate(LocalDateTime.now())
                     .build();
-            when(memberRepository.findByUserId(any())).thenReturn(Optional.of(member)); // 중복된 회원 있음
+            when(userRepository.findByUserId(any())).thenReturn(Optional.of(user)); // 중복된 회원 있음
 
             // assert
-            assertThatThrownBy(() -> memberService.join(member))
+            assertThatThrownBy(() -> userService.join(user))
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessageContaining("이미 존재하는 회원입니다.");
         }
@@ -87,12 +86,12 @@ class MemberServiceTest {
     class FindOneTest{
 
         @Test
-        @DisplayName("저장된 Member 의 id 를 조회하면, Member 를 반환한다.")
-        void savedMember_findSuccess() {
+        @DisplayName("저장된 User 의 id 를 조회하면, User 를 반환한다.")
+        void savedUser_findSuccess() {
             // arrange
-            Long savedMemberId = 1L;
-            Member member = new Member.Builder()
-                    .setId(savedMemberId)
+            Long savedId = 1L;
+            User user = new User.Builder()
+                    .setId(savedId)
                     .setUserId("jwkim")
                     .setPasswd("1234")
                     .setName("김진완")
@@ -100,36 +99,36 @@ class MemberServiceTest {
                     .setCreatedDate(LocalDateTime.now())
                     .setModifiedDate(LocalDateTime.now())
                     .build();
-            when(memberRepository.findById(any())).thenReturn(Optional.of(member));
+            when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
             // act
-            Member findMember = memberService.findOne(savedMemberId).orElseThrow();
+            User findUser = userService.findOne(savedId).orElseThrow();
 
             // assert
-            assertThatIsEqualToAllMemberField(findMember, member);
+            assertThatIsEqualToAllUserField(findUser, user);
         }
 
         @Test
-        @DisplayName("저장되지 않은 Member 의 id 를 조회하면, Optional.empty() 를 반환한다.")
+        @DisplayName("저장되지 않은 User 의 id 를 조회하면, Optional.empty() 를 반환한다.")
         void duplicatedUserId_joinSuccess() {
             // arrange
-            Long unsavedMemberId = 1L;
-            when(memberRepository.findById(anyLong())).thenReturn(Optional.empty()); // 중복된 회원 있음
+            Long unsavedId = 1L;
+            when(userRepository.findById(anyLong())).thenReturn(Optional.empty()); // 중복된 회원 있음
 
             // assert
-            memberService.findOne(unsavedMemberId)
-                    .ifPresent(findMember -> fail());
+            userService.findOne(unsavedId)
+                    .ifPresent(findUser -> fail());
         }
     }
 
     @Nested
-    @DisplayName("findMembers")
-    class FindMembersTest{
+    @DisplayName("findUsers 메소드는")
+    class FindUsersTest{
         @Test
-        @DisplayName("Member 가 저장되어 있으면, List<Member> 를 반환한다.")
-        void memberExist_findMembersReturnsList() {
+        @DisplayName("User 가 저장되어 있으면, List<User> 를 반환한다.")
+        void userExist_findUsersReturnsList() {
             // arrange
-            Member member = new Member.Builder()
+            User user = new User.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -138,35 +137,35 @@ class MemberServiceTest {
                     .setCreatedDate(LocalDateTime.now())
                     .setModifiedDate(LocalDateTime.now())
                     .build();
-            when(memberRepository.findAll()).thenReturn(Optional.of(List.of(member)));
+            when(userRepository.findAll()).thenReturn(Optional.of(List.of(user)));
 
             // assert
-            memberService.findMembers()
+            userService.findUsers()
                     .ifPresentOrElse(
-                            members -> {
-                                assertThat(members).size().isEqualTo(1);
-                                Member findMember = members.get(0);
-                                assertThatIsEqualToAllMemberField(findMember, member);
+                            users -> {
+                                assertThat(users).size().isEqualTo(1);
+                                User findUser = users.get(0);
+                                assertThatIsEqualToAllUserField(findUser, user);
                             },
                             Assertions::fail
                     );
         }
 
         @Test
-        @DisplayName("Member 가 저장되어 있으면, List<Member> 를 반환한다.")
-        void memberNotExist_findMembersReturnsEmptyList() {
+        @DisplayName("User 가 저장되어 있으면, List<User> 를 반환한다.")
+        void userNotExist_findUsersReturnsEmptyList() {
             // arrange
-            when(memberRepository.findAll()).thenReturn(Optional.of(Collections.emptyList())); // 중복된 회원 있음
+            when(userRepository.findAll()).thenReturn(Optional.of(Collections.emptyList())); // 중복된 회원 있음
 
             // act
-            List<Member> members = memberService.findMembers().orElseThrow();
+            List<User> users = userService.findUsers().orElseThrow();
 
             // assert
-            assertThat(members).size().isEqualTo(0);
+            assertThat(users).size().isEqualTo(0);
         }
     }
 
-    private void assertThatIsEqualToAllMemberField(Member actual, Member expected) {
+    private void assertThatIsEqualToAllUserField(User actual, User expected) {
         assertThat(actual.getId()).isEqualTo(expected.getId());
         assertThat(actual.getUserId()).isEqualTo(expected.getUserId());
         assertThat(actual.getPasswd()).isEqualTo(expected.getPasswd());

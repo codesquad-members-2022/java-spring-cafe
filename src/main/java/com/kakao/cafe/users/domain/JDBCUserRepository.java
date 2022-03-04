@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JDBCMemberRepository implements MemberRepository {
+public class JDBCUserRepository implements UserRepository {
 
     private static final String INSERT_CAFE_USERS_SQL = "INSERT INTO cafe_users (userid, passwd, name, email, created_date, modified_date) values (?,?,?,?,NOW(),NOW())";
     private static final String SELECT_ALL_CAFE_USERS_SQL = "SELECT id, userid, passwd, name, email, created_date, modified_date FROM cafe_users";
@@ -25,12 +25,12 @@ public class JDBCMemberRepository implements MemberRepository {
     private final DataSource ds;
 
     @Autowired
-    public JDBCMemberRepository(DataSource ds) {
+    public JDBCUserRepository(DataSource ds) {
         this.ds = ds;
     }
 
     @Override
-    public Optional<Long> save(Member user) {
+    public Optional<Long> save(User user) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -58,7 +58,7 @@ public class JDBCMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findById(Long id) {
+    public Optional<User> findById(Long id) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -81,7 +81,7 @@ public class JDBCMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByUserId(String userId) {
+    public Optional<User> findByUserId(String userId) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -104,7 +104,7 @@ public class JDBCMemberRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<List<Member>> findAll() {
+    public Optional<List<User>> findAll() {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -112,7 +112,7 @@ public class JDBCMemberRepository implements MemberRepository {
             conn = ds.getConnection();
             stmt = conn.prepareStatement(SELECT_ALL_CAFE_USERS_SQL);
             ResultSet rs = stmt.executeQuery();
-            List<Member> users = new ArrayList<>();
+            List<User> users = new ArrayList<>();
 
             while (rs.next()) {
                 users.add(buildUser(rs));
@@ -143,8 +143,8 @@ public class JDBCMemberRepository implements MemberRepository {
         }
     }
 
-    private Member buildUser(ResultSet rs) throws SQLException, NullPointerException {
-        return new Member.Builder()
+    private User buildUser(ResultSet rs) throws SQLException, NullPointerException {
+        return new User.Builder()
                 .setId(rs.getLong("id"))
                 .setUserId(rs.getString("userid"))
                 .setPasswd(rs.getString("passwd"))

@@ -1,6 +1,6 @@
 package com.kakao.cafe.users;
 
-import com.kakao.cafe.users.domain.Member;
+import com.kakao.cafe.users.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class MemberController {
+public class UserController {
 
-    private final MemberService memberService;
+    private final UserService userService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/users")
-    public ModelAndView join(Member member, ModelAndView model) {
+    public ModelAndView join(User user, ModelAndView model) {
 
         try {
-            memberService.join(member);
+            userService.join(user);
         } catch (IllegalStateException e) {
-            model.getModel().put("member", member);
+            model.getModel().put("user", user);
             model.getModel().put("errorMessage", e.getMessage());
             model.setStatus(HttpStatus.BAD_REQUEST);
             model.setViewName("user/form");
@@ -37,9 +37,9 @@ public class MemberController {
     }
 
     @GetMapping("/users")
-    public ModelAndView memberList(ModelAndView modelAndView) {
-        memberService.findMembers()
-                .ifPresent(members -> modelAndView.addObject("members", members));
+    public ModelAndView userList(ModelAndView modelAndView) {
+        userService.findUsers()
+                .ifPresent(users -> modelAndView.addObject("users", users));
         modelAndView.setViewName("user/list");
         return modelAndView;
     }
@@ -47,10 +47,10 @@ public class MemberController {
     @GetMapping("/users/{id}")
     public ModelAndView findProfile(@PathVariable("id") Long id, ModelAndView modelAndView) {
 
-        memberService.findOne(id)
-                .ifPresentOrElse(member -> {
+        userService.findOne(id)
+                .ifPresentOrElse(user -> {
                     modelAndView.setViewName("user/profile");
-                    modelAndView.addObject(member);
+                    modelAndView.addObject(user);
                 }, () -> {
                     modelAndView.setViewName("user/list");
                     modelAndView.setStatus(HttpStatus.BAD_REQUEST);
