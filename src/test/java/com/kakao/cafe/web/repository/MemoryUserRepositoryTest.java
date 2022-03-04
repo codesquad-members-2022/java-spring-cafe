@@ -6,24 +6,26 @@ import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.repository.user.MemoryUserRepository;
 import com.kakao.cafe.web.repository.user.UserRepository;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemoryUserRepositoryTest {
 
-	static UserRepository repository;
-	static User user;
+	MemoryUserRepository repository;
+	User user;
 
-	@BeforeAll
-	static void setUp() {
+	@BeforeEach
+	void setUp() {
 		repository = new MemoryUserRepository();
-		user = new User();
-		user.setUserId("jeremy0405");
-		user.setPassword("qwer1234");
-		user.setName("Jerry");
-		user.setEmail("jeremy0405@naver.com");
+		user = new User("jeremy0405", "qwer1234", "Jerry", "jeremy0405@naver.com");
 		repository.save(user);
+	}
+
+	@AfterEach
+	void afterEach() {
+		repository.clear();
 	}
 
 	@Test
@@ -66,11 +68,7 @@ class MemoryUserRepositoryTest {
 	@DisplayName("모든 유저의 정보를 조회하면 모든 유저목록을 반환한다.")
 	void findAllUser() {
 		//given
-		User user1 = new User();
-		user1.setUserId("anotherId");
-		user1.setPassword("qwer1234");
-		user1.setName("user1");
-		user1.setEmail("hsjang0405@gmail.com");
+		User user1 = new User("anotherId", "qwer1234", "user1", "hsjang0405@gmail.com");
 		repository.save(user1);
 
 		//when
