@@ -1,6 +1,6 @@
 package com.kakao.cafe.combination;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.dto.UserInformation;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +24,8 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private final UserService userService;
-
     @Autowired
-    public UserControllerTest(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @AfterEach
     void close() {

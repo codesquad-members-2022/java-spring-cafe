@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class BeanConfig {
+public class WebAppConfig {
 
     @Bean
     public UserService userService() {

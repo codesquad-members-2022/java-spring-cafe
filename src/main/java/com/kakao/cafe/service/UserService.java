@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.dto.UserInformation;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
@@ -16,24 +16,24 @@ public class UserService {
 
     public UserInformation join(UserInformation userInformation) {
         validateDuplicateUser(userInformation.getUserId());
-        return userRepository.savaUserInformation(userInformation);
+        return userRepository.save(userInformation);
     }
 
     private void validateDuplicateUser(String userId) {
-        userRepository.findUserInformationById(userId).ifPresent(m -> {
+        userRepository.findByUserId(userId).ifPresent(m -> {
             throw new IllegalStateException("이미 존재하는 사용자입니다.");
         });
     }
 
     public List<UserInformation> findAllUsers() {
-        return userRepository.findAllUserInformation();
+        return userRepository.findAll();
     }
 
     public Optional<UserInformation> findOneUser(String userId) {
-        return userRepository.findUserInformationById(userId);
+        return userRepository.findByUserId(userId);
     }
 
     public void deleteAllUsers() {
-        userRepository.clearUserInformationList();
+        userRepository.clear();
     }
 }

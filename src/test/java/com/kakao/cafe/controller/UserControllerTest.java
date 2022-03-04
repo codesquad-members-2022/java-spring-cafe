@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.dto.UserInformation;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -61,7 +61,6 @@ public class UserControllerTest {
     @Test
     void 회원_목록_보기() throws Exception {
         // given
-        userInformation.setId(1L);
         given(userService.findAllUsers()).willReturn(List.of(userInformation));
 
         // when

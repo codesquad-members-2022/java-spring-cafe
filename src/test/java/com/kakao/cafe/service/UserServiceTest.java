@@ -1,50 +1,55 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.UserInformation;
-import com.kakao.cafe.repository.MemoryUserRepository;
-import org.junit.jupiter.api.AfterEach;
+import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
-    private MemoryUserRepository userRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     private UserInformation userInformation;
 
     @BeforeEach
     void setup() {
-        userRepository = new MemoryUserRepository();
-        userService = new UserService(userRepository);
         userInformation = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
-    }
-
-    @AfterEach
-    void close() {
-        userRepository.clearUserInformationList();
     }
 
     @DisplayName("사용자가 회원가입 요청 시 사용자 정보가 저장된다.")
     @Test
     void 회원_가입() {
+        // given
+        given(userRepository.save(userInformation)).willReturn(userInformation);
+
         // when
-        userService.join(userInformation);
+        UserInformation result = userService.join(userInformation);
 
         // then
-        assertThat(userRepository.getCountOfUserInformationElement()).isEqualTo(1);
+        assertThat(result).isEqualTo(userInformation);
     }
 
     @DisplayName("이미 존재하는 ID로 회원가입 요청 시 예외가 발생한다.")
     @Test
     void 중복_회원_예외() {
         // given
-        userRepository.savaUserInformation(userInformation);
+        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(userInformation));
 
         // when, then
         assertThatThrownBy(() -> userService.join(userInformation))
@@ -56,7 +61,7 @@ public class UserServiceTest {
     @Test
     void 특정_사용자_정보_조회() {
         // given
-        userRepository.savaUserInformation(userInformation);
+        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(userInformation));
 
         // when
         UserInformation result = userService.findOneUser("ikjo").get();
@@ -69,9 +74,8 @@ public class UserServiceTest {
     @Test
     void 모든_사용자_정보_조회() {
         // given
-        userRepository.savaUserInformation(userInformation);
-        UserInformation userInformation1 = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
-        userRepository.savaUserInformation(userInformation1);
+        UserInformation otherUserInformation = new UserInformation("ikjo93", "1234", "조명익", "auddlr100@naver.com");
+        given(userRepository.findAll()).willReturn(List.of(userInformation, otherUserInformation));
 
         // when
         List<UserInformation> userInformation = userService.findAllUsers();

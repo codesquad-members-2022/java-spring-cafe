@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.dto.UserInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,37 +8,30 @@ import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private List<UserInformation> userInformationList = new ArrayList<>();
-    private long id = 0L;
+    private List<UserInformation> userInformationStore = new ArrayList<>();
+
 
     @Override
-    public UserInformation savaUserInformation(UserInformation userInformation) {
-        userInformation.setId(++id);
-        userInformationList.add(userInformation);
+    public UserInformation save(UserInformation userInformation) {
+        userInformationStore.add(userInformation);
 
         return userInformation;
     }
 
     @Override
-    public Optional<UserInformation> findUserInformationById(String userId) {
-        return userInformationList.stream()
+    public Optional<UserInformation> findByUserId(String userId) {
+        return userInformationStore.stream()
                 .filter(userInformation -> userInformation.getUserId()
                         .equals(userId)).findAny();
     }
 
     @Override
-    public List<UserInformation> findAllUserInformation() {
-        return new ArrayList<>(userInformationList);
+    public List<UserInformation> findAll() {
+        return new ArrayList<>(userInformationStore);
     }
 
     @Override
-    public void clearUserInformationList() {
-        userInformationList.clear();
+    public void clear() {
+        userInformationStore.clear();
     }
-
-    public int getCountOfUserInformationElement() {
-        return userInformationList.size();
-    }
-
-
 }
