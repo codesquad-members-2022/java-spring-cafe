@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.member;
+package com.kakao.cafe.users.domain;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;

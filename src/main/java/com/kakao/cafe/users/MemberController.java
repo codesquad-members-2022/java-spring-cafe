@@ -1,7 +1,6 @@
-package com.kakao.cafe.controller.member;
+package com.kakao.cafe.users;
 
-import com.kakao.cafe.domain.member.Member;
-import com.kakao.cafe.service.member.MemberService;
+import com.kakao.cafe.users.domain.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

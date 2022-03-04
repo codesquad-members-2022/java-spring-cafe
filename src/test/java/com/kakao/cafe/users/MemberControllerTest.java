@@ -1,7 +1,8 @@
-package com.kakao.cafe.controller.member;
+package com.kakao.cafe.users;
 
-import com.kakao.cafe.domain.member.Member;
-import com.kakao.cafe.service.member.MemberService;
+import com.kakao.cafe.users.domain.Member;
+import com.kakao.cafe.users.MemberController;
+import com.kakao.cafe.users.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

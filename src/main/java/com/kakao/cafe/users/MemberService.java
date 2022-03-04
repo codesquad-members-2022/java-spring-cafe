@@ -1,7 +1,7 @@
-package com.kakao.cafe.service.member;
+package com.kakao.cafe.users;
 
-import com.kakao.cafe.domain.member.Member;
-import com.kakao.cafe.domain.member.MemberRepository;
+import com.kakao.cafe.users.domain.Member;
+import com.kakao.cafe.users.domain.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

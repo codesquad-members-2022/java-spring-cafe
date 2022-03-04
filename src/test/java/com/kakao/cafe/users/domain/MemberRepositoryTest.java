@@ -1,5 +1,7 @@
-package com.kakao.cafe.domain.member;
+package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.users.domain.Member;
+import com.kakao.cafe.users.domain.MemberRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

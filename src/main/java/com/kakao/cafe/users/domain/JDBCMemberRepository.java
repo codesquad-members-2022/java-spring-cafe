@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.member;
+package com.kakao.cafe.users.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
