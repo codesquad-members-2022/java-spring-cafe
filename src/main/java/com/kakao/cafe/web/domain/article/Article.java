@@ -50,4 +50,14 @@ public class Article {
 		this.contents = contents;
 	}
 
+	@Override
+	public String toString() {
+		return "Article{" +
+			"id=" + id +
+			", writer='" + writer + '\'' +
+			", title='" + title + '\'' +
+			", contents='" + contents + '\'' +
+			", localDateTime='" + localDateTime + '\'' +
+			'}';
+	}
 }
