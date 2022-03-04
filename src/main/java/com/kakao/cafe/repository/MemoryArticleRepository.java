@@ -3,7 +3,6 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.dto.UserArticle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
@@ -17,8 +16,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<UserArticle> findById(Integer id) {
-        return Optional.empty();
+    public UserArticle findById(Integer id) {
+        return userArticles.get(id - 1);
     }
 
     @Override

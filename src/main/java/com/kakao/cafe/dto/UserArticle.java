@@ -22,8 +22,11 @@ public class UserArticle {
     }
 
     public void setCreatedDate(Date date) {
-        String createdDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(date);
-        this.createdDate = createdDate;
+        this.createdDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getWriter() {

@@ -21,4 +21,8 @@ public class ArticleService {
     public List<UserArticle> findAllArticles() {
         return articleRepository.findAll();
     }
+
+    public UserArticle findOneArticle(Integer index) {
+        return articleRepository.findById(index);
+    }
 }
