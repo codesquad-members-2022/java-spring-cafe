@@ -96,7 +96,7 @@ class MemberControllerTest {
 
             assertThat(model.containsKey("errorMessage")).isTrue();
             assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
-            assertThat(modelAndView.getViewName()).isEqualTo("member/form");
+            assertThat(modelAndView.getViewName()).isEqualTo("user/form");
         }
     }
 
@@ -107,7 +107,7 @@ class MemberControllerTest {
         @DisplayName("회원이 있으면, 회원목록 데이터와 함께 회원 목록 화면으로 이동한다.")
         void findMembers_moveToView() throws Exception {
             // arrange
-            String memberListViewName = "member/list";
+            String memberListViewName = "user/list";
             String membersKey = "members";
             List<Member> members = getMembers();
             when(memberService.findMembers()).thenReturn(Optional.of(members));
@@ -128,7 +128,7 @@ class MemberControllerTest {
         @DisplayName("회원이 없어도, 회원 목록 화면으로 이동한다.")
         void findMembersReturnEmpty_moveToView() throws Exception {
             // arrange
-            String memberListViewName = "member/list";
+            String memberListViewName = "user/list";
             when(memberService.findMembers()).thenReturn(Optional.empty());
 
             // act
@@ -182,7 +182,7 @@ class MemberControllerTest {
             ModelAndView modelAndView = actions.andExpect(status().isOk())
                     .andReturn()
                     .getModelAndView();
-            assertThat(modelAndView.getViewName()).isEqualTo("member/profile");
+            assertThat(modelAndView.getViewName()).isEqualTo("user/profile");
             assertThat(modelAndView.getModel().containsKey("member")).isTrue();
             assertThat(modelAndView.getModel().get("member")).isNotNull();
         }
@@ -202,7 +202,7 @@ class MemberControllerTest {
             ModelAndView modelAndView = mvcResult.getModelAndView();
             Map<String, Object> model = modelAndView.getModel();
 
-            assertThat(modelAndView.getViewName()).isEqualTo("member/list");
+            assertThat(modelAndView.getViewName()).isEqualTo("user/list");
             assertThat(model.containsKey("errorMessage")).isTrue();
 //            assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
         }

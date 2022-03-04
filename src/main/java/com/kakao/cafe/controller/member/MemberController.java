@@ -29,7 +29,7 @@ public class MemberController {
             model.getModel().put("member", member);
             model.getModel().put("errorMessage", e.getMessage());
             model.setStatus(HttpStatus.BAD_REQUEST);
-            model.setViewName("member/form");
+            model.setViewName("user/form");
             return model;
         }
 
@@ -41,7 +41,7 @@ public class MemberController {
     public ModelAndView memberList(ModelAndView modelAndView) {
         memberService.findMembers()
                 .ifPresent(members -> modelAndView.addObject("members", members));
-        modelAndView.setViewName("member/list");
+        modelAndView.setViewName("user/list");
         return modelAndView;
     }
 
@@ -50,10 +50,10 @@ public class MemberController {
 
         memberService.findOne(id)
                 .ifPresentOrElse(member -> {
-                    modelAndView.setViewName("member/profile");
+                    modelAndView.setViewName("user/profile");
                     modelAndView.addObject(member);
                 }, () -> {
-                    modelAndView.setViewName("member/list");
+                    modelAndView.setViewName("user/list");
                     modelAndView.setStatus(HttpStatus.BAD_REQUEST);
                     modelAndView.addObject("errorMessage", "회원이 없습니다.");
                 });
