@@ -16,4 +16,9 @@ public class MemoryUserRepository implements UserRepository {
         userList.add(user);
         return user;
     }
+
+    @Override
+    public List<User> findAll() {
+        return Collections.unmodifiableList(this.userList);
+    }
 }

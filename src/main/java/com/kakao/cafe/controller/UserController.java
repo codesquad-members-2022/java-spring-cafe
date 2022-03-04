@@ -4,8 +4,11 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -26,13 +29,14 @@ public class UserController {
     public String create(UserForm form) {
         User user = new User(form);
         userService.join(user);
-        System.out.println("posted!");
-        return "redirect:/";
+        return "redirect:/users";
     }
 
     @GetMapping("/users")
-    public String viewList() {
-        return "user/list";
+    public String viewList(Model model) {
+        List<User> userList = this.userService.getAllUsers();
+        model.addAttribute("users", userList);
+        return "../templates/list";
     }
 
 

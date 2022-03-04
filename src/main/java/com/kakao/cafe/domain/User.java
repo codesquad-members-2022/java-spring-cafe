@@ -9,6 +9,7 @@ public class User {
     private String email;
 
     public User(UserForm form) {
+        this.userId = form.getUserId();
         this.name = form.getName();
         this.email = form.getEmail();
     }
