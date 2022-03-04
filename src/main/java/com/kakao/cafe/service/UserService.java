@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorMessage;
@@ -15,7 +14,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user){
+    public void join(User user) {
         validateDuplicateNickname(user);
         userRepository.save(user);
     }
@@ -27,11 +26,19 @@ public class UserService {
             });
     }
 
-    public Optional<User> findOne(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(() ->
+            new IllegalStateException(ErrorMessage.NO_MATCH.get())
+        );
     }
 
-    public List<User> findUsers(){
+    public User findByNickname(String nickname) {
+        return userRepository.findByNickname(nickname).orElseThrow(() ->
+            new IllegalStateException(ErrorMessage.NO_MATCH.get())
+        );
+    }
+
+    public List<User> findUsers() {
         return new ArrayList<>(userRepository.findAll());
     }
 }

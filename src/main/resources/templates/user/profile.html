@@ -42,19 +42,18 @@
                     <table class="table table-hover">
                         <thead>
                         <tr>
-                            <th>No</th>
+                            <th>ID</th>
                             <th>닉네임</th>
-                            <th>이메일</th>
-                            <th>가입일</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {{#userProfile}}
                         <tr>
-                            <td>No</td>
-                            <td>닉네임</td>
-                            <td>email</td>
-                            <td>가입 날짜</td>
+                            <td>{{id}}</td>
+                            <td>{{nickname}}</td>
                         </tr>
+                        {{/userProfile}}
+
                         </tbody>
                     </table>
                 </div>
