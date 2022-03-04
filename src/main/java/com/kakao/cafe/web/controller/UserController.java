@@ -3,10 +3,8 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.service.UserService;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +36,7 @@ public class UserController {
 	@GetMapping("/users")
 	public String list(Model model) {
 		List<UserDto> users = userService.findAllUsers().stream()
-			.map(UserDto::create)
+			.map(UserDto::new)
 			.collect(Collectors.toList());
 		model.addAttribute("users", users);
 		return "user/list";
@@ -48,7 +46,7 @@ public class UserController {
 	public String getUserByUserId(@PathVariable String userId, Model model) {
 		User originUser = userService.findByUserId(userId)
 			.orElseThrow(() -> new IllegalStateException("해당 userId를 가진 회원은 존재하지 않습니다."));
-		UserDto user = UserDto.create(originUser);
+		UserDto user = new UserDto(originUser);
 		model.addAttribute("user", user);
 		return "user/profile";
 	}

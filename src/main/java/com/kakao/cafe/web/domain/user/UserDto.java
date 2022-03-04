@@ -7,15 +7,11 @@ public class UserDto {
 	private String name;
 	private String email;
 
-	private UserDto(Long id, String userId, String name, String email) {
-		this.id = id;
-		this.userId = userId;
-		this.name = name;
-		this.email = email;
-	}
-
-	public static UserDto create(User user) {
-		return new UserDto(user.getId(), user.getUserId(), user.getName(), user.getEmail());
+	public UserDto(User user) {
+		this.id = user.getId();
+		this.userId = user.getUserId();
+		this.name = user.getName();
+		this.email = user.getEmail();
 	}
 
 	public Long getId() {
@@ -42,11 +38,4 @@ public class UserDto {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 }

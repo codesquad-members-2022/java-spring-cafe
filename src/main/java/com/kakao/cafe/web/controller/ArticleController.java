@@ -21,6 +21,13 @@ public class ArticleController {
 		this.articleService = articleService;
 	}
 
+	@GetMapping("/")
+	public String welcome(Model model) {
+		List<Article> articles = articleService.findAllArticle();
+		model.addAttribute("articles", articles);
+		return "index";
+	}
+
 	@PostMapping("/questions")
 	public String createArticle(
 		@RequestParam String writer,
@@ -31,13 +38,6 @@ public class ArticleController {
 		articleService.save(article);
 
 		return "redirect:/";
-	}
-
-	@GetMapping("/")
-	public String welcome(Model model) {
-		List<Article> articles = articleService.findAllArticle();
-		model.addAttribute("articles", articles);
-		return "index";
 	}
 
 	@GetMapping("/articles/{id}")
