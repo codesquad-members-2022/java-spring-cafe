@@ -55,12 +55,29 @@ class MemoryUserRepositoryTest {
     void 모든_사용자_정보_조회() {
         // given
         userRepository.save(userInformation);
-        userRepository.save(new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com"));
+        userRepository.save(new UserInformation("ikjo93", "1234", "조명익", "auddlr100@naver.com"));
 
         // when
-        List<UserInformation> userInformation = userRepository.findAll();
+        List<UserInformation> allUserInformation = userRepository.findAll();
 
         // then
-        assertThat(userInformation.size()).isEqualTo(2);
+        assertThat(allUserInformation.size()).isEqualTo(2);
+    }
+
+    @DisplayName("기존 사용자 정보를 수정한다.")
+    @Test
+    void 사용자_정보_수정() {
+        // given
+        userRepository.save(userInformation);
+
+        // when
+        userRepository.save(new UserInformation("ikjo", "1234", "익조", "auddlr100@naver.com"));
+
+        // then
+        UserInformation result = userRepository.findByUserId(userInformation.getUserId()).get();
+        List<UserInformation> allUserInformation = userRepository.findAll();
+
+        assertThat(result.getName()).isEqualTo("익조");
+        assertThat(allUserInformation.size()).isEqualTo(1);
     }
 }

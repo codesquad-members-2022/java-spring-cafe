@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -38,7 +40,7 @@ public class UserControllerTest {
         userInformation = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
     }
 
-    @DisplayName("사용자가 회원가입을 요청하면 사용자 정보를 저장하고 리다이렉트한다.")
+    @DisplayName("사용자가 회원가입을 요청하면 사용자 정보를 정상 저장 시 /users로 리다이렉트한다.")
     @Test
     void 회원_가입() throws Exception {
         // given
@@ -53,8 +55,8 @@ public class UserControllerTest {
         // when
         ResultActions resultActions = mockMvc.perform(post("/users").params(userInformationParam));
 
-        // then : 사용자 정보 저장 유무 확인을 위해 userId 값 검증
-        resultActions.andExpect(redirectedUrl("/users?joinedUserId=ikjo"));
+        // then
+        resultActions.andExpect(redirectedUrl("/users"));
     }
 
     @DisplayName("사용자가 회원 목록을 요청을 했을 때 model과 /user/list view를 반환한다.")
@@ -85,5 +87,26 @@ public class UserControllerTest {
         resultActions.andExpect(status().isOk())
                      .andExpect(view().name("/user/profile"))
                      .andExpect(model().attribute("user", userInformation));
+    }
+
+    @DisplayName("사용자가 사용자 정보 수정을 요청하면 사용자 정보를 정상 처리 시 /users로 리다이렉트한다.")
+    @Test
+    void 사용자_정보_수정() throws Exception {
+        // given
+        UserInformation updatedUserInformation = new UserInformation("ikjo", "1234", "ikjo93", "auddlr100@naver.com");
+
+        given(userService.update(eq("ikjo"), any(UserInformation.class))).willReturn(updatedUserInformation);
+
+        MultiValueMap<String, String> userInformationParam = new LinkedMultiValueMap<>();
+        userInformationParam.add("userId", "ikjo");
+        userInformationParam.add("password", "1234");
+        userInformationParam.add("name", "ikjo93");
+        userInformationParam.add("email", "auddlr100@naver.com");
+
+        // when
+        ResultActions resultActions = mockMvc.perform(put("/users/ikjo/update").params(userInformationParam));
+
+        // then
+        resultActions.andExpect(redirectedUrl("/users"));
     }
 }
