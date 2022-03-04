@@ -5,6 +5,7 @@ import static com.kakao.cafe.common.utils.TypeFormatter.*;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 
 public class ArticleDto {
@@ -39,7 +40,7 @@ public class ArticleDto {
 		}
 
 		public void setContents(String contents) {
-			this.contents = contents;
+			this.contents = StringEscapeUtils.escapeHtml4(contents);
 		}
 
 		public void isValid(Logger logger) {
@@ -107,7 +108,9 @@ public class ArticleDto {
 			this.id = toTextFromLong(article.getId());
 			this.writer = article.getWriter();
 			this.title = article.getTitle();
-			this.contents = article.getContent();
+			this.contents = StringEscapeUtils.unescapeHtml4(article.getContent());
+			System.out.println("content > "+ contents);
+
 			this.writingDate = article.getWritingDate();
 		}
 
