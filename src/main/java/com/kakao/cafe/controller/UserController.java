@@ -32,14 +32,14 @@ public class UserController {
     public String list(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        return "users/list";
+        return "user/list";
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String show(@PathVariable("id") Long id, Model model) {
         User user = userService.findOne(id);
         model.addAttribute("user", user);
-        return "users/profile";
+        return "user/profile";
     }
 
 }
