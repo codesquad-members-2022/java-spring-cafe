@@ -10,7 +10,6 @@ public class MemoryUserRepository implements UserRepository {
 
     private List<UserInformation> userInformationStore = new ArrayList<>();
 
-
     @Override
     public UserInformation save(UserInformation userInformation) {
         userInformationStore.add(userInformation);
