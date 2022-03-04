@@ -4,6 +4,7 @@ import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.service.UserService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class UserController {
 	@GetMapping("/users/{userId}")
 	public String getUserByUserId(@PathVariable String userId, Model model) {
 		User originUser = userService.findByUserId(userId)
-			.orElseThrow(() -> new IllegalStateException("해당 userId를 가진 회원은 존재하지 않습니다."));
+			.orElseThrow(() -> new NoSuchElementException("해당 userId를 가진 회원은 존재하지 않습니다."));
 		UserDto user = new UserDto(originUser);
 		model.addAttribute("user", user);
 		return "user/profile";

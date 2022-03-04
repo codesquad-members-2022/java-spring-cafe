@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.repository.user.MemoryUserRepository;
 import com.kakao.cafe.web.repository.user.UserRepository;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	@DisplayName("이미 존재하는 아이디로 회원가입을 한다면 IllegalArgumentException이 발생한다.")
+	@DisplayName("이미 존재하는 아이디로 회원가입을 한다면 NoSuchElementException이 발생한다.")
 	void joinDuplicateUserId() {
 	    //given
 		User user1 = new User("jeremy0405", "qwer1234", "장형석", "jeremy0405@naver.com");
@@ -31,11 +32,11 @@ class UserServiceTest {
 	    //when
 
 	    //then
-		assertThrows(IllegalArgumentException.class, () -> userService.join(user1));
+		assertThrows(NoSuchElementException.class, () -> userService.join(user1));
 	}
 
 	@Test
-	@DisplayName("이미 존재하는 email로 회원가입을 한다면 IllegalArgumentException이 발생한다.")
+	@DisplayName("이미 존재하는 email로 회원가입을 한다면 NoSuchElementException이 발생한다.")
 	void joinDuplicateEmail() {
 	    //given
 		User user1 = new User("jang2316", "qwer1234", "장형석", "jeremy0405@naver.com");
@@ -43,7 +44,7 @@ class UserServiceTest {
 	    //when
 
 	    //then
-		assertThrows(IllegalArgumentException.class, () -> userService.join(user1));
+		assertThrows(NoSuchElementException.class, () -> userService.join(user1));
 	}
 
 

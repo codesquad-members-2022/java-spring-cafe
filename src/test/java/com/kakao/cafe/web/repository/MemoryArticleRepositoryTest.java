@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.kakao.cafe.web.domain.article.Article;
 import com.kakao.cafe.web.repository.article.MemoryArticleRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ class MemoryArticleRepositoryTest {
 
 		//when
 		repository.save(article);
-		Article result = repository.findById(article.getId()).orElseThrow(IllegalStateException::new);
+		Article result = repository.findById(article.getId()).orElseThrow(NoSuchElementException::new);
 
 		//then
 		assertThat(result).hasToString(String.valueOf(article));

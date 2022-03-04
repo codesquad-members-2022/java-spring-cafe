@@ -3,6 +3,7 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.web.domain.article.Article;
 import com.kakao.cafe.web.service.ArticleService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public class ArticleController {
 	@GetMapping("/articles/{id}")
 	public String getUserByUserId(@PathVariable Long id, Model model) {
 		Article article = articleService.findById(id)
-			.orElseThrow(() -> new IllegalStateException("해당 게시글은 존재하지 않습니다."));
+			.orElseThrow(() -> new NoSuchElementException("해당 게시글은 존재하지 않습니다."));
 		model.addAttribute("article", article);
 		return "qna/show";
 	}
