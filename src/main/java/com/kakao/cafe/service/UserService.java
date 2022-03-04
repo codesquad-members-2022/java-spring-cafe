@@ -15,6 +15,7 @@ public class UserService {
     }
 
     public void join(User user) {
+        validateUser(user);
         userRepository.save(user);
     }
 
@@ -24,5 +25,24 @@ public class UserService {
 
     public List<User> findUsers() {
         return userRepository.findAll();
+    }
+
+    private void validateUser(User user) {
+        validateUserId(user);
+        validateEmail(user);
+    }
+
+    private void validateUserId(User user) {
+        boolean isExistUserId = userRepository.isExistUserId(user.getUserId());
+        if (isExistUserId) {
+            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
+        }
+    }
+
+    private void validateEmail(User user) {
+        boolean isExistEmail = userRepository.isExistEmail(user.getEmail());
+        if (isExistEmail) {
+            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+        }
     }
 }

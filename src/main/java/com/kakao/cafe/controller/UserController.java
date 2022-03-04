@@ -31,7 +31,6 @@ public class UserController {
     public String createForm(Model model) {
         model.addAttribute("userDto", new UserDto());
         return "user/form";
-        logger.wa
     }
 
     @PostMapping("/create")
@@ -59,5 +58,6 @@ public class UserController {
         model.addAttribute("user", user);
         return "user/profile";
     }
+
 
 }

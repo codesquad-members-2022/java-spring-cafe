@@ -38,7 +38,15 @@ public class User {
         return email;
     }
 
-    public boolean isSameId(Long id) {
+    public boolean isEqualsId(Long id) {
         return this.id.equals(id);
+    }
+
+    public boolean isEqualsUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isEqualsEmail(String email) {
+        return this.email.equals(email);
     }
 }
