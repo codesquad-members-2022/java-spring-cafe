@@ -60,4 +60,5 @@ public class Article {
 			", localDateTime='" + localDateTime + '\'' +
 			'}';
 	}
+
 }

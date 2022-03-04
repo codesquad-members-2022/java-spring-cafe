@@ -49,4 +49,5 @@ public class MemoryUserRepository implements UserRepository {
 	public void clear() {
 		store.clear();
 	}
+
 }

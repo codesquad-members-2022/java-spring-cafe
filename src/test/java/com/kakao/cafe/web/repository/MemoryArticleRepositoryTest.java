@@ -33,7 +33,7 @@ class MemoryArticleRepositoryTest {
 		Article result = repository.findById(article.getId()).orElseThrow(IllegalStateException::new);
 
 		//then
-		assertThat(result).isEqualTo(article);
+		assertThat(result).hasToString(String.valueOf(article));
 	}
 
 	@Test
@@ -53,4 +53,5 @@ class MemoryArticleRepositoryTest {
 		assertThat(result.contains(article1)).isTrue();
 		assertThat(result.contains(article2)).isTrue();
 	}
+
 }
