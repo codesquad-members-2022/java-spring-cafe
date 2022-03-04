@@ -42,7 +42,10 @@ public class UserService {
 
     public void update(UserUpdateRequestDto dto) {
         User user = findByUserId(dto.getUserId());
-        User updateUser = user.update(dto);
+        if (!user.isMatchPassword(dto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        User updateUser = user.update(dto.toEntity());
         userRepository.save(updateUser);
     }
 }

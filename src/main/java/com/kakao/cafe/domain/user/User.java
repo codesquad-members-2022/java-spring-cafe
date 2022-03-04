@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
-
 public class User {
     private Long id;
     private String userId;
@@ -20,7 +18,7 @@ public class User {
         return this.userId.equals(userId);
     }
 
-    private boolean isMatchPassword(String password) {
+    public boolean isMatchPassword(String password) {
         return this.password.equals(password);
     }
 
@@ -28,13 +26,13 @@ public class User {
         return this.userId.equals(userId);
     }
 
-    public User update(UserUpdateRequestDto dto) {
-        if (!isMatchPassword(dto.getPassword()) || !isMatchUserId(dto.getUserId())) {
+    public User update(User user) {
+        if (!isMatchUserId(user.getUserId())) {
             throw new IllegalArgumentException("수정하려는 유저 정보가 일치하지 않습니다.");
         }
-        this.name = dto.getName();
-        this.email = dto.getEmail();
-        this.password = dto.getChangedPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
         return this;
     }
 
