@@ -1,11 +1,9 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.exception.UserException;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class UserRepository {
@@ -22,10 +20,11 @@ public class UserRepository {
     }
 
     public User findByUserId(String userId) {
+        UserException.duplicateException(userMap, userId);
         return userMap.values().stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny()
-                .get();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public List<User> findAll() {
