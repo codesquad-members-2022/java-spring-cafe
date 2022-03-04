@@ -24,13 +24,13 @@ public class UserService {
 
 	private void validateDuplicateEmail(User user) {
 		userRepository.findByEmail(user.getEmail()).ifPresent(m -> {
-			throw new NoSuchElementException("이미 존재하는 이메일입니다.");
+			throw new IllegalStateException("이미 존재하는 이메일입니다.");
 		});
 	}
 
 	private void validateDuplicateUserId(User user) {
 		userRepository.findByUserId(user.getUserId()).ifPresent(m -> {
-			throw new NoSuchElementException("이미 존재하는 아이디입니다.");
+			throw new IllegalStateException("이미 존재하는 아이디입니다.");
 		});
 	}
 
