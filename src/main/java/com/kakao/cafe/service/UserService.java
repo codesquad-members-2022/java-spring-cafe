@@ -16,13 +16,15 @@ public class UserService {
 
     public UserInformation join(UserInformation userInformation) {
         validateDuplicateUser(userInformation.getUserId());
+
         return userRepository.save(userInformation);
     }
 
-    private void validateDuplicateUser(String userId) {
-        userRepository.findByUserId(userId).ifPresent(m -> {
-            throw new IllegalStateException("이미 존재하는 사용자입니다.");
-        });
+    public UserInformation update(String userId, UserInformation updatedUserInformation) {
+        UserInformation userInformation = userRepository.findByUserId(userId).get();
+        validatePassword(userInformation, updatedUserInformation.getPassword());
+
+        return userRepository.save(updatedUserInformation);
     }
 
     public List<UserInformation> findAllUsers() {
@@ -35,5 +37,17 @@ public class UserService {
 
     public void deleteAllUsers() {
         userRepository.clear();
+    }
+
+    private void validateDuplicateUser(String userId) {
+        userRepository.findByUserId(userId).ifPresent(m -> {
+            throw new IllegalStateException("이미 존재하는 사용자입니다.");
+        });
+    }
+
+    private void validatePassword(UserInformation userInformation, String password) {
+        if (userInformation.hasSamePassword(password) == false) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }

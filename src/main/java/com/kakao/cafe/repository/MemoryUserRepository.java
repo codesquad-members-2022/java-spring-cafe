@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.UserInformation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class MemoryUserRepository implements UserRepository {
 
@@ -12,16 +13,28 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public UserInformation save(UserInformation userInformation) {
-        userInformationStore.add(userInformation);
+        int index = findUserId(userInformation.getUserId());
+        if (index == -1) {
+            userInformationStore.add(userInformation);
+            return userInformation;
+        }
+
+        userInformationStore.set(index, userInformation);
 
         return userInformation;
+    }
+
+    private int findUserId(String userId) {
+        return IntStream.range(0, userInformationStore.size())
+                .filter(i -> userInformationStore.get(i).hasSameUserId(userId))
+                .findFirst().orElse(-1);
     }
 
     @Override
     public Optional<UserInformation> findByUserId(String userId) {
         return userInformationStore.stream()
-                .filter(userInformation -> userInformation.getUserId()
-                        .equals(userId)).findAny();
+               .filter(userInformation -> userInformation.hasSameUserId(userId))
+               .findAny();
     }
 
     @Override

@@ -29,4 +29,12 @@ public class UserInformation {
     public String getEmail() {
         return email;
     }
+
+    public boolean hasSameUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean hasSamePassword(String password) {
+        return this.password.equals(password);
+    }
 }

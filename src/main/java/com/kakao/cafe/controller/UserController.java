@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -38,6 +39,14 @@ public class UserController {
         return "/user/profile";
     }
 
+    @GetMapping("/users/{id}/form")
+    public String updateForm(@PathVariable String id, Model model) {
+        logger.info("GET /users/{}/form", id);
+        model.addAttribute("user", userService.findOneUser(id).get());
+
+        return "/user/updateForm";
+    }
+
     @PostMapping("/users")
     public ModelAndView createUserInformation(UserInformation userInformation) {
         logger.info("POST /users userId = {} password = {} name = {} email = {}"
@@ -46,6 +55,18 @@ public class UserController {
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
         modelAndView.addObject("joinedUserId", userService.join(userInformation).getUserId());
+
+        return modelAndView;
+    }
+
+    @PutMapping("/users/{id}/update")
+    public ModelAndView updateUserInformation(@PathVariable String id, UserInformation updatedUserInformation) {
+        logger.info("PUT /users userId = {} password = {} name = {} email = {}"
+            , updatedUserInformation.getUserId(), updatedUserInformation.getPassword()
+            , updatedUserInformation.getName(), updatedUserInformation.getEmail());
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/users");
+        modelAndView.addObject("joinedUserId", userService.update(id, updatedUserInformation).getUserId());
 
         return modelAndView;
     }
