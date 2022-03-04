@@ -38,7 +38,7 @@ class UserServiceTest {
 	@Test
 	@DisplayName("가입요청한 사용자 정보를 받으면 db에 저장하여 확인할 수 있다.")
 	void register_test() {
-		UserDto userDto = getUserDto();
+		UserDto.Request userDto = getUserDto();
 
 		userService.register(userDto);
 		Optional<User> actual = userRepository.findById(1L);
@@ -49,7 +49,7 @@ class UserServiceTest {
 	@Test
 	@DisplayName("가입요청한 사용자 정보중 userId와 email의 중복시 예외 발생한다.")
 	void duplicated_register_test() {
-		UserDto userDto = getUserDto();
+		UserDto.Request userDto = getUserDto();
 		userService.register(userDto);
 
 		assertThatThrownBy(() ->userService.register(userDto))
@@ -63,8 +63,8 @@ class UserServiceTest {
 			.isInstanceOf(DomainNotFoundException.class);
 	}
 
-	private UserDto getUserDto() {
-		UserDto dto = new UserDto();
+	private UserDto.Request getUserDto() {
+		UserDto.Request dto = new UserDto.Request();
 		dto.setUserId("cafe");
 		dto.setName("spring");
 		dto.setEmail("spring@email.com");

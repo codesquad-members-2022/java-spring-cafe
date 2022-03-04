@@ -16,11 +16,11 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public void register(UserDto userDto) {
+	public void register(UserDto.Request userDto) {
 		if (userRepository.existByUserId(userDto.getUserId()) || userRepository.existByName(userDto.getName())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
-		User user = new User(userDto.getIdByLong(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
+		User user = new User(userDto.getIdNull(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		userRepository.save(user);
 	}
 
@@ -28,19 +28,20 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public User find(Long id) {  // TODO 응답 dto 로 변경
-		return getUser(id);
+	public UserDto.Response find(Long id) {  // TODO 응답 dto 로 변경
+		User user = get(id);
+		return new UserDto.Response(user);
 	}
 
-	private User getUser(Long id) {
+	private User get(Long id) {
 		return userRepository.findById(id)
 			.orElseThrow(() -> {
 				throw new DomainNotFoundException("user");
 			});
 	}
 
-	public void changeProfile(UserDto userDto) {
-		User user = getUser(userDto.getIdByLong());
+	public void changeProfile(UserUpdateDto.Request userDto) {
+		User user = get(userDto.getIdByLong());
 		user.update(userDto);
 		userRepository.save(user);
 	}
