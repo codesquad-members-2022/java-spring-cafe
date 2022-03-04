@@ -1,5 +1,6 @@
 package com.kakao.cafe.users;
 
+import com.kakao.cafe.exception.CafeRuntimeException;
 import com.kakao.cafe.users.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class UserController {
 
         try {
             userService.join(user);
-        } catch (IllegalStateException e) {
+        } catch (CafeRuntimeException e) {
             model.getModel().put("user", user);
             model.getModel().put("errorMessage", e.getMessage());
             model.setStatus(HttpStatus.BAD_REQUEST);

@@ -1,5 +1,7 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
+import com.kakao.cafe.exception.repository.RequiredFieldNotFoundException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -97,12 +100,11 @@ class UserRepositoryTest {
                         .build();
 
                 // then
-                repository.save(user1);
-                repository.save(user2);
-                repository.findAll()
-                        .ifPresentOrElse(
-                                users -> assertThat(users).size().isEqualTo(1),
-                                Assertions::fail);
+                assertThatThrownBy(()->{
+                    repository.save(user1);
+                    repository.save(user2);
+                })
+                        .isInstanceOf(UniqueFieldDuplicatedException.class);
             }
 
             @Test
@@ -117,11 +119,8 @@ class UserRepositoryTest {
                         .build();
 
                 // then
-                repository.save(user);
-                repository.findAll()
-                        .ifPresentOrElse(
-                                users -> assertThat(users).size().isEqualTo(0),
-                                Assertions::fail);
+                assertThatThrownBy(()->repository.save(user))
+                        .isInstanceOf(RequiredFieldNotFoundException.class);
             }
 
             @Test
@@ -136,11 +135,8 @@ class UserRepositoryTest {
                         .build();
 
                 // then
-                repository.save(user);
-                repository.findAll()
-                        .ifPresentOrElse(
-                                users -> assertThat(users).size().isEqualTo(0),
-                                Assertions::fail);
+                assertThatThrownBy(()->repository.save(user))
+                        .isInstanceOf(RequiredFieldNotFoundException.class);
             }
 
             @Test
@@ -155,11 +151,8 @@ class UserRepositoryTest {
                         .build();
 
                 // then
-                repository.save(user);
-                repository.findAll()
-                        .ifPresentOrElse(
-                                users -> assertThat(users).size().isEqualTo(0),
-                                Assertions::fail);
+                assertThatThrownBy(()->repository.save(user))
+                        .isInstanceOf(RequiredFieldNotFoundException.class);
             }
 
             @Test
@@ -174,11 +167,8 @@ class UserRepositoryTest {
                         .build();
 
                 // then
-                repository.save(user);
-                repository.findAll()
-                        .ifPresentOrElse(
-                                users -> assertThat(users).size().isEqualTo(0),
-                                Assertions::fail);
+                assertThatThrownBy(()->repository.save(user))
+                        .isInstanceOf(RequiredFieldNotFoundException.class);
             }
         }
 

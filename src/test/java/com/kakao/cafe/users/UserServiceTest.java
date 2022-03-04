@@ -2,6 +2,7 @@ package com.kakao.cafe.users;
 
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.domain.UserRepository;
+import com.kakao.cafe.users.exception.UserDuplicatedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -76,7 +77,7 @@ class UserServiceTest {
 
             // assert
             assertThatThrownBy(() -> userService.join(user))
-                    .isInstanceOf(IllegalStateException.class)
+                    .isInstanceOf(UserDuplicatedException.class)
                     .hasMessageContaining("이미 존재하는 회원입니다.");
         }
     }

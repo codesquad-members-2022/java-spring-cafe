@@ -2,6 +2,7 @@ package com.kakao.cafe.users;
 
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.domain.UserRepository;
+import com.kakao.cafe.users.exception.UserDuplicatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void validateDuplicateUser(User user) {
+    private void validateDuplicateUser(User user) throws UserDuplicatedException {
         if (userRepository.findByUserId(user.getUserId()).isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new UserDuplicatedException("이미 존재하는 회원입니다.");
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
+import com.kakao.cafe.exception.repository.RequiredFieldNotFoundException;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
@@ -18,17 +20,12 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<Long> save(User user) {
-        try {
-            validateRequiredField(user);
-            validateUserIdUnique(user);
+        validateRequiredField(user);
+        validateUserIdUnique(user);
 
-            User idGeneratedUser = getIdGeneratedUser(user);
-            userRegistry.add(idGeneratedUser);
-            return Optional.of(idGeneratedUser.getId());
-        } catch (IllegalArgumentException e) {
-            return Optional.empty();
-        }
-
+        User idGeneratedUser = getIdGeneratedUser(user);
+        userRegistry.add(idGeneratedUser);
+        return Optional.of(idGeneratedUser.getId());
     }
 
     private User getIdGeneratedUser(User user) {
@@ -70,13 +67,13 @@ public class MemoryUserRepository implements UserRepository {
     private void validateRequiredField(User user) {
         if (user.getUserId() == null || user.getPasswd() == null ||
                 user.getName() == null || user.getEmail() == null ) {
-            throw new IllegalArgumentException("필수 정보가 없습니다.");
+            throw new RequiredFieldNotFoundException("필수 정보가 없습니다.");
         }
     }
 
     private void validateUserIdUnique(User user) {
         if (findByUserId(user.getUserId()).isPresent()) {
-            throw new IllegalArgumentException("userId 는 중복될 수 없습니다.");
+            throw new UniqueFieldDuplicatedException("userId 는 중복될 수 없습니다.");
         }
     }
 }
