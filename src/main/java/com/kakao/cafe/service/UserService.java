@@ -2,8 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
+import com.kakao.cafe.exception.UserException;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,7 +34,9 @@ public class UserService {
 
     public UserResponseDto findUser(String userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> {
+                    throw new UserException(HttpStatus.BAD_REQUEST, "찾으시는 유저가 없습니다.");
+                });
         return new UserResponseDto(user);
     }
 
@@ -42,7 +46,7 @@ public class UserService {
 
     private void checkDuplicateId(User user) {
         userRepository.findById(user.getUserId()).ifPresent(u -> {
-            throw new IllegalArgumentException("중복된 아이디가 있습니다.");
+            throw new UserException(HttpStatus.BAD_REQUEST, "아이디가 이미 존재합니다.");
         });
     }
 }
