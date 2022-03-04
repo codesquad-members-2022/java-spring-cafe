@@ -1,23 +1,27 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.controller.UserForm;
+
 public class User {
 
-    private Long id;
+    private String userId;
     private String name;
+    private String email;
 
-    public Long getId() {
-        return id;
+    public User(UserForm form) {
+        this.name = form.getName();
+        this.email = form.getEmail();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
