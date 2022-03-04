@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class UserMemoryRepository implements UserRepository {
@@ -16,9 +14,15 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        user.setId(id++);
-        userList.add(user);
-        log.info("userList: {}", userList);
+        if (Objects.isNull(user.getId())) {
+            user.setId(id++);
+            userList.add(user);
+            log.info("userList: {}", userList);
+            return;
+        }
+        User originalUser = findByUserId(user.getUserId())
+                .orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
+        originalUser = user;
     }
 
     @Override
