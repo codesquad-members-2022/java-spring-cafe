@@ -1,12 +1,14 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -41,5 +43,17 @@ public class UserController {
     public String profile(@PathVariable String userId, Model model) {
         model.addAttribute("user", userService.findByUserId(userId));
         return "user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String updatePage(@PathVariable String userId, Model model) {
+        model.addAttribute("user", userService.findByUserId(userId));
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{userId}/update")
+    public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequestDto dto) {
+        userService.update(dto);
+        return "redirect:/users";
     }
 }
