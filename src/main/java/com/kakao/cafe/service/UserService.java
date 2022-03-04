@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,9 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(MemoryUserRepository memoryUserRepository) {
 
-        this.userRepository = userRepository;
+        this.userRepository = memoryUserRepository;
     }
 
     public void join(User user) {
