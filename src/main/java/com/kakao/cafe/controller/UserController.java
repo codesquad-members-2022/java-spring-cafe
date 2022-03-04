@@ -36,13 +36,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String userDetails(@PathVariable("id") Long id, Model model) {
-        try {
-            User user = userService.findOne(id);
-            model.addAttribute("user", user);
-        } catch (NoSuchElementException e) {
-            //단건 조회 에러 예외처리 화면 리턴
-        }
+    public String show(@PathVariable("id") Long id, Model model) {
+        User user = userService.findOne(id);
+        model.addAttribute("user", user);
         return "users/profile";
     }
 
