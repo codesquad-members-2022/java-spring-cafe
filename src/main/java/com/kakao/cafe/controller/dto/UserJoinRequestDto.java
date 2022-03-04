@@ -18,14 +18,4 @@ public class UserJoinRequestDto {
     public User toEntity() {
         return new User(userId, password, name, email);
     }
-
-    @Override
-    public String toString() {
-        return "UserJoinRequestDto{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }
