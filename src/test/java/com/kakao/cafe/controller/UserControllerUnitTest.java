@@ -29,7 +29,6 @@ import static com.kakao.cafe.message.UserMessage.EXISTENT_ID_MESSAGE;
 import static com.kakao.cafe.message.UserMessage.NON_EXISTENT_ID_MESSAGE;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -64,7 +63,7 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
-        when(service.addUser(user)).thenReturn(user);
+        given(service.addUser(user)).willReturn(user);
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
@@ -85,7 +84,7 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
-        when(service.addUser(user)).thenThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.addUser(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
@@ -131,7 +130,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpFail")
     void getUserProfileSuccess(User user) throws Exception {
         String userId = user.getUserId();
-        when(service.findUser(userId)).thenReturn(user);
+        given(service.findUser(userId)).willReturn(user);
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         model().attributeExists("user"),
@@ -149,7 +148,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(User user) throws Exception {
         String userId = user.getUserId();
-        when(service.findUser(userId)).thenThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+        given(service.findUser(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         content().string(NON_EXISTENT_ID_MESSAGE),
