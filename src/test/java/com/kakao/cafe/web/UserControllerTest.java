@@ -34,7 +34,7 @@ class UserControllerTest {
     void joinForm() throws Exception {
         mockMvc.perform(get("/user/create"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("form"));
+                .andExpect(view().name("/user/form"));
     }
 
     @Test
@@ -64,7 +64,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
                 .andExpect(model().attribute("users", List.of(userResponseDto)))
-                .andExpect(view().name("list"));
+                .andExpect(view().name("/user/list"));
     }
 
     @Test
@@ -78,6 +78,6 @@ class UserControllerTest {
         mockMvc.perform(get("/users/ron2"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userResponseDto))
-                .andExpect(view().name("profile"));
+                .andExpect(view().name("/user/profile"));
     }
 }

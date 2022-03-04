@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +31,7 @@ public class UserController {
     @GetMapping("/user/create")
     public String joinForm() {
         logger.info("user in joinForm");
-        return "form";
+        return "/user/form";
     }
 
     @PostMapping("/user/create")
@@ -49,7 +48,7 @@ public class UserController {
         List<UserResponseDto> userResponseDtos = userService.findAll();
         model.addAttribute("users", userResponseDtos);
 
-        return "list";
+        return "/user/list";
     }
 
     @GetMapping("/users/{userid}")
@@ -58,7 +57,7 @@ public class UserController {
         UserResponseDto userResponseDto = userService.findUser(userid);
         model.addAttribute("user", userResponseDto);
 
-        return "profile";
+        return "/user/profile";
     }
 
 }
