@@ -2,12 +2,28 @@ package com.kakao.cafe.controller.dto;
 
 import com.kakao.cafe.domain.User;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class UserDto {
+
     private Long id;
+
+    @NotBlank
     private String userId;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String name;
+
+    @Email
     private String email;
+
+    public User toEntity() {
+        return new User(userId, password, name, email);
+    }
 
     public Long getId() {
         return id;
@@ -49,7 +65,14 @@ public class UserDto {
         this.email = email;
     }
 
-    public User createUser() {
-        return new User(getUserId(), getPassword(), getName(), getEmail());
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

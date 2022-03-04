@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private static final List<User> users = new ArrayList<>();
-    private static AtomicLong sequence = new AtomicLong();
+    private final List<User> users = new ArrayList<>();
+    private final AtomicLong sequence = new AtomicLong();
 
     @Override
     public void save(User user) {
@@ -21,7 +21,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public User findById(Long id) {
         return users.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.isSameId(id))
                 .findFirst()
                 .get();
     }

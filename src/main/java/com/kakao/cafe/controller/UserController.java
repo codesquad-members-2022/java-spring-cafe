@@ -1,10 +1,14 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +20,30 @@ import java.util.List;
 @Controller
 public class UserController {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        model.addAttribute("userDto", new UserDto());
+        return "user/form";
+        logger.wa
+    }
+
+    @PostMapping("/create")
+    public String create(@Validated UserDto userDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.error("errors={}", bindingResult);
+            return "user/form";
+        }
+
+        User user = userDto.toEntity();
+        userService.join(user);
+        return "redirect:/users";
     }
 
     @GetMapping
@@ -27,13 +51,6 @@ public class UserController {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
-    }
-
-    @PostMapping
-    public String createUser(UserDto userDto) {
-        User user = userDto.createUser();
-        userService.join(user);
-        return "redirect:/users";
     }
 
     @GetMapping("/{userId}")

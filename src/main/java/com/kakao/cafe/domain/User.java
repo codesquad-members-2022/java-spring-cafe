@@ -37,4 +37,8 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    public boolean isSameId(Long id) {
+        return this.id.equals(id);
+    }
 }
