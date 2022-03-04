@@ -21,14 +21,26 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public User findById(Long id) {
         return users.stream()
-                .filter(user -> user.isSameId(id))
+                .filter(user -> user.isEqualsId(id))
                 .findFirst()
-                .get();
+                .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 사용자는 존재하지 않습니다."));
     }
 
     @Override
     public List<User> findAll() {
         return users;
+    }
+
+    @Override
+    public boolean isExistUserId(String userId) {
+        return users.stream()
+                .anyMatch(user -> user.isEqualsUserId(userId));
+    }
+
+    @Override
+    public boolean isExistEmail(String email) {
+        return users.stream()
+                .anyMatch(user -> user.isEqualsEmail(email));
     }
 
 }
