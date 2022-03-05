@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,11 +14,11 @@ class MemoryUserRepositoryTest {
 
     private UserRepository userRepository = new MemoryUserRepository();
 
-    private UserInformation userInformation;
+    private User user;
 
     @BeforeEach
     void setup() {
-        userInformation = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
+        user = new User("ikjo", "1234", "조명익", "auddlr100@naver.com");
     }
 
     @AfterEach
@@ -26,58 +26,58 @@ class MemoryUserRepositoryTest {
         userRepository.clear();
     }
 
-    @DisplayName("주어진 UserInformation 객체의 사용자 정보 데이터를 저장한다.")
+    @DisplayName("주어진 user 객체의 사용자 정보 데이터를 저장한다.")
     @Test
     void 사용자_정보_저장() {
         // when
-        userRepository.save(userInformation);
+        userRepository.save(user);
 
         // then
-        UserInformation result = userRepository.findByUserId(userInformation.getUserId()).get();
-        assertThat(result).isEqualTo(userInformation);
+        User result = userRepository.findByUserId(user.getUserId()).get();
+        assertThat(result).isEqualTo(user);
     }
 
     @DisplayName("특정 사용자 ID로 해당 사용자 정보 데이터를 조회한다.")
     @Test
     void 특정_사용자_정보_조회() {
         // given
-        userRepository.save(userInformation);
+        userRepository.save(user);
 
         // when
-        UserInformation result = userRepository.findByUserId(userInformation.getUserId()).get();
+        User result = userRepository.findByUserId(user.getUserId()).get();
 
         // then
-        assertThat(result).isEqualTo(userInformation);
+        assertThat(result).isEqualTo(user);
     }
 
     @DisplayName("저장된 사용자 정보 2개를 모두 조회한다.")
     @Test
     void 모든_사용자_정보_조회() {
         // given
-        userRepository.save(userInformation);
-        userRepository.save(new UserInformation("ikjo93", "1234", "조명익", "auddlr100@naver.com"));
+        userRepository.save(user);
+        userRepository.save(new User("ikjo93", "1234", "조명익", "auddlr100@naver.com"));
 
         // when
-        List<UserInformation> allUserInformation = userRepository.findAll();
+        List<User> users = userRepository.findAll();
 
         // then
-        assertThat(allUserInformation.size()).isEqualTo(2);
+        assertThat(users.size()).isEqualTo(2);
     }
 
     @DisplayName("기존 사용자 정보를 수정한다.")
     @Test
     void 사용자_정보_수정() {
         // given
-        userRepository.save(userInformation);
+        userRepository.save(user);
 
         // when
-        userRepository.save(new UserInformation("ikjo", "1234", "익조", "auddlr100@naver.com"));
+        userRepository.save(new User("ikjo", "1234", "익조", "auddlr100@naver.com"));
 
         // then
-        UserInformation result = userRepository.findByUserId(userInformation.getUserId()).get();
-        List<UserInformation> allUserInformation = userRepository.findAll();
+        User result = userRepository.findByUserId(user.getUserId()).get();
+        List<User> users = userRepository.findAll();
 
         assertThat(result.getName()).isEqualTo("익조");
-        assertThat(allUserInformation.size()).isEqualTo(1);
+        assertThat(users.size()).isEqualTo(1);
     }
 }

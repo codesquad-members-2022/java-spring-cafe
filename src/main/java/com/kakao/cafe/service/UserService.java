@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
@@ -14,24 +14,24 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserInformation join(UserInformation userInformation) {
-        validateDuplicateUser(userInformation.getUserId());
+    public User join(User users) {
+        validateDuplicateUser(users.getUserId());
 
-        return userRepository.save(userInformation);
+        return userRepository.save(users);
     }
 
-    public UserInformation update(String userId, UserInformation updatedUserInformation) {
-        UserInformation userInformation = userRepository.findByUserId(userId).get();
-        validatePassword(userInformation, updatedUserInformation.getPassword());
+    public User update(String userId, User updatedUsers) {
+        User users = userRepository.findByUserId(userId).get();
+        validatePassword(users, updatedUsers.getPassword());
 
-        return userRepository.save(updatedUserInformation);
+        return userRepository.save(updatedUsers);
     }
 
-    public List<UserInformation> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public Optional<UserInformation> findOne(String userId) {
+    public Optional<User> findOne(String userId) {
         return userRepository.findByUserId(userId);
     }
 
@@ -45,8 +45,8 @@ public class UserService {
         });
     }
 
-    private void validatePassword(UserInformation userInformation, String password) {
-        if (userInformation.hasSamePassword(password) == false) {
+    private void validatePassword(User users, String password) {
+        if (users.hasSamePassword(password) == false) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }

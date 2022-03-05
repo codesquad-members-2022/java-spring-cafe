@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.Date;
 import java.util.List;
@@ -13,16 +13,16 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public UserArticle upload(UserArticle userArticle) {
+    public Article upload(Article userArticle) {
         userArticle.setCreatedDate(new Date());
         return articleRepository.save(userArticle);
     }
 
-    public List<UserArticle> findAll() {
+    public List<Article> findAll() {
         return articleRepository.findAll();
     }
 
-    public UserArticle findOne(Integer id) {
+    public Article findOne(Integer id) {
         return articleRepository.findById(id);
     }
 

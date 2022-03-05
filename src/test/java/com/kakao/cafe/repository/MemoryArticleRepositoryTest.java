@@ -2,7 +2,7 @@ package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +13,11 @@ public class MemoryArticleRepositoryTest {
 
     private ArticleRepository articleRepository = new MemoryArticleRepository();
 
-    private UserArticle userArticle;
+    private Article article;
 
     @BeforeEach
     void setup() {
-        userArticle = new UserArticle("ikjo", "java", "java is fun");
+        article = new Article("ikjo", "java", "java is fun");
     }
 
     @AfterEach
@@ -25,41 +25,41 @@ public class MemoryArticleRepositoryTest {
         articleRepository.clear();
     }
 
-    @DisplayName("주어진 UserArticle 객체의 사용자 정보 데이터를 저장한다.")
+    @DisplayName("주어진 article 객체의 사용자 정보 데이터를 저장한다.")
     @Test
     void 사용자_정보_저장() {
         // when
-        articleRepository.save(userArticle);
+        articleRepository.save(article);
 
         // then
-        UserArticle result = articleRepository.findById(1);
-        assertThat(result).isEqualTo(userArticle);
+        Article result = articleRepository.findById(1);
+        assertThat(result).isEqualTo(article);
     }
 
     @DisplayName("게시글 ID로 해당 게시글 정보 데이터를 조회한다.")
     @Test
     void 특정_사용자_정보_조회() {
         // given
-        articleRepository.save(userArticle);
+        articleRepository.save(article);
 
         // when
-        UserArticle result = articleRepository.findById(1);
+        Article result = articleRepository.findById(1);
 
         // then
-        assertThat(result).isEqualTo(userArticle);
+        assertThat(result).isEqualTo(article);
     }
 
     @DisplayName("저장된 게시글 정보 2개를 모두 조회한다.")
     @Test
     void 모든_사용자_정보_조회() {
         // given
-        articleRepository.save(userArticle);
-        articleRepository.save(new UserArticle("ikjo", "python", "python is fun"));
+        articleRepository.save(article);
+        articleRepository.save(new Article("ikjo", "python", "python is fun"));
 
         // when
-        List<UserArticle> allUserArticle = articleRepository.findAll();
+        List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(allUserArticle.size()).isEqualTo(2);
+        assertThat(articles.size()).isEqualTo(2);
     }
 }

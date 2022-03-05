@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,21 +47,21 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUserInformation(UserInformation userInformation) {
+    public String createUser(User user) {
         logger.info("POST /users userId = {} password = {} name = {} email = {}"
-              , userInformation.getUserId(), userInformation.getPassword()
-              , userInformation.getName(), userInformation.getEmail());
-        userService.join(userInformation);
+              , user.getUserId(), user.getPassword()
+              , user.getName(), user.getEmail());
+        userService.join(user);
 
         return "redirect:/users";
     }
 
     @PutMapping("/users/{id}/update")
-    public String updateUserInformation(@PathVariable String id, UserInformation updatedUserInformation) {
+    public String updateUser(@PathVariable String id, User updatedUser) {
         logger.info("PUT /users userId = {} password = {} name = {} email = {}"
-            , updatedUserInformation.getUserId(), updatedUserInformation.getPassword()
-            , updatedUserInformation.getName(), updatedUserInformation.getEmail());
-        userService.update(id, updatedUserInformation);
+            , updatedUser.getUserId(), updatedUser.getPassword()
+            , updatedUser.getName(), updatedUser.getEmail());
+        userService.update(id, updatedUser);
 
         return "redirect:/users";
     }

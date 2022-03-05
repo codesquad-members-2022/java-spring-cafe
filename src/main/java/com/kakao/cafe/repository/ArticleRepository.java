@@ -1,13 +1,13 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import java.util.List;
 
 public interface ArticleRepository {
 
-    UserArticle save(UserArticle userArticle);
-    UserArticle findById(Integer id);
-    List<UserArticle> findAll();
+    Article save(Article userArticle);
+    Article findById(Integer id);
+    List<Article> findAll();
     void clear();
 
 }

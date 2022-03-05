@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UserArticle {
+public class Article {
 
     private Integer id;
     private String writer;
@@ -11,7 +11,7 @@ public class UserArticle {
     private String contents;
     private String createdDate;
 
-    public UserArticle(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

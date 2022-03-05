@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,20 +22,20 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String createUserArticle(UserArticle userArticle) {
+    public String createArticle(Article article) {
         logger.info("POST /questions writer = {} title = {} contents = {}",
-                    userArticle.getWriter(), userArticle.getTitle(), userArticle.getContents());
+                    article.getWriter(), article.getTitle(), article.getContents());
 
-        articleService.upload(userArticle);
+        articleService.upload(article);
 
         return "redirect:/";
     }
 
     @GetMapping("/articles/{index}")
-    public String getUserArticle(@PathVariable Integer index, Model model) {
+    public String getArticle(@PathVariable Integer index, Model model) {
         logger.info("GET /articles/{}", index);
-        UserArticle userArticle = articleService.findOne(index);
-        model.addAttribute("article", userArticle);
+        Article article = articleService.findOne(index);
+        model.addAttribute("article", article);
 
         return "/qna/show";
     }

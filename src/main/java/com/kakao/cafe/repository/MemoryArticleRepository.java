@@ -1,32 +1,32 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private List<UserArticle> userArticles = new ArrayList<>();
+    private List<Article> articles = new ArrayList<>();
 
     @Override
-    public UserArticle save(UserArticle userArticle) {
-        userArticle.setId(userArticles.size() + 1);
-        userArticles.add(userArticle);
-        return userArticle;
+    public Article save(Article article) {
+        article.setId(articles.size() + 1);
+        articles.add(article);
+        return article;
     }
 
     @Override
-    public UserArticle findById(Integer id) {
-        return userArticles.get(id - 1);
+    public Article findById(Integer id) {
+        return articles.get(id - 1);
     }
 
     @Override
-    public List<UserArticle> findAll() {
-        return new ArrayList<>(userArticles);
+    public List<Article> findAll() {
+        return new ArrayList<>(articles);
     }
 
     @Override
     public void clear() {
-        userArticles.clear();
+        articles.clear();
     }
 }

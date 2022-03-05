@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,21 +22,21 @@ public class ArticleServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
-    private UserArticle userArticle;
+    private Article article;
 
     @BeforeEach
     void setup() {
-        userArticle = new UserArticle("ikjo", "java", "java is fun");
+        article = new Article("ikjo", "java", "java is fun");
     }
 
-    @DisplayName("주어진 UserArticle 객체의 게시글 정보 데이터를 저장한다.")
+    @DisplayName("주어진 article 객체의 게시글 정보 데이터를 저장한다.")
     @Test
     void 게시글_저장() {
         // given
-        given(articleRepository.save(userArticle)).willReturn(userArticle);
+        given(articleRepository.save(article)).willReturn(article);
 
         // when
-        UserArticle result = articleService.upload(userArticle);
+        Article result = articleService.upload(article);
 
         // then
         assertThat(result.getWriter()).isEqualTo("ikjo");
@@ -48,11 +48,11 @@ public class ArticleServiceTest {
     @Test
     void 특정_게시글_정보_조회() {
         // given
-        userArticle.setId(1);
-        given(articleRepository.findById(1)).willReturn(userArticle);
+        article.setId(1);
+        given(articleRepository.findById(1)).willReturn(article);
 
         // when
-        UserArticle result = articleService.findOne(1);
+        Article result = articleService.findOne(1);
 
         // then
         assertThat(result.getId()).isEqualTo(1);
@@ -65,11 +65,11 @@ public class ArticleServiceTest {
     @Test
     void 모든_게시글_정보_조회() {
         // given
-        UserArticle otherUserArticle = new UserArticle("ikjo", "python", "python is fun");
-        given(articleRepository.findAll()).willReturn(List.of(userArticle, otherUserArticle));
+        Article otherArticle = new Article("ikjo", "python", "python is fun");
+        given(articleRepository.findAll()).willReturn(List.of(article, otherArticle));
 
         // when
-        List<UserArticle> result = articleService.findAll();
+        List<Article> result = articleService.findAll();
 
         // then
         assertThat(result.size()).isEqualTo(2);

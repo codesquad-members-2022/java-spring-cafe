@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,13 +39,13 @@ public class ArticleControllerTest {
     @Test
     void 게시글_저장() throws Exception {
         // given
-        MultiValueMap<String, String> userArticleParams = new LinkedMultiValueMap<>();
-        userArticleParams.add("writer", "ikjo");
-        userArticleParams.add("title", "java");
-        userArticleParams.add("contents", "java is fun");
+        MultiValueMap<String, String> articleParams = new LinkedMultiValueMap<>();
+        articleParams.add("writer", "ikjo");
+        articleParams.add("title", "java");
+        articleParams.add("contents", "java is fun");
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/questions").params(userArticleParams));
+        ResultActions resultActions = mockMvc.perform(post("/questions").params(articleParams));
 
         // then
         resultActions.andExpect(redirectedUrl("/"));
@@ -55,8 +55,8 @@ public class ArticleControllerTest {
     @Test
     void 특정_게시글_조회() throws Exception {
         // given
-        UserArticle userArticle = new UserArticle("ikjo", "java", "java is fun");
-        articleService.upload(userArticle);
+        Article article = new Article("ikjo", "java", "java is fun");
+        articleService.upload(article);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/articles/1"));
@@ -64,6 +64,6 @@ public class ArticleControllerTest {
         // then
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("/qna/show"))
-            .andExpect(model().attribute("article", userArticle));
+            .andExpect(model().attribute("article", article));
     }
 }

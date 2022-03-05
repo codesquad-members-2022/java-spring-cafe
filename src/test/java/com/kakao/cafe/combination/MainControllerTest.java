@@ -5,7 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.kakao.cafe.domain.UserArticle;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -36,10 +36,10 @@ public class MainControllerTest {
     @Test
     void 모든_게시글_정보_조회() throws Exception {
         // given
-        UserArticle userArticle1 = new UserArticle("ikjo", "java", "java is fun");
-        UserArticle userArticle2 = new UserArticle("ikjo", "python", "python is fun");
-        articleService.upload(userArticle1);
-        articleService.upload(userArticle2);
+        Article article1 = new Article("ikjo", "java", "java is fun");
+        Article article2 = new Article("ikjo", "python", "python is fun");
+        articleService.upload(article1);
+        articleService.upload(article2);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/"));
@@ -47,6 +47,6 @@ public class MainControllerTest {
         // then
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("/index"))
-            .andExpect(model().attribute("articles", List.of(userArticle1, userArticle2)));
+            .andExpect(model().attribute("articles", List.of(article1, article2)));
     }
 }

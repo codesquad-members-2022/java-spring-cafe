@@ -6,13 +6,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class UserInformationTest {
+public class UserTest {
 
-    private UserInformation userInformation;
+    private User userInformation;
 
     @BeforeEach
     void setup() {
-        userInformation = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
+        userInformation = new User("ikjo", "1234", "조명익", "auddlr100@naver.com");
     }
 
     @DisplayName("사용자 정보 중 ID 값(userId)이 ikjo와 일치한다.")
