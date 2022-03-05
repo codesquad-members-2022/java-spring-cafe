@@ -66,7 +66,7 @@ public class MemberController {
     @PostMapping("{id}/edit")
     public String edit(ProfileChangeRequest request) {
         memberService.edit(request);
-        return "redirect:/";
+        return "redirect:/members";
     }
 
     /**

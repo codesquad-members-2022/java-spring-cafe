@@ -3,6 +3,7 @@ package com.kakao.cafe.web.controller.member.dto;
 import com.kakao.cafe.core.domain.member.Member;
 
 public class JoinResponse {
+
     private String email;
     private String nickName;
 
@@ -22,5 +23,4 @@ public class JoinResponse {
     public void setEmail(String email) {
         this.email = email;
     }
-
 }

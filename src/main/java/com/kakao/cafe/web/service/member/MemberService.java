@@ -47,10 +47,7 @@ public class MemberService {
 
     public ProfileChangeResponse getMemberDetails(Long id, ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(id).orElseThrow();
-        request.setId(findMember.getId());
-        request.setEmail(findMember.getEmail());
-        request.setNickName(findMember.getNickName());
-        request.setCreateAt(findMember.getCreateAt());
+        request.enrollInformation(findMember);
         return new ProfileChangeResponse(request);
     }
 }

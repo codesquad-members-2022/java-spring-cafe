@@ -26,7 +26,7 @@ public class JoinRequest {
         return nickName;
     }
 
-    public void setEmail(String email) {
+    public void enrollEmail(String email) {
         this.email = email;
     }
 

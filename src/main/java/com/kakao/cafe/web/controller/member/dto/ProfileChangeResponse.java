@@ -16,10 +16,6 @@ public class ProfileChangeResponse {
         this.createAt = request.getCreateAt();
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public Long getId() {
         return id;
     }
@@ -28,16 +24,11 @@ public class ProfileChangeResponse {
         return nickName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public LocalDateTime getCreateAt() {
         return createAt;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
 }

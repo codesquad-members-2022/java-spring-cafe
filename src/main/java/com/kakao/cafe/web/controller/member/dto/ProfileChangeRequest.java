@@ -1,5 +1,7 @@
 package com.kakao.cafe.web.controller.member.dto;
 
+import com.kakao.cafe.core.domain.member.Member;
+
 import java.time.LocalDateTime;
 
 public class ProfileChangeRequest {
@@ -32,19 +34,10 @@ public class ProfileChangeRequest {
         return createAt;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
+    public void enrollInformation(Member member) {
+        this.id = member.getId();
+        this.nickName = member.getNickName();
+        this.email = member.getEmail();
+        this.createAt = member.getCreateAt();
     }
 }
