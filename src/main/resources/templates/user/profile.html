@@ -1,31 +1,13 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>kakao Java Web Programming</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/css/reset.css" rel="stylesheet">
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    {{> header}}
     <link href="/css/index.css" rel="stylesheet">
 
 </head>
 <body>
 <div class="background">
-    <nav class="navbar navbar-fixed-top header">
-        <div class="col-md-12">
-            <div class="navbar-header">
-                <a class="navbar-brand">
-                    <img src="images/KakaoCI.png" alt=""/>
-                </a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="black-component" href="/users" type="button">멤버 리스트</a></li>
-                <li><a class="black-component" href="/">회원가입</a></li>
-            </ul>
-        </div>
-    </nav>
-
+    {{> navbar}}
     <div class="description">
         <div class="desc-container">
             <p class="desc-big">회원정보 상세보기</p>
