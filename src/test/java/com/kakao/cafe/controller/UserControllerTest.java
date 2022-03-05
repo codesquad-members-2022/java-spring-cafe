@@ -40,20 +40,20 @@ public class UserControllerTest {
         userInformation = new UserInformation("ikjo", "1234", "조명익", "auddlr100@naver.com");
     }
 
-    @DisplayName("사용자가 회원가입을 요청하면 사용자 정보를 정상 저장 시 /users로 리다이렉트한다.")
+    @DisplayName("사용자가 회원가입을 요청하면 사용자 정보를 저장하고 /users로 리다이렉트한다.")
     @Test
     void 회원_가입() throws Exception {
         // given
-        MultiValueMap<String, String> userInformationParam = new LinkedMultiValueMap<>();
-        userInformationParam.add("userId", "ikjo");
-        userInformationParam.add("password", "1234");
-        userInformationParam.add("name", "조명익");
-        userInformationParam.add("email", "auddlr100@naver.com");
+        MultiValueMap<String, String> userInformationParams = new LinkedMultiValueMap<>();
+        userInformationParams.add("userId", "ikjo");
+        userInformationParams.add("password", "1234");
+        userInformationParams.add("name", "조명익");
+        userInformationParams.add("email", "auddlr100@naver.com");
 
         given(userService.join(any(UserInformation.class))).willReturn(userInformation);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/users").params(userInformationParam));
+        ResultActions resultActions = mockMvc.perform(post("/users").params(userInformationParams));
 
         // then
         resultActions.andExpect(redirectedUrl("/users"));

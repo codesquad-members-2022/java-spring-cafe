@@ -85,10 +85,10 @@ public class UserServiceTest {
         given(userRepository.findAll()).willReturn(List.of(userInformation, otherUserInformation));
 
         // when
-        List<UserInformation> userInformation = userService.findAllUsers();
+        List<UserInformation> result = userService.findAllUsers();
 
         // then
-        assertThat(userInformation.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
     }
 
     @DisplayName("기존 사용자 정보를 수정한다.")
