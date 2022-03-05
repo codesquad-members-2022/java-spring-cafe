@@ -1,7 +1,5 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.combination;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -11,33 +9,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.dto.UserArticle;
 import com.kakao.cafe.service.ArticleService;
-import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-@WebMvcTest(ArticleController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 public class ArticleControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @Autowired
     private ArticleService articleService;
-
-    private UserArticle userArticle;
-
-    @BeforeEach
-    void setup() {
-        userArticle = new UserArticle("ikjo", "java", "java is fun");
-    }
 
     @AfterEach
     void close() {
@@ -53,8 +44,6 @@ public class ArticleControllerTest {
         userArticleParams.add("title", "java");
         userArticleParams.add("contents", "java is fun");
 
-        given(articleService.upload(any(UserArticle.class))).willReturn(userArticle);
-
         // when
         ResultActions resultActions = mockMvc.perform(post("/questions").params(userArticleParams));
 
@@ -66,8 +55,8 @@ public class ArticleControllerTest {
     @Test
     void 특정_게시글_조회() throws Exception {
         // given
-        userArticle.setCreatedDate(new Date());
-        given(articleService.findOne(1)).willReturn(userArticle);
+        UserArticle userArticle = new UserArticle("ikjo", "java", "java is fun");
+        articleService.upload(userArticle);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/articles/1"));

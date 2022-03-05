@@ -52,7 +52,7 @@ public class ArticleServiceTest {
         given(articleRepository.findById(1)).willReturn(userArticle);
 
         // when
-        UserArticle result = articleService.findOneArticle(1);
+        UserArticle result = articleService.findOne(1);
 
         // then
         assertThat(result.getId()).isEqualTo(1);
@@ -69,7 +69,7 @@ public class ArticleServiceTest {
         given(articleRepository.findAll()).willReturn(List.of(userArticle, otherUserArticle));
 
         // when
-        List<UserArticle> result = articleService.findAllArticles();
+        List<UserArticle> result = articleService.findAll();
 
         // then
         assertThat(result.size()).isEqualTo(2);
