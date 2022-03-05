@@ -9,6 +9,7 @@ public class Article {
     private final String title;
     private final String contents;
     private final LocalDateTime dateOfIssue;
+    private int id;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -33,6 +34,18 @@ public class Article {
         return this.dateOfIssue.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public boolean isSameId(int articleId) {
+        return this.id == articleId;
+    }
+
     @Override
     public String toString() {
         return "Article{" +
@@ -40,6 +53,7 @@ public class Article {
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 ", dateOfIssue=" + dateOfIssue +
+                ", id=" + id +
                 '}';
     }
 }
