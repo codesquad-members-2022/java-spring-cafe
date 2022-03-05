@@ -48,12 +48,12 @@
                     </thead>
 
                     <tbody>
-                    {{#userProfile}}
+                    {{#users}}
                     <tr>
                         <td>{{id}}</td>
-                        <td>{{nickname}}</td>
+                        <td><a href="/users/{{nickname}}">{{nickname}}</a></td>
                     </tr>
-                    {{/userProfile}}
+                    {{/users}}
 
                     </tbody>
                 </table>
