@@ -89,6 +89,21 @@ public class UserControllerTest {
                      .andExpect(model().attribute("user", userInformation));
     }
 
+    @DisplayName("사용자가 회원 정보 수정 화면을 요청 했을 때 model과 /user/updateForm view를 반환한다.")
+    @Test
+    void 회원_정보_수정_화면_보기() throws Exception {
+        // given
+        given(userService.findOneUser("ikjo")).willReturn(Optional.of(userInformation));
+
+        // when
+        ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form"));
+
+        // then
+        resultActions.andExpect(status().isOk())
+            .andExpect(view().name("/user/updateForm"))
+            .andExpect(model().attribute("user", userInformation));
+    }
+
     @DisplayName("사용자가 사용자 정보 수정을 요청하면 사용자 정보를 정상 처리 시 /users로 리다이렉트한다.")
     @Test
     void 사용자_정보_수정() throws Exception {
