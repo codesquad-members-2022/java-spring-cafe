@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header" />
+<body>
+<div th:replace="fragments/bodyHeader :: bodyHeader" />
+
+<div class="container" id="main">
+   <div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default content-main">
+          <form name="question" role="form" method="post" th:action="@{/users}" th:object="${userCreateDto}">
+              <div class="form-group">
+                  <label th:for="userId">사용자 아이디</label>
+                  <input class="form-control" id="userId" th:field="*{userId}" name="userId" placeholder="User ID">
+              </div>
+              <div class="form-group">
+                  <label th:for="password">비밀번호</label>
+                  <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Password">
+              </div>
+              <div class="form-group">
+                  <label th:for="name">이름</label>
+                  <input class="form-control" th:field="*{name}" id="name" name="name" placeholder="Name">
+              </div>
+              <div class="form-group">
+                  <label th:for="email">이메일</label>
+                  <input type="email" class="form-control" th:field="*{email}" id="email" name="email" placeholder="Email">
+              </div>
+              <button type="submit" class="btn btn-success clearfix pull-right">회원가입</button>
+              <div class="clearfix" />
+          </form>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+<div th:replace="fragments/footer :: footer" />
+	</body>
+</html>
