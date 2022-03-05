@@ -10,6 +10,4 @@ public interface UserRepository extends Repository<User, Long> {
 	boolean existByUserId(String userId);
 
 	boolean existByName(String name);
-
-	void deleteAll();
 }

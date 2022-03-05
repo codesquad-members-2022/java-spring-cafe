@@ -26,7 +26,8 @@ public class UserController {
 	}
 
 	@PostMapping()
-	public String signUp(UserDto userDto) {
+	public String signUp(UserDto.Request userDto) {
+		userDto.isValid(logger);
 		logger.info("user sign up {}",userDto);
 		userService.register(userDto);
 		return "redirect:/users";
@@ -39,10 +40,28 @@ public class UserController {
 		return "/user/list";
 	}
 
-	@GetMapping("/{userId}")
-	public String update(@PathVariable Long userId, Model model) {
-		model.addAttribute("user",userService.findUser(userId));
+	@GetMapping("/{id}")
+	public String readProfile(@PathVariable Long id, Model model) {
+		logger.info("profile : {}", id);
+		UserDto.Response user = userService.find(id);
+		model.addAttribute("user", user);
 		return "/user/profile";
+	}
+
+	@GetMapping("/{id}/form")
+	public String updateView(@PathVariable Long id, Model model) {
+		logger.info("view profile: {}", id);
+		UserDto.Response user = userService.find(id);
+		model.addAttribute("user", user);
+		return "/user/updateForm";
+	}
+
+	@PostMapping("/{id}/update")
+	public String update(@PathVariable Long id, UserUpdateDto.Request userDto, Model model) {
+		userDto.isValid(logger);
+		logger.info("update profile: {}", id);
+		userService.changeProfile(userDto);
+		return "redirect:/users/";
 	}
 
 	/*

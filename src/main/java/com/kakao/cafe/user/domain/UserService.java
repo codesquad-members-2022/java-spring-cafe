@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kakao.cafe.common.exception.NotFoundDomainException;
+import com.kakao.cafe.common.exception.DomainNotFoundException;
 
 @Service
 public class UserService {
@@ -16,11 +16,11 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public void register(UserDto userDto) {
+	public void register(UserDto.Request userDto) {
 		if (userRepository.existByUserId(userDto.getUserId()) || userRepository.existByName(userDto.getName())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
-		User user = new User(userDto.getId(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
+		User user = new User(userDto.getIdNull(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		userRepository.save(user);
 	}
 
@@ -28,10 +28,21 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public User findUser(Long id) {
+	public UserDto.Response find(Long id) {  // TODO 응답 dto 로 변경
+		User user = get(id);
+		return new UserDto.Response(user);
+	}
+
+	private User get(Long id) {
 		return userRepository.findById(id)
 			.orElseThrow(() -> {
-				throw new NotFoundDomainException("user");
+				throw new DomainNotFoundException("user");
 			});
+	}
+
+	public void changeProfile(UserUpdateDto.Request userDto) {
+		User user = get(userDto.getIdByLong());
+		user.update(userDto);
+		userRepository.save(user);
 	}
 }

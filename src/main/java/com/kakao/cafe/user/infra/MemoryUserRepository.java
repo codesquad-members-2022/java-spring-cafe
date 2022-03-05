@@ -4,18 +4,18 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
-import com.kakao.cafe.common.exception.NotFoundDomainException;
+import com.kakao.cafe.common.exception.DomainNotFoundException;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
 	public static final String ERROR_OF_USER_ID = "user id";
+
 	private Map<Long, User> data = new LinkedHashMap<>();
 
 	@Override
@@ -44,7 +44,7 @@ public class MemoryUserRepository implements UserRepository {
 			throw new IllegalArgumentException(ERROR_OF_USER_ID);
 		}
 		if (!data.containsKey(id)) {
-			throw new NotFoundDomainException(ERROR_OF_USER_ID);
+			throw new DomainNotFoundException(ERROR_OF_USER_ID);
 		}
 		User user = data.get(id);
 		return Optional.of(user);
