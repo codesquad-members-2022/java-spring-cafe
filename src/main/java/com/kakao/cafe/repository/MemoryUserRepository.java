@@ -13,13 +13,17 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public UserInformation save(UserInformation userInformation) {
-        int index = findUserId(userInformation.getUserId());
-        if (index == -1) {
-            userInformationStore.add(userInformation);
-            return userInformation;
-        }
+        try {
+            int index = findUserId(userInformation.getUserId());
+            if (index == -1) {
+                userInformationStore.add(userInformation);
+                return userInformation;
+            }
 
-        userInformationStore.set(index, userInformation);
+            userInformationStore.set(index, userInformation);
+        } catch (Exception e) {
+            return null;
+        }
 
         return userInformation;
     }

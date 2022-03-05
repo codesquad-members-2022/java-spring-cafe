@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class UserController {
@@ -48,26 +47,22 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ModelAndView createUserInformation(UserInformation userInformation) {
+    public String createUserInformation(UserInformation userInformation) {
         logger.info("POST /users userId = {} password = {} name = {} email = {}"
               , userInformation.getUserId(), userInformation.getPassword()
               , userInformation.getName(), userInformation.getEmail());
+        userService.join(userInformation);
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("joinedUserId", userService.join(userInformation).getUserId());
-
-        return modelAndView;
+        return "redirect:/users";
     }
 
     @PutMapping("/users/{id}/update")
-    public ModelAndView updateUserInformation(@PathVariable String id, UserInformation updatedUserInformation) {
+    public String updateUserInformation(@PathVariable String id, UserInformation updatedUserInformation) {
         logger.info("PUT /users userId = {} password = {} name = {} email = {}"
             , updatedUserInformation.getUserId(), updatedUserInformation.getPassword()
             , updatedUserInformation.getName(), updatedUserInformation.getEmail());
+        userService.update(id, updatedUserInformation);
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("joinedUserId", userService.update(id, updatedUserInformation).getUserId());
-
-        return modelAndView;
+        return "redirect:/users";
     }
 }

@@ -18,11 +18,15 @@ public class ArticleService {
         return articleRepository.save(userArticle);
     }
 
-    public List<UserArticle> findAllArticles() {
+    public List<UserArticle> findAll() {
         return articleRepository.findAll();
     }
 
-    public UserArticle findOneArticle(Integer id) {
+    public UserArticle findOne(Integer id) {
         return articleRepository.findById(id);
+    }
+
+    public void deleteAll() {
+        articleRepository.clear();
     }
 }

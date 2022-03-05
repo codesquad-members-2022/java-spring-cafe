@@ -21,7 +21,7 @@ public class MainController {
     @GetMapping("/")
     public String getMainPage(Model model) {
         logger.info("GET /");
-        model.addAttribute("articles", articleService.findAllArticles());
+        model.addAttribute("articles", articleService.findAll());
 
         return "/index";
     }

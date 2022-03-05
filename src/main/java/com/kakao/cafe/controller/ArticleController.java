@@ -34,7 +34,7 @@ public class ArticleController {
     @GetMapping("/articles/{index}")
     public String getUserArticle(@PathVariable Integer index, Model model) {
         logger.info("GET /articles/{}", index);
-        UserArticle userArticle = articleService.findOneArticle(index);
+        UserArticle userArticle = articleService.findOne(index);
         model.addAttribute("article", userArticle);
 
         return "/qna/show";
