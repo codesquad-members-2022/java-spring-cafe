@@ -14,7 +14,9 @@ public class ArticleMemorySaveRepository implements ArticleRepository {
     private final List<Article> articleStore = new ArrayList<>();
 
     @Override
-    public Article save(Article article) {
+    public Article articleSave(Article article) {
+        int id = articleStore.size() + 1;
+        article.setId(id);
         articleStore.add(article);
         return article;
     }
@@ -25,7 +27,14 @@ public class ArticleMemorySaveRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findIdArticle(int articleId) {
-        return Optional.of(articleStore.get(articleId));
+    public Optional<Article> findArticleById(int articleId) {
+        return articleStore.stream()
+                .filter(article ->
+                        article.isSameId(articleId)
+                ).findAny();
+    }
+
+    public void clearStore() {
+        articleStore.clear();
     }
 }

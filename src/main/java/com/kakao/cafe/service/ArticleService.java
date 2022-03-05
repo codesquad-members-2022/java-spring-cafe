@@ -26,7 +26,7 @@ public class ArticleService {
 
     public String generateArticle(Article article) {
         validateExistingUser(article);
-        articleRepository.save(article);
+        articleRepository.articleSave(article);
         log.info("generate Article = {}", article);
         return article.getTitle();
     }
@@ -44,4 +44,8 @@ public class ArticleService {
         return articleRepository.findAllArticle();
     }
 
+    public Article findArticleById(int articleId) {
+        return articleRepository.findArticleById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시물 번호입니다."));
+    }
 }
