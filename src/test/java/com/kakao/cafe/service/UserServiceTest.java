@@ -21,7 +21,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입을 하면 정보들이 MemoryUserRepository에 저장된다")
+    @DisplayName("회원가입을 하면 회원 정보가 MemoryUserRepository에 저장된다")
     void join_success() {
         User user1 = new User();
         user1.setNickname("bc");
