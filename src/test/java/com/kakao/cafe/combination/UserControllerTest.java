@@ -1,6 +1,6 @@
 package com.kakao.cafe.combination;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserControllerTest {
 
     @AfterEach
     void close() {
-        userService.deleteAllUsers();
+        userService.deleteAll();
     }
 
     @DisplayName("사용자가 회원가입을 요청하면 사용자 정보를 저장하고 리다이렉트한다.")

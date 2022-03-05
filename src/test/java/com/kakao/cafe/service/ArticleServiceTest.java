@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-import com.kakao.cafe.dto.UserArticle;
+import com.kakao.cafe.domain.UserArticle;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

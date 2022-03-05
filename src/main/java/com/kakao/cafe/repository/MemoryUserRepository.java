@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public UserInformation save(UserInformation userInformation) {
         try {
-            int index = findUserId(userInformation.getUserId());
+            int index = findExistingUserId(userInformation.getUserId());
             if (index == -1) {
                 userInformationStore.add(userInformation);
                 return userInformation;
@@ -28,10 +28,10 @@ public class MemoryUserRepository implements UserRepository {
         return userInformation;
     }
 
-    private int findUserId(String userId) {
+    private int findExistingUserId(String userId) {
         return IntStream.range(0, userInformationStore.size())
                 .filter(i -> userInformationStore.get(i).hasSameUserId(userId))
-                .findFirst().orElse(-1);
+                .findFirst().orElse(-1); // 해당되는 userId가 없는 경우 -1 반환
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -68,7 +68,7 @@ public class UserServiceTest {
         given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(userInformation));
 
         // when
-        UserInformation result = userService.findOneUser("ikjo").get();
+        UserInformation result = userService.findOne("ikjo").get();
 
         // then
         assertThat(result.getUserId()).isEqualTo("ikjo");
@@ -85,7 +85,7 @@ public class UserServiceTest {
         given(userRepository.findAll()).willReturn(List.of(userInformation, otherUserInformation));
 
         // when
-        List<UserInformation> result = userService.findAllUsers();
+        List<UserInformation> result = userService.findAll();
 
         // then
         assertThat(result.size()).isEqualTo(2);

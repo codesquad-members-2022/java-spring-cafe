@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Test
     void 회원_목록_보기() throws Exception {
         // given
-        given(userService.findAllUsers()).willReturn(List.of(userInformation));
+        given(userService.findAll()).willReturn(List.of(userInformation));
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users"));
@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     void 회원_프로필_보기() throws Exception {
         // given
-        given(userService.findOneUser("ikjo")).willReturn(Optional.of(userInformation));
+        given(userService.findOne("ikjo")).willReturn(Optional.of(userInformation));
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo"));
@@ -93,7 +93,7 @@ public class UserControllerTest {
     @Test
     void 회원_정보_수정_화면_보기() throws Exception {
         // given
-        given(userService.findOneUser("ikjo")).willReturn(Optional.of(userInformation));
+        given(userService.findOne("ikjo")).willReturn(Optional.of(userInformation));
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form"));

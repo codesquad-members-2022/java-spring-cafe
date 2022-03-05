@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
@@ -27,15 +27,15 @@ public class UserService {
         return userRepository.save(updatedUserInformation);
     }
 
-    public List<UserInformation> findAllUsers() {
+    public List<UserInformation> findAll() {
         return userRepository.findAll();
     }
 
-    public Optional<UserInformation> findOneUser(String userId) {
+    public Optional<UserInformation> findOne(String userId) {
         return userRepository.findByUserId(userId);
     }
 
-    public void deleteAllUsers() {
+    public void deleteAll() {
         userRepository.clear();
     }
 

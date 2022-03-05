@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.dto.UserArticle;
+import com.kakao.cafe.domain.UserArticle;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.Date;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.dto.UserArticle;
+import com.kakao.cafe.domain.UserArticle;
 import java.util.List;
 
 public interface ArticleRepository {

@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.UserInformation;
+import com.kakao.cafe.domain.UserInformation;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/users")
     public String getUserList(Model model) {
         logger.info("GET /users");
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("users", userService.findAll());
 
         return "/user/list";
     }
@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         logger.info("GET /users/{}", userId);
-        model.addAttribute("user", userService.findOneUser(userId).get());
+        model.addAttribute("user", userService.findOne(userId).get());
 
         return "/user/profile";
     }
@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/users/{id}/form")
     public String updateForm(@PathVariable String id, Model model) {
         logger.info("GET /users/{}/form", id);
-        model.addAttribute("user", userService.findOneUser(id).get());
+        model.addAttribute("user", userService.findOne(id).get());
 
         return "/user/updateForm";
     }
