@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/layout/header :: header_fragment}"></head>
+<body>
+<div th:insert="~{/layout/navigation :: navigation_bar}"></div>
+
+<div class="container" id="main">
+   <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each="user : ${users}">
+                    <th scope="row" th:text="${user.getId()}">1</th>
+                    <td><a th:href="@{/user/{userId}(userId=${user.getUserId()})}" th:text="${user.getUserId()}">javajigi</a></td>
+                    <td th:text="${user.getName()}">자바지기</td>
+                    <td th:text="${user.getEmail()}">javajigi@sample.net</td>
+                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+<script src="../js/jquery-2.2.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/scripts.js"></script>
+	</body>
+</html>
