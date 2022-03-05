@@ -24,6 +24,12 @@ public class UserController {
 
     @PostMapping("/user/form")
     public String create(User user){
+//        User user = new User(userForm);
+//        user.setId();
+        //DTO
+
+
+
         userService.join(user);
         return "redirect:/users";
     }
