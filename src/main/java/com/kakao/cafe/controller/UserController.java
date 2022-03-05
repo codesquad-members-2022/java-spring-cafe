@@ -21,7 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    //TODO : MvcConfig 로 @GetMapping 대체하기
     @GetMapping("/users")
     public String list(Model model) {
         List<User> users = userService.findUsers();
