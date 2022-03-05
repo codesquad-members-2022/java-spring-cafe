@@ -2,14 +2,17 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Member;
 import com.kakao.cafe.repository.MemberRepository;
-import com.kakao.cafe.repository.MemoryMemberRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 public class MemberService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
 
     //회원가입
     public Long join(Member member) {
