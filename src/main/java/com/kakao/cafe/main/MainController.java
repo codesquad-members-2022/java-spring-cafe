@@ -17,7 +17,7 @@ public class MainController {
 		this.articleService = articleService;
 	}
 
-	@GetMapping("/")
+	@GetMapping()
 	public String firstView(Model model) {
 		model.addAttribute("articles", articleService.getAllArticles());
 		return "index";

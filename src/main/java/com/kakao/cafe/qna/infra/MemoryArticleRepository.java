@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,8 @@ import com.kakao.cafe.qna.domain.ArticleRepository;
 public class MemoryArticleRepository implements ArticleRepository {
 	private static final String ERROR_OF_ARTICLE_ID = "article id";
 
+	private final Map<Long, Article> data = new LinkedHashMap<>();
 	private Logger logger = LoggerFactory.getLogger(MemoryArticleRepository.class);
-	private Map<Long, Article> data = new LinkedHashMap<>();
 
 	@Override
 	public void save(Article entity) {
@@ -65,6 +64,6 @@ public class MemoryArticleRepository implements ArticleRepository {
 
 	@Override
 	public void deleteAll() {
-		this.data = new LinkedHashMap<>();
+		this.data.clear();
 	}
 }

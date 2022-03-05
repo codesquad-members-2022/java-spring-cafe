@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
-import static com.kakao.cafe.common.utils.TypeFormatter.*;
+import static com.kakao.cafe.common.utils.StringValidator.*;
+import static com.kakao.cafe.common.utils.TypeConvertor.*;
 import static com.kakao.cafe.user.domain.UserDto.*;
 
 import java.util.Objects;
@@ -53,15 +54,11 @@ public class UserUpdateDto {
 		}
 
 		public void isValidWhenUpdate(Logger logger) {
-			if (isIdBlank()) {
+			if (isNullOrBlank(this.id)) {
 				logger.warn("request update user : {}", this);
 				throw new IllegalArgumentException(ERROR_OF_WHITE_SPACE);
 			}
 			isValid(logger);
-		}
-
-		private boolean isIdBlank() {
-			return (Objects.isNull(this.id) || this.id.isBlank());
 		}
 
 		public void isValid(Logger logger) {
@@ -72,19 +69,7 @@ public class UserUpdateDto {
 		}
 
 		private boolean isOneMoreBlank() {
-			return isUserIdBlank() || isNameBlank() || isEmailBlank();
-		}
-
-		private boolean isEmailBlank() {
-			return (Objects.isNull(this.email) || this.email.isBlank());
-		}
-
-		private boolean isNameBlank() {
-			return (Objects.isNull(this.name) || this.name.isBlank());
-		}
-
-		private boolean isUserIdBlank() {
-			return (Objects.isNull(this.userId) || this.userId.isBlank());
+			return isNullOrBlank(this.userId) || isNullOrBlank(this.name) || isNullOrBlank(this.email);
 		}
 
 		@Override
