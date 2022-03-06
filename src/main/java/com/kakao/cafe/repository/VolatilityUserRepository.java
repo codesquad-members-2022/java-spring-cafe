@@ -19,8 +19,8 @@ public class VolatilityUserRepository implements UserRepository {
     }
 
     @Override
-    public void insertUser(User user) {
-        users.add(user);
+    public Optional<User> insertUser(User user) {
+        return users.add(user) ? Optional.of(user) : Optional.empty();
     }
 
     @Override

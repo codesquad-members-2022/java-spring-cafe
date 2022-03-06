@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
+import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,8 @@ public class VolatilityUserService implements UserService {
     @Override
     public User addUser(User user) {
         validateDuplicateUser(user);
-        userRepository.insertUser(user);
-        return user;
+        return userRepository.insertUser(user)
+                .orElseThrow(() -> new SaveUserException(SAVE_FAIL_MESSAGE));
     }
     private void validateDuplicateUser(User user) {
         userRepository.selectUser(user.getUserId())

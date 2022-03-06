@@ -8,6 +8,6 @@ import java.util.Optional;
 public interface UserRepository {
 
     List<User> selectAll();
-    void insertUser(User user);
+    Optional<User> insertUser(User user);
     Optional<User> selectUser(String id);
 }

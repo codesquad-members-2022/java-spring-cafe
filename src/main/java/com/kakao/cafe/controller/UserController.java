@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
+import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +78,7 @@ public class UserController {
         response.setCharacterEncoding("UTF-8");
     }
 
-    @ExceptionHandler({ DuplicateUserIdException.class, NoSuchUserException.class })
+    @ExceptionHandler({ DuplicateUserIdException.class, NoSuchUserException.class, SaveUserException.class })
     public ResponseEntity<String> except(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
