@@ -12,6 +12,13 @@ public class User {
 
     public User() {}
 
+    private User(Builder builder) {
+        this.userId = builder.userId;
+        this.password = builder.password;
+        this.name = builder.name;
+        this.email = builder.email;
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -34,13 +41,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    private User(Builder builder) {
-        this.userId = builder.userId;
-        this.password = builder.password;
-        this.name = builder.name;
-        this.email = builder.email;
     }
 
     public static Builder builder(String userId) {
