@@ -18,7 +18,11 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Optional<Article> findById(int id) {
-        return Optional.ofNullable(articles.get(id - STORAGE_KEY));
+        int index = id - STORAGE_KEY;
+        if(checkIndex(index)) {
+            return Optional.ofNullable(articles.get(index));
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -33,5 +37,9 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     private int generateId() {
         return articles.size() + STORAGE_KEY;
+    }
+
+    private boolean checkIndex(int index) {
+        return index < articles.size() && index >= 0;
     }
 }

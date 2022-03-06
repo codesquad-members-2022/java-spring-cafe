@@ -11,29 +11,29 @@ import java.util.stream.Collectors;
 
 public class ArticleService {
 
-    private final ArticleRepository postsRepository;
+    private final ArticleRepository articleRepository;
 
-    public ArticleService(ArticleRepository postsRepository) {
-        this.postsRepository = postsRepository;
+    public ArticleService(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 
-    public void write(Article posts) {
-        postsRepository.save(posts);
+    public void write(Article article) {
+        articleRepository.save(article);
     }
 
     public ArticleDto findOne(int id) {
-        Article posts = postsRepository.findById(id).orElseThrow(() -> {
+        Article article = articleRepository.findById(id).orElseThrow(() -> {
             throw new ClientException(HttpStatus.BAD_REQUEST, "게시글을 찾을 수 없습니다.");
         });
-        return new ArticleDto(posts);
+        return new ArticleDto(article);
 
     }
 
     public List<ArticleDto> findAll() {
-        return postsRepository.findAll().stream().map(ArticleDto::new).collect(Collectors.toList());
+        return articleRepository.findAll().stream().map(ArticleDto::new).collect(Collectors.toList());
     }
 
     public void clearRepository() {
-        postsRepository.clear();
+        articleRepository.clear();
     }
 }
