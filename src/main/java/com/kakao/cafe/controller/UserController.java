@@ -48,7 +48,6 @@ public class UserController {
     public String profile(@PathVariable Long userId, Model model) {
         User user = userService.findUser(userId);
         UserDto userDto = UserDto.from(user);
-        System.out.println(userDto);
         model.addAttribute("user", userDto);
         return "user/profile";
     }
