@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.userdto.UserCreateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,8 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    // TODO userCreateDto 를 사용해서 변경해보기.
-    public String createUser(User user) {
-        userService.createUser(user);
+    public String createUser(User userCreateDto) {
+        userService.createUser(userCreateDto);
 
         return "redirect:/user/list";
     }
