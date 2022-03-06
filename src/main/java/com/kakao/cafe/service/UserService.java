@@ -33,10 +33,7 @@ public class UserService {
     }
 
     public UserResponseDto findUser(String userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> {
-                    throw new ClientException(HttpStatus.BAD_REQUEST, "찾으시는 유저가 없습니다.");
-                });
+        User user = findById(userId);
         return new UserResponseDto(user);
     }
 
@@ -44,9 +41,28 @@ public class UserService {
         userRepository.clear();
     }
 
+    public void updateUserInfo(User user) {
+        User target = findById(user.getUserId());
+        checkPassword(user, target);
+        userRepository.save(user);
+    }
+
     private void checkDuplicateId(User user) {
         userRepository.findById(user.getUserId()).ifPresent(u -> {
             throw new ClientException(HttpStatus.BAD_REQUEST, "아이디가 이미 존재합니다.");
         });
+    }
+
+    private User findById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    throw new ClientException(HttpStatus.BAD_REQUEST, "찾으시는 유저가 없습니다.");
+                });
+    }
+
+    private void checkPassword(User user, User target) {
+        if(!target.isSamePassword(user)) {
+            throw new ClientException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+        }
     }
 }

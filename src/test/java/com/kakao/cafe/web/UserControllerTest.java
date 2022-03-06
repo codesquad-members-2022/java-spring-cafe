@@ -15,8 +15,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -79,5 +78,30 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userResponseDto))
                 .andExpect(view().name("/user/profile"));
+    }
+
+    @Test
+    @DisplayName("GetMapping userId를 @PathVariable로 받아서 해당 유저 정보를 /user/update_form으로 넘겨준다.")
+    void updateForm() throws Exception {
+        User user = new User("ron2", "1234", "ron2", "ron2@gmail.com");
+        UserResponseDto userResponseDto = new UserResponseDto(user);
+
+        given(userService.findUser(any())).willReturn(userResponseDto);
+
+        mockMvc.perform(get("/users/"+any()+"/form"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("user", userResponseDto))
+                .andExpect(view().name("/user/update_form"));
+    }
+
+    @Test
+    @DisplayName("PutMapping 수정정보를 받아서 회원정보를 수정 후 /users로 리다이렉션한다.")
+    void updateInfo() throws Exception {
+
+        mockMvc.perform(put("/users/"+any()+"/update")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .content("userId=ron2&password=1234&name=ron2&email=ron2@gmail.com"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
     }
 }

@@ -27,6 +27,10 @@ public class User {
         return this.userId.equals(id);
     }
 
+    public boolean isSamePassword(User user) {
+        return this.password.equals(user.password);
+    }
+
     public String getUserId() {
         return userId;
     }
