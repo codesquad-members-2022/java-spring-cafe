@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class VolatilityUserRepository implements UserRepository {
 
-    private final List<User> users = new ArrayList<>();
+    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
+    private static final AtomicInteger seq = new AtomicInteger(1);
 
     @Override
     public List<User> selectAll() {
@@ -20,6 +22,7 @@ public class VolatilityUserRepository implements UserRepository {
 
     @Override
     public Optional<User> insertUser(User user) {
+        user.setIndex(seq.getAndIncrement());
         return users.add(user) ? Optional.of(user) : Optional.empty();
     }
 

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class User {
 
+    private int index;
     private String userId;
     private String password;
     private String name;
@@ -13,6 +14,10 @@ public class User {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void setUserId(String userId) {
