@@ -8,7 +8,7 @@ import com.kakao.cafe.service.ArticleService;
 
 @Controller
 public class ArticleController {
-
+    
     private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {

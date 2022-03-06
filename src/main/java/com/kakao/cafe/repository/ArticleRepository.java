@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 
 @Component
 public class ArticleRepository implements CustomRepository<Article> {

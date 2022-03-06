@@ -47,6 +47,6 @@ public class UserController {
     @ExceptionHandler(DuplicatedIdException.class)
     public String duplicatedException(Exception e) {
         System.out.println(e.getMessage());
-        return "error";
+        return "duplicated_error";
     }
 }
