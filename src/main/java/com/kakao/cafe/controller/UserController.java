@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,10 +36,9 @@ public class UserController {
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<UserDto> users = new ArrayList<>();
-        for (User user : userService.findUsers()) {
-            users.add(UserDto.from(user));
-        }
+        List<UserDto> users = userService.findUsers().stream()
+            .map(UserDto::from)
+            .collect(Collectors.toList());
         model.addAttribute("users", users);
         model.addAttribute("totalUserCount", users.size());
         return "user/list";
