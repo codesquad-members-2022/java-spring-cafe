@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments.html::head"></head>
+<head th:replace="fragment/head::head"></head>
 
 <body>
-<nav th:replace="fragments.html::nav"></nav>
-<nav th:replace="fragments.html::subnav"></nav>
+<nav th:replace="fragment/nav::nav"></nav>
+<nav th:replace="fragment/subnav::subnav"></nav>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -25,7 +25,7 @@
                     <td th:text="${user.userId}"></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a th:href="@{users/{id}(id=${user.id})}" class="btn btn-success" role="button">프로필 보기</a><td>
                 </tr>
                 </tbody>
             </table>

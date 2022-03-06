@@ -35,7 +35,7 @@ class UserServiceImplTest {
         Long saveId = userService.join(user);
 
         //then
-        User findUser = userService.findOne(saveId).get();
+        User findUser = userService.findOneUser(saveId).get();
         assertThat(user.getId()).isEqualTo(findUser.getId());
     }
 
