@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.DuplicateUserException;
-import com.kakao.cafe.exception.UserNotFoundException;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +27,19 @@ public class UserService {
     }
 
     private boolean isDuplicateUserId(String userId) {
-        return repository.findAll().stream()
-                .anyMatch(u -> userId.equals(u.getUserId()));
+        return repository.findById(userId).isPresent();
     }
 
     public List<User> findUsers() {
         return repository.findAll();
     }
 
-    public User findUserById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(USER_NOT_FOUND_EXCEPTION));
+    public User findUserById(String userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
+    }
+
+    public boolean userUpdate(User user){
+        return repository.update(user.getUserId(), user);
     }
 }

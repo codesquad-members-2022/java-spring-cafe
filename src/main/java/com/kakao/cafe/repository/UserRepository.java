@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface UserRepository {
     Long save(User user);
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(String userId);
 
     List<User> findAll();
 
-    boolean delete(Long id);
+    boolean delete(String userId);
 
-    void update(Long id, User updateParam);
+    boolean update(String userId, User updateParam);
 }
