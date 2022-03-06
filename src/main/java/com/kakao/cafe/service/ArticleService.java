@@ -20,8 +20,12 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public List<Article> showArticles() {
+    public List<Article> showAllArticles() {
         return articleRepository.findAll();
     }
 
+    public Article showArticle(int index) {
+        return articleRepository.findByIndex(index)
+            .orElseThrow(IllegalArgumentException::new);
+    }
 }

@@ -27,4 +27,10 @@ public class ArticleRepository implements CustomRepository<Article> {
         article.setId(articles.size() + 1);
         articles.add(article);
     }
+
+    public Optional<Article> findByIndex(int index) {
+        return articles.stream()
+            .filter(article -> article.getId() == index)
+            .findFirst();
+    }
 }
