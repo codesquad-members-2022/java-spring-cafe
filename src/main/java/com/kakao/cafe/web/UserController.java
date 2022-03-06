@@ -53,7 +53,7 @@ public class UserController {
 
     @GetMapping("/users/{userid}")
     public String showProfile(@PathVariable String userid, Model model) {
-        logger.info("search {}",userid);
+        logger.info("search {}", userid);
         UserResponseDto userResponseDto = userService.findUser(userid);
         model.addAttribute("user", userResponseDto);
 

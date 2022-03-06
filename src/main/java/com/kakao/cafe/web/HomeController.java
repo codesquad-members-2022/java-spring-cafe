@@ -15,7 +15,7 @@ public class HomeController {
     @GetMapping("/")
     public String home() {
         logger.info("index call");
-        return "index";
+        return "redirect:/qna/all";
     }
 
 }
