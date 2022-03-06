@@ -3,7 +3,6 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -29,10 +27,6 @@ class ArticleControllerTest {
 
     @MockBean
     ArticleService articleService;
-
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     @DisplayName("/qna/write-qna로 get 요청시 /qna/form 호출(게시글 작성폼으로 이동한다.)")

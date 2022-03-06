@@ -2,12 +2,16 @@ package com.kakao.cafe.web.dto;
 
 import com.kakao.cafe.domain.article.Article;
 
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 public class ArticleDto {
 
+    @NotBlank
     private final String writer;
+    @NotBlank
     private final String title;
+    @NotBlank
     private final String contents;
 
     public ArticleDto(String writer, String title, String contents) {
