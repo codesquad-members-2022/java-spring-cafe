@@ -3,16 +3,13 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class VolatilityUserRepository implements UserRepository {
 
-    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
+    private final Vector<User> users = new Vector<>();
     private static final AtomicInteger seq = new AtomicInteger(1);
 
     @Override
