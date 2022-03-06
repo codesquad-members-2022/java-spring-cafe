@@ -28,4 +28,12 @@ public class UserService {
     public List<User> findUsers() {
         return userRepository.findAll();
     }
+
+    public User userUpdate(Long id, User user) {
+        return userRepository.updateUser(id, user);
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id);
+    }
 }

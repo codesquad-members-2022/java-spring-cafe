@@ -31,6 +31,15 @@ public class UserRepository {
         return new ArrayList<>(userMap.values());
     }
 
+    public User updateUser(Long id, User userUpdate) {
+        User user = userMap.get(id);
+        user.setUserId(userUpdate.getUserId());
+        user.setPassword(userUpdate.getPassword());
+        user.setName(userUpdate.getName());
+        user.setEmail(userUpdate.getEmail());
+        return userMap.put(id, user);
+    }
+
     public void clear() {
         userMap.clear();
     }
