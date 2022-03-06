@@ -1,13 +1,13 @@
-package com.kakao.cafe.domain.post;
+package com.kakao.cafe.domain.article;
 
-public class Posts {
+public class Article {
 
     private int id;
     private final String writer;
     private final String title;
     private final String contents;
 
-    public Posts(String writer, String title, String contents) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

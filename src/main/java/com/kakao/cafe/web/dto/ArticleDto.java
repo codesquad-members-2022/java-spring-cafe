@@ -1,17 +1,17 @@
 package com.kakao.cafe.web.dto;
 
-import com.kakao.cafe.domain.post.Posts;
+import com.kakao.cafe.domain.article.Article;
 
-public class PostResponseDto {
+public class ArticleDto {
 
     private String writer;
     private String title;
     private String contents;
 
-    public PostResponseDto(Posts posts) {
-        this.writer = posts.getWriter();
-        this.title = posts.getTitle();
-        this.contents = posts.getContents();
+    public ArticleDto(Article article) {
+        this.writer = article.getWriter();
+        this.title = article.getTitle();
+        this.contents = article.getContents();
     }
 
     public String getWriter() {
