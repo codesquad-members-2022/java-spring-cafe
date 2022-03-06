@@ -1,5 +1,7 @@
 package com.kakao.cafe.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.article.Article;
@@ -17,4 +19,9 @@ public class ArticleService {
     public void save(Article article) {
         articleRepository.save(article);
     }
+
+    public List<Article> showArticles() {
+        return articleRepository.findAll();
+    }
+
 }

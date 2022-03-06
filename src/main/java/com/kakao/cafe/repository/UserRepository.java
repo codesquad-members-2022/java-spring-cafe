@@ -16,7 +16,6 @@ public class UserRepository implements CustomRepository<User> {
         this.users = users;
     }
 
-    @Override
     public Optional<User> findByUserId(String userId) {
         return users.stream()
             .filter(u -> u.getUserId().equals(userId))

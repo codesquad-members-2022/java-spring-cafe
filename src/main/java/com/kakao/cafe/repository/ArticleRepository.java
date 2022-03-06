@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,13 +18,8 @@ public class ArticleRepository implements CustomRepository<Article> {
     }
 
     @Override
-    public Optional<Article> findByUserId(String id) {
-        return Optional.empty();
-    }
-
-    @Override
     public List<Article> findAll() {
-        return null;
+        return new ArrayList<>(articles);
     }
 
     @Override
