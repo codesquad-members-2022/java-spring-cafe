@@ -72,7 +72,7 @@ public class User {
         }
     }
 
-    public boolean match(String id) {
+    public boolean ownerOf(String id) {
         return id.equals(userId);
     }
 

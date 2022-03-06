@@ -25,7 +25,7 @@ public class VolatilityUserRepository implements UserRepository {
 
     @Override
     public Optional<User> selectUser(String id) {
-        return users.stream().filter(user -> user.match(id)).findAny();
+        return users.stream().filter(user -> user.ownerOf(id)).findAny();
     }
 
     public void clear() {

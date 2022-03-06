@@ -1,14 +1,15 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,21 +30,18 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String signUp(User user,
-                         HttpServletRequest request) {
-
-        logAPIInfo(request);
+    public String signUp(User user, HttpServletRequest request) {
+        logRequestInfo(request);
 
         userService.addUser(user);
         return "redirect:/users";
     }
 
     @GetMapping
-    public ModelAndView getUserList(ModelAndView mav,
-                                    HttpServletRequest request,
-                                    HttpServletResponse response) {
-
-        logAPIInfo(request);
+    public ModelAndView getUserList(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    ModelAndView mav) {
+        logRequestInfo(request);
         setResponseInfo(response);
 
         mav.setViewName("user/list");
@@ -53,11 +51,10 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ModelAndView getUserProfile(@PathVariable String userId,
-                                       ModelAndView mav,
                                        HttpServletRequest request,
-                                       HttpServletResponse response) {
-
-        logAPIInfo(request);
+                                       HttpServletResponse response,
+                                       ModelAndView mav) {
+        logRequestInfo(request);
         setResponseInfo(response);
 
         mav.setViewName("user/profile");
@@ -65,7 +62,7 @@ public class UserController {
         return mav;
     }
 
-    private void logAPIInfo(HttpServletRequest request) {
+    private void logRequestInfo(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
         Map<String, Object> params = new HashMap<>();
@@ -78,5 +75,10 @@ public class UserController {
     private void setResponseInfo(HttpServletResponse response) {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
+    }
+
+    @ExceptionHandler({ DuplicateUserIdException.class, NoSuchUserException.class })
+    public ResponseEntity<String> except(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
