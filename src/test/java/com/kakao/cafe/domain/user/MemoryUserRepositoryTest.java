@@ -31,7 +31,7 @@ class MemoryUserRepositoryTest {
     }
 
     @Test
-    @DisplayName("같은 아이디의 유저(회원정보가 수정된다면), 정보를 덮어쓴다.")
+    @DisplayName("같은 아이디의 유저(회원정보가 수정된다면)를 저장하면 , 정보를 덮어쓴다.")
     void save_updateInfo() {
         User user = new User("ron2","1234", "로니", "ron2@gmail.com");
         userRepository.save(user);

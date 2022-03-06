@@ -29,13 +29,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
+    @GetMapping("/user/sign-up")
     public String joinForm() {
         logger.info("user in joinForm");
         return "/user/form";
     }
 
-    @PostMapping("/user/create")
+    @PostMapping("/user/sign-up")
     public String joinUser(@Valid UserDto userDto) {
         logger.info("{} joined", userDto);
         userService.join(userDto.toEntity());

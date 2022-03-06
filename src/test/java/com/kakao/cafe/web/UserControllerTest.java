@@ -31,7 +31,7 @@ class UserControllerTest {
     @Test
     @DisplayName("GetMapping 회원가입버튼을 누르면 회원가입폼으로 이동한다.")
     void joinForm() throws Exception {
-        mockMvc.perform(get("/user/create"))
+        mockMvc.perform(get("/user/sign-up"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/user/form"));
     }
@@ -40,7 +40,7 @@ class UserControllerTest {
     @DisplayName("PostMapping 회원가입폼 작성 후 버튼을 누르고 회원가입이 성공하면 유저 목록으로 리다이렉션된다.")
     void joinUser() throws Exception {
 
-        mockMvc.perform(post("/user/create")
+        mockMvc.perform(post("/user/sign-up")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .content("userId=ron2&password=1234&name=ron2&email=ron2@gmail.com"))
                 .andExpect(status().is3xxRedirection())

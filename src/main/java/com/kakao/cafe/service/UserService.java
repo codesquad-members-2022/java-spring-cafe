@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public UserResponseDto findUser(String userId) {
-        User user = findById(userId);
+        User user = findOne(userId);
         return new UserResponseDto(user);
     }
 
@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public void updateUserInfo(User user) {
-        User target = findById(user.getUserId());
+        User target = findOne(user.getUserId());
         checkPassword(user, target);
         userRepository.save(user);
     }
@@ -53,7 +53,7 @@ public class UserService {
         });
     }
 
-    private User findById(String userId) {
+    private User findOne(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
                     throw new ClientException(HttpStatus.BAD_REQUEST, "찾으시는 유저가 없습니다.");
