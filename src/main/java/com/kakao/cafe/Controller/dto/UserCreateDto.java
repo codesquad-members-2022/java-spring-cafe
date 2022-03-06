@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.Controller.dto;
 
 public class UserCreateDto {
 

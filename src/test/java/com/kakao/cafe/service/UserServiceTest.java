@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserCreateDto;
+import com.kakao.cafe.Controller.dto.UserCreateDto;
 import com.kakao.cafe.exception.DuplicateUserIdException;
 import com.kakao.cafe.exception.NoMatchUserException;
 import com.kakao.cafe.repository.UserRepository;
