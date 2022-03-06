@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,5 +23,10 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(String id) {
         return store.stream().filter(user -> user.getUserId().equals(id)).findFirst();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return store;
     }
 }
