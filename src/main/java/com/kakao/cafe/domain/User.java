@@ -31,7 +31,6 @@ public class User {
         this.email = email;
     }
 
-    /* User Builder Section */
     private User(Builder builder) {
         this.userId = builder.userId;
         this.password = builder.password;
@@ -72,7 +71,6 @@ public class User {
             return new User(this);
         }
     }
-    /* End */
 
     public boolean match(String id) {
         return id.equals(userId);
