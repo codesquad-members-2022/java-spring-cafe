@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +24,13 @@ public class UserController {
     }
 
     @PostMapping("/user/form")
-    public String create(User user){
-//        User user = new User(userForm);
-//        user.setId();
-        //DTO
-
-
-
+    public String create(UserForm userForm){
+        User user = new User(
+                userForm.getUserId(),
+                userForm.getName(),
+                userForm.getPassword(),
+                userForm.getEmail()
+        );
         userService.join(user);
         return "redirect:/users";
     }
