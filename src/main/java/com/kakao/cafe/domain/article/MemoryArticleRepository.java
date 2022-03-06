@@ -1,9 +1,13 @@
 package com.kakao.cafe.domain.article;
 
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static final int STORAGE_KEY = 1;

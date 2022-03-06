@@ -6,14 +6,14 @@ import java.util.Objects;
 
 public class ArticleDto {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
-    public ArticleDto(Article article) {
-        this.writer = article.getWriter();
-        this.title = article.getTitle();
-        this.contents = article.getContents();
+    public ArticleDto(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
     }
 
     public String getWriter() {
@@ -28,6 +28,10 @@ public class ArticleDto {
         return contents;
     }
 
+    public Article toEntity() {
+        return new Article(this.writer, this.title, this.contents);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,5 +43,14 @@ public class ArticleDto {
     @Override
     public int hashCode() {
         return Objects.hash(writer, title, contents);
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleDto{" +
+                "writer='" + writer + '\'' +
+                ", title='" + title + '\'' +
+                ", contents='" + contents + '\'' +
+                '}';
     }
 }

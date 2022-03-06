@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.article;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Article {
@@ -8,11 +9,13 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
+    private final LocalDateTime writtenTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.writtenTime = LocalDateTime.now();
     }
 
     public int getId() {
@@ -35,6 +38,9 @@ public class Article {
         return contents;
     }
 
+    public LocalDateTime getWrittenTime() {
+        return writtenTime;
+    }
 
     @Override
     public boolean equals(Object o) {

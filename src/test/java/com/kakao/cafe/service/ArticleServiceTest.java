@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.MemoryArticleRepository;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.ArticleDto;
+import com.kakao.cafe.web.dto.ArticleResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,7 @@ class ArticleServiceTest {
         assertThat(articleService.findOne(1).getWriter()).isEqualTo("작성자");
         assertThat(articleService.findOne(1).getTitle()).isEqualTo("제목");
         assertThat(articleService.findOne(1).getContents()).isEqualTo("본문");
-        assertThat(articleService.findOne(1)).isEqualTo(new ArticleDto(article));
+        assertThat(articleService.findOne(1)).isEqualTo(new ArticleResponseDto(article));
 
     }
 
@@ -65,6 +66,6 @@ class ArticleServiceTest {
     void findAllTest() {
         articleService.write(article);
 
-        assertThat(articleService.findAll()).contains(new ArticleDto(article));
+        assertThat(articleService.findAll()).contains(new ArticleResponseDto(article));
     }
 }
