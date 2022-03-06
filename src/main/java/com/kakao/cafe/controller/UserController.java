@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/form")
+    @GetMapping("/user/join")
     public String createForm() {
         return "user/form";
     }

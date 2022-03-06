@@ -71,4 +71,62 @@ class UserServiceImplTest {
         //then
         assertThat(userService.findUsers()).contains(user1, user2, user3);
     }
+
+    @Test
+    @DisplayName("유저 아이디 입력 값이 없을 때 유저가 생성되지 않도록 처리되는가")
+    void userIdNull() {
+        //given
+        User user = new User("", "호눅스", "1234a", "honux77@gmail.com");
+
+        //when
+        IllegalStateException e;
+        e = assertThrows(IllegalStateException.class, () -> userService.join(user));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("유저 아이디 정보가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("유저 비밀번호 입력 값이 없을 때 유저가 생성되지 않도록 처리되는가")
+    void userPasswordNull() {
+        //given
+        User user = new User("honux", "호눅스", "", "honux77@gmail.com");
+
+        //when
+        IllegalStateException e;
+        e = assertThrows(IllegalStateException.class, () -> userService.join(user));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("유저 비밀번호 정보가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("유저 이름 입력 값이 없을 때 유저가 생성되지 않도록 처리되는가")
+    void userNameNull() {
+        //given
+        User user = new User("honux", "", "1325443", "honux77@gmail.com");
+
+        //when
+        IllegalStateException e;
+        e = assertThrows(IllegalStateException.class, () -> userService.join(user));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("유저 이름 정보가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("유저 이메일 입력 값이 없을 때 유저가 생성되지 않도록 처리되는가")
+    void userEmailNull() {
+        //given
+        User user = new User("honux", "호눅스", "1325443", "");
+
+        //when
+        IllegalStateException e;
+        e = assertThrows(IllegalStateException.class, () -> userService.join(user));
+
+        //then
+        assertThat(e.getMessage()).isEqualTo("유저 이메일 정보가 없습니다.");
+    }
+
+
 }

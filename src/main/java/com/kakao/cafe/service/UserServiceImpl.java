@@ -16,6 +16,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public Long join(User user) {
         validateDuplicateUserId(user);
+        validateUserInfo(user);
         userRepository.save(user);
         return user.getId();
     } // 굳이 Id를 리턴값으로 주어야 할까?
@@ -30,6 +31,24 @@ public class UserServiceImpl implements UserService{
                 .ifPresent(u -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+    }
+
+    private void validateUserInfo(User user) {
+        if (user.getUserId().equals("")){
+            throw new IllegalStateException("유저 아이디 정보가 없습니다.");
+        }
+
+        if (user.getPassword().equals("")){
+            throw new IllegalStateException("유저 비밀번호 정보가 없습니다.");
+        }
+
+        if (user.getName().equals("")){
+            throw new IllegalStateException("유저 이름 정보가 없습니다.");
+        }
+
+        if (user.getEmail().equals("")){
+            throw new IllegalStateException("유저 이메일 정보가 없습니다.");
+        }
     }
 
     public Optional<User> findOne(Long id) {
