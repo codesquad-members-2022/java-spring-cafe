@@ -54,4 +54,21 @@ class UserServiceImplTest {
         e = assertThrows(IllegalStateException.class, () -> userService.join(user2));
         assertThat(e.getMessage()).isEqualTo("이미 존재하는 회원입니다.");
     }
+
+    @Test
+    @DisplayName("모든 유저들이 잘 검색이 되는가")
+    void findAll(){
+        //given
+        User user1 = new User("honux", "호눅스", "1234a", "honux77@gmail.com");
+        User user2 = new User("crong", "크롱", "5678@", "crong1004@naver.com");
+        User user3 = new User("ivy", "아이비", "1372345!@~", "ivy1234@kakao.com");
+
+        //when
+        userService.join(user1);
+        userService.join(user2);
+        userService.join(user3);
+
+        //then
+        assertThat(userService.findUsers()).contains(user1, user2, user3);
+    }
 }
