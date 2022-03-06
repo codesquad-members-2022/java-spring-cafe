@@ -35,12 +35,17 @@ class VolatilityUserServiceUnitTest {
 
     @Test
     void addUserSuccess() {
+        // given
         User user = User.builder("user").build();
         given(userRepository.selectUser(user.getUserId()))
                 .willReturn(Optional.empty());
+        given(userRepository.insertUser(user))
+                .willReturn(Optional.of(user));
 
+        // when
         User newUser = userService.addUser(user);
 
+        // then
         assertThat(newUser).isEqualTo(user);
 
         verify(userRepository).selectUser(user.getUserId());
