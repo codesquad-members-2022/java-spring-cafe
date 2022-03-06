@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -30,8 +29,9 @@ public class UserController {
     public String createForm() {
         return "/user/create";
     }
-    
+
     @PostMapping("/user/create")
+    // TODO userCreateDto 를 사용해서 변경해보기.
     public String createUser(User user) {
         userService.createUser(user);
 
@@ -48,7 +48,6 @@ public class UserController {
 
     @GetMapping("/user/{userName}")
     public String userProfile(@PathVariable String userName, Model model) {
-        userService.findUser(userName);
         userService.findUser(userName)
                 .ifPresentOrElse(user -> {
                     model.addAttribute("foundUser", user);
