@@ -24,9 +24,10 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String addQuestion(Article article, Model model) {
+    public String addQuestion(Article article) {
         articleService.save(article);
-
         return "redirect:/";
     }
+
+
 }

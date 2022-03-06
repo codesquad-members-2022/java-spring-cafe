@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Article {
+    private Integer id;
     private String writer;
     private String title;
     private String contents;
@@ -42,5 +43,13 @@ public class Article {
 
     public String getWriteTime() {
         return writeTime;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

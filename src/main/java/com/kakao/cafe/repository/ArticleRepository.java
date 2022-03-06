@@ -24,6 +24,7 @@ public class ArticleRepository implements CustomRepository<Article> {
 
     @Override
     public void save(Article article) {
+        article.setId(articles.size() + 1);
         articles.add(article);
     }
 }

@@ -11,8 +11,6 @@ import com.kakao.cafe.service.ArticleService;
 @Controller
 public class IndexController {
 
-    private Logger logger = LoggerFactory.getLogger(IndexController.class);
-
     @GetMapping("/form")
     public String form() {
         return "form";
