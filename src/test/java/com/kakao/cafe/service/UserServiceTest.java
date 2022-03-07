@@ -37,8 +37,7 @@ class UserServiceTest {
     @DisplayName("유저의 userName 과 createUser 이후 찾아낸 유저의 userName 이 동일해야 한다.")
     void 유저_생성_테스트() {
         // given
-        User user = new User();
-        user.setUserName("testName");
+        User user = new User("testName", "1234", "juni8453@naver.com");
 
         // when
         userService.createUser(user);
@@ -52,11 +51,8 @@ class UserServiceTest {
     @Test
     @DisplayName("userName 이 같은 유저가 생성되면 예외가 발생해야 한다.")
     void 중복_유저_예외발생_테스트() {
-        User user1 = new User();
-        user1.setUserName("Test");
-
-        User user2 = new User();
-        user2.setUserName("Test");
+        User user1 = new User("testName", "1234", "juni8453@naver.com");
+        User user2 = new User("testName", "1234", "juni8453@naver.com");
 
         userService.createUser(user1);
 
@@ -68,10 +64,8 @@ class UserServiceTest {
     void 유저_찾기_테스트() {
         userCount = 0;
 
-        User user = new User();
-        user.setUserName("Test");
+        User user = new User("testName", "1234", "juni8453@naver.com");
         user.setUserIdx(++userCount);
-
         store.put(user.getUserIdx(), user);
 
         User foundUser = userService.findUser(user.getUserName()).get();
@@ -84,12 +78,9 @@ class UserServiceTest {
     void 모든_유저_찾기_테스트() {
         userCount = 0;
 
-        User user1 = new User();
-        User user2 = new User();
-        user1.setUserName("testUser1");
+        User user1 = new User("testName1", "1234", "juni8453@naver.com");
+        User user2 = new User("testName2", "1234", "test@naver.com");
         user1.setUserIdx(++userCount);
-
-        user2.setUserName("testUser2");
         user2.setUserIdx(++userCount);
 
         store.put(user1.getUserIdx(), user1);
