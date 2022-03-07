@@ -38,12 +38,7 @@
                 </thead>
                 <tbody>
                 {{#users}}
-                <tr>
-                    <td><a href="/users/{{id}}">{{userId}}</a></td>
-                    <td>{{name}}</td>
-                    <td>{{email}}</td>
-                    <td>{{createdDate}}</td>
-                </tr>
+                    {{> user/includes/user}}
                 {{/users}}
                 </tbody>
             </table>
