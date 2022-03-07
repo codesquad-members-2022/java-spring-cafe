@@ -3,7 +3,6 @@ package com.kakao.cafe.web.service;
 import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.repository.user.UserRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 

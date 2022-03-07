@@ -8,13 +8,13 @@ public class Article {
 	private Long id;
 	private final String writer;
 	private String title;
-	private String contents;
+	private String content;
 	private String localDateTime;
 
-	public Article(String writer, String title, String contents) {
+	public Article(String writer, String title, String content) {
 		this.writer = writer;
 		this.title = title;
-		this.contents = contents;
+		this.content = content;
 		this.localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd  hh:mm"));
 	}
 
@@ -30,8 +30,8 @@ public class Article {
 		return title;
 	}
 
-	public String getContents() {
-		return contents;
+	public String getContent() {
+		return content;
 	}
 
 	public String getLocalDateTime() {
@@ -46,8 +46,8 @@ public class Article {
 		this.title = title;
 	}
 
-	public void setContents(String contents) {
-		this.contents = contents;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class Article {
 			"id=" + id +
 			", writer='" + writer + '\'' +
 			", title='" + title + '\'' +
-			", contents='" + contents + '\'' +
+			", content='" + content + '\'' +
 			", localDateTime='" + localDateTime + '\'' +
 			'}';
 	}

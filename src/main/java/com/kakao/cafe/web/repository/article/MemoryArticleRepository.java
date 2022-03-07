@@ -7,9 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
 	private static final Map<Long, Article> store = new ConcurrentHashMap<>();
