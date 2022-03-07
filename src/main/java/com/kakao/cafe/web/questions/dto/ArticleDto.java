@@ -5,6 +5,9 @@ public class ArticleDto {
     private String title;
     private String contents;
 
+    public ArticleDto() {
+    }
+
     public ArticleDto(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
@@ -21,5 +24,17 @@ public class ArticleDto {
 
     public String getContents() {
         return contents;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 }

@@ -34,9 +34,9 @@ public class UserValidation implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "required");
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             errors.rejectValue("email", "required");
-        }else{
+        } else {
             Matcher matcher = pattern.matcher(user.getEmail());
-            if(!matcher.matches()){
+            if (!matcher.matches()) {
                 errors.rejectValue("email", "notmatched");
             }
         }

@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +50,7 @@ public class UserController {
     @PostMapping("/create")
     public String saveUser(@Validated @ModelAttribute User user, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "/user/form";
         }
 
@@ -69,7 +68,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model){
+    public String updateForm(@PathVariable String userId, Model model) {
         User findUser = userService.findUserById(userId);
         log.info("get profile update form");
         model.addAttribute("user", findUser);
@@ -77,7 +76,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/update")
-    public String updateProfile(@ModelAttribute User user){
+    public String updateProfile(@ModelAttribute User user) {
         userService.userUpdate(user);
         return "redirect:/users";
     }
