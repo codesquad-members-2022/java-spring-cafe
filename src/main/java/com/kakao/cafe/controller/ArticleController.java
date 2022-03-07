@@ -23,9 +23,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String createArticle(Article article) {
-        logger.info("POST /questions writer = {} title = {} contents = {}",
-                    article.getWriter(), article.getTitle(), article.getContents());
-
+        logger.info("POST /questions {}", article.toString());
         articleService.upload(article);
 
         return "redirect:/";

@@ -48,9 +48,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String createUser(User user) {
-        logger.info("POST /users userId = {} password = {} name = {} email = {}"
-              , user.getUserId(), user.getPassword()
-              , user.getName(), user.getEmail());
+        logger.info("POST /users {}", user.toString());
         userService.join(user);
 
         return "redirect:/users";
@@ -58,9 +56,7 @@ public class UserController {
 
     @PutMapping("/users/{id}/update")
     public String updateUser(@PathVariable String id, User updatedUser) {
-        logger.info("PUT /users userId = {} password = {} name = {} email = {}"
-            , updatedUser.getUserId(), updatedUser.getPassword()
-            , updatedUser.getName(), updatedUser.getEmail());
+        logger.info("PUT /users {}", updatedUser.toString());
         userService.update(id, updatedUser);
 
         return "redirect:/users";

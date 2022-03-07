@@ -40,4 +40,9 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
+    @Override
+    public String toString() {
+        return "writer = " + writer + " title = " + title + " contents = " + contents;
+    }
 }

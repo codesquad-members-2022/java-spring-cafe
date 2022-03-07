@@ -37,4 +37,9 @@ public class User {
     public boolean hasSamePassword(String password) {
         return this.password.equals(password);
     }
+
+    @Override
+    public String toString() {
+        return "userId = " + userId + " password = " + password + " name = " + name + " email = " + email;
+    }
 }

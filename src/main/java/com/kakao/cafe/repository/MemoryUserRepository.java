@@ -3,16 +3,17 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private List<User> users = new ArrayList<>();
+    private List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @Override
-    public User save(User user) {
+    public synchronized User save(User user) {
         try {
             int index = findExistingUserId(user.getUserId());
             if (index == -1) {
