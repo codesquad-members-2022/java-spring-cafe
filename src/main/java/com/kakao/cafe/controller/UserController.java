@@ -34,19 +34,26 @@ public class UserController {
     public String showUsers(Model model) {
         List<UserDto> userDtoList = userService.findAllUser();
         model.addAttribute("users", userDtoList);
-        return "list";
+        return "/list";
     }
 
     @GetMapping("/users/{userId}")
     public String showUserProfile(@PathVariable String userId, Model model) {
-        UserProfileDto userProfileDto = userService.findUserByUserId(userId);
+        UserProfileDto userProfileDto = userService.findUserProfileByUserId(userId);
         model.addAttribute("userProfile", userProfileDto);
-        return "user/profile";
+        return "/user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String editMemberInformation(@PathVariable String userId, Model model) {
+        User user = userService.findUserByUserId(userId);
+        model.addAttribute("user", user);
+        return "/user/updateForm";
     }
 
     @ExceptionHandler(DuplicatedIdException.class)
     public String duplicatedException(Exception e) {
         System.out.println(e.getMessage());
-        return "duplicated_error";
+        return "/duplicated_error";
     }
 }

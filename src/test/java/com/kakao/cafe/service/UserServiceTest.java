@@ -62,7 +62,7 @@ class UserServiceTest {
             .willReturn(Optional.of(user1));
 
         // when
-        UserProfileDto userProfileDto = userService.findUserByUserId("lucid");
+        UserProfileDto userProfileDto = userService.findUserProfileByUserId("lucid");
 
         // then
         assertThat(userProfileDto.getEmail()).isEqualTo("lee@naver.com");

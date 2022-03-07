@@ -35,9 +35,13 @@ public class UserService {
         return userDtoList;
     }
 
-    public UserProfileDto findUserByUserId(String userId) {
-        User user = userRepository.findByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException(NON_EXISTENT_MEMBER));
+    public UserProfileDto findUserProfileByUserId(String userId) {
+        User user = findUserByUserId(userId);
         return new UserProfileDto(user.getName(), user.getEmail());
+    }
+
+    public User findUserByUserId(String userId) {
+        return userRepository.findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException(NON_EXISTENT_MEMBER));
     }
 }
