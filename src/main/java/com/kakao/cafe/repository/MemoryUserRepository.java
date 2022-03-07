@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
