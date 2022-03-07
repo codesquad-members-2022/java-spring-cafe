@@ -8,11 +8,11 @@ public class IndexController {
 
     @GetMapping("/form")
     public String form() {
-        return "user/form";
+        return "/user/form";
     }
 
     @GetMapping("/qnaForm")
     public String qnaForm() {
-        return "qna/formQna";
+        return "/qna/formQna";
     }
 }

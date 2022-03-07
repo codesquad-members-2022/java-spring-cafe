@@ -39,7 +39,7 @@ public class UserController {
         logger.info("GET /users");
         List<UserDto> userDtoList = userService.findAllUser();
         model.addAttribute("users", userDtoList);
-        return "list";
+        return "/list";
     }
 
     @GetMapping("/users/{userId}")

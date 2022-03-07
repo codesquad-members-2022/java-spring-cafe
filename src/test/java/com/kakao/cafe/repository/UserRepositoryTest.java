@@ -7,12 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 import com.kakao.cafe.domain.user.User;
 
 class UserRepositoryTest {

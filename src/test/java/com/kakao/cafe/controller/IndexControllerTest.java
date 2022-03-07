@@ -1,27 +1,33 @@
 package com.kakao.cafe.controller;
 
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.test.web.servlet.MockMvc;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@WebMvcTest(controllers = IndexController.class)
 class IndexControllerTest {
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private MockMvc mvc;
 
-    @DisplayName("메인 페이지 로딩 테스트")
+    @DisplayName("/form으로 GET 요청이 오면 /user/form view가 반환된다.")
     @Test
-    void main_page_loading() {
-        // when
-        String body = this.restTemplate.getForObject("/", String.class);
+    void get_form() throws Exception {
+        mvc.perform(get("/form"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("/user/form"));
+    }
 
-        // then
-        Assertions.assertThat(body).contains("CodeSquad");
+    @DisplayName("/qnaForm으로 GET 요청이 오면 /qna/formQna view가 반환된다.")
+    @Test
+    void get_qnaForm() throws Exception {
+        mvc.perform(get("/qnaForm"))
+            .andExpect(status().isOk())
+            .andExpect(view().name("/qna/formQna"));
     }
 }
