@@ -16,9 +16,7 @@ class UserRepositoryTest {
     @BeforeEach
     void setup() {
         userRepository = new MemoryUserRepository();
-        user = new User.UserBuilder()
-            .setUserId("testId")
-            .setPassword("testPw")
+        user = new User.UserBuilder("testId","testPw")
             .setName("testName")
             .setEmail("test@test.com")
             .build();
@@ -45,9 +43,7 @@ class UserRepositoryTest {
     @DisplayName("모든 회원 객체를 레포지토리에서 조회할 수 있다.")
     void 모든_회원_조회_테스트() {
         // given
-        User secondUser = new User.UserBuilder()
-            .setUserId("testId2")
-            .setPassword("testPw2")
+        User secondUser = new User.UserBuilder("testId2","testPw2")
             .setName("testName2")
             .setEmail("test2@test.com")
             .build();

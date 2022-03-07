@@ -23,7 +23,7 @@ public class UserService {
         userRepository.save(userRegisterFormDto.toEntity());
     }
 
-    public void validateDuplicateUserId(String userId) {
+    private void validateDuplicateUserId(String userId) {
         userRepository.findById(userId)
             .ifPresent(user -> {
                 throw new IllegalStateException("동일한 ID를 가지는 회원이 이미 존재합니다.");
@@ -31,9 +31,13 @@ public class UserService {
     }
 
     public List<UserListDto> showAll() {
-        return userRepository.findAll()
-            .stream()
-            .map(UserListDto::new)
+        List<User> userList = userRepository.findAll();
+        return userList.stream()
+            .map(user -> {
+                UserListDto userListDto = new UserListDto(user);
+                userListDto.setUserNum(userList.indexOf(user));
+                return userListDto;
+            })
             .collect(Collectors.toList());
     }
 
@@ -42,7 +46,7 @@ public class UserService {
         return new UserProfileDto(validateExistenceUserId(optionalUser));
     }
 
-    public User validateExistenceUserId(Optional<User> optionalUser) {
+    private User validateExistenceUserId(Optional<User> optionalUser) {
         return optionalUser.orElseThrow(() -> {
             throw new IllegalStateException("해당 ID를 가지는 회원이 존재하지 않습니다.");
         });

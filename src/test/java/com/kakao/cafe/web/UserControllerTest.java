@@ -41,12 +41,7 @@ class UserControllerTest {
     @DisplayName("회원가입이 수행된다.")
     void 회원가입_동작_테스트() throws Exception {
         // given
-        UserRegisterFormDto userRegisterFormDto = new UserRegisterFormDto();
-        userRegisterFormDto.setUserId("testId1");
-        userRegisterFormDto.setPassword("testPw1");
-        userRegisterFormDto.setName("testName");
-        userRegisterFormDto.setEmail("test@test.com");
-
+        UserRegisterFormDto userRegisterFormDto = new UserRegisterFormDto("testId1","testPw1","testName1","test@test.com");
         String content = objectMapper.writeValueAsString(userRegisterFormDto);
 
         doNothing().when(userService)
@@ -63,13 +58,10 @@ class UserControllerTest {
     @DisplayName("모든 회원의 목록을 조회한다.")
     void 회원_목록_출력_테스트() throws Exception {
         // given
-        User user1 = new User.UserBuilder()
-            .setUserId("testId1")
-            .setPassword("testPw1")
+        User user1 = new User.UserBuilder("testId1","testPw1")
             .setName("testName")
             .setEmail("test@test.com")
             .build();
-        user1.setUserNum(1L);
         UserListDto userListDto1 = new UserListDto(user1);
 
         given(userService.showAll())
@@ -88,13 +80,10 @@ class UserControllerTest {
     @DisplayName("아이디를 통해 회원의 프로필을 조회한다.")
     void 회원_프로필_조회_테스트() throws Exception {
         // given
-        User user1 = new User.UserBuilder()
-            .setUserId("testId1")
-            .setPassword("testPw1")
+        User user1 = new User.UserBuilder("testId1","testPw1")
             .setName("testName")
             .setEmail("test@test.com")
             .build();
-        user1.setUserNum(1L);
         UserProfileDto userProfileDto = new UserProfileDto(user1);
 
         given(userService.showOne("testId1"))
