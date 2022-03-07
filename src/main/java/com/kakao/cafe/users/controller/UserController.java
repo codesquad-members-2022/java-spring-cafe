@@ -2,6 +2,7 @@ package com.kakao.cafe.users.controller;
 
 import com.kakao.cafe.exception.CafeRuntimeException;
 import com.kakao.cafe.users.UserService;
+import com.kakao.cafe.users.controller.dto.UserResponseDto;
 import com.kakao.cafe.users.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -41,7 +44,11 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView userList(ModelAndView modelAndView) {
         userService.findUsers()
-                .ifPresent(users -> modelAndView.addObject("users", users));
+                .ifPresent(users -> {
+                    modelAndView.addObject("users", users.stream()
+                            .map(UserResponseDto::of)
+                            .collect(Collectors.toUnmodifiableList()));
+                });
         modelAndView.setViewName("user/list");
         return modelAndView;
     }
