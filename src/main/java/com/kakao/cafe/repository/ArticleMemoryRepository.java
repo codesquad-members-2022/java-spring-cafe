@@ -41,4 +41,8 @@ public class ArticleMemoryRepository implements ArticleRepository{
     public List<Article> findAll() {
         return articles;
     }
+
+    public void deleteAllArticles() {
+        this.articles = new CopyOnWriteArrayList<>();
+    }
 }

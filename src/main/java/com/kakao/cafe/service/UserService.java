@@ -43,4 +43,8 @@ public class UserService {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoMatchUserException(NO_MATCH_USER_MESSAGE));
     }
+
+    public void deleteAllUsers() {
+        userRepository.deleteAllUsers();
+    }
 }
