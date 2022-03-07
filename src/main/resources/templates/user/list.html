@@ -7,16 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link href="../css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
     <![endif]-->
     <link href="../css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
-<nav class="navbar navbar-fixed-top header">
-    {{> includes/header}}
-
-</nav>
+{{> includes/header}}
 
 <div class="description">
     <div class="desc-container">
@@ -33,31 +30,21 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>회원가입일</th>
                 </tr>
                 </thead>
                 <tbody>
+                {{#users}}
                 <tr>
-                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>
+                    <td><a href="/users/{{id}}">{{userId}}</a></td>
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
+                    <td>{{createdDate}}</td>
                 </tr>
-                <tr>
-                    <td>테스터 2</td> <td>test2@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 3</td> <td>test3@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 4</td> <td>test4@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 5</td> <td>test5@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 6</td> <td>test6@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>
-                </tr>
+                {{/users}}
                 </tbody>
             </table>
         </div>
