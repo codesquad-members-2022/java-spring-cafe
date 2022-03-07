@@ -65,9 +65,28 @@ class UserServiceTest {
         userService.join(user2);
 
         //when
-        List<User> userList = userService.findUsers();
+        List<User> result = userService.findUsers();
 
         //then
-        assertThat(userList.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("특정 회원 정보 조회")
+    void findOne() {
+        //given
+        User user1 = new User();
+        user1.setUserId("test1");
+        user1.setName("테스트");
+        user1.setPassword("1234");
+        user1.setEmail("test1@gmail.com");
+
+        userService.join(user1);
+
+        //when
+        User result = userService.findOne(user1.getUserId()).get();
+
+        //then
+        assertThat(result.getUserId()).isEqualTo(user1.getUserId());
     }
 }
