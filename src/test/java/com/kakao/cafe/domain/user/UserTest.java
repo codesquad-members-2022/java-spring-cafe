@@ -16,5 +16,4 @@ class UserTest {
         // then
         assertThat(user).isInstanceOf(User.class);
     }
-
 }

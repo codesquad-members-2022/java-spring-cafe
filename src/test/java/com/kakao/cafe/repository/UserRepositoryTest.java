@@ -71,5 +71,4 @@ class UserRepositoryTest {
             });
         assertThat(exception.getMessage()).isEqualTo("[ERROR] 존재하는 ID입니다. 다시 입력하세요.");
     }
-
 }

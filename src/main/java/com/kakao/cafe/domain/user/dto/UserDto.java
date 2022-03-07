@@ -13,19 +13,11 @@ public class UserDto {
         this.email = email;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
     public String getUserId() {
         return userId;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getEmail() {
-        return email;
     }
 }

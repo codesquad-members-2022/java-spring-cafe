@@ -53,5 +53,4 @@ class ArticleControllerTest {
             .andExpect(model().attributeExists("article"))
             .andExpect(view().name("qna/showQna"));
     }
-
 }

@@ -35,7 +35,5 @@ class ArticleRepositoryTest {
         List<Article> all = articleRepository.findAll();
         Article article = all.get(0);
         assertThat(article1).isEqualTo(article);
-
     }
-
 }

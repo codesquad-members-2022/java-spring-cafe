@@ -7,7 +7,6 @@ import static org.mockito.BDDMockito.*;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,7 +76,4 @@ class ArticleServiceTest {
             articleService.showArticle(1);
         });
     }
-
-
-
 }
