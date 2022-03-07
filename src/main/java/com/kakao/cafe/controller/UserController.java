@@ -20,4 +20,9 @@ public class UserController {
     public String listForm() {
         return "user/list";
     }
+
+    @GetMapping("user/profile")
+    public String profileForm() {
+        return "user/profile";
+    }
 }
