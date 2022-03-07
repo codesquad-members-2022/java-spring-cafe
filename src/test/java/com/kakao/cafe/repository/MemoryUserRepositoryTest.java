@@ -20,10 +20,10 @@ class MemoryUserRepositoryTest {
     @BeforeEach
     void beforeEach() {
         repository = new MemoryUserRepository();
-        User alreadyPresentUser = new User();
-        alreadyPresentUser.setEmail("already@present.user");
-        alreadyPresentUser.setNickname("already present user1");
-        alreadyPresentUser.setPassword("password1");
+        User alreadyPresentUser = new User(
+            "already@present.user",
+            "already present user1",
+            "password1");
         repository.save(alreadyPresentUser);
     }
 
@@ -31,14 +31,10 @@ class MemoryUserRepositoryTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class save_메소드는 {
 
-        private final User givenUser = new User();
-
-        @BeforeEach
-        void beforeEach() {
-            givenUser.setEmail("new@test.user");
-            givenUser.setNickname("test user1");
-            givenUser.setPassword("password1");
-        }
+        private final User givenUser = new User(
+            "new@test.user",
+            "test user1",
+            "password1");
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
@@ -124,15 +120,6 @@ class MemoryUserRepositoryTest {
     @Nested
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class findAll_메소드는 {
-
-        private final User givenUser = new User();
-
-        @BeforeEach
-        void beforeEach() {
-            givenUser.setEmail("new@test.user");
-            givenUser.setNickname("test user1");
-            givenUser.setPassword("password1");
-        }
 
         @Test
         @DisplayName("가입한 회원들의 리스트를 리턴한다")

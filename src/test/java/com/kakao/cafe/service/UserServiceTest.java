@@ -25,10 +25,10 @@ class UserServiceTest {
         userRepository = new MemoryUserRepository();
         userService = new UserService(userRepository);
 
-        User alreadyPresentUser = new User();
-        alreadyPresentUser.setEmail("already@present.user");
-        alreadyPresentUser.setNickname("already present user1");
-        alreadyPresentUser.setPassword("password1");
+        User alreadyPresentUser = new User(
+            "already@present.user",
+            "already present user1",
+            "password1");
         userRepository.save(alreadyPresentUser);
     }
 
@@ -36,19 +36,14 @@ class UserServiceTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class signUp_메소드는 {
 
-        private final User givenNonDuplicatedUser = new User();
-        private final User givenDuplicatedUser = new User();
-
-        @BeforeEach
-        void beforeEach() {
-            givenNonDuplicatedUser.setEmail("new@test.user");
-            givenNonDuplicatedUser.setNickname("test user1");
-            givenNonDuplicatedUser.setPassword("password1");
-
-            givenDuplicatedUser.setEmail("already@present.user");
-            givenDuplicatedUser.setNickname("test user1");
-            givenDuplicatedUser.setPassword("password1");
-        }
+        private final User givenNonDuplicatedUser = new User(
+            "new@test.user",
+            "test user1",
+            "password1");
+        private final User givenDuplicatedUser = new User(
+            "already@present.user",
+            "test user1",
+            "password1");
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)

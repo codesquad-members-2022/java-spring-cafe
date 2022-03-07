@@ -26,10 +26,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String signUp(SignUpRequestDto form) {
-        User user = new User();
-        user.setEmail(form.getEmail());
-        user.setNickname(form.getNickname());
-        user.setPassword(form.getPassword());
+        User user = new User(form.getEmail(), form.getNickname(), form.getPassword());
         userService.signUp(user);
         return "redirect:/users";
     }

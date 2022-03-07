@@ -15,23 +15,22 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
-        user.setCreatedAt(LocalDateTime.now());
-        store.add(user);
-        return user;
+        User userRecord = User.createUserRecord(++sequence, user);
+        store.add(userRecord);
+        return userRecord;
     }
 
     @Override
-    public Optional<User> findById(Long userId) {
+    public Optional<User> findById(Long id) {
         return store.stream()
-            .filter(user -> user.getId() == userId)
+            .filter(user -> user.hasSameId(id))
             .findAny();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         return store.stream()
-            .filter(user -> user.getEmail().equals(email))
+            .filter(user -> user.hasSameEmail(email))
             .findAny();
     }
 
