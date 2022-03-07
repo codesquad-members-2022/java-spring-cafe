@@ -11,4 +11,16 @@ public class UserCreateDto {
         this.userPassword = userPassword;
         this.userEmail = userEmail;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
 }
