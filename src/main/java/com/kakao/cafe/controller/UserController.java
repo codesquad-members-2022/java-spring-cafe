@@ -3,8 +3,11 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -25,7 +28,9 @@ public class UserController {
     }
 
     @GetMapping("/user/list")
-    public String listForm() {
+    public String listForm(Model model) {
+        List<User> userList = userService.findUsers();
+        model.addAttribute("userList", userList);
         return "user/list";
     }
 

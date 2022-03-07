@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MemoryUserRepository implements UserRepository {
@@ -12,5 +13,15 @@ public class MemoryUserRepository implements UserRepository {
     public User save(User user) {
         store.add(user);
         return store.get(store.size() - 1);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return Collections.unmodifiableList(store);
+    }
+
+    @Override
+    public void clear() {
+        store.clear();
     }
 }

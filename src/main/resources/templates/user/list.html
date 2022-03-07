@@ -28,20 +28,15 @@
                 </tr>
                 </thead>
                 <tbody>
+                {{#userList}} <!-- posts라는 list 순회 -->
                 <tr>
-                    <th scope="row">1</th>
-                    <td>javajigi</td>
-                    <td>자바지기</td>
-                    <td>javajigi@sample.net</td>
+                    <th scope="row"></th>
+                    <td><a href="/user/{{userId}}" />{{userId}}</td> <!-- list에서 뽑아낸 객체의 필드 -->
+                    <td>{{name}}</td>
+                    <td>{{email}}</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>slipp</td>
-                    <td>슬립</td>
-                    <td>slipp@sample.net</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
-                </tr>
+                {{/userList}}
                 </tbody>
             </table>
         </div>
