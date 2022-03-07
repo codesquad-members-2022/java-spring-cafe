@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String create(UserForm userForm){
+    public String create(@Validated UserForm userForm){
         User user = new User(
                 userForm.getUserId(),
                 userForm.getName(),

@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService{
         validateUserInfo(user);
         userRepository.save(user);
         return user.getId();
-    } // 굳이 Id를 리턴값으로 주어야 할까?
+    }
 
     @Override
     public List<User> findUsers() {

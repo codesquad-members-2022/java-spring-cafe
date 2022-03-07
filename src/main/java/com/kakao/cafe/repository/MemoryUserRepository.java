@@ -31,8 +31,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store); // 이렇게 바로 주면 안되나? 안된다. (새로운 리스트로 담아서 반환하자.)
-        // 반환하는 리스트에서 참조값 공유로 인해 데이터 변경 가능성이 생긴다.
+        return new ArrayList<>(store);
     }
 
     public void clearStore() {

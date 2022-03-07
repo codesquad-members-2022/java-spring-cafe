@@ -9,6 +9,6 @@ public class ExceptionController {
     @ExceptionHandler(IllegalStateException.class)
     public String fageNotFound(Exception e) {
         System.out.println(e.getMessage());
-        return "page_not_found";
+        return "error/404";
     }
 }
