@@ -37,4 +37,8 @@ public class MemoryUserRepository implements UserRepository {
     public void clearStore() {
         store.clear();
     }
+
+    public int size() {
+        return store.size();
+    }
 }

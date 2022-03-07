@@ -63,5 +63,6 @@ class MemoryUserRepositoryTest {
 
         //then
         assertThat(repository.findAll()).contains(user1, user2, user3);
+        assertThat(repository.size()).isEqualTo(3);
     }
 }

@@ -4,8 +4,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 public class UserForm {
-    private Long id;
-
     @NotBlank
     private String userId;
 
@@ -18,23 +16,10 @@ public class UserForm {
     @Email
     private String email;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserId(String userId) {
+    public UserForm(@NotBlank String userId, @NotBlank String name, @NotBlank String password, @Email String email) {
         this.userId = userId;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 
