@@ -5,15 +5,12 @@ import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -21,12 +18,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/join")
+    @GetMapping("/join")
     public String createForm() {
         return "user/form";
     }
 
-    @PostMapping("/user/form")
+    @PostMapping("/join")
     public String create(UserForm userForm){
         User user = new User(
                 userForm.getUserId(),
@@ -38,16 +35,16 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping("/users")
+    @GetMapping
     public String list(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public String profile(@PathVariable String id, Model model) {
-        Optional<User> user = userService.findOneUser(Long.parseLong(id));
+        User user = userService.findOneUser(Long.parseLong(id)).get();
         model.addAttribute("user", user);
         return "user/profile";
     }

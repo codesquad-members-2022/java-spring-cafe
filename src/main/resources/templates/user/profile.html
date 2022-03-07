@@ -17,13 +17,13 @@
                             <img class="media-object" th:src="@{images/80-text.png}">
                         </a>
                         <div class="media-body">
-                            <h4 class="media-heading" th:text="${user.get().getUserId()}"></h4>
+                            <h4 class="media-heading" th:text="${user.userId}"></h4>
                             <p>
                                 <span>이름 : </span>
-                                <span th:text="${user.get().getName()}"></span>
+                                <span th:text="${user.name}"></span>
                             </p>
                             <p>
-                                <a href="#" class="btn btn-xs btn-default" th:text="${user.get().getEmail()}">
+                                <a href="#" class="btn btn-xs btn-default" th:text="${user.email}">
                                     <span class="glyphicon glyphicon-envelope"></span>&nbsp;
                                 </a>
                             </p>
