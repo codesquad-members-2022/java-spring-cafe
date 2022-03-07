@@ -8,7 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class CafeApplicationTests {
+class CafeApplicationTest {
 
 	@Test
 	void contextLoads() {
