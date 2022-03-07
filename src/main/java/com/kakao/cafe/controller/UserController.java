@@ -45,8 +45,7 @@ public class UserController {
 
     @PostMapping
     public String create(UserJoinRequest userJoinRequest) {
-        User user = new User(userJoinRequest);
-        userService.join(user);
+        userService.join(userJoinRequest);
         return "redirect:/users";
     }
 

@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.UserJoinRequest;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,11 @@ public class UserService {
 
     /**
      * 회원 가입
-     * @param user 가입할 유저 객체
+     * @param userJoinRequest 가입할 유저 정보
      * @return 회원 가입된 유저의 id
      */
-    public Long join(User user) {
+    public Long join(UserJoinRequest userJoinRequest) {
+        User user = new User(userJoinRequest);
         checkDuplicateUser(user);
         userRepository.save(user);
         return user.getId();
