@@ -48,6 +48,7 @@ public class UserController {
                     modelAndView.addObject("users", users.stream()
                             .map(UserResponseDto::of)
                             .collect(Collectors.toUnmodifiableList()));
+                    modelAndView.addObject("usersCount", users.size());
                 });
         modelAndView.setViewName("user/list");
         return modelAndView;
