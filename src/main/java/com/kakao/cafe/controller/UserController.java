@@ -6,15 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
 import com.kakao.cafe.domain.user.dto.UserProfileDto;
-import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 import com.kakao.cafe.service.UserService;
 
 @Controller
@@ -59,10 +60,25 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/form")
-    public String editMemberInformation(@PathVariable String userId, Model model) {
-        logger.info("GET /users/{}/form", userId);
+    public String editMemberInformation(@PathVariable String userId, String password, Model model) {
+        logger.info("POST /users/{}/form", userId);
+        userService.checkPasswordMatch(userId, password);
         User user = userService.findUserByUserId(userId);
         model.addAttribute("user", user);
         return "/user/updateForm";
+    }
+
+    @PutMapping("/users/{userId}/update")
+    public String updateUserInformation(@PathVariable String userId,
+        @RequestParam String password,
+        @RequestParam String name,
+        @RequestParam String email) {
+        logger.info("PUT /users/{}/update", userId);
+
+        logger.info("password : {}", password);
+        logger.info("name : {}", name);
+        logger.info("email: {}", email);
+
+        return "redirect:/users";
     }
 }

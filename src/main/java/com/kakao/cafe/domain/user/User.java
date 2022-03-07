@@ -26,4 +26,7 @@ public class User {
         return email;
     }
 
+    public boolean isYourPassword(String password) {
+        return this.password.equals(password);
+    }
 }

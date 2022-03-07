@@ -14,6 +14,7 @@ import com.kakao.cafe.repository.UserRepository;
 public class UserService {
 
     private static final String NON_EXISTENT_MEMBER = "[ERROR] 존재하지 않는 멤버입니다.";
+    private static final String MISMATCHED_PASSWORDS = "[ERROR] 비밀번호가 틀렸습니다.";
 
     private final UserRepository userRepository;
 
@@ -43,5 +44,12 @@ public class UserService {
     public User findUserByUserId(String userId) {
         return userRepository.findByUserId(userId)
             .orElseThrow(() -> new IllegalArgumentException(NON_EXISTENT_MEMBER));
+    }
+
+    public void checkPasswordMatch(String userId, String password) {
+        User user = findUserByUserId(userId);
+        if (!user.isYourPassword(password)) {
+            throw new IllegalArgumentException(MISMATCHED_PASSWORDS);
+        }
     }
 }

@@ -2,6 +2,10 @@ spring:
   mustache:
     cache: false
     suffix: .html
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 logging:
   level:
