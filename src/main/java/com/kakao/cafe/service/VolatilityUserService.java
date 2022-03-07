@@ -22,17 +22,17 @@ public class VolatilityUserService implements UserService {
 
     @Override
     public List<User> findAll() {
-        return userRepository.selectAll();
+        return userRepository.findAll();
     }
 
     @Override
     public User addUser(User user) {
         validateDuplicateUser(user);
-        return userRepository.insertUser(user)
+        return userRepository.save(user)
                 .orElseThrow(() -> new SaveUserException(SAVE_FAIL_MESSAGE));
     }
     private void validateDuplicateUser(User user) {
-        userRepository.selectUser(user.getUserId())
+        userRepository.findOne(user.getUserId())
                 .ifPresent(id -> {
                     throw new DuplicateUserIdException(EXISTENT_ID_MESSAGE);
                 });
@@ -40,7 +40,7 @@ public class VolatilityUserService implements UserService {
 
     @Override
     public User findUser(String id) {
-        return userRepository.selectUser(id)
+        return userRepository.findOne(id)
                 .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
     }
 }

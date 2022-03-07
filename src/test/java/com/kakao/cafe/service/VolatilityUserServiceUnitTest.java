@@ -37,9 +37,9 @@ class VolatilityUserServiceUnitTest {
     void addUserSuccess() {
         // given
         User user = User.builder("user").build();
-        given(userRepository.selectUser(user.getUserId()))
+        given(userRepository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
-        given(userRepository.insertUser(user))
+        given(userRepository.save(user))
                 .willReturn(Optional.of(user));
 
         // when
@@ -48,19 +48,19 @@ class VolatilityUserServiceUnitTest {
         // then
         assertThat(newUser).isEqualTo(user);
 
-        verify(userRepository).selectUser(user.getUserId());
+        verify(userRepository).findOne(user.getUserId());
     }
 
     @Test
     void addUserFail() {
         User user = User.builder("user").build();
-        given(userRepository.selectUser(any(String.class)))
+        given(userRepository.findOne(any(String.class)))
                 .willReturn(Optional.ofNullable(user));
 
         assertThatThrownBy(() -> userService.addUser(user))
                 .isInstanceOf(DuplicateUserIdException.class)
                 .hasMessage(EXISTENT_ID_MESSAGE);
 
-        verify(userRepository).selectUser(any(String.class));
+        verify(userRepository).findOne(any(String.class));
     }
 }

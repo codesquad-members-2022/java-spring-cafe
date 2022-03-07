@@ -27,13 +27,13 @@ class VolatilityUserRepositoryTest {
     void selectAll() {
         //given
         User user1 = User.builder("user1").build();
-        userRepository.insertUser(user1);
+        userRepository.save(user1);
 
         User user2 = User.builder("user2").build();
-        userRepository.insertUser(user2);
+        userRepository.save(user2);
 
         //when
-        List<User> users = userRepository.selectAll();
+        List<User> users = userRepository.findAll();
 
         //then
         assertThat(users.size()).isEqualTo(2);
@@ -45,10 +45,10 @@ class VolatilityUserRepositoryTest {
         User user = User.builder("user").build();
 
         //when
-        userRepository.insertUser(user);
+        userRepository.save(user);
 
         //then
-        User result = userRepository.selectUser(user.getUserId()).get();
+        User result = userRepository.findOne(user.getUserId()).get();
         assertThat(result).isEqualTo(user);
     }
 
@@ -56,10 +56,10 @@ class VolatilityUserRepositoryTest {
     void selectUser() {
         //given
         User user = User.builder("user").build();
-        userRepository.insertUser(user);
+        userRepository.save(user);
 
         //when
-        User result = userRepository.selectUser(user.getUserId()).get();
+        User result = userRepository.findOne(user.getUserId()).get();
 
         //then
         assertThat(result).isEqualTo(user);

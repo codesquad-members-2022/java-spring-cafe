@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    List<User> selectAll();
-    Optional<User> insertUser(User user);
-    Optional<User> selectUser(String id);
+    List<User> findAll();
+    Optional<User> save(User user);
+    Optional<User> findOne(String id);
 }
