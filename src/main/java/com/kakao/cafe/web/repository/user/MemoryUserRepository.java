@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.repository.user;
 
 import com.kakao.cafe.web.domain.user.User;
 import java.util.ArrayList;
@@ -30,14 +30,14 @@ public class MemoryUserRepository implements UserRepository {
 	@Override
 	public Optional<User> findByEmail(String email) {
 		return store.values().stream()
-			.filter(user -> user.getEmail().equals(email))
+			.filter(user -> user.isEqualEmail(email))
 			.findAny();
 	}
 
 	@Override
 	public Optional<User> findByUserId(String userId) {
 		return store.values().stream()
-			.filter(user -> user.getUserId().equals(userId))
+			.filter(user -> user.isEqualUserId(userId))
 			.findAny();
 	}
 
@@ -45,4 +45,9 @@ public class MemoryUserRepository implements UserRepository {
 	public List<User> findAll() {
 		return new ArrayList<>(store.values());
 	}
+
+	public void clear() {
+		store.clear();
+	}
+
 }

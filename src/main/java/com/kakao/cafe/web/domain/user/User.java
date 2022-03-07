@@ -8,6 +8,13 @@ public class User {
 	private String name;
 	private String email;
 
+	public User(String userId, String password, String name, String email) {
+		this.userId = userId;
+		this.password = password;
+		this.name = name;
+		this.email = email;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -48,6 +55,14 @@ public class User {
 		this.email = email;
 	}
 
+	public boolean isEqualEmail(String email) {
+		return this.email.equals(email);
+	}
+
+	public boolean isEqualUserId(String userId) {
+		return this.userId.equals(userId);
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -58,4 +73,5 @@ public class User {
 			", email='" + email + '\'' +
 			'}';
 	}
+
 }

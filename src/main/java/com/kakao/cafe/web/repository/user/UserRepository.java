@@ -1,4 +1,4 @@
-package com.kakao.cafe.web.repository;
+package com.kakao.cafe.web.repository.user;
 
 import com.kakao.cafe.web.domain.user.User;
 import java.util.List;
@@ -15,4 +15,5 @@ public interface UserRepository {
 	List<User> findAll();
 
 	Optional<User> findByUserId(String userId);
+
 }
