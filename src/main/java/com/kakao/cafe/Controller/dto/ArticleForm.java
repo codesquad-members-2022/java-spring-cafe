@@ -5,7 +5,7 @@ import com.kakao.cafe.domain.Article;
 import javax.validation.constraints.NotEmpty;
 import java.time.format.DateTimeFormatter;
 
-public class ArticleDto {
+public class ArticleForm {
 
     @NotEmpty(message = "필수 입력사항입니다.")
     private String writer;
@@ -16,21 +16,16 @@ public class ArticleDto {
     private String lastModifiedTime;
     private final String articleListDateFormat = "yyyy-MM-dd HH:MM";
 
-    public ArticleDto() {
+    public ArticleForm() {
     }
 
-    public ArticleDto(String writer, String title, String contents) {
+    public ArticleForm(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
 
-    public ArticleDto toArticleDto(Article article) {
-        ArticleDto articleDto = new ArticleDto(article.getWriter(), article.getTitle(), article.getContents());
-        articleDto.setCreatedTime(article.getCreatedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
-        articleDto.setLastModifiedTime(article.getLastModifiedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
-        return articleDto;
-    }
+
 
     public String getWriter() {
         return writer;

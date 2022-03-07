@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.Controller.dto.ArticleDto;
+import com.kakao.cafe.Controller.dto.ArticleForm;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +20,7 @@ public class Article extends BaseModel {
         super.setLastModifiedTime(LocalDateTime.now());
     }
 
-    public Article(Long id, ArticleDto articleDto) {
+    public Article(Long id, ArticleForm articleDto) {
         this.id = id;
         this.writer = articleDto.getWriter();
         this.title = articleDto.getTitle();
