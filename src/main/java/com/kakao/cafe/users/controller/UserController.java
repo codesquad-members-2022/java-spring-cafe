@@ -1,6 +1,7 @@
-package com.kakao.cafe.users;
+package com.kakao.cafe.users.controller;
 
 import com.kakao.cafe.exception.CafeRuntimeException;
+import com.kakao.cafe.users.UserService;
 import com.kakao.cafe.users.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

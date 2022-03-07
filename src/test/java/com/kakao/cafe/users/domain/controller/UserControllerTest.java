@@ -1,5 +1,7 @@
-package com.kakao.cafe.users;
+package com.kakao.cafe.users.domain.controller;
 
+import com.kakao.cafe.users.UserService;
+import com.kakao.cafe.users.controller.UserController;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import org.junit.jupiter.api.BeforeEach;
