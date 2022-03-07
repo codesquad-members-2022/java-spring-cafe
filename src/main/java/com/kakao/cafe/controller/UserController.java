@@ -41,7 +41,7 @@ public class UserController {
     public String showUserProfile(@PathVariable String userId, Model model) {
         UserProfileDto userProfileDto = userService.findUserByUserId(userId);
         model.addAttribute("userProfile", userProfileDto);
-        return "profile";
+        return "user/profile";
     }
 
     @ExceptionHandler(DuplicatedIdException.class)

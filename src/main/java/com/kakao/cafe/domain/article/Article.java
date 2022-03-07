@@ -17,7 +17,6 @@ public class Article {
         this.writeTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-
     public Integer getId() {
         return id;
     }
