@@ -19,6 +19,10 @@ public class User {
         this.email = builder.email;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
     public String getUserId() {
         return userId;
     }

@@ -1,32 +1,20 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.Vector;
 
-@Repository
-public class VolatilityUserRepository implements UserRepository {
+public abstract class VolatilityUserRepository implements Repository<User, String> {
 
-    private final Vector<User> users = new Vector<>();
+    protected final Vector<User> users = new Vector<>();
 
-    @Override
-    public List<User> findAll() {
-        return Collections.unmodifiableList(users);
-    }
-
-    @Override
-    public synchronized Optional<User> save(User user) {
+    protected User persist(User user) {
         user.setIndex(users.size() + 1);
-        return users.add(user) ? Optional.of(user) : Optional.empty();
+        return users.add(user) ? user : null;
     }
 
-    @Override
-    public Optional<User> findOne(String id) {
-        return users.stream().filter(user -> user.ownerOf(id)).findAny();
-    }
-
-    public void clear() {
-        users.clear();
+    protected User merge(int index, User user) {
+        users.add(index - 1, user);
+        return user;
     }
 }

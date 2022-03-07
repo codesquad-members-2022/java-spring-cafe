@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.VolatilityUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import static com.kakao.cafe.message.UserMessage.*;
 @Service
 public class VolatilityUserService implements UserService {
 
-    private final UserRepository userRepository;
+    private final VolatilityUserRepository userRepository;
 
-    public VolatilityUserService(UserRepository userRepository) {
+    public VolatilityUserService(VolatilityUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

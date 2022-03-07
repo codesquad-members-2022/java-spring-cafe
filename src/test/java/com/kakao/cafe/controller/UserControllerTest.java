@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.VolatilityUserRepository;
+import com.kakao.cafe.repository.VolatilityUserRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -40,7 +40,7 @@ class UserControllerTest {
     MockMvc mvc;
 
     @Autowired
-    VolatilityUserRepository userRepository;
+    VolatilityUserRepositoryImpl userRepository;
 
     static List<User> users;
 

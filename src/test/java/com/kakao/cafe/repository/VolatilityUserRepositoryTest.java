@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VolatilityUserRepositoryTest {
 
     @Autowired
-    VolatilityUserRepository userRepository;
+    VolatilityUserRepositoryImpl userRepository;
 
     @AfterEach
     public void afterEach() {
