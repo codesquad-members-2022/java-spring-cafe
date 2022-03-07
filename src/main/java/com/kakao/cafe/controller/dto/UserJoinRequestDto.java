@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.dto;
 
 import com.kakao.cafe.domain.user.User;
 
@@ -17,15 +17,5 @@ public class UserJoinRequestDto {
 
     public User toEntity() {
         return new User(userId, password, name, email);
-    }
-
-    @Override
-    public String toString() {
-        return "UserJoinRequestDto{" +
-                "userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

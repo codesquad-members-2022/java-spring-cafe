@@ -1,11 +1,13 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -29,12 +31,21 @@ public class UserService {
 
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException(NOT_FOUND_USER_MESSAGE));
+                .orElseThrow(() -> new NoSuchElementException(NOT_FOUND_USER_MESSAGE));
     }
 
     private void validateDuplicatedUserId(User user) {
         userRepository.findByUserId(user.getUserId()).ifPresent(m -> {
             throw new IllegalStateException(DUPLICATED_USER_MESSAGE);
         });
+    }
+
+    public void update(UserUpdateRequestDto dto) {
+        User user = findByUserId(dto.getUserId());
+        if (!user.isMatchPassword(dto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        User updateUser = user.update(dto.toEntity());
+        userRepository.save(updateUser);
     }
 }
