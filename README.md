@@ -98,3 +98,24 @@
 - [x] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.
 
 </details>
+
+### View
+<details>
+<summary>Click</summary>
+
+#### Home
+![image](https://user-images.githubusercontent.com/67811880/157053673-fdd032e7-bd83-48dc-ab79-4b3f64a5be64.png)
+
+#### Join
+![image](https://user-images.githubusercontent.com/67811880/157053830-de6eca5e-2395-4212-88e1-d592a1376869.png)
+
+#### User List
+![image](https://user-images.githubusercontent.com/67811880/157054059-6804fc05-f8fd-4026-a55f-fa4b2449b98f.png)
+
+#### User Profile
+![image](https://user-images.githubusercontent.com/67811880/157054191-a98a71f1-8886-4392-aca0-65dd72896357.png)
+
+#### Error Page
+![image](https://user-images.githubusercontent.com/67811880/157054324-75ab9741-64f9-4055-9518-b3509b6b28f9.png)
+
+</details>
