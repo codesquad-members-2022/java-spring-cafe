@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UserServiceTest {
 
@@ -43,6 +44,27 @@ class UserServiceTest {
 
         //then
         assertThat(saveUserId).isEqualTo(user.getUserId());
+    }
+
+    @Test
+    @DisplayName("이미 가입 된 아이디명으로 회원가입을 시도하면 회원가입 할 수 없다.")
+    void duplicate_userId_join() {
+        //given
+        User user1 = new User();
+        user1.setUserId("test1");
+        user1.setName("테스트");
+        user1.setPassword("1234");
+        user1.setEmail("test@gmail.com");
+
+        User user2 = new User();
+        user2.setUserId("test1");
+        user2.setName("테스트22");
+        user2.setPassword("123456");
+        user2.setEmail("test22@gmail.com");
+
+        //when
+        userService.join(user1);
+        assertThrows(IllegalStateException.class, () -> userService.join(user2));
     }
 
     @Test

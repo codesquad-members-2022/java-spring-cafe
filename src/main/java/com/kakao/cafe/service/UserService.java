@@ -16,7 +16,15 @@ public class UserService {
     }
 
     public String join(User user) {
+        validateDuplicateUser(user);
         return userRepository.save(user).getUserId();
+    }
+
+    private void validateDuplicateUser(User user) {
+        userRepository.findByUserId(user.getUserId())
+                .ifPresent(savedUser -> {
+                    throw new IllegalStateException("이미 존재하는 회원입니다.");
+                });
     }
 
     public List<User> findUsers() {
