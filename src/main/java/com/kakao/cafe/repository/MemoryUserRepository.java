@@ -21,8 +21,8 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String id) {
-        return store.stream().filter(user -> user.getUserId().equals(id)).findFirst();
+    public Optional<User> findById(String userId) {
+        return store.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
     }
 
     @Override
