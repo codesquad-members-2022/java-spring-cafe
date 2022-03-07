@@ -37,7 +37,7 @@ class UserControllerTest {
         mvc.perform(get("/users"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("users"))
-            .andExpect(view().name("list"));
+            .andExpect(view().name("/list"));
     }
 
     @DisplayName("존재하는 userId를 대상으로 /users/{userId}를 호출할 경우, 프로필 view가 반환된다.")
