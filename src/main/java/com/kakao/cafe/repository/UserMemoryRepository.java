@@ -25,7 +25,7 @@ public class UserMemoryRepository implements UserRepository{
         return user;
     }
 
-    public void addUserSize() {
+    private void addUserSize() {
         this.userSize++;
     }
 
