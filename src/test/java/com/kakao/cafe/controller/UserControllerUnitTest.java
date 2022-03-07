@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
@@ -63,13 +64,13 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
-        given(service.addUser(user)).willReturn(user);
+        given(service.update(user)).willReturn(user);
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
-        verify(service).addUser(user);
+        verify(service).update(user);
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
@@ -84,14 +85,14 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
-        given(service.addUser(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.update(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
                 .andDo(print());
 
-        verify(service).addUser(user);
+        verify(service).update(user);
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(
@@ -102,7 +103,7 @@ public class UserControllerUnitTest {
         );
     }
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, Map.class);
+        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.setAll(map);
 
@@ -112,7 +113,7 @@ public class UserControllerUnitTest {
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
     void getUserList() throws Exception {
-        given(service.findAll()).willReturn(users);
+        given(service.searchAll()).willReturn(users);
         mvc.perform(get("/users"))
                 .andExpectAll(
                         model().attributeExists("users"),
@@ -122,7 +123,7 @@ public class UserControllerUnitTest {
                         status().isOk()
                 );
 
-        verify(service).findAll();
+        verify(service).searchAll();
     }
 
     @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
@@ -130,7 +131,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpFail")
     void getUserProfileSuccess(User user) throws Exception {
         String userId = user.getUserId();
-        given(service.findUser(userId)).willReturn(user);
+        given(service.search(userId)).willReturn(user);
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         model().attributeExists("user"),
@@ -140,7 +141,7 @@ public class UserControllerUnitTest {
                         status().isOk()
                 );
 
-        verify(service).findUser(userId);
+        verify(service).search(userId);
     }
 
     @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
@@ -148,13 +149,13 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(User user) throws Exception {
         String userId = user.getUserId();
-        given(service.findUser(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+        given(service.search(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         content().string(NON_EXISTENT_ID_MESSAGE),
                         status().isBadRequest()
                 );
 
-        verify(service).findUser(userId);
+        verify(service).search(userId);
     }
 }

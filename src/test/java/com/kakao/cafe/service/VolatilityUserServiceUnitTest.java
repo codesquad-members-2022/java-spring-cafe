@@ -43,7 +43,7 @@ class VolatilityUserServiceUnitTest {
                 .willReturn(Optional.of(user));
 
         // when
-        User newUser = userService.addUser(user);
+        User newUser = userService.update(user);
 
         // then
         assertThat(newUser).isEqualTo(user);
@@ -57,7 +57,7 @@ class VolatilityUserServiceUnitTest {
         given(userRepository.findOne(any(String.class)))
                 .willReturn(Optional.ofNullable(user));
 
-        assertThatThrownBy(() -> userService.addUser(user))
+        assertThatThrownBy(() -> userService.update(user))
                 .isInstanceOf(DuplicateUserIdException.class)
                 .hasMessage(EXISTENT_ID_MESSAGE);
 

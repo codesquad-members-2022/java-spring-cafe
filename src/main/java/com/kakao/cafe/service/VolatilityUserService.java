@@ -21,12 +21,12 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> searchAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public User addUser(User user) {
+    public User update(User user) {
         validateDuplicateUser(user);
         return userRepository.save(user)
                 .orElseThrow(() -> new SaveUserException(SAVE_FAIL_MESSAGE));
@@ -39,7 +39,7 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User findUser(String id) {
+    public User search(String id) {
         return userRepository.findOne(id)
                 .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
     }

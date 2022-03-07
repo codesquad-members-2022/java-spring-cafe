@@ -34,7 +34,7 @@ public class UserController {
     public String signUp(User user, HttpServletRequest request) {
         logRequestInfo(request);
 
-        userService.addUser(user);
+        userService.update(user);
         return "redirect:/users";
     }
 
@@ -46,7 +46,7 @@ public class UserController {
         setResponseInfo(response);
 
         mav.setViewName("user/list");
-        mav.addObject("users", userService.findAll());
+        mav.addObject("users", userService.searchAll());
         return mav;
     }
 
@@ -59,7 +59,7 @@ public class UserController {
         setResponseInfo(response);
 
         mav.setViewName("user/profile");
-        mav.addObject("user", userService.findUser(userId));
+        mav.addObject("user", userService.search(userId));
         return mav;
     }
 
@@ -72,7 +72,7 @@ public class UserController {
         setResponseInfo(response);
 
         mav.setViewName("user/updateForm");
-        mav.addObject("user", userService.findUser(userId));
+        mav.addObject("user", userService.search(userId));
         return mav;
     }
 
@@ -83,7 +83,7 @@ public class UserController {
         request.getParameterNames().asIterator()
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
-        log.info("[{}] [{}] {}", method, requestURI, params);
+        log.info("{} {} {}", method, requestURI, params);
     }
 
     private void setResponseInfo(HttpServletResponse response) {

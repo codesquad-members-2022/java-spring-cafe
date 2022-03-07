@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.VolatilityUserRepositoryImpl;
@@ -99,7 +100,7 @@ class UserControllerTest {
         );
     }
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, Map.class);
+        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.setAll(map);
 
