@@ -9,12 +9,17 @@ import java.util.List;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articleList = new ArrayList<>();
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
     public void save(Article article) {
         article.setCreatedTime(currentTime());
         articleList.add(article);
+    }
+
+    @Override
+    public List<Article> findAll() {
+        return new ArrayList<>(articleList);
     }
 
     private String currentTime() {
