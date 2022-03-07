@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.Controller.dto.UserCreateDto;
 import com.kakao.cafe.exception.DuplicateUserIdException;
 import com.kakao.cafe.exception.NoMatchUserException;
-import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +22,6 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
-    @Autowired
-    UserRepository userRepository;
     private List<UserCreateDto> userCreateDtos;
 
     @BeforeEach
@@ -37,7 +34,7 @@ class UserServiceTest {
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAllUsers();
+        userService.deleteAllUsers();
     }
 
     @Test
