@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Article {
     private Integer id;
-    private String writer;
+    private final String writer;
     private String title;
     private String contents;
     private String writeTime;
@@ -17,33 +17,6 @@ public class Article {
         this.writeTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContents() {
-        return contents;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public String getWriteTime() {
-        return writeTime;
-    }
 
     public Integer getId() {
         return id;

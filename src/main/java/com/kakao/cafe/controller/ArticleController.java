@@ -1,12 +1,15 @@
 package com.kakao.cafe.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.domain.user.exception.DuplicatedIdException;
 import com.kakao.cafe.service.ArticleService;
 
 @Controller
@@ -35,5 +38,4 @@ public class ArticleController {
         model.addAttribute("article", articleService.showArticle(index));
         return "qna/showQna";
     }
-
 }
