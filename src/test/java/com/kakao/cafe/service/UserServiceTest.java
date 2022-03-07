@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.kakao.cafe.controller.dto.SignUpRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -36,11 +37,11 @@ class UserServiceTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class signUp_메소드는 {
 
-        private final User givenNonDuplicatedUser = new User(
+        private final SignUpRequestDto givenNonDuplicatedRequest = new SignUpRequestDto(
             "new@test.user",
             "test user1",
             "password1");
-        private final User givenDuplicatedUser = new User(
+        private final SignUpRequestDto givenDuplicatedRequest = new SignUpRequestDto(
             "already@present.user",
             "test user1",
             "password1");
@@ -52,7 +53,7 @@ class UserServiceTest {
             @Test
             @DisplayName("\"이미 존재하는 회원입니다.\"라는 IllegalStateException을 던진다")
             void 이미_존재하는_회원입니다_라는_IllegalStateException을_던진다() {
-                assertThatThrownBy(() -> userService.signUp(givenDuplicatedUser))
+                assertThatThrownBy(() -> userService.signUp(givenDuplicatedRequest))
                     .isInstanceOf(IllegalStateException.class)
                     .hasMessage("이미 존재하는 회원입니다.");
             }
@@ -65,7 +66,7 @@ class UserServiceTest {
             @Test
             @DisplayName("주어진 회원을 저장하고 저장된 회원의 id를 리턴한다")
             void 주어진_회원을_저장하고_저장된_회원의_id를_리턴한다() {
-                assertThat(userService.signUp(givenNonDuplicatedUser)).isEqualTo(2);
+                assertThat(userService.signUp(givenNonDuplicatedRequest)).isEqualTo(2);
             }
         }
     }

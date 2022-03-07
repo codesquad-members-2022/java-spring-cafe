@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller.dto;
 
+import com.kakao.cafe.domain.User;
+
 public class SignUpRequestDto {
 
     private String email;
@@ -16,23 +18,15 @@ public class SignUpRequestDto {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getNickname() {
         return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public User toEntity() {
+        return new User(email, nickname, password);
     }
 }

@@ -26,16 +26,13 @@ public class UserController {
 
     @PostMapping("/users")
     public String signUp(SignUpRequestDto form) {
-        User user = new User(form.getEmail(), form.getNickname(), form.getPassword());
-        userService.signUp(user);
+        userService.signUp(form);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String list(Model model) {
-        List<UserDto> users = userService.findUsers().stream()
-            .map(UserDto::new)
-            .collect(Collectors.toList());
+        List<UserDto> users = userService.findUsers();
         model.addAttribute("users", users);
         model.addAttribute("totalUserCount", users.size());
         return "user/list";
@@ -43,8 +40,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
-        User user = userService.findUser(userId);
-        UserDto userDto = new UserDto(user);
+        UserDto userDto = userService.findUser(userId);
         model.addAttribute("user", userDto);
         return "user/profile";
     }
