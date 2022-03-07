@@ -27,7 +27,11 @@ public class InitData {
             String password = "password" + i;
             String email = "email" + (random.nextInt(100) + 1) + "@" + emails[random.nextInt(3)] + ".com";
             User user = new User(userId, password, name, email);
-            userService.join(user);
+            try {
+                userService.join(user);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 }
