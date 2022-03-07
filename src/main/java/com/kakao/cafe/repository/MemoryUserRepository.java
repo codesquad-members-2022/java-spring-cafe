@@ -13,6 +13,7 @@ public class MemoryUserRepository implements UserRepository {
 
     private Map<Long, User> userIdMap = new HashMap<>();
     private Map<String, User> userNicknameMap = new HashMap<>(); // 닉네임으로 검색하기 위해 추가
+    private Map<String, User> userEmailMap = new HashMap<>(); // 닉네임으로 검색하기 위해 추가
     private long sequence = 0L;
 
     @Override
@@ -23,6 +24,7 @@ public class MemoryUserRepository implements UserRepository {
         user.setDate(today.toString());
         userIdMap.put(sequence, user);
         userNicknameMap.put(user.getNickname(), user);
+        userEmailMap.put(user.getEmail(), user);
     }
 
     @Override
@@ -33,6 +35,11 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findByNickname(String nickname) {
         return Optional.ofNullable(userNicknameMap.get(nickname));
+    }
+
+    @Override
+    public Optional<Object> findByEmail(String email) {
+        return Optional.ofNullable(userEmailMap.get(email));
     }
 
     @Override

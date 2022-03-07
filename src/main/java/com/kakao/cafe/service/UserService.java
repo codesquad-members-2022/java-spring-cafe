@@ -15,26 +15,34 @@ public class UserService {
     }
 
     public void join(User user) {
-        validateDuplicateNickname(user);
+        validateUniqueNickname(user);
+        validateUniqueEmail(user);
         userRepository.save(user);
     }
 
-    private void validateDuplicateNickname(User user) {
+    private void validateUniqueNickname(User user) {
         userRepository.findByNickname(user.getNickname())
             .ifPresent(m -> {
-                throw new IllegalStateException(ErrorMessage.EXISTING_NICKNAME.get());
+                throw new IllegalArgumentException(ErrorMessage.EXISTING_NICKNAME.get());
+            });
+    }
+
+    private void validateUniqueEmail(User user) {
+        userRepository.findByEmail(user.getEmail())
+            .ifPresent(m -> {
+                throw new IllegalArgumentException(ErrorMessage.EXISTING_EMAIL.get());
             });
     }
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-            new IllegalStateException(ErrorMessage.NO_MATCH.get())
+            new IllegalArgumentException(ErrorMessage.NO_MATCH.get())
         );
     }
 
     public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname).orElseThrow(() ->
-            new IllegalStateException(ErrorMessage.NO_MATCH.get())
+            new IllegalArgumentException(ErrorMessage.NO_MATCH.get())
         );
     }
 

@@ -34,20 +34,31 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입시 이미 등록되어있는 닉네임을 입력하면 예외를 발생시킨다")
-    void join_validateDuplicateNickname() {
+    @DisplayName("회원가입시 이미 등록되어있는 닉네임 또는 이메일을 입력하면 예외를 발생시킨다")
+    void join_validateUniqueNickname() {
         User user1 = new User();
-        user1.setNickname("bc");
+        user1.setEmail("BC@gmail.com");
+        user1.setNickname("BC");
         user1.setPassword("1234");
         userService.join(user1);
 
         User user2 = new User();
-        user2.setNickname("bc");
+        user2.setEmail("HARRY@gmail.com");
+        user2.setNickname("BC");
         user2.setPassword("1234555");
 
+        User user3 = new User();
+        user3.setEmail("BC@gmail.com");
+        user3.setNickname("Zen");
+        user3.setPassword("123335");
+
         assertThatThrownBy(() -> userService.join(user2))
-            .isInstanceOf(IllegalStateException.class)
+            .isInstanceOf(IllegalArgumentException.class)
             .hasMessage(ErrorMessage.EXISTING_NICKNAME.get());
+
+        assertThatThrownBy(() -> userService.join(user3))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage(ErrorMessage.EXISTING_EMAIL.get());
     }
 
     @Test
