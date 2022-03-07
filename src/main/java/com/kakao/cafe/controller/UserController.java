@@ -63,6 +63,19 @@ public class UserController {
         return mav;
     }
 
+    @GetMapping("/{userId}/form")
+    public ModelAndView goUpdateForm(@PathVariable String userId,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response,
+                                       ModelAndView mav) {
+        logRequestInfo(request);
+        setResponseInfo(response);
+
+        mav.setViewName("user/updateForm");
+        mav.addObject("user", userService.findUser(userId));
+        return mav;
+    }
+
     private void logRequestInfo(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
