@@ -1,6 +1,5 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.userdto.UserCreateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,10 @@ public class UserService {
 
     // 3. 회원 프로필 조회 기능
     public Optional<User> findUser(String userName) {
-        return userRepository.findUser(userName);
+        User foundUser = userRepository.findUser(userName)
+                .orElseThrow(() -> new IllegalStateException("찾을 수 없는 유저입니다."));
+
+        // foundUser = null 일 가능성이 있으므로 ofNullable 사용
+        return Optional.ofNullable(foundUser);
     }
 }

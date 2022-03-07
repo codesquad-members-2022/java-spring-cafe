@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -50,18 +51,15 @@ public class UserController {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
 
-        return "user/list";
+        return "/user/list";
     }
 
     @GetMapping("/user/{userName}")
     public String userProfile(@PathVariable String userName, Model model) {
-        userService.findUser(userName)
-                .ifPresentOrElse(user -> {
-                    model.addAttribute("foundUser", user);
-                }, () -> {
-                    throw new IllegalStateException("찾을 수 없는 유저입니다.");
-                });
+        Optional<User> user = userService.findUser(userName);
+        user.ifPresent(foundUser ->
+                model.addAttribute("foundUser", foundUser));
 
-        return "user/profile";
+        return "/user/profile";
     }
 }
