@@ -52,4 +52,8 @@ public class UserService {
             throw new IllegalArgumentException(MISMATCHED_PASSWORDS);
         }
     }
+
+    public void update(String userId, User updateUser) {
+        userRepository.update(userId, updateUser);
+    }
 }

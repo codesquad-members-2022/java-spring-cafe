@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +67,11 @@ class UserRepositoryTest {
 
         userRepository.save(user1);
 
-        Assertions.assertThrows(DuplicatedIdException.class, () -> {
-            userRepository.save(user2);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> {
+                userRepository.save(user2);
+            });
+        assertThat(exception.getMessage()).isEqualTo("[ERROR] 존재하는 ID입니다. 다시 입력하세요.");
     }
 
 }

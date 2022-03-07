@@ -7,11 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
@@ -69,16 +67,9 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}/update")
-    public String updateUserInformation(@PathVariable String userId,
-        @RequestParam String password,
-        @RequestParam String name,
-        @RequestParam String email) {
-        logger.info("PUT /users/{}/update", userId);
-
-        logger.info("password : {}", password);
-        logger.info("name : {}", name);
-        logger.info("email: {}", email);
-
+    public String updateUserInformation(@PathVariable String userId, User updateUser) {
+        logger.info("PUT /users/update");
+        userService.update(userId, updateUser);
         return "redirect:/users";
     }
 }

@@ -13,6 +13,16 @@ public class User {
         this.name = name;
         this.email = email;
     }
+    
+    public boolean isYourPassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public void updateInfo(User updateUser) {
+        this.password = updateUser.password;
+        this.name = updateUser.name;
+        this.email = updateUser.email;
+    }
 
     public String getUserId() {
         return userId;
@@ -24,9 +34,5 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public boolean isYourPassword(String password) {
-        return this.password.equals(password);
     }
 }
