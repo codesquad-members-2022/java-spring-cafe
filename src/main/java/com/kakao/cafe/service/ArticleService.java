@@ -1,9 +1,14 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.web.dto.ArticleDetailDto;
 import com.kakao.cafe.web.dto.ArticleListDto;
 import com.kakao.cafe.web.dto.ArticleRegisterFormDto;
+import com.kakao.cafe.web.dto.UserProfileDto;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ArticleService {
@@ -19,8 +24,24 @@ public class ArticleService {
     }
 
     public List<ArticleListDto> showAll() {
-        return articleRepository.findAll().stream()
-            .map(ArticleListDto::new)
+        List<Article> articleList = articleRepository.findAll();
+        return articleList.stream()
+            .map(article -> {
+                ArticleListDto articleListDto = new ArticleListDto(article);
+                articleListDto.setArticleNum(articleList.indexOf(article) + 1);
+                return articleListDto;
+            })
             .collect(Collectors.toList());
+    }
+
+    public ArticleDetailDto showOne(String articleId) {
+        Optional<Article> optionalArticle = articleRepository.findById(articleId);
+        return new ArticleDetailDto(validateExistenceArticleId(optionalArticle));
+    }
+
+    private Article validateExistenceArticleId(Optional<Article> optionalArticle) {
+        return optionalArticle.orElseThrow(() -> {
+            throw new IllegalStateException("해당 게시글이 존재하지 않습니다.");
+        });
     }
 }

@@ -1,13 +1,16 @@
 package com.kakao.cafe.web;
 
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.web.dto.ArticleDetailDto;
 import com.kakao.cafe.web.dto.ArticleRegisterFormDto;
+import com.kakao.cafe.web.dto.UserProfileDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -33,5 +36,16 @@ public class ArticleController {
         System.out.println(articleService.showAll().size());
         model.addAttribute("questions",articleService.showAll());
         return "index";
+    }
+
+    @GetMapping("/questions/{articleId}")
+    public String show(@PathVariable String articleId, Model model) {
+        log.info("---------[LOG] request to show {}'s article", articleId);
+        ArticleDetailDto articleDetailDto = articleService.showOne(articleId);
+        model.addAttribute("writer", articleDetailDto.getWriter());
+        model.addAttribute("title",articleDetailDto.getTitle());
+        model.addAttribute("createdTime", articleDetailDto.getCreatedTime());
+        model.addAttribute("contents", articleDetailDto.getContents());
+        return "qna/show";
     }
 }
