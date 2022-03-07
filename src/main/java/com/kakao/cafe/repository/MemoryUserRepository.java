@@ -16,10 +16,10 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        sequence ++;
+        sequence++;
         user.setId(sequence);
-        userIdMap.put(sequence,user);
-        userNicknameMap.put(user.getNickname(),user);
+        userIdMap.put(sequence, user);
+        userNicknameMap.put(user.getNickname(), user);
     }
 
     @Override

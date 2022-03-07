@@ -20,7 +20,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/user/list")
     public String list(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/users")
     public String create(User user) {
         userService.join(user);
-        return "redirect:/users"; // redirect 역할 : 파일(users.html)이 아닌 URL(/users)을 호출한다
+        return "redirect:/user/list"; // redirect 역할 : 파일(users.html)이 아닌 URL(/users)을 호출한다
     }
 
     @GetMapping("/users/{nickname}")
