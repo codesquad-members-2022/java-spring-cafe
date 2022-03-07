@@ -23,8 +23,8 @@ public class InitData {
 
         for (int i = 1; i <= 10; i++) {
             String userId = "userId" + i;
-            String password = "name" + (random.nextInt(100) + 1);
-            String name = "password" + i;
+            String name = "name" + (random.nextInt(100) + 1);
+            String password = "password" + i;
             String email = "email" + (random.nextInt(100) + 1) + "@" + emails[random.nextInt(3)] + ".com";
             User user = new User(userId, password, name, email);
             userService.join(user);
