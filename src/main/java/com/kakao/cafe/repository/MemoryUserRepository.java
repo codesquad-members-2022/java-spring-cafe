@@ -3,19 +3,21 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static List<User> store = new ArrayList<>();
-    private static Long sequence = 0L;
+    private static final List<User> store = Collections.synchronizedList(new ArrayList<>());
+    private static final AtomicLong sequence = new AtomicLong();
 
     @Override
     public User save(User user) {
-        User userRecord = User.createUserRecord(++sequence, user);
+        User userRecord = User.createUserRecord(sequence.incrementAndGet(), user);
         store.add(userRecord);
         return userRecord;
     }
