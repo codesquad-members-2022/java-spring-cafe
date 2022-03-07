@@ -10,15 +10,11 @@ public class UserDto {
     private String email;
     private LocalDateTime createdAt;
 
-    public UserDto(Long id, String nickname, String email, LocalDateTime createdAt) {
-        this.id = id;
-        this.nickname = nickname;
-        this.email = email;
-        this.createdAt = createdAt;
-    }
-
-    public static UserDto from(User user) {
-        return new UserDto(user.getId(), user.getNickname(), user.getEmail(), user.getCreatedAt());
+    public UserDto(User user) {
+        this.id = user.getId();
+        this.nickname = user.getNickname();
+        this.email = user.getEmail();
+        this.createdAt = user.getCreatedAt();
     }
 
     public Long getId() {

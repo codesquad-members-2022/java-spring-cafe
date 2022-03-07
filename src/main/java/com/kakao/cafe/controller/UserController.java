@@ -34,7 +34,7 @@ public class UserController {
     @GetMapping("/users")
     public String list(Model model) {
         List<UserDto> users = userService.findUsers().stream()
-            .map(UserDto::from)
+            .map(UserDto::new)
             .collect(Collectors.toList());
         model.addAttribute("users", users);
         model.addAttribute("totalUserCount", users.size());
@@ -44,7 +44,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable Long userId, Model model) {
         User user = userService.findUser(userId);
-        UserDto userDto = UserDto.from(user);
+        UserDto userDto = new UserDto(user);
         model.addAttribute("user", userDto);
         return "user/profile";
     }
