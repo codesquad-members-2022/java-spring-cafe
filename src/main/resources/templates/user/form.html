@@ -76,10 +76,20 @@
     }
 
     function passwordValidation() {
-        let passwd = document.getElementById("passwd").value;
-        let passwordConfirm = document.getElementById("passwordConfirm").value;
+        let passwd = document.getElementById("passwd");
+        let passwordConfirm = document.getElementById("passwordConfirm");
+        let passwdValue = passwd.value;
+        let passwordConfirmValue = passwordConfirm.value;
 
-        return !!passwd && !!passwordConfirm && (passwd === passwordConfirm);
+        let isPasswordValid = !!passwdValue && !!passwordConfirmValue && (passwdValue === passwordConfirmValue);
+
+        if (!isPasswordValid) {
+            let passwdLabel = getLabelText(passwd.id);
+            let passwordConfirmLabel = getLabelText(passwordConfirm.id);
+            alert(`${passwdLabel} 또는 ${passwordConfirmLabel}를 확인해 주세요`);
+        }
+
+        return isPasswordValid;
     }
 
     function getLabelText(id) {
