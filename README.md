@@ -4,8 +4,12 @@
 
 ## Step03 ToDo-List
 - [x] user form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)
-- [ ] article form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)
-- [ ] 검증 로직을 Controller가 아닌, 따로 분리하기
-- [ ] @Validated 에노테이션 적용하기
+- [x] article form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)
+- [x] 검증 로직을 Controller가 아닌, 따로 분리하기
+- [x] @Validated 에노테이션 적용하기
 - [x] User DB 연결
 - [x] Article DB 연결
+- [x] Dto를 전달받아 전달하는 메서드 Service에 구현하기
+- [x] ArticleService Unit Test 만들기
+- [ ] UserService Unit Test 만들기
+- [ ] UserController Unit Test 만들기
