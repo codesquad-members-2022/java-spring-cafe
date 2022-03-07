@@ -27,7 +27,7 @@ public class UserController {
         return "user/list";
     }
 
-    @PostMapping("/users")
+    @PostMapping("/user")
     public String create(User user) {
         userService.join(user);
         return "redirect:/user/list"; // redirect 역할 : 파일(users.html)이 아닌 URL(/users)을 호출한다

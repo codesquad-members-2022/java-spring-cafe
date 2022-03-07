@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,10 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
+        LocalDate today = LocalDate.now();
         sequence++;
         user.setId(sequence);
+        user.setDate(today.toString());
         userIdMap.put(sequence, user);
         userNicknameMap.put(user.getNickname(), user);
     }

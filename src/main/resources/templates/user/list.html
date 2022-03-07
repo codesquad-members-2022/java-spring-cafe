@@ -20,8 +20,9 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>ID</th>
                         <th>닉네임</th>
+                        <th>이메일</th>
+                        <th>회원가입일</th>
 
                     </tr>
                     </thead>
@@ -29,8 +30,8 @@
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td>{{id}}</td>
                         <td><a href="/users/{{nickname}}">{{nickname}}</a></td>
+                        <td>{{email}}</td>
                     </tr>
                     {{/users}}
 
