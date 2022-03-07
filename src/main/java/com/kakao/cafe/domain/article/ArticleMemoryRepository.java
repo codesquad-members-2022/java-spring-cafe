@@ -7,14 +7,24 @@ import java.util.*;
 
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
+    private static final String ARTICLE_CREATED_DATE_PATTERN= "yyyy-MM-dd HH:mm";
+
     private final List<Article> articleList = new ArrayList<>();
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final SimpleDateFormat formatter = new SimpleDateFormat(ARTICLE_CREATED_DATE_PATTERN);
 
     @Override
     public void save(Article article) {
-        article.setId((long) (articleList.size() + 1));
-        article.setCreatedDate(formatter.format(new Date()));
+        article.setId(generateId());
+        article.setCreatedDate(now());
         articleList.add(article);
+    }
+
+    private long generateId() {
+        return (articleList.size() + 1);
+    }
+
+    private String now() {
+        return formatter.format(new Date());
     }
 
     @Override
