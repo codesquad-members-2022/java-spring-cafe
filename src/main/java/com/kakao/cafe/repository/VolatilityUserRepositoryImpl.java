@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+import static com.kakao.cafe.repository.Repository.ENTITY_STATUS.*;
+
 @Repository
 public class VolatilityUserRepositoryImpl extends VolatilityUserRepository {
 
@@ -16,8 +18,16 @@ public class VolatilityUserRepositoryImpl extends VolatilityUserRepository {
     @Override
     public synchronized Optional<User> save(User user) {
         Optional<User> other = findOne(user.getUserId());
-        user = other.isEmpty() ? persist(user) : merge(other.get().getIndex(), user);
-        return Optional.ofNullable(user);
+        ENTITY_STATUS status = other.isEmpty() ? TRANSIENT : DETACHED;
+        User result = null;
+        switch (status) {
+            case TRANSIENT:
+                result = persist(user);
+                break;
+            case DETACHED:
+                result = merge(other.get().getIndex(), user);
+        }
+        return Optional.ofNullable(result);
     }
 
     @Override
