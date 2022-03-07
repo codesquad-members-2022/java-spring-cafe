@@ -1,4 +1,4 @@
-package com.kakao.cafe;
+package kr.codesquad.cafe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
