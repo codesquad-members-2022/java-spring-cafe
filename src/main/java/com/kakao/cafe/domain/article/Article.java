@@ -29,15 +29,7 @@ public class Article {
         return id;
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public String getContents() {
-        return contents;
     }
 }
