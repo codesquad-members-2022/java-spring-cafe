@@ -17,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kakao.cafe.user.domain.User;
 
 @SpringBootTest
+@Transactional
 public class DbText {
-	Logger logger = LoggerFactory.getLogger(DbText.class);
+	private Logger logger = LoggerFactory.getLogger(DbText.class);
 
 	@Autowired
 	DataSource dataSource;
@@ -61,7 +63,7 @@ public class DbText {
 	void database_test() throws SQLException {
 		Statement stmt = connection.createStatement();
 
-		String sql = "select * from user";
+		String sql = "select * from cafe_users";
 
 		ResultSet rs = stmt.executeQuery(sql);
 

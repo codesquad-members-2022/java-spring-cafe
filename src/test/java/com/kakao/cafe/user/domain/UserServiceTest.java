@@ -8,32 +8,29 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.practice.DbText;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserDto;
 import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.domain.UserService;
 import com.kakao.cafe.user.infra.MemoryUserRepository;
 
+@SpringBootTest
+@Transactional
 class UserServiceTest {
+	private Logger logger = LoggerFactory.getLogger(UserServiceTest .class);
 
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private UserRepository userRepository;
-
-	@BeforeEach
-	void beforeEach() {
-		this.userRepository = new MemoryUserRepository();
-		this.userService = new UserService(userRepository);
-	}
-
-	@AfterEach
-	void afterEach() {
-		this.userRepository.deleteAll();
-	}
 
 	@Test
 	@DisplayName("가입요청한 사용자 정보를 받으면 db에 저장하여 확인할 수 있다.")
@@ -43,6 +40,7 @@ class UserServiceTest {
 		userService.register(userDto);
 		Optional<User> actual = userRepository.findById(1L);
 
+		logger.info("saved user : {}", actual.get());
 		assertThat(actual.isPresent()).isTrue();
 	}
 

@@ -57,7 +57,7 @@ public class UserController {
 	}
 
 	@PostMapping("/{id}/update")
-	public String update(@PathVariable Long id, UserUpdateDto.Request userDto, Model model) {
+	public String update(@PathVariable Long id, UserUpdateDto.Request userDto) {
 		userDto.isValid(logger);
 		logger.info("update profile: {}", id);
 		userService.changeProfile(userDto);
