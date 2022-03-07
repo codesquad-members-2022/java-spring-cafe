@@ -16,10 +16,8 @@ public class VolatilityUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> insertUser(User user) {
-        synchronized (users) {
-            user.setIndex(users.size() + 1);
-        }
+    public synchronized Optional<User> insertUser(User user) {
+        user.setIndex(users.size() + 1);
         return users.add(user) ? Optional.of(user) : Optional.empty();
     }
 
