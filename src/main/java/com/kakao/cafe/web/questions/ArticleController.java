@@ -13,8 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @Controller
 @RequestMapping("/questions")
 public class ArticleController {
@@ -48,9 +46,8 @@ public class ArticleController {
             return "/qna/form";
         }
 
-        Article article = new Article(dto.getWriter(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
-        articleService.addArticle(article);
-        log.info("save form = {}", article.getTitle());
+        articleService.addArticle(dto);
+        log.info("save form = {}", dto.getTitle());
         return "redirect:/";
     }
 
