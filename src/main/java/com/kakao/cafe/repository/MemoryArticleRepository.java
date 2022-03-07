@@ -10,7 +10,7 @@ import java.util.Optional;
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articleList = new ArrayList<>();
-private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
     public void save(Article article) {
@@ -25,7 +25,7 @@ private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:
 
     @Override
     public Optional<Article> findById(String articleId) {
-        return Optional.ofNullable(articleList.get(Integer.parseInt(articleId)-1));
+        return Optional.ofNullable(articleList.get(Integer.parseInt(articleId) - 1));
     }
 
     private String currentTime() {

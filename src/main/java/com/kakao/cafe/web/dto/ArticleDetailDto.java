@@ -3,6 +3,7 @@ package com.kakao.cafe.web.dto;
 import com.kakao.cafe.domain.Article;
 
 public class ArticleDetailDto {
+
     private final String writer;
     private final String title;
     private final String createdTime;

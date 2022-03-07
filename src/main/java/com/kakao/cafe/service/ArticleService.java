@@ -1,12 +1,10 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.dto.ArticleDetailDto;
 import com.kakao.cafe.web.dto.ArticleListDto;
 import com.kakao.cafe.web.dto.ArticleRegisterFormDto;
-import com.kakao.cafe.web.dto.UserProfileDto;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +26,7 @@ public class ArticleService {
         return articleList.stream()
             .map(article -> {
                 ArticleListDto articleListDto = new ArticleListDto(article);
-                articleListDto.setArticleNum(articleList.indexOf(article) + 1);
+                articleListDto.setArticleId(articleList.indexOf(article) + 1);
                 return articleListDto;
             })
             .collect(Collectors.toList());

@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.Article;
 
 public class ArticleListDto {
 
-    private int articleNum;
+    private int articleId;
     private final String writer;
     private final String title;
     private final String createdTime;
@@ -15,7 +15,7 @@ public class ArticleListDto {
         this.createdTime = article.getCreatedTime();
     }
 
-    public void setArticleNum(int articleNum) {
-        this.articleNum = articleNum;
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
     }
 }

@@ -7,6 +7,8 @@ import java.util.Optional;
 public interface ArticleRepository {
 
     void save(Article article);
+
     List<Article> findAll();
+
     Optional<Article> findById(String articleId);
 }
