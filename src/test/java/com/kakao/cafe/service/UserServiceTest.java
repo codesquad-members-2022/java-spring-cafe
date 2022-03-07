@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserForm;
+import com.kakao.cafe.domain.UserJoinRequest;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import org.junit.jupiter.api.*;
 
@@ -38,7 +38,7 @@ class UserServiceTest {
             @Test
             @DisplayName("user 객체를 리포지토리에 저장하고 Id를 리턴한다.")
             void it_save_user_and_return_userId() {
-                User user = new User(new UserForm("testId", "1234", "haha", "test@gmail.com"));
+                User user = new User(new UserJoinRequest("testId", "1234", "haha", "test@gmail.com"));
 
                 Long id = userService.join(user);
 
@@ -53,8 +53,8 @@ class UserServiceTest {
             @Test
             @DisplayName("IllegalArgumentException 예외를 던진다.")
             void it_throw_IllegalArgumentException() {
-                User user1 = new User(new UserForm("testId", "1234", "haha", "test@gmail.com"));
-                User user2 = new User(new UserForm("testId", "1234", "haha", "test@gmail.com"));
+                User user1 = new User(new UserJoinRequest("testId", "1234", "haha", "test@gmail.com"));
+                User user2 = new User(new UserJoinRequest("testId", "1234", "haha", "test@gmail.com"));
 
                 userService.join(user1);
 
@@ -74,8 +74,8 @@ class UserServiceTest {
             @Test
             @DisplayName("해당 유저 객체를 반환한다.")
             void it_return_user() {
-                User user1 = new User(new UserForm("testId1", "1234", "haha1", "test@gmail.com"));
-                User user2 = new User(new UserForm("testId2", "1234", "haha2", "test@gmail.com"));
+                User user1 = new User(new UserJoinRequest("testId1", "1234", "haha1", "test@gmail.com"));
+                User user2 = new User(new UserJoinRequest("testId2", "1234", "haha2", "test@gmail.com"));
                 userService.join(user1);
                 userService.join(user2);
 
@@ -92,7 +92,7 @@ class UserServiceTest {
             @Test
             @DisplayName("IllegalArgumentException 예외를 던진다.")
             void it_throw_IllegalArgumentException() {
-                User user1 = new User(new UserForm("testId1", "1234", "haha1", "test@gmail.com"));
+                User user1 = new User(new UserJoinRequest("testId1", "1234", "haha1", "test@gmail.com"));
                 userService.join(user1);
 
                 assertThatThrownBy(() -> userService.findUser("TEST")).isInstanceOf(IllegalArgumentException.class);
@@ -112,8 +112,8 @@ class UserServiceTest {
             @Test
             @DisplayName("2명의 user 리스트를 리턴한다.")
             void it_return_users() {
-                User user1 = new User(new UserForm("testId1", "1234", "haha1", "test@gmail.com"));
-                User user2 = new User(new UserForm("testId2", "1234", "haha2", "test@gmail.com"));
+                User user1 = new User(new UserJoinRequest("testId1", "1234", "haha1", "test@gmail.com"));
+                User user2 = new User(new UserJoinRequest("testId2", "1234", "haha2", "test@gmail.com"));
                 userService.join(user1);
                 userService.join(user2);
 

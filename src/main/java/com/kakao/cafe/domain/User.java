@@ -8,7 +8,7 @@ public class User {
     private final String name;
     private final String email;
 
-    public User(UserForm userForm) {
+    public User(UserJoinRequest userForm) {
         this.userId = userForm.getUserId();
         this.password = userForm.getPassword();
         this.name = userForm.getName();

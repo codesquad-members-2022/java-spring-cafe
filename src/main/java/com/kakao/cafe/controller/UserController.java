@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserForm;
+import com.kakao.cafe.domain.UserJoinRequest;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,8 +44,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(UserForm userForm) {
-        User user = new User(userForm);
+    public String create(UserJoinRequest userJoinRequest) {
+        User user = new User(userJoinRequest);
         userService.join(user);
         return "redirect:/users";
     }

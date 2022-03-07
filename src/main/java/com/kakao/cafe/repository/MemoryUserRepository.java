@@ -13,17 +13,9 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        checkDuplicateUser(user);
         user.setId(sequence++);
         store.put(user.getId(), user);
         return user;
-    }
-
-    private void checkDuplicateUser(User user) {
-        findByUserId(user.getUserId())
-                .ifPresent(u -> {
-                    throw new IllegalArgumentException("이미 존재하는 회원입니다.");
-                });
     }
 
     @Override
@@ -37,7 +29,6 @@ public class MemoryUserRepository implements UserRepository {
                 .filter(user -> user.getUserId().equals(userId))
                 .findAny();
     }
-
 
     public void clear() {
         store.clear();

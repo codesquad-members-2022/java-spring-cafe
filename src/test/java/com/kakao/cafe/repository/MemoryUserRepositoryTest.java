@@ -1,17 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserForm;
+import com.kakao.cafe.domain.UserJoinRequest;
 import org.junit.jupiter.api.*;
-import org.mockito.internal.matchers.Null;
-import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @DisplayName("MemoryUserRepository 클래스")
@@ -40,7 +37,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("user 객체를 저장한다.")
             void it_store_user_and_return_user() {
-                User user = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
 
                 User sut = repository.save(user);
 
@@ -50,22 +47,6 @@ class MemoryUserRepositoryTest {
                 assertThat(sut.getEmail()).isEqualTo("test@gmail.com");
             }
         }
-
-        @Nested
-        @DisplayName("만약 중복된 userID를 가지고 있는 user 객체가 주어진다면")
-        class Context_with_duplicate_user {
-
-            @Test
-            @DisplayName("IllegalArgumentException 예외를 던진다.")
-            void it_throw_IllegalArgumentException() {
-                User user = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
-                repository.save(user);
-
-                User user2 = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
-                assertThatThrownBy(() -> repository.save(user2)).isInstanceOf(IllegalArgumentException.class);
-            }
-        }
-
     }
 
     @Nested
@@ -79,9 +60,9 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("모든 user 객체를 리스트로 리턴한다.")
             void it_store_user_and_return_user() {
-                User user = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
                 repository.save(user);
-                User user2 = new User(new UserForm("testuserid2", "1234", "haha2", "test@gmail.com"));
+                User user2 = new User(new UserJoinRequest("testuserid2", "1234", "haha2", "test@gmail.com"));
                 repository.save(user2);
 
                 List<User> sut = repository.findAll();
@@ -102,7 +83,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("해당 유저의 옵셔널 객체를 리턴한다.")
             void it_return_user() {
-                User user = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
                 repository.save(user);
 
                 Optional<User> sut = repository.findByUserId("testuserid");
@@ -117,7 +98,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("비어있는 Optional을 리턴한다")
             void it_return_user() {
-                User user = new User(new UserForm("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
                 repository.save(user);
 
                 Optional<User> sut = repository.findByUserId("not_exist");

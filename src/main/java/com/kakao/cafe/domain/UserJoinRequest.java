@@ -1,12 +1,12 @@
 package com.kakao.cafe.domain;
 
-public class UserForm {
+public class UserJoinRequest {
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public UserForm(String userId, String password, String name, String email) {
+    public UserJoinRequest(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;

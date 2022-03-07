@@ -35,7 +35,6 @@ public class UserService {
                 });
     }
 
-
     /**
      * 회원 전체 조회
      * @return 유저 리스트
@@ -43,7 +42,6 @@ public class UserService {
     public List<User> findUsers() {
         return userRepository.findAll();
     }
-
 
     /**
      * userId 회원 조회
