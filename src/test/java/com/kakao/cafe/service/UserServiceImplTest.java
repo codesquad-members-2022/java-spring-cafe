@@ -56,6 +56,23 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("중복된 이메일일 때 예외처리가 제대로 이루어지는가")
+    void joinDuplicateEmail() {
+        //given
+        User user1 = new User("honux", "호눅스", "1234a", "honux77@gmail.com");
+        User user2 = new User("crong", "크롱", "5678@", "honux77@gmail.com");
+
+
+        //when
+        userService.join(user1);
+
+        //then
+        IllegalStateException e;
+        e = assertThrows(IllegalStateException.class, () -> userService.join(user2));
+        assertThat(e.getMessage()).isEqualTo("이미 존재하는 이메일입니다.");
+    }
+
+    @Test
     @DisplayName("모든 유저들이 잘 검색이 되는가")
     void findAll() {
         //given

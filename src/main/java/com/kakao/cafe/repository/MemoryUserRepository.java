@@ -34,6 +34,13 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(store);
     }
 
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return store.stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findAny();
+    }
+
     public void clearStore() {
         store.clear();
     }
