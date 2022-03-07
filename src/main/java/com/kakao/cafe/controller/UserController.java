@@ -32,9 +32,16 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(User userCreateDto) {
-        userService.createUser(userCreateDto);
+    public String createUser(UserCreateDto userCreateDto) {
+        User user = new User(
+                userCreateDto.getUserName(),
+                userCreateDto.getUserPassword(),
+                userCreateDto.getUserEmail()
+        );
 
+        userService.createUser(user);
+
+        // 아래 @GetMapping("/user/list") 컨트롤러 호출을 위해 redirect 사용
         return "redirect:/user/list";
     }
 
