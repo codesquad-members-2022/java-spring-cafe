@@ -13,7 +13,7 @@ public class UserRepository {
 
 	public List<Users> findAll() {
 		Collection<Users> values = users.values();
-		return (List<Users>) values;
+		return new ArrayList<>(values);
 	}
 
 	public void save(Users user) {

@@ -26,7 +26,7 @@ public class UserController {
     public String save(Users user) {
         userService.save(user);
 
-        return "redirect:list";
+        return "redirect:/users/list";
     }
 
     @GetMapping("/users/list")
