@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private static List<User> userList = new ArrayList<>();
+    private List<User> userList = new ArrayList<>();
 
     @Override
     public void save(User user) {
