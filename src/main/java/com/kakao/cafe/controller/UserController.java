@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @ExceptionHandler({ DuplicateUserIdException.class, NoSuchUserException.class, SaveUserException.class })
-    public ResponseEntity<String> except(Exception ex) {
+    private ResponseEntity<String> except(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
