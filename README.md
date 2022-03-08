@@ -6,14 +6,14 @@
 
 ### 요구사항
 
-- [ ] 회원 가입 기능 구현
+- [x] 회원 가입 기능 구현
   - 회원 가입 양식: /users/form.html
   - 요청 메서드: POST /users
   - 회원 가입 후: 유저 목록으로 리다이렉트 (redirect:/users)
-- [ ] 회원 조회 기능 구현
+- [x] 회원 조회 기능 구현
   - 요청 메서드: GET /users
   - 회원 목록 뷰 템플릿: /users/list.html
-- [ ] 회원 프로필 조회 기능 구현
+- [x] 회원 프로필 조회 기능 구현
   - 요청 메서드: GET /users/{userId}
   - 회원 프로필 뷰 템플릿: /users/profile.html
 - [ ] 템플릿을 이용하여 HTML 파일들의 중복 제거
