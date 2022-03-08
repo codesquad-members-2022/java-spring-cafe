@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.Controller.dto.UserCreateDto;
+import com.kakao.cafe.Controller.dto.UserRequestDto;
 import com.kakao.cafe.exception.DuplicateUserIdException;
 import com.kakao.cafe.exception.NoMatchUserException;
 import org.junit.jupiter.api.AfterEach;
@@ -22,14 +22,14 @@ class UserServiceTest {
 
     @Autowired
     UserService userService;
-    private List<UserCreateDto> userCreateDtos;
+    private List<UserRequestDto> userRequestDtos;
 
     @BeforeEach
     void setup() {
-        userCreateDtos = new ArrayList<>();
-        userCreateDtos.add(new UserCreateDto("test1", "1234", "박우진", "abc@naver.com"));
-        userCreateDtos.add(new UserCreateDto("test2", "1234", "김우진", "abc@google.com"));
-        userCreateDtos.add(new UserCreateDto("test3", "1234", "최우진", "abc@kakao.com"));
+        userRequestDtos = new ArrayList<>();
+        userRequestDtos.add(new UserRequestDto("test1", "1234", "박우진", "abc@naver.com"));
+        userRequestDtos.add(new UserRequestDto("test2", "1234", "김우진", "abc@google.com"));
+        userRequestDtos.add(new UserRequestDto("test3", "1234", "최우진", "abc@kakao.com"));
     }
 
     @AfterEach
@@ -41,7 +41,7 @@ class UserServiceTest {
     @DisplayName("회원가입용 데이터가 정상적으로 주어지면 회원가입이 성공한다")
     void joinSuccessTest() {
         // given
-        User user = new User(userService.nextUserSequence(), userCreateDtos.get(0));
+        User user = new User(userService.nextUserSequence(), userRequestDtos.get(0));
 
         // when
         User resultUser = userService.save(user);
@@ -54,9 +54,9 @@ class UserServiceTest {
     @DisplayName("이미 가입된 userId로 다시 가입을 시도하면 DuplicateUserIdException이 발생한다")
     void joinDuplicateTest() {
         // given
-        UserCreateDto userCreateDto = new UserCreateDto("test", "1234", "박우진", "abc@naver.com");
+        UserRequestDto userCreateDto = new UserRequestDto("test", "1234", "박우진", "abc@naver.com");
         User user = new User(userService.nextUserSequence(), userCreateDto);
-        for (UserCreateDto createDto : userCreateDtos) {
+        for (UserRequestDto createDto : userRequestDtos) {
             userService.save(new User(userService.nextUserSequence(), createDto));
         }
 
@@ -73,7 +73,7 @@ class UserServiceTest {
     @DisplayName("기존에 가입된 userId로 회원검색을 시도하면 해당하는 회원을 리턴한다")
     void findByUserIdTest() {
         // given
-        User user = new User(userService.nextUserSequence(), userCreateDtos.get(0));
+        User user = new User(userService.nextUserSequence(), userRequestDtos.get(0));
         userService.save(user);
 
         // when
