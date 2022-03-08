@@ -4,7 +4,27 @@
 
 <body>
 <nav th:replace="fragment/nav::nav"></nav>
-<nav th:replace="fragment/subnav::subnav"></nav>
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment/head::head"></head>
+
+<body>
+<nav th:replace="fragment/nav::nav"></nav>
+<div class="navbar navbar-default" id="subnav">
+    <div class="col-md-12">
+        <div th:replace="fragment/subnav::subnav"></div>
+        <div class="collapse navbar-collapse" id="navbar-collapse2">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a th:href="@{/}">Posts</a></li>
+                <li><a th:href="@{/}" role="button">로그인</a></li>
+                <li><a th:href="@{/users/join}" role="button">회원가입</a></li>
+                <li><a th:href="@{/questions}" role="button">질문하기</a></li>
+                <!--                <li><a th:href="@{/}" role="button">로그아웃</a></li>-->
+                <!--                <li><a th:href="@{/}" role="button">개인정보수정</a></li>-->
+            </ul>
+        </div>
+    </div>
+</div>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
