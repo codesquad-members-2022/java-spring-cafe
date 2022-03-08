@@ -34,7 +34,7 @@ class VolatilityUserServiceUnitTest {
     }
 
     @Test
-    void addUserSuccess() {
+    void addUserSuccess() throws Throwable {
         // given
         User user = User.builder("user").build();
         given(userRepository.findOne(user.getUserId()))
