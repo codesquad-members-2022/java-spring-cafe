@@ -208,7 +208,6 @@ class UserControllerTest {
 
             assertThat(modelAndView.getViewName()).isEqualTo("user/list");
             assertThat(model.containsKey("errorMessage")).isTrue();
-//            assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
         }
 
         private User getUser() {
