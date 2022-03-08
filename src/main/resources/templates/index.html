@@ -29,6 +29,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th>id</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일자</th>
@@ -36,55 +37,22 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {{#articles}}
                     <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
+                        <td>{{id}}</td>
+                        <td><a href="/articles/{{id}}">{{title}}</a></td>
+                        <td></td>
+                        <td>{{date}}</td>
+                        <td></td>
                     </tr>
-                    <tr>
-                        <td><a href="post/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
+                    {{/articles}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="post-btn-container">
-        <a class="post-write-btn" class="btn btn-primary pull-right" href="post/form.html"
+        <a class="post-write-btn" class="btn btn-primary pull-right" href="/qna/form"
            role="button">글쓰기</a>
     </div>
 </div>
@@ -117,7 +85,7 @@
       <div class="modal-footer">
           <div class="col-md-12">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>  
+      </div>
       </div>
   </div>
   </div>
@@ -159,7 +127,7 @@
       <div class="modal-footer">
           <div class="col-md-12">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>  
+      </div>
       </div>
   </div>
   </div>
