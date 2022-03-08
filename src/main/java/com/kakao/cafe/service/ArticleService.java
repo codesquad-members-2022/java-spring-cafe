@@ -25,7 +25,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findById(Long index) {
+    public Article findById(int index) {
         return articleRepository.findById(index).orElseThrow(() ->
             new IllegalArgumentException(ErrorMessage.NO_MATCH_ARTICLE.get()));
     }

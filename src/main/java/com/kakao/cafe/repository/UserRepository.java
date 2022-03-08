@@ -8,7 +8,7 @@ import com.kakao.cafe.domain.User;
 public interface UserRepository {
     void save(User user);
 
-    Optional<User> findById(Long id);
+    Optional<User> findById(int id);
 
     Optional<User> findByNickname(String nickname);
 

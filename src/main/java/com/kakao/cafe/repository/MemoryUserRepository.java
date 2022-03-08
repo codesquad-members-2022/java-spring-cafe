@@ -7,14 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.stereotype.Repository;
+
 import com.kakao.cafe.domain.User;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private Map<Long, User> userIdMap = new HashMap<>();
+    private Map<Integer, User> userIdMap = new HashMap<>();
     private Map<String, User> userNicknameMap = new HashMap<>(); // 닉네임으로 검색하기 위해 추가
     private Map<String, User> userEmailMap = new HashMap<>();
-    private long sequence = 0L;
+    private int sequence = 0;
 
     @Override
     public void save(User user) {
@@ -27,7 +30,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(int id) {
         return Optional.ofNullable(userIdMap.get(id));
     }
 

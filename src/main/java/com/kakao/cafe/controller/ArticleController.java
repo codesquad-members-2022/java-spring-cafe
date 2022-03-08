@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String view(@PathVariable Long index, Model model) {
+    public String view(@PathVariable int index, Model model) {
         Article article = articleService.findById(index);
         model.addAttribute("article", article);
 

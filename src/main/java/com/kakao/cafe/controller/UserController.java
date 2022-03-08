@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ import com.kakao.cafe.service.UserService;
 public class UserController {
     private final UserService userService;
 
-    // @Autowired  -> 생성자가 하나일 경우 생략 가능
+    @Autowired //-> 생성자가 하나일 경우 생략 가능. 하지만 명시해주는게 더 좋은 것 같아 놔둠
     public UserController(UserService userService) {
         this.userService = userService;
     }

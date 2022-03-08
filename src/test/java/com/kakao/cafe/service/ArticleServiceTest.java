@@ -27,7 +27,7 @@ class ArticleServiceTest {
         article.setContent("내용1");
         articleService.add(article);
 
-        Article foundArticle = articleService.findById(1L);
+        Article foundArticle = articleService.findById(1);
         assertThat(article.getId()).isEqualTo(foundArticle.getId());
         assertThat(article.getTitle()).isEqualTo(foundArticle.getTitle());
         assertThat(article.getContent()).isEqualTo(foundArticle.getContent());

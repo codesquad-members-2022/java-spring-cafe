@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.User;
@@ -13,6 +14,7 @@ import com.kakao.cafe.repository.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
 
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -37,7 +39,7 @@ public class UserService {
             });
     }
 
-    public User findById(Long id) {
+    public User findById(int id) {
         return userRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get())
         );
