@@ -23,5 +23,4 @@ public class ErrorPageController {
         logger.info(request.getRequestURI());
         return "error-pages/500";
     }
-
 }

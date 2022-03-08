@@ -10,13 +10,13 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class MemberRepositoryImplTest {
+class MemberRepositoryTest {
 
     MemberRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userRepository = new MemberRepositoryImpl();
+        userRepository = new MemberRepository();
     }
 
     @Test
@@ -28,7 +28,7 @@ class MemberRepositoryImplTest {
         JoinRequest request = new JoinRequest(email, password, nickName);
         Member insertMember = userRepository.insert(request.toEntity());
 
-        Optional<Member> findMember = userRepository.findById(11L);
+        Optional<Member> findMember = userRepository.findById(11);
 
         assertThat(findMember.isPresent()).isTrue();
         assertThat(findMember.get().getId()).isEqualTo(insertMember.getId());

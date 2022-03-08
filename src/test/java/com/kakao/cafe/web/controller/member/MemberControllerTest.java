@@ -41,7 +41,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("ProfileChangeRequest를 넣으면 정보 수정이 발생하고 적절한 페이지로 이동한다.")
     void 인자테스트_edit() {
-        String page = memberController.edit(new ProfileChangeRequest(1L, "Kim", "abc@naver.com", LocalDateTime.now()));
+        String page = memberController.edit(new ProfileChangeRequest(1, "Kim", "abc@naver.com", LocalDateTime.now()));
 
         String expected = "redirect:/";
 
@@ -51,7 +51,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("findById 메서드를 사용하면 회원조회 페이지로 이동된다.")
     void 회원조회_findById() {
-        String page = memberController.findMemberById(new BindingAwareModelMap(), 1L);
+        String page = memberController.findMemberById(new BindingAwareModelMap(), 1);
 
         String expected = "user/profile";
 

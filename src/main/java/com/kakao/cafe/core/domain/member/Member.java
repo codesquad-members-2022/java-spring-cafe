@@ -6,17 +6,17 @@ import java.util.Objects;
 
 public class Member {
 
-    private Long id;
+    private int id;
     private String email;
     private String password;
     private String nickName;
     private LocalDateTime createAt;
 
-    public Member (Long id){
+    public Member (int id){
         this.id = id;
     }
 
-    public Member(Long id, String email, String password, String nickName) {
+    public Member(int id, String email, String password, String nickName) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -33,7 +33,7 @@ public class Member {
         return LocalDateTime.now();
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -58,7 +58,7 @@ public class Member {
     }
 
     public static class Builder {
-        private Long id;
+        private int id;
         private String email;
         private String password;
         private String nickName;
@@ -72,7 +72,7 @@ public class Member {
             this.createAt = member.createAt;
         }
 
-        public Builder id(Long id){
+        public Builder id(int id){
             this.id = id;
             return this;
         }

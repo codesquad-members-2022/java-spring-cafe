@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 public class ProfileChangeRequest {
 
-    private Long id;
+    private int id;
     private String nickName;
     private String email;
     private LocalDateTime createAt;
 
-    public ProfileChangeRequest(Long id, String nickName, String email, LocalDateTime createAt) {
+    public ProfileChangeRequest(int id, String nickName, String email, LocalDateTime createAt) {
         this.id = id;
         this.nickName = nickName;
         this.email = email;
@@ -26,7 +26,7 @@ public class ProfileChangeRequest {
         return email;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

@@ -6,21 +6,14 @@ import com.kakao.cafe.web.controller.member.dto.JoinRequest;
 import com.kakao.cafe.web.controller.member.dto.JoinResponse;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final EntityManager entityCheckManager;
 
-    @Autowired
-    public MemberService(MemberRepository memberRepository, EntityManager entityCheckManager) {
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        this.entityCheckManager = entityCheckManager;
     }
 
     /**
@@ -30,7 +23,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Member findById(Long userId) {
+    public Member findById(int userId) {
         return memberRepository.findById(userId).orElseThrow();
     }
 
@@ -45,7 +38,7 @@ public class MemberService {
         return findMember;
     }
 
-    public ProfileChangeResponse getMemberDetails(Long id, ProfileChangeRequest request) {
+    public ProfileChangeResponse getMemberDetails(int id, ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(id).orElseThrow();
         request.enrollInformation(findMember);
         return new ProfileChangeResponse(request);

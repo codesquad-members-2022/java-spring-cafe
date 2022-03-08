@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class ProfileChangeResponse {
 
-    private Long id;
+    private int id;
     private String nickName;
     private String email;
     private LocalDateTime createAt;
@@ -16,7 +16,7 @@ public class ProfileChangeResponse {
         this.createAt = request.getCreateAt();
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
