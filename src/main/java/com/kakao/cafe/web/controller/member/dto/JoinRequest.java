@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.controller.member.dto;
 
 import com.kakao.cafe.core.domain.member.Member;
-import com.kakao.cafe.core.repository.member.SequenceGenerator;
+import com.kakao.cafe.core.repository.SequenceGenerator;
 
 public class JoinRequest {
     private String email;
@@ -31,6 +31,6 @@ public class JoinRequest {
     }
 
     public Member toEntity(){
-        return new Member(SequenceGenerator.getSequence(), this.getEmail(), this.getPassword(), this.getNickName());
+        return new Member(SequenceGenerator.getMemberSequence(), this.getEmail(), this.getPassword(), this.getNickName());
     }
 }
