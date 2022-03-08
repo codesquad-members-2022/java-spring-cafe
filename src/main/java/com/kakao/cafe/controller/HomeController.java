@@ -1,18 +1,27 @@
 package com.kakao.cafe.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.entity.Article;
+import com.kakao.cafe.service.ArticleService;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
 
-    private final Logger log = LoggerFactory.getLogger(HomeController.class);
+    private final ArticleService articleService;
+
+    public HomeController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
 
     @GetMapping("/")
-    public String home() {
-        log.info("메인페이지 접속");
+    public String home(Model model) {
+        List<Article> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
         return "index";
     }
 }

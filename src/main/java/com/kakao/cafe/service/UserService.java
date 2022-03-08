@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.validation.UserSignUpValidation;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +19,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long signUp(User user) {
-        UserSignUpValidation.validateDuplicateUserEmail(userRepository, user);
+    public String signUp(User user) {
+        validateDuplicatedUser(user);
         userRepository.userSave(user);
         log.info("가입 성공: {}", user.getEmail());
-        return user.getId();
+        return user.getUserId();
     }
 
     public List<User> findUsers() {
@@ -39,5 +38,11 @@ public class UserService {
     public User findEmailUser(String userEmail) {
         return userRepository.findEmail(userEmail)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+    }
+
+    private void validateDuplicatedUser(User user) {
+        userRepository.findEmail(user.getEmail()).ifPresent(s -> {
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
+        });
     }
 }
