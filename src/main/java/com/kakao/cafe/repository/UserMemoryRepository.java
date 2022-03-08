@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserMemoryRepository implements UserRepository {
@@ -9,6 +10,7 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public User save(User user) {
+        user.setCreatedDate(LocalDateTime.now());
         store.put(user.getEmail(), user);
         return user;
     }

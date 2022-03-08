@@ -27,7 +27,9 @@ public class UserController {
     public String create(UserForm form) {
         User user = new User();
         user.setEmail(form.getEmail());
-
+        user.setUserId(form.getUserId());
+        user.setPassword(form.getPassward());
+        user.setCreatedDate(form.getCreatedDate());
         userService.join(user);
 
         return "redirect:/users";
@@ -37,6 +39,7 @@ public class UserController {
     public String list(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users",users);
-        return "user/list";
+        model.addAttribute("countOfTotalUser",users.size());
+        return "/user/list";
     }
 }

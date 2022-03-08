@@ -36,7 +36,7 @@
     </div>
 </div>
 
-<p class="total_num">전체 멤버 10명</p>
+<p class="total_num">전체 멤버 {{countOfTotalUser}}</p>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -48,27 +48,36 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                {{#users}}
                 <tr>
-                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>
+                    <td>{{userId}}</td>
+                    <td>{{email}}</td>
+                    <td>{{createdDate}}</td>
                 </tr>
-                <tr>
-                    <td>테스터 2</td> <td>test2@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 3</td> <td>test3@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 4</td> <td>test4@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 5</td> <td>test5@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 6</td> <td>test6@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>
-                </tr>
+                {{/users}}
+
+<!--                <tr>-->
+<!--                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 2</td> <td>test2@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 3</td> <td>test3@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 4</td> <td>test4@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 5</td> <td>test5@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 6</td> <td>test6@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>-->
+<!--                </tr>-->
                 </tbody>
             </table>
         </div>

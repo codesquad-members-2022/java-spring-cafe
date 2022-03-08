@@ -1,12 +1,20 @@
 package com.kakao.cafe.domain;
 
-public class User {
+import java.time.LocalDateTime;
 
-    //private Long id;
-    //private String name;
+public class User {
     private String email;
     private String userId;
     private String password;
+    private LocalDateTime createdDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public String getEmail() {
         return email;
@@ -31,26 +39,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-/**
-     * email
-     * userId
-     * password
-     * @return
-     */
-
-//    public Long getId(){
-//        return id;
-//    }
-//
-//    public void setId(Long id){
-//        this.id = id;
-//    }
-//
-//    public String getName(){
-//        return name;
-//    }
-//
-//    public void setName(String name){
-//        this.name = name;
-//    }
 }
