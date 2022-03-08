@@ -17,22 +17,13 @@ public class UserService {
         this.repository = repository;
     }
 
-    public User join(User user) {
-        validateFields(user);
+    public void join(User user) {
+        Assert.notNull(user, "유저는 null이어서는 안 됩니다.");
         validateNoDuplicateUserId(user);
         validateNoDuplicateName(user);
         validateNoDuplicateEmail(user);
 
         repository.save(user);
-
-        return user;
-    }
-
-    private void validateFields(User user) {
-        Assert.notNull(user, "유저는 null이어서는 안 됩니다.");
-        Assert.hasLength(user.getUserId(), "유저 ID는 공백이어선 안 됩니다.");
-        Assert.hasLength(user.getName(), "유저 이름은 공백이어선 안 됩니다.");
-        Assert.hasLength(user.getEmail(), "유저 이메일은 공백이어선 안 됩니다.");
     }
 
     private void validateNoDuplicateUserId(User user) {

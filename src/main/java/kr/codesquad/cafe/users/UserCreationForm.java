@@ -1,28 +1,17 @@
 package kr.codesquad.cafe.users;
 
-import org.springframework.util.Assert;
+public class UserCreationForm {
 
-public class User {
-    private Long id;
     private String userId;
     private String password;
     private String name;
     private String email;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
-        Assert.hasLength(userId, "유저 ID는 공백이어선 안 됩니다.");
         this.userId = userId;
     }
 
@@ -31,7 +20,6 @@ public class User {
     }
 
     public void setPassword(String password) {
-        Assert.hasLength(password, "패스워드는 공백이어선 안 됩니다.");
         this.password = password;
     }
 
@@ -40,7 +28,6 @@ public class User {
     }
 
     public void setName(String name) {
-        Assert.hasLength(name, "유저 이름은 공백이어선 안 됩니다.");
         this.name = name;
     }
 
@@ -49,7 +36,6 @@ public class User {
     }
 
     public void setEmail(String email) {
-        Assert.hasLength(email, "유저 이메일은 공백이어선 안 됩니다.");
         this.email = email;
     }
 }

@@ -27,8 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String processCreationForm(User user, Model model) {
+    public String processCreationForm(UserCreationForm form, Model model) {
         try {
+            User user = new User();
+            user.setUserId(form.getUserId());
+            user.setPassword(form.getPassword());
+            user.setName(form.getName());
+            user.setEmail(form.getEmail());
             service.join(user);
 
             //noinspection SpringMVCViewInspection
