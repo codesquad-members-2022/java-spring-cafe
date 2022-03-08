@@ -1,16 +1,15 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.UserInformation;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class UserController {
@@ -19,7 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -27,7 +25,7 @@ public class UserController {
     @GetMapping("/users")
     public String getUserList(Model model) {
         logger.info("GET /users");
-        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("users", userService.findAll());
 
         return "/user/list";
     }
@@ -35,20 +33,32 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         logger.info("GET /users/{}", userId);
-        model.addAttribute("user", userService.findOneUser(userId).get());
+        model.addAttribute("user", userService.findOne(userId).get());
 
         return "/user/profile";
     }
 
+    @GetMapping("/users/{id}/form")
+    public String updateForm(@PathVariable String id, Model model) {
+        logger.info("GET /users/{}/form", id);
+        model.addAttribute("user", userService.findOne(id).get());
+
+        return "/user/updateForm";
+    }
+
     @PostMapping("/users")
-    public ModelAndView createUserInformation(UserInformation userInformation) {
-        logger.info("POST /users userId = {} password = {} name = {} email = {}"
-              , userInformation.getUserId(), userInformation.getPassword()
-              , userInformation.getName(), userInformation.getEmail());
+    public String createUser(User user) {
+        logger.info("POST /users {}", user.toString());
+        userService.join(user);
 
-        ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("joinedUserId", userService.join(userInformation).getUserId());
+        return "redirect:/users";
+    }
 
-        return modelAndView;
+    @PutMapping("/users/{id}/update")
+    public String updateUser(@PathVariable String id, User updatedUser) {
+        logger.info("PUT /users {}", updatedUser.toString());
+        userService.update(id, updatedUser);
+
+        return "redirect:/users";
     }
 }
