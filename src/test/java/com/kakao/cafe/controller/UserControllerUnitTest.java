@@ -64,13 +64,13 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
-        given(service.update(user)).willReturn(user);
+        given(service.add(user)).willReturn(user);
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
-        verify(service).update(user);
+        verify(service).add(user);
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
@@ -85,14 +85,14 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
-        given(service.update(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.add(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
         mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
                 .andDo(print());
 
-        verify(service).update(user);
+        verify(service).add(user);
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(

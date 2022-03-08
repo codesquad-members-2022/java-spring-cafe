@@ -26,10 +26,10 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User update(User user) {
+    public User add(User user) {
         validateDuplicateUser(user);
         return userRepository.save(user)
-                .orElseThrow(() -> new SaveUserException(SAVE_FAIL_MESSAGE));
+                .orElseThrow(() -> new SaveUserException(ADD_FAIL_MESSAGE));
     }
     private void validateDuplicateUser(User user) {
         userRepository.findOne(user.getUserId())
@@ -37,6 +37,13 @@ public class VolatilityUserService implements UserService {
                     throw new DuplicateUserIdException(EXISTENT_ID_MESSAGE);
                 });
     }
+
+    @Override
+    public User update(User user) {
+        return userRepository.save(user)
+                .orElseThrow(() -> new SaveUserException(UPDATE_FAIL_MESSAGE));
+    }
+
 
     @Override
     public User search(String id) {

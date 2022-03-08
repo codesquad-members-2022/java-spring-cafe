@@ -34,7 +34,7 @@ class VolatilityUserServiceTest {
         User user = User.builder("user").build();
 
         //when
-        User newUser = userService.update(user);
+        User newUser = userService.add(user);
 
         //then
         assertThat(newUser).isEqualTo(user);
@@ -47,10 +47,10 @@ class VolatilityUserServiceTest {
         User user2 = User.builder("user").build();
 
         //when
-        userService.update(user1);
+        userService.add(user1);
 
         // then
-        assertThatThrownBy(() -> userService.update(user2))
+        assertThatThrownBy(() -> userService.add(user2))
                 .isInstanceOf(DuplicateUserIdException.class)
                         .hasMessage(EXISTENT_ID_MESSAGE);
     }

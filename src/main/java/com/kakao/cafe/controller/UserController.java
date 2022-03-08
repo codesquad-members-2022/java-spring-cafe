@@ -34,7 +34,7 @@ public class UserController {
     public String signUp(User user, HttpServletRequest request) {
         logRequestInfo(request);
 
-        userService.update(user);
+        userService.add(user);
         return "redirect:/users";
     }
 
@@ -74,6 +74,14 @@ public class UserController {
         mav.setViewName("user/updateForm");
         mav.addObject("user", userService.search(userId));
         return mav;
+    }
+
+    @PutMapping("/{userId}/update")
+    public String modifyProfile(User user, HttpServletRequest request) {
+        logRequestInfo(request);
+
+        userService.update(user);
+        return "redirect:/users";
     }
 
     private void logRequestInfo(HttpServletRequest request) {
