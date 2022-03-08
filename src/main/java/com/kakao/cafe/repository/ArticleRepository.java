@@ -12,7 +12,7 @@ public interface ArticleRepository {
 
     List<Article> getArticleList();
 
-    Article findById(String id);
+    Article findById(int articleId);
 
     void clearStorage();
 
