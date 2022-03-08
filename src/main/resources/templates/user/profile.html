@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> header}}
+    <link href="/css/index.css" rel="stylesheet">
+
+</head>
+<body>
+<div class="background">
+    {{> navbar}}
+    <div class="description">
+        <div class="desc-container">
+            <p class="desc-big">회원정보 상세보기</p>
+        </div>
+    </div>
+
+    <p class="total_num">최근 접속 정보</p>
+
+    <form method="post">
+        <div class="container" id="main">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>닉네임</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#userProfile}}
+                        <tr>
+                            <td>{{id}}</td>
+                            <td>{{nickname}}</td>
+                        </tr>
+                        {{/userProfile}}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="post-btn-container">
+            <a class="black-component"
+               role="button">회원정보 수정</a>
+            <!--        <a href="post/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>-->
+        </div>
+    </form>
+</div>
+</body>
+</html>
