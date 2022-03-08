@@ -2,10 +2,12 @@ package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Article.Builder;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,6 +16,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ArticleJDBCRepository implements ArticleRepository {
+
+    // 데이터베이스 내 필드명
+    private static final String ARTICLE_ID = "article_id";
+    private static final String WRITER = "writer";
+    private static final String TITLE = "title";
+    private static final String CONTENTS = "contents";
+    private static final String CREATED_DATE = "created_date";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final KeyHolderFactory keyHolderFactory;
@@ -28,14 +37,15 @@ public class ArticleJDBCRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = queryProps.get("INSERT_ARTICLE");
-        KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
+        String sql = queryProps.get(Query.INSERT_ARTICLE);
 
         SqlParameterSource namedParameter = new MapSqlParameterSource()
-            .addValue("writer", article.getWriter())
-            .addValue("title", article.getTitle())
-            .addValue("contents", article.getContents())
-            .addValue("createdDate", LocalDateTime.now());
+            .addValue(WRITER, article.getWriter())
+            .addValue(TITLE, article.getTitle())
+            .addValue(CONTENTS, article.getContents())
+            .addValue(CREATED_DATE, LocalDateTime.now());
+
+        KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
 
         jdbcTemplate.update(sql, namedParameter, keyHolder);
 
@@ -47,16 +57,50 @@ public class ArticleJDBCRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return null;
+        String sql = queryProps.get(Query.SELECT_ARTICLES);
+
+        return jdbcTemplate.query(sql,
+            (rs, rowNum) ->
+                new Article.Builder()
+                    .articleId(rs.getInt(ARTICLE_ID))
+                    .writer(rs.getString(WRITER))
+                    .title(rs.getString(TITLE))
+                    .contents(rs.getString(CONTENTS))
+                    .createdDate(rs.getObject(CREATED_DATE, LocalDateTime.class))
+                    .build()
+        );
     }
 
     @Override
     public Optional<Article> findById(Integer articleId) {
-        return Optional.empty();
+        String sql = queryProps.get(Query.SELECT_ARTICLE);
+
+        SqlParameterSource namedParameter = new MapSqlParameterSource()
+            .addValue(ARTICLE_ID, articleId);
+
+        try {
+            Article article = jdbcTemplate.queryForObject(sql, namedParameter,
+                (rs, rowNum) ->
+                    new Builder()
+                        .articleId(rs.getInt(ARTICLE_ID))
+                        .writer(rs.getString(WRITER))
+                        .title(rs.getString(TITLE))
+                        .contents(rs.getString(CONTENTS))
+                        .createdDate(rs.getObject(CREATED_DATE, LocalDateTime.class))
+                        .build()
+            );
+            return Optional.ofNullable(article);
+
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+
     }
 
     @Override
     public void deleteAll() {
+        String sql = queryProps.get(Query.DELETE_ARTICLES);
 
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 }

@@ -42,6 +42,11 @@ public class Article {
             return this;
         }
 
+        public Builder createdDate(LocalDateTime createdDate) {
+            this.createdDate = createdDate;
+            return this;
+        }
+
         public Article build() {
             this.createdDate = LocalDateTime.now();
             return new Article(this);

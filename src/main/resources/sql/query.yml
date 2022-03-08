@@ -1,3 +1,12 @@
 INSERT_ARTICLE: >
   INSERT INTO article(writer, title, contents, created_date)
-  VALUES (:writer, :title, :contents, :createdDate)
+  VALUES (:writer, :title, :contents, :created_date)
+
+SELECT_ARTICLES: >
+  SELECT * FROM article
+
+SELECT_ARTICLE: >
+  SELECT * FROM article WHERE article_id = :article_id
+
+DELETE_ARTICLES: >
+  DELETE FROM article

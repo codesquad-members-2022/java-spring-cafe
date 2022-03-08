@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.repository.jdbc.Query;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -25,8 +26,8 @@ public class QueryProps {
         }
     }
 
-    public String get(String key) {
-        return props.get(key);
+    public String get(Query query) {
+        return props.get(query.name());
     }
 
 }
