@@ -27,7 +27,6 @@ public class MemoryUserRepository implements UserRepository {
 
         User preparedUser = prepareFirstAddUserAndGet(user);
         userRegistry.add(preparedUser);
-        LoggerFactory.getLogger(getClass()).info("userRegistry : {}", userRegistry);
         return Optional.of(preparedUser.getId());
     }
 
