@@ -15,12 +15,12 @@
               </thead>
               <tbody>
                 <tr th:each="user : ${users}">
-                    <th scope="row" th:text="${user.getId()}">1</th>
-                    <td><a th:href="@{/user/{userId}(userId=${user.getUserId()})}" th:text="${user.getUserId()}">javajigi</a></td>
-                    <td th:text="${user.getName()}">자바지기</td>
-                    <td th:text="${user.getEmail()}">javajigi@sample.net</td>
+                    <th scope="row" th:text="${user.id}">1</th>
+                    <td><a th:href="@{/user/{userId}(userId=${user.userId})}" th:text="${user.userId}">javajigi</a></td>
+                    <td th:text="${user.name}">자바지기</td>
+                    <td th:text="${user.email}">javajigi@sample.net</td>
                     <td><a href="#" class="btn btn-success" role="button"
-                    th:href="@{/user/{id}/form(id=${user.getId()})}">수정</a></td>
+                    th:href="@{/user/{id}/form(id=${user.id})}">수정</a></td>
                 </tr>
               </tbody>
           </table>

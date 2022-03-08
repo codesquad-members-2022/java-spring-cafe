@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.exception.UserException;
+import com.kakao.cafe.web.dto.UserUpdateDto;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -31,12 +32,9 @@ public class UserRepository {
         return new ArrayList<>(userMap.values());
     }
 
-    public User updateUser(Long id, User userUpdate) {
+    public User updateUser(Long id, UserUpdateDto userUpdateDto) {
         User user = userMap.get(id);
-        user.setUserId(userUpdate.getUserId());
-        user.setPassword(userUpdate.getPassword());
-        user.setName(userUpdate.getName());
-        user.setEmail(userUpdate.getEmail());
+        user.updateProfile(userUpdateDto);
         return userMap.put(id, user);
     }
 

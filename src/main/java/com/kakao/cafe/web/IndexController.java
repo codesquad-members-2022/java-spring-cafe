@@ -20,8 +20,8 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(Model model) {
-        log.info("index templates");
-        model.addAttribute("posts", postsService.qnaList());
+        log.info("인덱스 페이지 불러오기");
+        model.addAttribute("post", postsService.findPosts());
         return "index";
     }
 }

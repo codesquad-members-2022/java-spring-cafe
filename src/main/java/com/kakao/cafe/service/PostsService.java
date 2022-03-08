@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.domain.posts.Posts;
-import com.kakao.cafe.domain.posts.PostsRepository;
+import com.kakao.cafe.domain.posts.Post;
+import com.kakao.cafe.domain.posts.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,23 +9,23 @@ import java.util.List;
 
 @Service
 public class PostsService {
-    private final PostsRepository postsRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public PostsService(PostsRepository postsRepository) {
-        this.postsRepository = postsRepository;
+    public PostsService(PostRepository postRepository) {
+        this.postRepository = postRepository;
     }
 
 
-    public void qnaRegistration(Posts posts) {
-        postsRepository.save(posts);
+    public void qnaRegister(Post post) {
+        postRepository.save(post);
     }
 
-    public List<Posts> qnaList() {
-        return postsRepository.findAll();
+    public List<Post> findPosts() {
+        return postRepository.findAll();
     }
 
-    public Posts qnaShowContent(Long id) {
-        return postsRepository.findById(id);
+    public Post findPost(Long id) {
+        return postRepository.findById(id);
     }
 }

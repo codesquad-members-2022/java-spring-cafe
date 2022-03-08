@@ -1,6 +1,6 @@
 package com.kakao.cafe.web;
 
-import com.kakao.cafe.domain.posts.Posts;
+import com.kakao.cafe.domain.posts.Post;
 import com.kakao.cafe.service.PostsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,33 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/qna")
-public class PostsController {
-    private static Logger log = LoggerFactory.getLogger(PostsController.class);
+public class PostController {
+    private static Logger log = LoggerFactory.getLogger(PostController.class);
     private final PostsService postsService;
 
     @Autowired
-    public PostsController(PostsService postsService) {
+    public PostController(PostsService postsService) {
         this.postsService = postsService;
     }
 
     @GetMapping("/form")
     public String form() {
-        log.info("qna form");
+        log.info("게시글 등록하기 폼 불러오기");
         return "qna/form";
     }
 
     @PostMapping("/form")
-    public String registration(Posts posts) {
-        postsService.qnaRegistration(posts);
-        log.info("posts Id = {}, UserId= {}", posts.getId(), posts.getWriter());
+    public String registration(Post post) {
+        log.info("게시글 등록하기");
+        postsService.qnaRegister(post);
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
     public String showContent(@PathVariable Long id, Model model) {
-        Posts posts = postsService.qnaShowContent(id);
-        model.addAttribute("posts", posts);
-        log.info("posts Id = {}, UserId= {}", posts.getId(), posts.getWriter());
+        log.info("게시글 번호 = {} 로 게시글 상세확인하기~", id);
+        Post post = postsService.findPost(id);
+        model.addAttribute("post", post);
         return "qna/show";
     }
 }

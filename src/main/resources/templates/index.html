@@ -7,27 +7,27 @@
    <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
       <div class="panel panel-default qna-list">
           <ul class="list">
-              <li th:each="postsOne : ${posts}">
+              <li th:each="post : ${post}">
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
                               <a href="./qna/show.html"
-                              th:href="@{/qna/{index}(index=${postsOne.getId()})}"
-                              th:text="${postsOne.getTitle()}">
+                              th:href="@{/qna/{index}(index=${post.id})}"
+                              th:text="${post.title}">
                                   국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time"
-                                th:text="${#temporals.format(postsOne.getLocalDateTime(), 'yyyy-MM-dd HH:mm')}">
+                                th:text="${#temporals.format(post.localDateTime, 'yyyy-MM-dd HH:mm')}">
                                   2016-01-15 18:47</span>
                               <a href="./user/profile.html" class="author"
-                              th:text="${postsOne.getWriter()}">
+                              th:text="${post.writer}">
                                   자바지기</a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
-                              <span class="point" th:text="${postsOne.getId()}"></span>
+                              <span class="point" th:text="${post.id}"></span>
                           </div>
                       </div>
                   </div>

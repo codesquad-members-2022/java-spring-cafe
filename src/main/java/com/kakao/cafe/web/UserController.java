@@ -3,6 +3,7 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserJoinDto;
+import com.kakao.cafe.web.dto.UserUpdateDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,41 +24,42 @@ public class UserController {
 
     @GetMapping("/form")
     public String joinForm() {
-        log.info("gettMapping joinForm");
+        log.info("회원가입 폼 불러오기");
         return "user/form";
     }
 
     @PostMapping("/form")
     public String join(UserJoinDto dto) {
+        log.info("회원가입 하기");
         userService.userJoin(dto);
-        log.info("postMapping join");
-        log.info("userId = {}", dto.getUserId());
         return "redirect:/";
     }
 
     @GetMapping("/list")
     public String list(Model model) {
+        log.info("회원 목록 확인하기");
         model.addAttribute("users", userService.findUsers());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String profile(@PathVariable String userId, Model model) {
+        log.info("유저 아이디 = {} 로 회원정보 상세검색", userId);
         model.addAttribute("user", userService.findUser(userId));
         return "user/profile";
     }
 
     @GetMapping("/{id}/form")
     public String updateForm(@PathVariable Long id, Model model) {
+        log.info("유저번호 = {} 로 회원정보 수정하기 폼", id);
         model.addAttribute("user", userService.findById(id));
-        log.info("updateForm id = {}", id);
         return "user/updateForm";
     }
 
     @PutMapping("/{id}/form")
-    public String update(@PathVariable Long id, User user){
-        log.info("update id = {} userName = {}",user.getId() ,user.getName());
-        userService.userUpdate(id, user);
+    public String update(@PathVariable Long id, UserUpdateDto userUpdateDto){
+        log.info("유저번호 = {} 로 회원정보 수정하기", id);
+        userService.userUpdate(id, userUpdateDto);
         return "redirect:/user/list";
     }
 }
