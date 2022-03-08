@@ -17,17 +17,20 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @GetMapping("/qna/form")
+    public String form() {
+        return "/qna/form";
+    }
+
     @GetMapping("/")
     public String list(Model model) {
         model.addAttribute("articles", articleService.findArticles());
-
         return "/index";
     }
 
     @PostMapping("/questions")
     public String create(Article article) {
         articleService.add(article);
-
         return "redirect:/";
     }
 
@@ -35,7 +38,6 @@ public class ArticleController {
     public String view(@PathVariable int index, Model model) {
         Article article = articleService.findById(index);
         model.addAttribute("article", article);
-
         return "qna/show";
     }
 }

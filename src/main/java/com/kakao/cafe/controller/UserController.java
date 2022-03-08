@@ -21,6 +21,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/user/form")
+    public String form() {
+        return "/user/form";
+    }
+
     @GetMapping("/user/list")
     public String list(Model model) {
         List<User> users = userService.findUsers();
@@ -38,7 +43,6 @@ public class UserController {
     public String profile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("userProfile", user);
-
         return "user/profile";
     }
 }
