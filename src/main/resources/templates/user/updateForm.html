@@ -8,18 +8,22 @@
         <div class="panel panel-default content-main">
             <form name="question" method="post" action="/users/{{userId}}/update">
                 <input type="hidden" name="_method" value="put" />
+
+                <!-- hidden input -->
                 <input type="hidden" id="index" name="index" value={{user.index}} />
+                <input type="hidden" id="password" name="password" value={{user.password}}>
+
                 <div class="form-group">
                     <label for="userId">사용자 아이디</label>
                     <input class="form-control" id="userId" name="userId" placeholder="User ID" value={{user.userId}} disabled>
                 </div>
                 <div class="form-group">
-                    <label for="prev_password">이전 비밀번호</label>
-                    <input type="password" class="form-control" id="prev_password" name="prev_password" placeholder="Prev Password">
+                    <label for="nowPassword">현재 비밀번호</label>
+                    <input type="password" class="form-control" id="nowPassword" name="nowPassword" placeholder="Prev Password">
                 </div>
                 <div class="form-group">
-                    <label for="password">새 비밀번호</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    <label for="newPassword">새 비밀번호</label>
+                    <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="New Password">
                 </div>
                 <div class="form-group">
                     <label for="name">이름</label>

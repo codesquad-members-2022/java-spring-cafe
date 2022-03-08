@@ -13,6 +13,7 @@ public class User {
     public User() {}
 
     private User(Builder builder) {
+        this.index = builder.index;
         this.userId = builder.userId;
         this.password = builder.password;
         this.name = builder.name;
@@ -52,6 +53,8 @@ public class User {
     }
 
     public static class Builder {
+
+        private int index;
         private String userId;
         private String password;
         private String name;
@@ -59,6 +62,11 @@ public class User {
 
         public Builder(String userId) {
             this.userId = userId;
+        }
+
+        public Builder index(int index) {
+            this.index = index;
+            return this;
         }
 
         public Builder password(String password) {
