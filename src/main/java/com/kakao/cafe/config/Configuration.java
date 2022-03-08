@@ -1,5 +1,6 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.core.repository.article.ArticleRepository;
 import com.kakao.cafe.core.repository.member.MemberRepository;
 import com.kakao.cafe.web.controller.member.MemberController;
 import com.kakao.cafe.web.service.member.EntityManager;
@@ -24,7 +25,7 @@ public class Configuration {
      * */
     @Bean
     public DataGenerator dataGenerator() {
-        return new DataGenerator(memberRepository());
+        return new DataGenerator(memberRepository(), articleRepository());
     }
 
     @Bean
@@ -40,5 +41,10 @@ public class Configuration {
     @Bean
     public MemberRepository memberRepository() {
         return new MemberRepository();
+    }
+
+    @Bean
+    public ArticleRepository articleRepository() {
+        return new ArticleRepository();
     }
 }
