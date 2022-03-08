@@ -49,7 +49,7 @@
         <div class="navbar-header">
             <a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href="../static/user/profile.html"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
+                <li><a href="profile.html"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
@@ -80,7 +80,7 @@
               <tbody>
 
               <tr th:each="user:${userList}">
-                  <th scope="row" th:text="${userStat.index + 1}">User Number</th> <td th:text="${user.userId}">User ID</td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                  <th scope="row" th:text="${userStat.index + 1}">User Number</th> <td><a th:href="@{user/{userId}(userId = ${user.userId})}" th:text="${user.userId}">User ID</a></td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
               </tr>
               </tbody>
               <thead>

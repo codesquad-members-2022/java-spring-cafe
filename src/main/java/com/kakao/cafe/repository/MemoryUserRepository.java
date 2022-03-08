@@ -18,6 +18,18 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findById(String id) {
+        User selectedUser = null;
+        for (User user : userList) {
+            if (Objects.equals(user.getUserId(), id)) {
+                selectedUser = user;
+                break;
+            }
+        }
+        return Optional.ofNullable(selectedUser);
+    }
+
+    @Override
     public List<User> findAll() {
         return Collections.unmodifiableList(this.userList);
     }

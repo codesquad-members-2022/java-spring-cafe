@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -38,6 +41,19 @@ public class UserController {
         model.addAttribute("userList", userList);
         return "../templates/list";
     }
+
+    @GetMapping("/user/{userId}")
+    public String viewUserInfo(@PathVariable("userId") String userId, Model model) {
+        User selectedUser;
+        Optional<User> foundUser = userService.findById(userId);
+        if (foundUser.isPresent()) {
+            selectedUser = foundUser.get();
+            model.addAttribute("user", selectedUser);
+            return "../templates/profile";
+        }
+        return null; // 잘못된 접근 페이지 리다이렉트
+    }
+
 
 
 }
