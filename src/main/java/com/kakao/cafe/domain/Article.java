@@ -7,18 +7,28 @@ import java.util.Date;
 
 public class Article {
 
-    private final UserService userService;
-    private static final Date date = new Date();
 
+    @Autowired
+    private UserService userService;
+
+    private static final Date date = new Date();
+    private static int articleCount = 0;
+
+    private int articleId;
     private String subject;
     private String content;
     private String uploadDate;
     private String writer;
 
+    public int getArticleId() {
+        return articleId;
+    }
+
+
     @Autowired
-    public Article(UserService userService, String userId, String subject, String content) {
-        this.userService = userService;
+    public Article(String userId, String subject, String content) {
         validUserId(userId);
+        this.articleId = articleCount++;
         this.subject = subject;
         this.content = content;
         this.uploadDate = generateUploadDate();
@@ -34,6 +44,5 @@ public class Article {
             throw new RuntimeException();
         }
     }
-
 
 }
