@@ -4,6 +4,7 @@ package com.kakao.cafe.repository.user;
 import com.kakao.cafe.domain.user.User;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +29,10 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         return store.stream().filter((user -> user.getUserId().equals(userId))).findAny();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return Collections.unmodifiableList(store);
     }
 }
