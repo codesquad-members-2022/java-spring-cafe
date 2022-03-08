@@ -18,4 +18,20 @@ public class UserJoinRequestDto {
     public User toEntity() {
         return new User(userId, password, name, email);
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
