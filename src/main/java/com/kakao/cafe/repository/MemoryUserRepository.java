@@ -2,14 +2,11 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 
-import java.util.HashMap;
 import java.util.*;
-import java.util.Map;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private static List<User> userList = new ArrayList<>();
-    private Long sequence = 0L;
+    private List<User> userList = new ArrayList<>();
 
     @Override
     public User save(User user) {
@@ -32,5 +29,9 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return Collections.unmodifiableList(this.userList);
+    }
+
+    public void clearUserList() {
+        this.userList.clear();
     }
 }

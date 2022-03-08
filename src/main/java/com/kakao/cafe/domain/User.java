@@ -2,6 +2,8 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.controller.UserForm;
 
+import java.util.Collection;
+
 public class User {
 
     private String userId;
