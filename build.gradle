@@ -13,9 +13,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.0'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.5.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.jetbrains:annotations:20.1.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.5.0'
+
+	testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
 
 test {

@@ -1,25 +1,21 @@
 /*
 A custom Bootstrap 3.2 'Google Plus style' theme
 from http://bootply.com
-
 This CSS code should follow the 'bootstrap.css'
 in your HTML file.
-
 license: MIT
 author: bootply.com
 */
-
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
 body {
-  background-color:#e0e0e0;
-  -webkit-font-smoothing: antialiased;
-  font: normal 14px Roboto,arial,sans-serif;
+    background-color:#e0e0e0;
+    -webkit-font-smoothing: antialiased;
+    font: normal 14px Roboto,arial,sans-serif;
 }
 .navbar-default {background-color:#f4f4f4;margin-top:50px;border-width:0;z-index:5;}
 .navbar-default .navbar-nav > .active > a,.navbar-default .navbar-nav > li:hover > a {border:0 solid #4285f4;border-bottom-width:2px;font-weight:800;background-color:transparent;}
 .navbar-default .dropdown-menu {background-color:#ffffff;}
 .navbar-default .dropdown-menu li > a {padding-left:30px;}
-
 .header {background-color:#ffffff;border-width:0;}
 .header .navbar-collapse {background-color:#ffffff;}
 .btn,.form-control,.panel,.list-group,.well {border-radius:1px;box-shadow:0 0 0;}
@@ -32,77 +28,72 @@ body {
 .btn-info,.label-info,.progress-bar-info{background-color:#a0c3ff;border-color:#a0c3ff;}
 .btn-danger,.label-danger,.progress-bar-danger{background-color:#dd4b39;}
 .btn-warning,.label-warning,.progress-bar-warning{background-color:#f4b400;color:#444444;}
-
 hr {border-color:#ececec;}
 button {
- outline: 0;
+    outline: 0;
 }
 textarea {
- resize: none;
- outline: 0; 
+    resize: none;
+    outline: 0;
 }
 .panel .btn i,.btn span{
- color:#666666;
+    color:#666666;
 }
 .panel .panel-heading {
- background-color:#ffffff;
- font-weight:700;
- font-size:16px;
- color:#262626;
- border-color:#ffffff;
+    background-color:#ffffff;
+    font-weight:700;
+    font-size:16px;
+    color:#262626;
+    border-color:#ffffff;
 }
 .panel .panel-heading a {
- font-weight:400;
- font-size:11px;
+    font-weight:400;
+    font-size:11px;
 }
 .panel .panel-default {
- border-color:#cccccc;
+    border-color:#cccccc;
 }
 .panel .panel-thumbnail {
- padding:0;
+    padding:0;
 }
 .panel .img-circle {
- width:50px;
- height:50px;
+    width:50px;
+    height:50px;
 }
 .list-group-item:first-child,.list-group-item:last-child {
- border-radius:0;
+    border-radius:0;
 }
-h3,h4,h5 { 
- border:0 solid #efefef; 
- border-bottom-width:1px;
- padding-bottom:10px;
+h3,h4,h5 {
+    border:0 solid #efefef;
+    border-bottom-width:1px;
+    padding-bottom:10px;
 }
 .modal-dialog {
- width: 450px;
+    width: 450px;
 }
 .modal-footer {
- border-width:0;
+    border-width:0;
 }
 .dropdown-menu {
- background-color:#f4f4f4;
- border-color:#f0f0f0;
- border-radius:0;
- margin-top:-1px;
+    background-color:#f4f4f4;
+    border-color:#f0f0f0;
+    border-radius:0;
+    margin-top:-1px;
 }
 /* end theme */
-
 /* template layout*/
 #subnav {
- position:fixed;
- width:100%;
+    position:fixed;
+    width:100%;
 }
-
 @media (max-width: 768px) {
- #subnav {
-  padding-top: 6px;
- }
+    #subnav {
+        padding-top: 6px;
+    }
 }
-
 #main {
- padding-top:120px;
+    padding-top:120px;
 }
-
 .content-main {
     position:relative;
     padding:1em;
@@ -112,11 +103,9 @@ h3,h4,h5 {
 .qna-header {
     position:relative;padding:1em
 }
-
 .article {
     position:relative;padding:.6em 0 .8em
 }
-
 .article-header{
     display:table;width:100%;
     padding-bottom:.6em;
@@ -150,7 +139,6 @@ h3,h4,h5 {
 .article-util-list .link-answer-article{color:#5989b6;}
 .article-util-list .link-answer-article:hover{background-color:#e7eef4}
 .article-util-list .foundicon-thumb-up,.article-util-list .foundicon-thumb-down{position:relative;top:2px}.article-util form{display:inline-block}
-
 .qna-list h1 small {
     font-size:.4em
 }
@@ -161,11 +149,9 @@ h3,h4,h5 {
     border-top:1px solid #dadada;
     font-size:14px;
 }
-
 @media (max-width: 768px) {
     .qna-list .list{ margin:0 -1em  }
 }
-
 .qna-list .list > li {
     position:relative;
     padding:1em;
@@ -195,7 +181,6 @@ h3,h4,h5 {
 .qna-comment .article.best-article .btn-like-article{top:108px}
 .qna-comment-slipp,.qna-comment-fb{margin-top:2em;border-top:4px solid #efefef}
 .qna-comment-count{margin:0;padding:1em 0 0;font-weight:bold;font-size:1.2em}
-
 .qna-write {
     padding-top: 1.4em;
     padding-right: 2.5em;
