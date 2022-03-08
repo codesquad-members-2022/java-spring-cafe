@@ -29,7 +29,7 @@ class VolatilityUserServiceTest {
     }
 
     @Test
-    void addUserSuccess() throws Throwable {
+    void addUserSuccess() {
         //given
         User user = User.builder("user").build();
 
@@ -41,7 +41,7 @@ class VolatilityUserServiceTest {
     }
 
     @Test
-    void addUserFail() throws Throwable {
+    void addUserFail() {
         //given
         User user1 = User.builder("user").build();
         User user2 = User.builder("user").build();

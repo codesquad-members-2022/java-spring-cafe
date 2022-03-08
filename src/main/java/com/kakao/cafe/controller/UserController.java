@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String signUp(User user, HttpServletRequest request) throws Throwable {
+    public String signUp(User user, HttpServletRequest request) {
         logRequestInfo(request);
 
         userService.update(user);
@@ -54,7 +54,7 @@ public class UserController {
     public ModelAndView getUserProfile(@PathVariable String userId,
                                        HttpServletRequest request,
                                        HttpServletResponse response,
-                                       ModelAndView mav) throws Throwable {
+                                       ModelAndView mav) {
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -67,7 +67,7 @@ public class UserController {
     public ModelAndView goUpdateForm(@PathVariable String userId,
                                        HttpServletRequest request,
                                        HttpServletResponse response,
-                                       ModelAndView mav) throws Throwable {
+                                       ModelAndView mav) {
         logRequestInfo(request);
         setResponseInfo(response);
 

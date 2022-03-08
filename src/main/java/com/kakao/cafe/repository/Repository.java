@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface Repository<T, V> {
 
     enum ENTITY_STATUS {
-        TRANSIENT, DETACHED;
+        TRANSIENT, DETACHED
     }
 
     List<T> findAll();

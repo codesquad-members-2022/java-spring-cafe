@@ -7,6 +7,6 @@ import java.util.List;
 public interface UserService {
 
     List<User> searchAll();
-    User update(User user) throws Throwable;
-    User search(String id) throws Throwable;
+    User update(User user);
+    User search(String id);
 }

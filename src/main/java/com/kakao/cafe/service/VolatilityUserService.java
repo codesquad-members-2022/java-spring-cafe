@@ -5,7 +5,6 @@ import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.Repository;
-import com.kakao.cafe.repository.VolatilityUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +14,9 @@ import static com.kakao.cafe.message.UserMessage.*;
 @Service
 public class VolatilityUserService implements UserService {
 
-    private final Repository userRepository;
+    private final Repository<User, String> userRepository;
 
-    public VolatilityUserService(Repository userRepository) {
+    public VolatilityUserService(Repository<User, String> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,9 +26,9 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User update(User user) throws Throwable {
+    public User update(User user) {
         validateDuplicateUser(user);
-        return (User) userRepository.save(user)
+        return userRepository.save(user)
                 .orElseThrow(() -> new SaveUserException(SAVE_FAIL_MESSAGE));
     }
     private void validateDuplicateUser(User user) {
@@ -40,8 +39,8 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User search(String id) throws Throwable {
-        return (User) userRepository.findOne(id)
+    public User search(String id) {
+        return userRepository.findOne(id)
                 .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
     }
 }
