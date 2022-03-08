@@ -4,6 +4,7 @@ import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
 
+import com.kakao.cafe.web.dto.UserUpdateFormDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -44,5 +45,19 @@ public class UserController {
         model.addAttribute("userId", userProfileDto.getUserId());
         model.addAttribute("email", userProfileDto.getEmail());
         return "user/profile";
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        log.info("---------[LOG] request to show {}'s update form", userId);
+        model.addAttribute("userId", userId);
+        return "user/updateForm";
+    }
+
+    @PostMapping("/users/{userId}/update")
+    public String  update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto) {
+        log.info("---------[LOG] request to update {}'s profile : {}", userId, userUpdateFormDto);
+        userService.modify(userUpdateFormDto);
+        return "redirect:/users";
     }
 }

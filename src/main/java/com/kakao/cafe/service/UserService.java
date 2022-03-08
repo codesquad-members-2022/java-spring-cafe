@@ -5,8 +5,8 @@ import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserListDto;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
+import com.kakao.cafe.web.dto.UserUpdateFormDto;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class UserService {
@@ -42,13 +42,25 @@ public class UserService {
     }
 
     public UserProfileDto showOne(String userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        return new UserProfileDto(validateExistenceUserId(optionalUser));
+        return new UserProfileDto(getExistenceValidatedUser(userId));
     }
 
-    private User validateExistenceUserId(Optional<User> optionalUser) {
-        return optionalUser.orElseThrow(() -> {
-            throw new IllegalStateException("해당 ID를 가지는 회원이 존재하지 않습니다.");
-        });
+    private User getExistenceValidatedUser(String userId) {
+        return userRepository.findById(userId)
+            .orElseThrow(() -> {
+                throw new IllegalStateException("해당 ID를 가지는 회원이 존재하지 않습니다.");
+            });
+    }
+
+    public void modify(UserUpdateFormDto userUpdateFormDto) {
+        User user = getExistenceValidatedUser(userUpdateFormDto.getUserId());
+        validateUserPassword(user, userUpdateFormDto.getOldPassword());
+        user.update(userUpdateFormDto.toEntity());
+    }
+
+    private void validateUserPassword(User user, String password) {
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }
