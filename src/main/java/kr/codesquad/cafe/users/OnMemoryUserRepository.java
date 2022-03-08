@@ -28,21 +28,21 @@ public class OnMemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         return repository.values().stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.userIdIs(userId))
                 .findAny();
     }
 
     @Override
     public Optional<User> findByName(String name) {
         return repository.values().stream()
-                .filter(user -> user.getName().equals(name))
+                .filter(user -> user.nameIs(name))
                 .findAny();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         return repository.values().stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.emailIs(email))
                 .findAny();
     }
 

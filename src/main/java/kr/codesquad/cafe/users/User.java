@@ -26,10 +26,6 @@ public class User {
         this.userId = userId;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setPassword(String password) {
         Assert.hasLength(password, "패스워드는 공백이어선 안 됩니다.");
         this.password = password;
@@ -51,5 +47,17 @@ public class User {
     public void setEmail(String email) {
         Assert.hasLength(email, "유저 이메일은 공백이어선 안 됩니다.");
         this.email = email;
+    }
+
+    public boolean userIdIs(String userId) {
+        return userId.equals(this.userId);
+    }
+
+    public boolean nameIs(String name) {
+        return name.equals(this.name);
+    }
+
+    public boolean emailIs(String email) {
+        return email.equals(this.email);
     }
 }
