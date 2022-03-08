@@ -22,9 +22,9 @@
 
             </div>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="black-component" href="../user/list.html" type="button">멤버 리스트</a></li>
-                <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
+                <li><a class="black-component" th:href="@{/users}">멤버 리스트</a></li>
+                <li><a class="black-component" th:onclick="|location.href='@{/user/login}'|" role="button">로그인</a></li>
+                <li><a class="black-component" th:href="@{/user/join}" >회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -39,14 +39,14 @@
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">
             </div>
             <div class="form-group">
-                <label for="userId">닉네임</label>
-                <input class="form-control" id="userId" name="userId" placeholder="닉네입을 입력하세요">
+                <label for="name">닉네임</label>
+                <input class="form-control" id="name" name="name" placeholder="닉네입을 입력하세요">
             </div>
             <div class="form-group">
                 <label for="password">비밀번호</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요">
             </div>
-            <button type="submit" class="btn btn-success clearfix pull-right">완료</button>
+            <button type="submit" class="btn btn-success clearfix pull-right" >완료</button>
         </form>
     </div>
 </div>

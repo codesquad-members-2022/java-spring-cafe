@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a class="black-component" type="button">메인 페이지</a></li>
                 <li><a class="black-component">로그인</a></li>
-                <li><a class="black-component">회원가입</a></li>
+                <li><a class="black-component" th:href="@{/user/join}" >회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -52,10 +52,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>No</td>
-                        <td>닉네임</td>
-                        <td></td>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.email}"></td>
                         <td></td>
                     </tr>
                     </tbody>
