@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment/head::head"></head>
+
+<body>
+<nav th:replace="fragment/nav::nav"></nav>
+<nav th:replace="fragment/subnav::subnav"></nav>
+
+<div class="container" id="main">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h4>Profiles</h4></div>
+            <div class="panel-body">
+                <div class="well well-sm">
+                    <div class="media">
+                        <a class="thumbnail pull-left" href="#">
+                            <img class="media-object" th:src="@{/images/80-text.png}">
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading" th:text="${user.userId}"></h4>
+                            <p>
+                                <span>이름 : </span>
+                                <span th:text="${user.name}"></span>
+                            </p>
+                            <p>
+                                <a href="#" class="btn btn-xs btn-default" th:text="${user.email}">
+                                    <span class="glyphicon glyphicon-envelope"></span>&nbsp;
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <a th:href="@{/users}">뒤로가기</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+<script src="../../static/js/jquery-2.2.0.min.js"></script>
+<script src="../../static/js/bootstrap.min.js"></script>
+<script src="../../static/js/scripts.js"></script>
+</body>
+</html>
