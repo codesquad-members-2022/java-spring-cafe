@@ -6,6 +6,7 @@ import com.kakao.cafe.service.user.UserService;
 import com.kakao.cafe.service.user.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String profile(@PathVariable("userId") String userId,  Model model) {
+    public String profile(@PathVariable("userId") String userId, Model model) {
         User user = userService.findSingleUser(userId).get();
         model.addAttribute("user", user);
 
@@ -47,5 +48,11 @@ public class UserController {
     public String create(UserForm userForm) {
         userService.createUser(userForm);
         return "redirect:/users";
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public String createFailed(IllegalStateException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "user/form";
     }
 }
