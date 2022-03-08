@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ArticleCollectionRepository implements ArticleRepository {
 
-    private List<Article> articles = new ArrayList<>();
+    private List<Article> articles = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public Article save(Article article) {
@@ -26,7 +27,7 @@ public class ArticleCollectionRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(Integer articleId) {
         return articles.stream()
-            .filter(article -> article.getArticleId().equals(articleId))
+            .filter(article -> article.equalsId(articleId))
             .findAny();
     }
 

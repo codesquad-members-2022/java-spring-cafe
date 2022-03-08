@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -43,16 +43,11 @@ public class UserController {
     }
 
     @PostMapping
-    public ModelAndView create(@RequestParam String userId,
-        @RequestParam String password,
-        @RequestParam String name,
-        @RequestParam String email) {
-
-        User user = new User(userId, password, name, email);
-        User savedUser = userService.register(user);
+    public ModelAndView create(UserForm userForm) {
+        User user = userService.register(userForm);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("user", savedUser);
+        modelAndView.addObject("user", user);
         return modelAndView;
     }
 
@@ -64,15 +59,12 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ModelAndView update(@PathVariable String userId,
-        @RequestParam String password,
-        @RequestParam String name,
-        @RequestParam String email) {
-        User user = new User(userId, password, name, email);
-        User updatedUser = userService.updateUser(user);
+    public ModelAndView update(@PathVariable String userId, UserForm userForm) {
+        userForm.setUserId(userId);
+        User user = userService.updateUser(userForm);
 
         ModelAndView mav = new ModelAndView("redirect:/users");
-        mav.addObject("user", updatedUser);
+        mav.addObject("user", user);
         return mav;
     }
 

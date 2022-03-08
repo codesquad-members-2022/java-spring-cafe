@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleForm;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.util.Mapper;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article write(Article article) {
-        return articleRepository.save(article);
+    public Article write(ArticleForm articleForm) {
+        return articleRepository.save(Mapper.map(articleForm, Article.class));
     }
 
     public List<Article> findArticles() {

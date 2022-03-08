@@ -30,11 +30,6 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
 
-    private static final Integer ARTICLE_ID = 1;
-    private static final String WRITER = "writer";
-    private static final String TITLE = "title";
-    private static final String CONTENTS = "contents";
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -45,16 +40,23 @@ public class ArticleControllerTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article(WRITER, TITLE, CONTENTS);
+        article = new Article.Builder()
+            .articleId(1)
+            .writer("writer")
+            .title("title")
+            .contents("contents")
+            .build();
     }
 
+    private ResultActions performGet(String url) throws Exception {
+        return mockMvc.perform(get(url).accept(MediaType.TEXT_HTML));
+    }
 
     @Test
     @DisplayName("글을 작성하는 화면을 보여준다")
     public void createArticleFormTest() throws Exception {
         // when
-        ResultActions actions = mockMvc.perform(get("/questions")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/questions");
 
         // then
         actions.andExpect(status().isOk())
@@ -70,16 +72,17 @@ public class ArticleControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
-            .param("writer", WRITER)
-            .param("title", TITLE)
-            .param("contents", CONTENTS)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+            .param("writer", "writer")
+            .param("title", "title")
+            .param("contents", "contents")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("article", allOf(
-                hasProperty("writer", is(WRITER)),
-                hasProperty("title", is(TITLE))
+                hasProperty("writer", is("writer")),
+                hasProperty("title", is("title")),
+                hasProperty("contents", is("contents"))
             )))
             .andExpect(view().name("redirect:/"));
     }
@@ -88,14 +91,11 @@ public class ArticleControllerTest {
     @DisplayName("등록된 모든 글을 화면에 출력한다")
     public void listArticlesTest() throws Exception {
         // given
-        article.setArticleId(ARTICLE_ID);
-
         given(articleService.findArticles())
             .willReturn(List.of(article));
 
         // when
-        ResultActions actions = mockMvc.perform(get("/")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/");
 
         // then
         actions.andExpect(status().isOk())
@@ -107,14 +107,11 @@ public class ArticleControllerTest {
     @DisplayName("질문 id 로 선택한 질문을 화면에 출력한다")
     public void showArticleTest() throws Exception {
         // given
-        article.setArticleId(ARTICLE_ID);
-
         given(articleService.findArticle(any()))
             .willReturn(article);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/articles/" + article.getArticleId())
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/articles/1");
 
         // then
         actions.andExpect(status().isOk())
@@ -126,19 +123,16 @@ public class ArticleControllerTest {
     @DisplayName("존재하지 않은 질문 id 로 질문을 조회하면 예외 페이지로 이동한다")
     public void showArticleValidateTest() throws Exception {
         // given
-        CustomException exception = new CustomException(ErrorCode.ARTICLE_NOT_FOUND);
-
         given(articleService.findArticle(any()))
-            .willThrow(exception);
+            .willThrow(new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 
         // when
-        ResultActions actions = mockMvc.perform(get("/articles/1")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/articles/2");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.ARTICLE_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
             .andExpect(view().name("error/index"));
     }
 

@@ -1,11 +1,12 @@
 package com.kakao.cafe.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserRepository;
@@ -23,16 +24,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    private static final String USER_ID = "userId";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_NAME = "user";
-    private static final String USER_EMAIL = "user@example.com";
-
-    private static final String OTHER_ID = "otherId";
-    private static final String OTHER_PASSWORD = "secret";
-    private static final String OTHER_NAME = "other";
-    private static final String OTHER_EMAIL = "other@example.com";
-
     @InjectMocks
     private UserService userService;
 
@@ -43,44 +34,50 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
+        user = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
     }
 
     @Test
     @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
-        given(userRepository.save(user))
+        UserForm userForm = new UserForm("userId", "userPassword", "userName", "user@example.com");
+
+        given(userRepository.save(any()))
             .willReturn(user);
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
         // when
-        User savedUser = userService.register(user);
+        User savedUser = userService.register(userForm);
 
         // then
-        assertThat(savedUser.getUserId()).isEqualTo(USER_ID);
-        assertThat(savedUser.getPassword()).isEqualTo(USER_PASSWORD);
-        assertThat(savedUser.getName()).isEqualTo(USER_NAME);
-        assertThat(savedUser.getEmail()).isEqualTo(USER_EMAIL);
+        assertThat(savedUser.getUserId()).isEqualTo("userId");
+        assertThat(savedUser.getPassword()).isEqualTo("userPassword");
+        assertThat(savedUser.getName()).isEqualTo("userName");
+        assertThat(savedUser.getEmail()).isEqualTo("user@example.com");
     }
 
     @Test
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        User other = new User(USER_ID, OTHER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
+        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
+            "other@example.com");
 
-        given(userRepository.findByUserId(other.getUserId()))
+        given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
-        // when
-        CustomException exception = assertThrows(
-            CustomException.class, () -> userService.register(other));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.DUPLICATE_USER.getMessage());
+        // when, then
+        assertThatThrownBy(() -> userService.register(userForm))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.DUPLICATE_USER.getMessage());
     }
 
     @Test
@@ -105,7 +102,7 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        User findUser = userService.findUser(USER_ID);
+        User findUser = userService.findUser("userId");
 
         // then
         assertThat(findUser).isEqualTo(user);
@@ -118,86 +115,88 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
-        // when
-        CustomException exception = assertThrows(
-            CustomException.class, () -> userService.findUser(any()));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+        // when, then
+        assertThatThrownBy(() -> userService.findUser(any()))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
     @Test
     @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
     public void updateUserTest() {
         // given
-        User other = new User(user);
-        other.setName(OTHER_NAME);
-        other.setEmail(OTHER_EMAIL);
+        UserForm userForm = new UserForm("userId", "userPassword", "otherName",
+            "other@example.com");
+
+        User changedUser = new User.Builder()
+            .userNum(1)
+            .userId("userId")
+            .password("userPassword")
+            .name("other")
+            .email("other@example.com")
+            .build();
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
         given(userRepository.save(any()))
-            .willReturn(other);
+            .willReturn(changedUser);
 
         // when
-        User updatedUser = userService.updateUser(other);
+        User updatedUser = userService.updateUser(userForm);
 
-        assertThat(updatedUser.getUserId()).isEqualTo(USER_ID);
-        assertThat(updatedUser.getPassword()).isEqualTo(USER_PASSWORD);
-        assertThat(updatedUser.getName()).isEqualTo(OTHER_NAME);
-        assertThat(updatedUser.getEmail()).isEqualTo(OTHER_EMAIL);
+        assertThat(updatedUser.getUserId()).isEqualTo("userId");
+        assertThat(updatedUser.getPassword()).isEqualTo("userPassword");
+        assertThat(updatedUser.getName()).isEqualTo("other");
+        assertThat(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
     @Test
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
+        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
+            "other@example.com");
+
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
-        // when
-        CustomException exception = assertThrows(CustomException.class,
-            () -> userService.updateUser(user));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+        // when, then
+        assertThatThrownBy(() -> userService.updateUser(userForm))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
     @Test
     @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectUserIdTest() {
         // given
-        User other = new User(user);
-        other.setUserId(OTHER_ID);
+        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
+            "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
-        // when
-        CustomException exception = assertThrows(CustomException.class,
-            () -> userService.updateUser(other));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+        // when, then
+        assertThatThrownBy(() -> userService.updateUser(userForm))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
     @Test
     @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectPasswordTest() {
         // given
-        User other = new User(user);
-        other.setPassword(OTHER_PASSWORD);
+        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
+            "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
-        // when
-        CustomException exception = assertThrows(CustomException.class,
-            () -> userService.updateUser(other));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+        // when, then
+        assertThatThrownBy(() -> userService.updateUser(userForm))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
 }

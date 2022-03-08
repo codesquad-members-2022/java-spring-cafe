@@ -1,9 +1,11 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.util.Mapper;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User register(User user) {
-        validateUserId(user.getUserId());
-        return userRepository.save(user);
+    public User register(UserForm userForm) {
+        validateUserId(userForm.getUserId());
+        return userRepository.save(Mapper.map(userForm, User.class));
     }
 
     public List<User> findUsers() {
@@ -37,9 +39,9 @@ public class UserService {
             });
     }
 
-    public User updateUser(User user) {
-        User findUser = findUser(user.getUserId());
-        User updatedUser = findUser.update(user);
+    public User updateUser(UserForm userForm) {
+        User findUser = findUser(userForm.getUserId());
+        User updatedUser = findUser.update(Mapper.map(userForm, User.class));
 
         return userRepository.save(updatedUser);
     }

@@ -1,11 +1,12 @@
 package com.kakao.cafe.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleForm;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -23,10 +24,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
 
-    private static final String WRITER = "writer";
-    private static final String TITLE = "title";
-    private static final String CONTENTS = "contents";
-
     @InjectMocks
     private ArticleService articleService;
 
@@ -37,19 +34,25 @@ public class ArticleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article(WRITER, TITLE, CONTENTS);
-        article.setArticleId(1);
+        article = new Article.Builder()
+            .articleId(1)
+            .writer("writer")
+            .title("title")
+            .contents("contents")
+            .build();
     }
 
     @Test
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
         // given
-        given(articleRepository.save(article))
+        ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
+
+        given(articleRepository.save(any(Article.class)))
             .willReturn(article);
 
         // when
-        Article savedArticle = articleService.write(article);
+        Article savedArticle = articleService.write(articleForm);
 
         // then
         assertThat(savedArticle).isEqualTo(article);
@@ -73,7 +76,7 @@ public class ArticleServiceTest {
     @DisplayName("질문 id 로 저장소에 저장된 질문을 조회한다")
     public void findArticleTest() {
         // given
-        given(articleRepository.findById(any()))
+        given(articleRepository.findById(any(Integer.class)))
             .willReturn(Optional.of(article));
 
         // when
@@ -87,15 +90,13 @@ public class ArticleServiceTest {
     @DisplayName("존재하지 않는 질문 id 로 조회하면 경우 예외를 반환한다")
     public void findArticleValidateTest() {
         // given
-        given(articleRepository.findById(any()))
+        given(articleRepository.findById(any(Integer.class)))
             .willReturn(Optional.empty());
 
-        // when
-        CustomException exception = assertThrows(CustomException.class,
-            () -> articleService.findArticle(any()));
-
-        // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
+        // when, then
+        assertThatThrownBy(() -> articleService.findArticle(any()))
+            .isInstanceOf(CustomException.class)
+            .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 
 }

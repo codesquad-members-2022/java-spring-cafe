@@ -31,17 +31,6 @@ import org.springframework.test.web.servlet.ResultActions;
 @WebMvcTest(UserController.class)
 class UserControllerTest {
 
-    private static final Integer USER_NUM = 1;
-    private static final String USER_ID = "userId";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_NAME = "user";
-    private static final String USER_EMAIL = "user@example.com";
-
-    private static final String OTHER_ID = "otherId";
-    private static final String OTHER_PASSWORD = "secret";
-    private static final String OTHER_NAME = "other";
-    private static final String OTHER_EMAIL = "other@example.com";
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -52,22 +41,30 @@ class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
+        user = new User.Builder()
+            .userNum(1)
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
+    }
+
+    private ResultActions performGet(String url) throws Exception {
+        return mockMvc.perform(get(url).accept(MediaType.TEXT_HTML));
     }
 
     @Test
     @DisplayName("모든 유저를 조회한다")
     public void listUsersTest() throws Exception {
         // given
-        user.setUserNum(USER_NUM);
         List<User> users = List.of(user);
 
         given(userService.findUsers())
             .willReturn(users);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/users");
 
         // then
         actions.andExpect(status().isOk())
@@ -83,8 +80,7 @@ class UserControllerTest {
             .willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId())
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/users/userId");
 
         // then
         actions.andExpect(status().isOk())
@@ -96,8 +92,7 @@ class UserControllerTest {
     @DisplayName("유저 회원 가입 화면을 보여준다")
     public void createUserFormTest() throws Exception {
         // when
-        ResultActions actions = mockMvc.perform(get("/users/form")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/users/form");
 
         // then
         actions.andExpect(status().isOk())
@@ -113,19 +108,19 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", USER_ID)
-            .param("password", USER_PASSWORD)
-            .param("name", USER_NAME)
-            .param("email", USER_EMAIL)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+            .param("userId", "userId")
+            .param("password", "userPassword")
+            .param("name", "userName")
+            .param("email", "user@example.com")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                hasProperty("userId", is(USER_ID)),
-                hasProperty("password", is(USER_PASSWORD)),
-                hasProperty("name", is(USER_NAME)),
-                hasProperty("email", is(USER_EMAIL))
+                hasProperty("userId", is("userId")),
+                hasProperty("password", is("userPassword")),
+                hasProperty("name", is("userName")),
+                hasProperty("email", is("user@example.com"))
             )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -141,16 +136,16 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
-            .param("userId", USER_ID)
-            .param("password", USER_PASSWORD)
-            .param("name", USER_NAME)
-            .param("email", USER_EMAIL)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+            .param("userId", "userId")
+            .param("password", "userPassword")
+            .param("name", "userName")
+            .param("email", "user@example.com")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.DUPLICATE_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.DUPLICATE_USER.getMessage()))
             .andExpect(view().name("error/index"));
     }
 
@@ -164,13 +159,12 @@ class UserControllerTest {
             .willThrow(exception);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/userId")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/users/userId");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
             .andExpect(view().name("error/index"));
     }
 
@@ -182,8 +176,7 @@ class UserControllerTest {
             .willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/users/userId/form");
 
         // then
         actions.andExpect(status().isOk())
@@ -195,25 +188,28 @@ class UserControllerTest {
     @DisplayName("유저 정보 업데이트 후에 메인 페이지로 전환한다")
     public void updateUserTest() throws Exception {
         // given
-        User other = new User(user);
-        other.setName(OTHER_NAME);
-        other.setEmail(OTHER_EMAIL);
+        User changedUser = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         given(userService.updateUser(any()))
-            .willReturn(other);
+            .willReturn(changedUser);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/" + user.getUserId())
-            .param("password", USER_PASSWORD)
-            .param("name", OTHER_NAME)
-            .param("email", OTHER_EMAIL)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = mockMvc.perform(put("/users/userId")
+            .param("password", "userPassword")
+            .param("name", "otherName")
+            .param("email", "other@example.com")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("user", allOf(
-                hasProperty("name", is(OTHER_NAME)),
-                hasProperty("email", is(OTHER_EMAIL))
+                hasProperty("name", is("otherName")),
+                hasProperty("email", is("other@example.com"))
             )))
             .andExpect(view().name("redirect:/users"));
     }
@@ -222,22 +218,20 @@ class UserControllerTest {
     @DisplayName("유저 정보 변경 시 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserIncorrectUserIdTest() throws Exception {
         // given
-        CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
-
         given(userService.updateUser(any()))
-            .willThrow(exception);
+            .willThrow(new CustomException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/other")
-            .param("password", USER_PASSWORD)
-            .param("name", OTHER_NAME)
-            .param("email", OTHER_EMAIL)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = mockMvc.perform(put("/users/otherId")
+            .param("password", "userPassword")
+            .param("name", "otherName")
+            .param("email", "other@example.com")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
             .andExpect(view().name("error/index"));
     }
 
@@ -246,22 +240,20 @@ class UserControllerTest {
     @DisplayName("유저 정보 변경 시 아이디 혹은 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserIncorrectPasswordTest() throws Exception {
         // given
-        CustomException exception = new CustomException(ErrorCode.INCORRECT_USER);
-
         given(userService.updateUser(any()))
-            .willThrow(exception);
+            .willThrow(new CustomException(ErrorCode.INCORRECT_USER));
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
-            .param("password", OTHER_PASSWORD)
-            .param("name", OTHER_NAME)
-            .param("email", OTHER_EMAIL)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+            .param("password", "otherPassword")
+            .param("name", "otherName")
+            .param("email", "other@example.com")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", exception.getErrorCode().getHttpStatus()))
-            .andExpect(model().attribute("message", exception.getErrorCode().getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
             .andExpect(view().name("error/index"));
     }
 
