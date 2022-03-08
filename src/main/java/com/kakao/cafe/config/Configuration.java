@@ -2,6 +2,7 @@ package com.kakao.cafe.config;
 
 import com.kakao.cafe.core.repository.article.ArticleRepository;
 import com.kakao.cafe.core.repository.member.MemberRepository;
+import com.kakao.cafe.web.controller.article.ArticleService;
 import com.kakao.cafe.web.controller.member.MemberController;
 import com.kakao.cafe.web.service.member.EntityManager;
 import com.kakao.cafe.web.service.member.MemberService;
@@ -20,9 +21,8 @@ public class Configuration {
 
     /**
      * Controller, Service, Repository 모두
-     * 자동 Component 대상이지만 학습을 위해 등록해
-     * 두었습니다.
-     * */
+     * 학습을 위해 등록해 두었습니다.
+     **/
     @Bean
     public DataGenerator dataGenerator() {
         return new DataGenerator(memberRepository(), articleRepository());
@@ -41,6 +41,11 @@ public class Configuration {
     @Bean
     public MemberRepository memberRepository() {
         return new MemberRepository();
+    }
+
+    @Bean
+    public ArticleService articleService() {
+        return new ArticleService(articleRepository());
     }
 
     @Bean

@@ -22,6 +22,34 @@ public class Article {
         this.viewCount = viewCount;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public LocalDateTime getLastModifiedAt() {
+        return lastModifiedAt;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
     public static class Builder {
         private int id;
         private String title;

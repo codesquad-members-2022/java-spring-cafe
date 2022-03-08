@@ -102,3 +102,9 @@ td {
     vertical-align: middle;
     text-align: center;
 }
+
+.title, .contents {
+    text-align: left;
+    padding-left: 1em;
+}
+

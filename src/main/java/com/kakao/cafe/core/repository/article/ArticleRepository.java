@@ -4,6 +4,7 @@ import com.kakao.cafe.core.domain.article.Article;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ArticleRepository {
 
@@ -22,9 +23,9 @@ public class ArticleRepository {
         return new ArrayList<>(articles);
     }
 
-//    public Optional<Member> findById(int id) {
-//        return articles.stream()
-//                .filter(article -> article.getId()==id)
-//                .findAny();
-//    }
+    public Optional<Article> findById(int id) {
+        return articles.stream()
+                .filter(article->article.getId()==id)
+                .findAny();
+    }
 }

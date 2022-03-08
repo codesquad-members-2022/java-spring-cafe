@@ -16,9 +16,9 @@ dependencies {
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.0'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.5.0'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.jetbrains:annotations:20.1.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
+	implementation 'org.jetbrains:annotations:22.0.0'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.5.0'
 
 	testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
