@@ -2,40 +2,43 @@ package com.kakao.cafe.qna.domain;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.qna.infra.MemoryArticleRepository;
 
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 	public static final String TEST_WRITER = "작성자";
 	public static final String TEST_TITLE = "제목";
 	public static final String TEST_CONTENT = "내용";
-	@Autowired
+
+	@InjectMocks
 	ArticleService articleService;
 
-	@Autowired
+	@Mock
 	ArticleRepository articleRepository;
-
-	@BeforeEach
-	void beforeEach() {
-		this.articleRepository = new MemoryArticleRepository();
-		this.articleService = new ArticleService(articleRepository);
-	}
 
 	@Test
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
+		long expected = 1L;
 		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
-		this.articleService.write(articleDto);
+		when(articleRepository.save(any()))
+			.thenReturn(expected);
 
-		Article actual = this.articleRepository.findById(1L).get();
+		long actual = this.articleService.write(articleDto);
 
-		assertAll(() -> assertThat(actual.getId()).isNotZero(),
-			() -> assertThat(actual.getWriter()).isNotBlank());
+		assertThat(actual).isEqualTo(expected);
 	}
 
 /*
