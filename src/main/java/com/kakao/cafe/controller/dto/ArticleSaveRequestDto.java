@@ -13,6 +13,18 @@ public class ArticleSaveRequestDto {
         this.contents = contents;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
     public Article toEntity() {
         return new Article(writer, title, contents);
     }
