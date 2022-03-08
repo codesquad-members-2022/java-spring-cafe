@@ -35,7 +35,6 @@ class UserServiceTest {
 	@Mock
 	private UserRepository userRepository;
 
-	private Logger logger = LoggerFactory.getLogger(UserServiceTest .class);
 	private UserDto.Request userDto = getUserDto();
 
 	@Test

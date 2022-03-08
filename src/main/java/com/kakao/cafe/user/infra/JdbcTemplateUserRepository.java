@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -38,7 +39,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	private static final String SQL_CONDITIONAL = " where ";
 
 	private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	private final SimpleJdbcInsert simpleJdbcInsert;
+	private final JdbcTemplate jdbcTemplate;
 	private Logger logger = LoggerFactory.getLogger(JdbcTemplateUserRepository.class);
 
 	enum UserColumns {
@@ -74,9 +75,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		}
 	}
 
-	public JdbcTemplateUserRepository(DataSource dataSource) {
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource);  //  InvalidDataAccessApiUsageException
+	public JdbcTemplateUserRepository(
+		NamedParameterJdbcTemplate namedParameterJdbcTemplate,
+		JdbcTemplate jdbcTemplate) {
+		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
@@ -97,6 +100,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	}
 
 	private void insert(User entity) {
+		SimpleJdbcInsert simpleJdbcInsert =  new SimpleJdbcInsert(jdbcTemplate);
 		simpleJdbcInsert.withTableName(TABLE_NAME_OF_USER).usingGeneratedKeyColumns(ID.getColumnName());
 
 		Map<String, Object> parameters = getUserMap(entity);
