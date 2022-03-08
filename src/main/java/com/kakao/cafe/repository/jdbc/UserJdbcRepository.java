@@ -7,7 +7,9 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +19,7 @@ public class UserJdbcRepository implements UserRepository {
     private static final String USER_ID = "user_id";
     private static final String PASSWORD = "password";
     private static final String NAME = "name";
-    private static final String EMAIL = "email@example.com";
+    private static final String EMAIL = "email";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final QueryProps queryProps;
@@ -41,25 +43,56 @@ public class UserJdbcRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return null;
+        String sql = queryProps.get(Query.SELECT_USERS);
+
+        return jdbcTemplate.query(sql,
+            (rs, rowNum) ->
+                new User.Builder()
+                    .userId(rs.getString(USER_ID))
+                    .password(rs.getString(PASSWORD))
+                    .name(rs.getString(NAME))
+                    .email(rs.getString(EMAIL))
+                    .build()
+        );
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return Optional.empty();
+        String sql = queryProps.get(Query.SELECT_USER);
+
+        try {
+            User user = jdbcTemplate.queryForObject(sql,
+                new MapSqlParameterSource().addValue("userId", userId),
+                (rs, rowNum) ->
+                    new User.Builder()
+                        .userId(rs.getString(USER_ID))
+                        .password(rs.getString(PASSWORD))
+                        .name(rs.getString(NAME))
+                        .email(rs.getString(EMAIL))
+                        .build()
+            );
+            return Optional.ofNullable(user);
+
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+
     }
 
     @Override
     public void deleteAll() {
+        String sql = queryProps.get(Query.DELETE_USERS);
 
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 
     private Integer count(BeanPropertySqlParameterSource parameterSource) {
         Integer count = jdbcTemplate.queryForObject(queryProps.get(Query.COUNT_USER),
             parameterSource, Integer.class);
 
-        if (count == null)
+        if (count == null) {
             throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
 
         return count;
     }

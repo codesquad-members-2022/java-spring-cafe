@@ -23,4 +23,13 @@ INSERT_USER: >
   VALUES (:userId, :password, :name, :email)
 
 UPDATE_USER: >
-  UPDATE `user` SET name = :name, email = :email WHERE user_id = :userId
+  UPDATE `user` SET `name` = :name, email = :email WHERE user_id = :userId
+
+SELECT_USERS: >
+  SELECT * FROM `user`
+
+SELECT_USER: >
+  SELECT * FROM `user` WHERE user_id = :userId
+
+DELETE_USERS: >
+  DELETE FROM `user`

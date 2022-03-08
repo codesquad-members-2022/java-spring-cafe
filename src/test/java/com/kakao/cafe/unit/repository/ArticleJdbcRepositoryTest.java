@@ -51,6 +51,9 @@ public class ArticleJdbcRepositoryTest {
             .title("title")
             .contents("contents")
             .build();
+
+        given(queryProps.get(any()))
+            .willReturn("");
     }
 
     @Test
@@ -58,9 +61,6 @@ public class ArticleJdbcRepositoryTest {
     public void test() {
         // given
         KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("articleId", 1)));
-
-        given(queryProps.get(any()))
-            .willReturn("");
 
         given(keyHolderFactory.newKeyHolder())
             .willReturn(keyHolder);
@@ -83,9 +83,6 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("모든 질문 객체를 조회한다")
     public void findAllTest() {
         // given
-        given(queryProps.get(any()))
-            .willReturn("");
-
         given(jdbcTemplate.query(any(String.class), any(RowMapper.class)))
             .willReturn(List.of(article));
 
@@ -100,9 +97,6 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("질문 id 로 질문 객체를 조회한다")
     public void findByArticleIdTest() {
         // given
-        given(queryProps.get(any()))
-            .willReturn("");
-
         given(jdbcTemplate.queryForObject(any(String.class), any(MapSqlParameterSource.class), any(
             RowMapper.class)))
             .willReturn(article);
@@ -118,9 +112,6 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("존재하지 않는 질문 id 로 질문 객체를 조회한다")
     public void findNullTest() {
         // given
-        given(queryProps.get(any()))
-            .willReturn("");
-
         given(jdbcTemplate.queryForObject(any(String.class), any(MapSqlParameterSource.class), any(
             RowMapper.class)))
             .willThrow(EmptyResultDataAccessException.class);

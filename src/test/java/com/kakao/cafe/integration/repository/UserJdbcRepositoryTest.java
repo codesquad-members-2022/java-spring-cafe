@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.jdbc.UserJdbcRepository;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,5 +69,41 @@ public class UserJdbcRepositoryTest {
         assertThat(updatedUser.getPassword()).isEqualTo("userPassword");
         assertThat(updatedUser.getName()).isEqualTo("otherName");
         assertThat(updatedUser.getEmail()).isEqualTo("other@example.com");
+    }
+
+    @Test
+    @DisplayName("모든 유저 객체를 조회한다")
+    public void findAllTest() {
+        // given
+        userRepository.save(user);
+
+        // when
+        List<User> users = userRepository.findAll();
+
+        // then
+        assertThat(users).containsExactly(user);
+    }
+
+    @Test
+    @DisplayName("유저 아이디를 입력해 유저 객체를 조회한다")
+    public void findByUserIdTest() {
+        // given
+        userRepository.save(user);
+
+        // when
+        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
+
+        // then
+        assertThat(findUser).hasValue(user);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 유저아이디로 질문 객체를 조회한다")
+    public void findNullTest() {
+        // when
+        Optional<User> findUser = userRepository.findByUserId(user.getUserId());
+
+        // then
+        assertThat(findUser).isEqualTo(Optional.empty());
     }
 }

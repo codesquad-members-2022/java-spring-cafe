@@ -77,11 +77,8 @@ public class ArticleJdbcRepositoryTest {
     @Test
     @DisplayName("존재하지 않는 질문 id 로 질문 객체를 조회한다")
     public void findNullTest() {
-        // given
-        Article savedArticle = articleRepository.save(article);
-
         // when
-        Optional<Article> findArticle = articleRepository.findById(savedArticle.getArticleId() + 1);
+        Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
         assertThat(findArticle).isEqualTo(Optional.empty());

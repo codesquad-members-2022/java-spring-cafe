@@ -2,7 +2,6 @@ package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-import org.apache.tomcat.jni.Local;
 
 public class Article {
 

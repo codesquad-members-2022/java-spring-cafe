@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -70,11 +69,9 @@ public class ArticleJdbcRepository implements ArticleRepository {
     public Optional<Article> findById(Integer articleId) {
         String sql = queryProps.get(Query.SELECT_ARTICLE);
 
-        SqlParameterSource namedParameter = new MapSqlParameterSource()
-            .addValue(ARTICLE_ID, articleId);
-
         try {
-            Article article = jdbcTemplate.queryForObject(sql, namedParameter,
+            Article article = jdbcTemplate.queryForObject(sql,
+                new MapSqlParameterSource().addValue(ARTICLE_ID, articleId),
                 (rs, rowNum) ->
                     new Builder()
                         .articleId(rs.getInt(ARTICLE_ID))

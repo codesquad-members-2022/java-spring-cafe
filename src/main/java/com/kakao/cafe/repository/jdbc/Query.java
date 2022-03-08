@@ -11,4 +11,7 @@ public enum Query {
     COUNT_USER,
     INSERT_USER,
     UPDATE_USER,
+    SELECT_USERS,
+    SELECT_USER,
+    DELETE_USERS,
 }
