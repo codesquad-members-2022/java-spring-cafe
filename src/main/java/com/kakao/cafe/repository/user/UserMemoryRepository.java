@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class UserMemoryRepository implements UserRepository {
 
@@ -16,5 +17,11 @@ public class UserMemoryRepository implements UserRepository {
         user.setId(id++);
         store.add(user);
         return user;
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return store.stream().filter((user -> user.getId().equals(id))).findAny();
+
     }
 }
