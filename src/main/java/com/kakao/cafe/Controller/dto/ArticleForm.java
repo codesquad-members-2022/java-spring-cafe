@@ -1,9 +1,6 @@
 package com.kakao.cafe.Controller.dto;
 
-import com.kakao.cafe.domain.Article;
-
 import javax.validation.constraints.NotEmpty;
-import java.time.format.DateTimeFormatter;
 
 public class ArticleForm {
 
@@ -14,7 +11,6 @@ public class ArticleForm {
     private String contents;
     private String createdTime;
     private String lastModifiedTime;
-    private final String articleListDateFormat = "yyyy-MM-dd HH:MM";
 
     public ArticleForm() {
     }
