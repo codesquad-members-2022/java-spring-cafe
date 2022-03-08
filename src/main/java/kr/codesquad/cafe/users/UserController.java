@@ -21,7 +21,7 @@ public class UserController {
     public String viewUserList(Model model) {
         model.addAttribute("users", service.findAll());
 
-        return "/users/list";
+        return "users/list";
     }
 
     @PostMapping("/users")
@@ -29,6 +29,7 @@ public class UserController {
         try {
             service.join(user);
 
+            //noinspection SpringMVCViewInspection
             return "redirect:/users";
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
@@ -37,10 +38,15 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{userId}")
-    public String viewUserProfile(@PathVariable("userId") String userId, Model model) {
-        model.addAttribute("user", service.findByUserId(userId).orElseThrow());
+    @GetMapping("/users/{id:[0-9]+}")
+    public String viewUserProfile(@PathVariable("id") Long id, Model model) {
+        if (service.findById(id).isPresent()) {
+            model.addAttribute("user", service.findById(id).get());
 
-        return "/users/profile";
+            return "/users/profile";
+        }
+
+        //noinspection SpringMVCViewInspection
+        return "redirect:/users";
     }
 }

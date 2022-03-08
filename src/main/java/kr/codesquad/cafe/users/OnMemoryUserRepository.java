@@ -1,15 +1,20 @@
 package kr.codesquad.cafe.users;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class OnMemoryUserRepository implements UserRepository {
 
-    private static Map<Long, User> repository = new HashMap<>();
-    private static long nextId = 0L;
+    private static final ConcurrentMap<Long, User> repository = new ConcurrentHashMap<>();
+    private static final AtomicLong nextId = new AtomicLong(1);
 
     @Override
     public User save(User user) {
-        user.setId(++nextId);
+        user.setId(nextId.getAndIncrement());
         repository.put(user.getId(), user);
 
         return user;
@@ -17,7 +22,7 @@ public class OnMemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        return Optional.of(repository.get(id));
+        return Optional.ofNullable(repository.get(id));
     }
 
     @Override
