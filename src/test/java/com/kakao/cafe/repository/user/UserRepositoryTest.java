@@ -31,4 +31,16 @@ public class UserRepositoryTest {
         assertThat(result.getUserId()).isEqualTo("forky");
         assertThat(result.getUsername()).isEqualTo("퐄퐄퐄");
     }
+
+    @Test
+    @DisplayName("유저 id 값으로 데이터 조회")
+    void findByUserId() {
+        User user = new User("forky", "1111", "hello@spring.com", "퐄퐄퐄");
+        repository.save(user);
+
+        User result = repository.findByUserId("forky").get();
+
+        assertThat(result.getUserId()).isEqualTo("forky");
+        assertThat(result.getUsername()).isEqualTo("퐄퐄퐄");
+    }
 }

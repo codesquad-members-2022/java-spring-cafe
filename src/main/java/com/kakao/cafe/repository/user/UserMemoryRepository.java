@@ -24,4 +24,9 @@ public class UserMemoryRepository implements UserRepository {
         return store.stream().filter((user -> user.getId().equals(id))).findAny();
 
     }
+
+    @Override
+    public Optional<User> findByUserId(String userId) {
+        return store.stream().filter((user -> user.getUserId().equals(userId))).findAny();
+    }
 }
