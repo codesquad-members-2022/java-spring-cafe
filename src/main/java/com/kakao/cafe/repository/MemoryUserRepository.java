@@ -8,7 +8,7 @@ import java.util.*;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static Map<Long, User> store = new HashMap<>();
+    private static final Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override
