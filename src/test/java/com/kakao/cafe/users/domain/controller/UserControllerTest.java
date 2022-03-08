@@ -4,6 +4,7 @@ import com.kakao.cafe.users.UserService;
 import com.kakao.cafe.users.controller.UserController;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
+import com.kakao.cafe.users.exception.UserNotFountException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -57,7 +59,7 @@ class UserControllerTest {
             // arrange
             Long registeredId = 1L;
             String expectedRedirectUrl = "/users";
-            when(userService.join(any())).thenReturn(Optional.of(registeredId));
+            when(userService.join(any())).thenReturn(registeredId);
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -112,7 +114,7 @@ class UserControllerTest {
             String userListViewName = "user/list";
             String usersKey = "users";
             List<User> users = getUsers();
-            when(userService.findUsers()).thenReturn(Optional.of(users));
+            when(userService.findUsers()).thenReturn(users);
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -131,7 +133,7 @@ class UserControllerTest {
         void findUsersReturnEmpty_moveToView() throws Exception {
             // arrange
             String userListViewName = "user/list";
-            when(userService.findUsers()).thenReturn(Optional.empty());
+            when(userService.findUsers()).thenReturn(Collections.emptyList());
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -175,7 +177,7 @@ class UserControllerTest {
             // arrange
             User user = getUser();
             Long id = user.getId();
-            when(userService.findOne(any())).thenReturn(Optional.of(user));
+            when(userService.findOne(any())).thenReturn(user);
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id));
@@ -193,7 +195,7 @@ class UserControllerTest {
         @DisplayName("존재하지 않는 회원의 userId 가 path 로 들어오면 에러 메세지와 함께, 회원 목록 페이지로 이동한다.")
         void findProfile_failed() throws Exception {
             // arrange
-            when(userService.findOne(any())).thenReturn(Optional.empty());
+            when(userService.findOne(any())).thenThrow(UserNotFountException.class);
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));

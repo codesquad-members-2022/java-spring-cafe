@@ -3,7 +3,7 @@ package com.kakao.cafe.users;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.domain.UserRepository;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
-import org.junit.jupiter.api.Assertions;
+import com.kakao.cafe.users.exception.UserNotFountException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,6 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -35,10 +34,10 @@ class UserServiceTest {
 
     @Nested
     @DisplayName("join 메소드는")
-    class JoinTest{
+    class JoinTest {
 
         @Test
-        @DisplayName("userId 가 중복되지 않으면, 회원가입에 성공한다.")
+        @DisplayName("회원의 userId 가 중복되지 않으면, 회원가입에 성공한다.")
         void nonDuplicatedUserId_joinSuccess() {
             // arrange
             User user = new User.Builder()
@@ -54,14 +53,14 @@ class UserServiceTest {
             when(userRepository.findByUserId(any())).thenReturn(Optional.empty()); // 중복된 회원이 없음
 
             // act
-            Long id = userService.join(user).orElseThrow();
+            Long id = userService.join(user);
 
             // assert
             assertThat(id).isEqualTo(user.getId());
         }
 
         @Test
-        @DisplayName("userId 가 중복되면, 회원가입에 실패한다.")
+        @DisplayName("회원의 userId 가 중복되면, 회원가입에 실패한다.")
         void duplicatedUserId_joinSuccess() {
             // arrange
             User user = new User.Builder()
@@ -87,8 +86,8 @@ class UserServiceTest {
     class FindOneTest{
 
         @Test
-        @DisplayName("저장된 User 의 id 를 조회하면, User 를 반환한다.")
-        void savedUser_findSuccess() {
+        @DisplayName("저장된 회원의 id 를 조회하면, User 를 반환한다.")
+        void savedUserExist_findSuccess() {
             // arrange
             Long savedId = 1L;
             User user = new User.Builder()
@@ -103,22 +102,23 @@ class UserServiceTest {
             when(userRepository.findById(any())).thenReturn(Optional.of(user));
 
             // act
-            User findUser = userService.findOne(savedId).orElseThrow();
+            User findUser = userService.findOne(savedId);
 
             // assert
             assertThatIsEqualToAllUserField(findUser, user);
         }
 
         @Test
-        @DisplayName("저장되지 않은 User 의 id 를 조회하면, Optional.empty() 를 반환한다.")
-        void duplicatedUserId_joinSuccess() {
+        @DisplayName("저장되지 않은 회원의 id 를 조회하면, 예외가 발생한다.")
+        void unSavedUserId_findFailed() {
             // arrange
             Long unsavedId = 1L;
             when(userRepository.findById(anyLong())).thenReturn(Optional.empty()); // 중복된 회원 있음
 
             // assert
-            userService.findOne(unsavedId)
-                    .ifPresent(findUser -> fail());
+            assertThatThrownBy(()->userService.findOne(unsavedId))
+                    .isInstanceOf(UserNotFountException.class)
+                    .hasMessageContaining("회원을 찾을 수 없습니다.");
         }
     }
 
@@ -126,10 +126,10 @@ class UserServiceTest {
     @DisplayName("findUsers 메소드는")
     class FindUsersTest{
         @Test
-        @DisplayName("User 가 저장되어 있으면, List<User> 를 반환한다.")
+        @DisplayName("회원이 저장되어 있으면, List<User> 를 반환한다.")
         void userExist_findUsersReturnsList() {
             // arrange
-            User user = new User.Builder()
+            User expectedUser = new User.Builder()
                     .setId(1L)
                     .setUserId("jwkim")
                     .setPasswd("1234")
@@ -138,28 +138,24 @@ class UserServiceTest {
                     .setCreatedDate(LocalDateTime.now())
                     .setModifiedDate(LocalDateTime.now())
                     .build();
-            when(userRepository.findAll()).thenReturn(Optional.of(List.of(user)));
+            when(userRepository.findAll()).thenReturn(Optional.of(List.of(expectedUser)));
+
+            // act
+            List<User> users = userService.findUsers();
 
             // assert
-            userService.findUsers()
-                    .ifPresentOrElse(
-                            users -> {
-                                assertThat(users).size().isEqualTo(1);
-                                User findUser = users.get(0);
-                                assertThatIsEqualToAllUserField(findUser, user);
-                            },
-                            Assertions::fail
-                    );
+            assertThat(users).size().isEqualTo(1);
+            assertThatIsEqualToAllUserField(users.get(0), expectedUser);
         }
 
         @Test
-        @DisplayName("User 가 저장되어 있으면, List<User> 를 반환한다.")
+        @DisplayName("저장된 회원이 없으면, 빈 리스트를 반환한다.")
         void userNotExist_findUsersReturnsEmptyList() {
             // arrange
             when(userRepository.findAll()).thenReturn(Optional.of(Collections.emptyList())); // 중복된 회원 있음
 
             // act
-            List<User> users = userService.findUsers().orElseThrow();
+            List<User> users = userService.findUsers();
 
             // assert
             assertThat(users).size().isEqualTo(0);
