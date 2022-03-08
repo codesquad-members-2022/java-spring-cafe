@@ -14,13 +14,13 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Long post(Article article) {
+    public int post(Article article) {
         articleRepository.save(article);
         return article.getId();
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(int id) {
         articleRepository.deleteById(id);
     }
 
@@ -35,7 +35,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Optional<Article> findOneArticle(String title) {
-        return articleRepository.findByTitle(title);
+    public Optional<Article> findOneArticle(int id) {
+        return articleRepository.findById(id);
     }
 }

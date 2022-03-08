@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ArticleService {
-    Long post(Article article);
+    int post(Article article);
 
-    void deleteById(Long id);
+    void deleteById(int id);
 
     void update(Article article);
 
     List<Article> findArticles();
 
-    Optional<Article> findOneArticle(String title);
+    Optional<Article> findOneArticle(int id);
 }

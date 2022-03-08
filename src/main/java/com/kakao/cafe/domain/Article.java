@@ -3,26 +3,26 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Article {
-    private Long id;
+    private int id;
 
     private String title;
     private String writer;
-    private String dateTime;
+    private LocalDateTime dateTime;
     private String contents;
 
 
     public Article(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
-        this.dateTime = LocalDateTime.now().toString();
+        this.dateTime = LocalDateTime.now();
         this.contents = contents;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -34,7 +34,7 @@ public class Article {
         return writer;
     }
 
-    public String getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 

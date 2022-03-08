@@ -32,7 +32,7 @@ class UserServiceImplTest {
         User user = new User("honux", "호눅스", "1234a", "honux77@gmail.com");
 
         //when
-        Long saveId = userService.join(user);
+        int saveId = userService.join(user);
 
         //then
         User findUser = userService.findOneUser(saveId).get();

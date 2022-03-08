@@ -8,9 +8,9 @@ import java.util.Optional;
 public interface ArticleRepository {
     Article save(Article article);
 
-    Optional<Article> findByTitle(String title);
+    Optional<Article> findById(int id);
 
     List<Article> findAll();
 
-    void deleteById(Long id);
+    void deleteById(int id);
 }

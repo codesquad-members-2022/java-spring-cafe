@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    Long join(User user);
+    int join(User user);
 
     List<User> findUsers();
 
-    Optional<User> findOneUser(Long id);
+    Optional<User> findOneUser(int id);
 }

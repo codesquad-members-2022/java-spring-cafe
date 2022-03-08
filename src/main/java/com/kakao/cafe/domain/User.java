@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain;
 
 public class User {
-    private Long id;
+    private int id;
     private String userId;
     private String name;
     private String password;
@@ -14,11 +14,11 @@ public class User {
         this.email = email;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

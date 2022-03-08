@@ -3,7 +3,7 @@ package com.kakao.cafe.domain.dto;
 import javax.validation.constraints.NotBlank;
 
 public class ArticleForm {
-    private Long id;
+    private int id;
 
     @NotBlank
     private String title;
@@ -20,7 +20,7 @@ public class ArticleForm {
         this.contents = contents;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

@@ -14,7 +14,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Long join(User user) {
+    public int join(User user) {
         validateDuplicateUserId(user);
         validateDuplicateEmail(user);
         userRepository.save(user);
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> findOneUser(Long id) {
+    public Optional<User> findOneUser(int id) {
         return userRepository.findById(id);
     }
 }

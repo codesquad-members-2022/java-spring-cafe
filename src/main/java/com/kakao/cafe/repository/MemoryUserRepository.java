@@ -6,7 +6,7 @@ import java.util.*;
 
 public class MemoryUserRepository implements UserRepository {
     private static List<User> store = new ArrayList<>();
-    private static long sequence = 0L;
+    private static int sequence = 0;
 
     @Override
     public User save(User user) {
@@ -16,9 +16,9 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(Long id) {
+    public Optional<User> findById(int id) {
         return store.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.getId() == id)
                 .findAny();
     }
 

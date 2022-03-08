@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository{
     private static List<Article> articles = new ArrayList<>();
-    private static Long sequence = 0L;
+    private static int sequence = 0;
 
     @Override
     public Article save(Article article) {
@@ -18,9 +18,9 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> findByTitle(String title) {
+    public Optional<Article> findById(int id) {
         return articles.stream()
-                .filter(article -> article.getTitle().equals(title))
+                .filter(article -> article.getId() == id)
                 .findAny();
     }
 
@@ -30,7 +30,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public void deleteById(Long id) {
-        articles.removeIf(article -> article.getId().equals(id));
+    public void deleteById(int id) {
+        articles.removeIf(article -> article.getId() == id);
     }
 }
