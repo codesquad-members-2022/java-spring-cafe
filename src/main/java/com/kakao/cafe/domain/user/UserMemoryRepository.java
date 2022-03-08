@@ -24,7 +24,7 @@ public class UserMemoryRepository implements UserRepository {
     }
 
     private void join(User user) {
-        user.setId(id++);
+        user.setId(++id);
         userList.add(user);
         log.info("userList: {}", userList);
     }
