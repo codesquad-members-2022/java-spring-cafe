@@ -1,6 +1,6 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.Controller.dto.UserCreateDto;
+import com.kakao.cafe.Controller.dto.UserRequestDto;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +24,7 @@ public class User {
         this.updated_date = LocalDateTime.now();
     }
 
-    public User(Long id, UserCreateDto userCreateDto) {
+    public User(Long id, UserRequestDto userCreateDto) {
         this.id = id;
         this.userId = userCreateDto.getUserId();
         this.password = userCreateDto.getPassword();
@@ -62,16 +62,17 @@ public class User {
         return updated_date;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userId='" + userId + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", created_date=" + created_date +
-                ", updated_date=" + updated_date +
-                '}';
+    public void update(String newPassword, String newName, String newEmail) {
+        this.password = newPassword;
+        this.name = newName;
+        this.email = newEmail;
+    }
+
+    public boolean isCorrectUser(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isCorrectPassword(String password) {
+        return this.password.equals(password);
     }
 }

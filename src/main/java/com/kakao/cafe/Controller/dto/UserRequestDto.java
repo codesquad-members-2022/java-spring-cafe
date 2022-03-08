@@ -1,16 +1,16 @@
 package com.kakao.cafe.Controller.dto;
 
-public class UserCreateDto {
+public class UserRequestDto {
 
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public UserCreateDto() {
+    public UserRequestDto() {
     }
 
-    public UserCreateDto(String userId, String password, String name, String email) {
+    public UserRequestDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;

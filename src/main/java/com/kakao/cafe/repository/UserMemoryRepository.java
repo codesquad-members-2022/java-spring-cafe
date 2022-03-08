@@ -19,10 +19,18 @@ public class UserMemoryRepository implements UserRepository{
 
     @Override
     public User save(User user) {
+        if (isExistUser(user)) {
+            return user;
+        }
         users.add(user);
         addUserSize();
 
         return user;
+    }
+
+    private boolean isExistUser(User user) {
+        return users.stream()
+                .anyMatch(eachUser -> eachUser.isCorrectUser(user.getUserId()));
     }
 
     private void addUserSize() {
