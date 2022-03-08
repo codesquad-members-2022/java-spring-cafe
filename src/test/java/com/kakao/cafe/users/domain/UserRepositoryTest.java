@@ -32,6 +32,10 @@ class UserRepositoryTest {
         @Nested
         @DisplayName("회원의 id 가 없고")
         class InsertTest {
+
+            private static final String RequiredFieldNotFound = "필수 정보가 없습니다.";
+            private static final String UniqueFieldDuplicated = "중복된 필드가 존재합니다.";
+
             @Test
             @DisplayName("사용자 정보가 정상적으로 들어왔을 경우, 등록에 성공한다.")
             @Transactional
@@ -114,7 +118,8 @@ class UserRepositoryTest {
                 assertThatThrownBy(()->{
                     repository.save(user1);
                     repository.save(user2);
-                }).isInstanceOf(UniqueFieldDuplicatedException.class);
+                }).isInstanceOf(UniqueFieldDuplicatedException.class)
+                        .hasMessageContaining(UniqueFieldDuplicated);
             }
 
             @Test
@@ -130,7 +135,8 @@ class UserRepositoryTest {
 
                 // assert
                 assertThatThrownBy(()->repository.save(user))
-                        .isInstanceOf(RequiredFieldNotFoundException.class);
+                        .isInstanceOf(RequiredFieldNotFoundException.class)
+                        .hasMessageContaining(RequiredFieldNotFound);
             }
 
             @Test
@@ -146,7 +152,8 @@ class UserRepositoryTest {
 
                 // assert
                 assertThatThrownBy(()->repository.save(user))
-                        .isInstanceOf(RequiredFieldNotFoundException.class);
+                        .isInstanceOf(RequiredFieldNotFoundException.class)
+                        .hasMessageContaining(RequiredFieldNotFound);
             }
 
             @Test
@@ -162,7 +169,8 @@ class UserRepositoryTest {
 
                 // assert
                 assertThatThrownBy(()->repository.save(user))
-                        .isInstanceOf(RequiredFieldNotFoundException.class);
+                        .isInstanceOf(RequiredFieldNotFoundException.class)
+                        .hasMessageContaining(RequiredFieldNotFound);
             }
 
             @Test
@@ -178,10 +186,10 @@ class UserRepositoryTest {
 
                 // assert
                 assertThatThrownBy(()->repository.save(user))
-                        .isInstanceOf(RequiredFieldNotFoundException.class);
+                        .isInstanceOf(RequiredFieldNotFoundException.class)
+                        .hasMessageContaining(RequiredFieldNotFound);
             }
         }
-
     }
 
     @Nested

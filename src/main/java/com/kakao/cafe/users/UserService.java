@@ -40,7 +40,7 @@ public class UserService {
 
     private void validateDuplicateUser(User user) throws UserDuplicatedException {
         if (userRepository.findByUserId(user.getUserId()).isPresent()) {
-            throw new UserDuplicatedException("이미 존재하는 회원입니다.");
+            throw new UserDuplicatedException();
         }
     }
 }

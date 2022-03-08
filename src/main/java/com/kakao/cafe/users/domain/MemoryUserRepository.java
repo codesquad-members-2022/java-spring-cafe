@@ -69,13 +69,13 @@ public class MemoryUserRepository implements UserRepository {
     private void validateRequiredField(User user) {
         if (user.getUserId() == null || user.getPasswd() == null ||
                 user.getName() == null || user.getEmail() == null ) {
-            throw new RequiredFieldNotFoundException("필수 정보가 없습니다.");
+            throw new RequiredFieldNotFoundException();
         }
     }
 
     private void validateUserIdUnique(User user) {
         if (findByUserId(user.getUserId()).isPresent()) {
-            throw new UniqueFieldDuplicatedException("userId 는 중복될 수 없습니다.");
+            throw new UniqueFieldDuplicatedException();
         }
     }
 }

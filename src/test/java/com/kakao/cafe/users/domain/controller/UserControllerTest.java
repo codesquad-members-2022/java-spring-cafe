@@ -80,7 +80,7 @@ class UserControllerTest {
         @DisplayName("중복된 userId 로 시도하면 실패하고, 회원가입 화면으로 돌아간다.")
         void join_failed() throws Exception {
             // arrange
-            when(userService.join(any())).thenThrow(new UserDuplicatedException("이미 존재하는 회원입니다."));
+            when(userService.join(any())).thenThrow(new UserDuplicatedException());
 
             // act
             ResultActions actions = mockMvc.perform(
