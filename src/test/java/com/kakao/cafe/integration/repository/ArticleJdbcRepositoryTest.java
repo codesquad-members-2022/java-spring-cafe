@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql("classpath:/sql/table.sql")
+@Sql("classpath:/schema.sql")
 @Import({ArticleJdbcRepository.class, GeneratedKeyHolderFactory.class, QueryProps.class})
 public class ArticleJdbcRepositoryTest {
 
