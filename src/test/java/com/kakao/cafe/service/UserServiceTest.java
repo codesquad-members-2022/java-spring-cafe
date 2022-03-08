@@ -65,11 +65,13 @@ class UserServiceTest {
     @DisplayName("회원가입을 하면 id가 1부터 오름차순으로 배정된다")
     void join_assign_id() {
         User user1 = new User();
+        user1.setEmail("HARRY@gmail.com");
         user1.setNickname("bc");
         user1.setPassword("1234");
         userService.join(user1);
 
         User user2 = new User();
+        user2.setEmail("BC@gmail.com");
         user2.setNickname("BBBB");
         user2.setPassword("1234555");
         userService.join(user2);
