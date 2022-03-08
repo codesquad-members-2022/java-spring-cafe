@@ -18,19 +18,21 @@ public class MemoryUserRepository implements UserRepository {
 	private final Map<Long, User> data = new LinkedHashMap<>();
 
 	@Override
-	public void save(User entity) {
-		if (entity.getId() != null && data.containsKey(entity.getId())) {
-			data.replace(entity.getId(),
-				new User(entity.getId(),
+	public long save(User entity) {
+		Long id = entity.getId();
+		if (id != null && data.containsKey(id)) {
+			data.replace(id,
+				new User(id,
 					entity.getUserId(),
 					entity.getName(),
 					entity.getEmail(),
 					entity.getPassword()));
-			return;
+			return id;
 		}
-		Long id = getNextId();
+		id = getNextId();
 		data.put(id, entity);
 		entity.setId(id);
+		return id;
 	}
 
 	private Long getNextId() {

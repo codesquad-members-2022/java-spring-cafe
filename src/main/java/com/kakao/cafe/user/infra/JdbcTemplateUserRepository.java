@@ -76,19 +76,24 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
 	public JdbcTemplateUserRepository(DataSource dataSource) {
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource);
+		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource);  //  InvalidDataAccessApiUsageException
 	}
 
 	@Override
-	public void save(User entity) {
+	public long save(User entity) {
 		if (!Objects.isNull(entity.getId())) {
-			Optional<User> user = findById(entity.getId());
-			if (user.isPresent()) {
-				update(entity);
-				return;
-			}
+			updateUser(entity);
+			return entity.getId();
 		}
 		insert(entity);
+		return entity.getId();   // 객체 참조 활용 - but insert가 id 반환해서 받게, 명시적인게 더 좋을까?
+	}
+
+	private void updateUser(User entity) {
+		Optional<User> user = findById(entity.getId());
+		if (user.isPresent()) {
+			update(entity);
+		}
 	}
 
 	private void insert(User entity) {
@@ -120,17 +125,17 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		sb.append(SQL_UPDATE_OF_USER);
 		toMapper(columns, sb);
 		sb.append(SQL_CONDITIONAL)
-			.append(conditioner.columnName)
+			.append(conditioner.getColumnName())
 			.append(SQL_SUBSTITUTE)
-			.append(conditioner.namedParameter);
+			.append(conditioner.getNamedParameter());
 		return sb.toString();
 	}
 
 	private void toMapper(List<UserColumns> columns, StringBuffer sb) {
 		for (UserColumns column : columns) {
-			sb.append(column.columnName)
+			sb.append(column.getColumnName())
 				.append(SQL_SUBSTITUTE)
-				.append(column.updateParameter)
+				.append(column.getUpdateParameter())
 				.append(SQL_COMMA);
 		}
 		sb.deleteCharAt(sb.length() - 1);
@@ -141,7 +146,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		if (id < 1) {
 			throw new IllegalArgumentException(ERROR_OF_USER_ID);
 		}
-		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(ID.getColumnName(), id);
+		final SqlParameterSource namedParameters = new MapSqlParameterSource()
+														.addValue(ID.getColumnName(), id);
 		String sql = getSqlOfSelect(List.of(ALL), ID);
 		List<User> users = namedParameterJdbcTemplate.query(sql, namedParameters, userRowMapper());
 		// List<User> users = jdbcTemplate.query("select * from cafe_users where id = ?", userRowMapper(), id);
@@ -184,7 +190,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	@Override
 	public boolean existByUserId(String userId) {
 		// String sql = "SELECT COUNT(*) FROM cafe_users WHERE user_id = :user_id";
-		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(USER_ID.getColumnName(), userId);
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(USER_ID.getColumnName(), userId);
 		String sql = getSqlOfSelect(List.of(COUNT_ALL), USER_ID);
 		return getNumberOfExistUserId(sql, namedParameters) != 0;
 	}
@@ -192,7 +198,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	@Override
 	public boolean existByName(String name) {
 		// String sql = "SELECT COUNT(*) FROM cafe_users WHERE name = :name";
-		SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(NAME.getColumnName(), name);
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(NAME.getColumnName(), name);
 		String sql = getSqlOfSelect(List.of(COUNT_ALL), NAME);
 		return getNumberOfExistUserId(sql, namedParameters) != 0;
 	}

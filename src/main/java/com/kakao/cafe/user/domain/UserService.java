@@ -16,12 +16,12 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
-	public void register(UserDto.Request userDto) {
+	public long register(UserDto.Request userDto) {
 		if (userRepository.existByUserId(userDto.getUserId()) || userRepository.existByName(userDto.getName())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
 		User user = new User(userDto.getIdNull(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
-		userRepository.save(user);
+		return userRepository.save(user);
 	}
 
 	public List<User> findUsers() {

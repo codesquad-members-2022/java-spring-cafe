@@ -23,20 +23,22 @@ public class MemoryArticleRepository implements ArticleRepository {
 	private Logger logger = LoggerFactory.getLogger(MemoryArticleRepository.class);
 
 	@Override
-	public void save(Article entity) {
-		if (entity.getId() != null && data.containsKey(entity.getId())) {
-			data.replace(entity.getId(),
-				new Article(entity.getId(),
+	public long save(Article entity) {
+		Long id = entity.getId();
+		if (id != null && data.containsKey(id)) {
+			data.replace(id,
+				new Article(id,
 					entity.getWriter(),
 					entity.getTitle(),
 					entity.getContent(),
 					entity.getWritingDate()));
-			return;
+			return id;
 		}
-		Long id = getNextId();
+		id = getNextId();
 		data.put(id, entity);
 		entity.setId(id);
 		logger.info("question db save : {}",entity);
+		return id;
 	}
 
 	private Long getNextId() {
