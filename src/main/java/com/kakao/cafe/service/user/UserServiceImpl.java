@@ -3,14 +3,18 @@ package com.kakao.cafe.service.user;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserForm;
 import com.kakao.cafe.repository.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
 
+    @Autowired
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }

@@ -2,12 +2,14 @@ package com.kakao.cafe.repository.user;
 
 
 import com.kakao.cafe.domain.user.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class UserMemoryRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();

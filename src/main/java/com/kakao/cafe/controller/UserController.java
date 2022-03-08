@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserForm;
 import com.kakao.cafe.service.user.UserService;
-import com.kakao.cafe.service.user.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
 
+
     private UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
