@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -60,12 +60,12 @@ public class UserService {
         return repository.findAll();
     }
 
-    public Optional<User> findByUserId(String userId) {
-        return repository.findByUserId(userId);
-    }
+    public User findById(Long id) {
+        if (repository.findById(id).isPresent()) {
+            return repository.findById(id).get();
+        }
 
-    public Optional<User> findById(Long id) {
-        return repository.findById(id);
+        throw new NoSuchElementException("존재하지 않는 회원입니다.");
     }
 
 }

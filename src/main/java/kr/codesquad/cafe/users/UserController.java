@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.NoSuchElementException;
+
 @Controller
 public class UserController {
 
@@ -40,13 +42,12 @@ public class UserController {
 
     @GetMapping("/users/{id:[0-9]+}")
     public String viewUserProfile(@PathVariable("id") Long id, Model model) {
-        if (service.findById(id).isPresent()) {
-            model.addAttribute("user", service.findById(id).get());
-
+        try {
+            model.addAttribute("user", service.findById(id));
             return "/users/profile";
+        } catch (NoSuchElementException e) {
+            //noinspection SpringMVCViewInspection
+            return "redirect:/users";
         }
-
-        //noinspection SpringMVCViewInspection
-        return "redirect:/users";
     }
 }
