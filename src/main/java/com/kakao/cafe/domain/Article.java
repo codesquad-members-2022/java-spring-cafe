@@ -1,15 +1,8 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
 
 public class Article {
-
-
-    @Autowired
-    private UserService userService;
 
     private static final Date date = new Date();
     private static int articleCount = 0;
@@ -24,10 +17,11 @@ public class Article {
         return articleId;
     }
 
+    public String getWriter() {
+        return writer;
+    }
 
-    @Autowired
     public Article(String userId, String subject, String content) {
-        validUserId(userId);
         this.articleId = articleCount++;
         this.subject = subject;
         this.content = content;
@@ -37,12 +31,6 @@ public class Article {
 
     private String generateUploadDate() {
         return date.toString();
-    }
-
-    private void validUserId(String userId) {
-        if (userService.findOne(userId)==null){
-            throw new RuntimeException();
-        }
     }
 
 }
