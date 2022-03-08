@@ -9,9 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class UserCollectionRepository implements UserRepository {
 
     private List<User> users = Collections.synchronizedList(new ArrayList<>());

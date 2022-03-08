@@ -76,7 +76,7 @@ public class ArticleServiceTest {
     @DisplayName("질문 id 로 저장소에 저장된 질문을 조회한다")
     public void findArticleTest() {
         // given
-        given(articleRepository.findById(any(Integer.class)))
+        given(articleRepository.findById(any()))
             .willReturn(Optional.of(article));
 
         // when
@@ -90,7 +90,7 @@ public class ArticleServiceTest {
     @DisplayName("존재하지 않는 질문 id 로 조회하면 경우 예외를 반환한다")
     public void findArticleValidateTest() {
         // given
-        given(articleRepository.findById(any(Integer.class)))
+        given(articleRepository.findById(any()))
             .willReturn(Optional.empty());
 
         // when, then

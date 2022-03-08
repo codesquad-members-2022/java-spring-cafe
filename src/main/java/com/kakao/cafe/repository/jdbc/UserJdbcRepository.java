@@ -48,6 +48,7 @@ public class UserJdbcRepository implements UserRepository {
         return jdbcTemplate.query(sql,
             (rs, rowNum) ->
                 new User.Builder()
+                    .userNum(rowNum + 1)
                     .userId(rs.getString(USER_ID))
                     .password(rs.getString(PASSWORD))
                     .name(rs.getString(NAME))

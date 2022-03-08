@@ -126,7 +126,7 @@ public class ArticleControllerTest {
         Article savedArticle = articleSetUp.saveArticle(article);
 
         // when
-        ResultActions actions = performGet("/articles/1");
+        ResultActions actions = performGet("/articles/" + savedArticle.getArticleId());
 
         // then
         actions.andExpect(status().isOk())
@@ -138,7 +138,7 @@ public class ArticleControllerTest {
     @DisplayName("존재하지 않은 질문 id 로 질문을 조회하면 예외 페이지로 이동한다")
     public void showArticleValidateTest() throws Exception {
         // when
-        ResultActions actions = performGet("/articles/2");
+        ResultActions actions = performGet("/articles/0");
 
         // then
         actions.andExpect(status().isOk())
