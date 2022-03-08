@@ -1,6 +1,8 @@
+### article ####
+
 INSERT_ARTICLE: >
   INSERT INTO article(writer, title, contents, created_date)
-  VALUES (:writer, :title, :contents, :created_date)
+  VALUES (:writer, :title, :contents, :createdDate)
 
 SELECT_ARTICLES: >
   SELECT * FROM article
@@ -10,3 +12,15 @@ SELECT_ARTICLE: >
 
 DELETE_ARTICLES: >
   DELETE FROM article
+
+### user ###
+
+COUNT_USER: >
+  SELECT COUNT(*) FROM `user` WHERE user_id = :userId
+
+INSERT_USER: >
+  INSERT INTO `user`(user_id, password, `name`, email)
+  VALUES (:userId, :password, :name, :email)
+
+UPDATE_USER: >
+  UPDATE `user` SET name = :name, email = :email WHERE user_id = :userId

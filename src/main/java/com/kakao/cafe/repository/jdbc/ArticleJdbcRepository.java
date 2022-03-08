@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -15,7 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ArticleJDBCRepository implements ArticleRepository {
+public class ArticleJdbcRepository implements ArticleRepository {
 
     // 데이터베이스 내 필드명
     private static final String ARTICLE_ID = "article_id";
@@ -28,7 +29,7 @@ public class ArticleJDBCRepository implements ArticleRepository {
     private final KeyHolderFactory keyHolderFactory;
     private final QueryProps queryProps;
 
-    public ArticleJDBCRepository(NamedParameterJdbcTemplate jdbcTemplate,
+    public ArticleJdbcRepository(NamedParameterJdbcTemplate jdbcTemplate,
         KeyHolderFactory keyHolderFactory, QueryProps queryProps) {
         this.jdbcTemplate = jdbcTemplate;
         this.keyHolderFactory = keyHolderFactory;
@@ -38,16 +39,10 @@ public class ArticleJDBCRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         String sql = queryProps.get(Query.INSERT_ARTICLE);
-
-        SqlParameterSource namedParameter = new MapSqlParameterSource()
-            .addValue(WRITER, article.getWriter())
-            .addValue(TITLE, article.getTitle())
-            .addValue(CONTENTS, article.getContents())
-            .addValue(CREATED_DATE, LocalDateTime.now());
-
         KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
 
-        jdbcTemplate.update(sql, namedParameter, keyHolder);
+        article.setCreatedDate(LocalDateTime.now());
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
 
         if (keyHolder.getKey() != null) {
             article.setArticleId(keyHolder.getKey().intValue());

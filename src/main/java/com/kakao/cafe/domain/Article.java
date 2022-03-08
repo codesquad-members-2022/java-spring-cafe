@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import org.apache.tomcat.jni.Local;
 
 public class Article {
 
@@ -77,8 +78,16 @@ public class Article {
         return contents;
     }
 
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public boolean equalsId(Integer articleId) {

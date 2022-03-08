@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.jdbc.ArticleJDBCRepository;
+import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.GeneratedKeyHolderFactory;
 import java.util.List;
 import java.util.Optional;
@@ -18,11 +18,11 @@ import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
 @Sql("classpath:/sql/table.sql")
-@Import({ArticleJDBCRepository.class, GeneratedKeyHolderFactory.class, QueryProps.class})
-public class ArticleJDBCRepositoryTest {
+@Import({ArticleJdbcRepository.class, GeneratedKeyHolderFactory.class, QueryProps.class})
+public class ArticleJdbcRepositoryTest {
 
     @Autowired
-    private ArticleJDBCRepository articleRepository;
+    private ArticleJdbcRepository articleRepository;
 
     Article article;
 

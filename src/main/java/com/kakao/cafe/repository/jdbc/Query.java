@@ -6,4 +6,9 @@ public enum Query {
     SELECT_ARTICLES,
     SELECT_ARTICLE,
     DELETE_ARTICLES,
+
+    // user
+    COUNT_USER,
+    INSERT_USER,
+    UPDATE_USER,
 }

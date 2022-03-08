@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.jdbc.ArticleJDBCRepository;
+import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.KeyHolderFactory;
 import java.util.List;
 import java.util.Map;
@@ -20,16 +20,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 @ExtendWith(MockitoExtension.class)
-public class ArticleJDBCRepositoryTest {
+public class ArticleJdbcRepositoryTest {
 
     @InjectMocks
-    ArticleJDBCRepository articleRepository;
+    ArticleJdbcRepository articleRepository;
 
     @Mock
     NamedParameterJdbcTemplate jdbcTemplate;
@@ -64,7 +65,7 @@ public class ArticleJDBCRepositoryTest {
         given(keyHolderFactory.newKeyHolder())
             .willReturn(keyHolder);
 
-        given(jdbcTemplate.update(any(String.class), any(MapSqlParameterSource.class),
+        given(jdbcTemplate.update(any(String.class), any(BeanPropertySqlParameterSource.class),
             any(KeyHolder.class)))
             .willReturn(1);
 
