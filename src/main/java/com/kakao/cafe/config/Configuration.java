@@ -1,5 +1,7 @@
 package com.kakao.cafe.config;
 
+import com.kakao.cafe.core.repository.member.MemberRepository;
+import com.kakao.cafe.core.repository.member.MemberRepositoryImpl;
 import com.kakao.cafe.web.service.member.EntityManager;
 import org.springframework.context.annotation.Bean;
 
@@ -11,7 +13,16 @@ public class Configuration {
      */
     @Bean
     public EntityManager entityManager() {
-        EntityManager entityManager = new EntityManager();
-        return entityManager;
+        return new EntityManager();
+    }
+
+    @Bean
+    public DataGenerator dataGenerator() {
+        return new DataGenerator();
+    }
+
+    @Bean
+    public MemberRepository memberRepositoryImpl() {
+        return new MemberRepositoryImpl();
     }
 }

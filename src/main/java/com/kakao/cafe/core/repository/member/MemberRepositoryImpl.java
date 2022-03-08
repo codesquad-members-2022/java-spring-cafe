@@ -12,7 +12,7 @@ public class MemberRepositoryImpl implements MemberRepository {
 
     private final List<Member> members;
 
-    MemberRepositoryImpl() {
+    public MemberRepositoryImpl() {
         this.members = new ArrayList<>();
         members.add(new Member(1L, "jun@naver.com", "1234", "Jun"));
         members.add(new Member(2L, "minsong@naver.com", "1234", "MinJe"));
