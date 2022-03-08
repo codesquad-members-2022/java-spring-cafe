@@ -4,6 +4,8 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserForm;
 import com.kakao.cafe.repository.user.UserMemoryRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +15,11 @@ public class UserServiceTest {
 
     UserRepository repository = new UserMemoryRepository();
     UserService service = new UserServiceImpl(repository);
+
+    @BeforeEach
+    void clear() {
+        repository.clear();
+    }
 
     @Test
     @DisplayName("회원가입")

@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserRepositoryTest {
 
     UserRepository repository = new UserMemoryRepository();
+
+    @BeforeEach
+    void clear() {
+        repository.clear();
+    }
 
     @Test
     @DisplayName("데이터를 저장한다.")

@@ -35,4 +35,10 @@ public class UserMemoryRepository implements UserRepository {
     public List<User> findAll() {
         return Collections.unmodifiableList(store);
     }
+
+    @Override
+    public void clear() {
+        store.clear();
+        id = 1L;
+    }
 }
