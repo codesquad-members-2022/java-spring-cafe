@@ -15,4 +15,6 @@ public interface UserService {
     Optional<User> findSingleUser(String userId);
 
     List<User> findAllUsers();
+
+    void validateUser(User user);
 }

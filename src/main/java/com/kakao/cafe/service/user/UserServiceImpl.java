@@ -24,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
         User user = new User(userId, password, email, name);
 
+        validateUser(user);
         repository.save(user);
     }
 
@@ -40,5 +41,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUsers() {
         return repository.findAll();
+    }
+
+    @Override
+    public void validateUser(User user) {
+        if (repository.findByUserId(user.getUserId()).isPresent()) {
+            throw new IllegalStateException("사용자 ID가 중복됩니다.");
+        }
     }
 }
