@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,11 +34,7 @@ class UserServiceTest {
     @DisplayName("회원가입")
     void join() {
         //given
-        User user = new User();
-        user.setUserId("test1");
-        user.setName("테스트");
-        user.setPassword("1234");
-        user.setEmail("test@gmail.com");
+        User user = new User("test1", "테스트", "1234", "test@gmail.com");
 
         //when
         String saveUserId = userService.join(user);
@@ -50,20 +47,11 @@ class UserServiceTest {
     @DisplayName("이미 가입 된 아이디명으로 회원가입을 시도하면 회원가입 할 수 없다.")
     void duplicate_userId_join() {
         //given
-        User user1 = new User();
-        user1.setUserId("test1");
-        user1.setName("테스트");
-        user1.setPassword("1234");
-        user1.setEmail("test@gmail.com");
-
-        User user2 = new User();
-        user2.setUserId("test1");
-        user2.setName("테스트22");
-        user2.setPassword("123456");
-        user2.setEmail("test22@gmail.com");
+        User user1 = new User("test1", "테스트", "1234", "test@gmail.com");
+        User user2 = new User("test1", "테스트22", "123456", "test22@gmail.com");
+        userService.join(user1);
 
         //when
-        userService.join(user1);
         assertThrows(IllegalStateException.class, () -> userService.join(user2));
     }
 
@@ -71,17 +59,8 @@ class UserServiceTest {
     @DisplayName("전체 회원 목록 조회")
     void findUsers() {
         //given
-        User user1 = new User();
-        user1.setUserId("test1");
-        user1.setName("테스트");
-        user1.setPassword("1234");
-        user1.setEmail("test1@gmail.com");
-
-        User user2 = new User();
-        user1.setUserId("test2");
-        user1.setName("테스트2");
-        user1.setPassword("1234");
-        user1.setEmail("test2@gmail.com");
+        User user1 = new User("test1", "테스트1", "1234", "test1@gmail.com");
+        User user2 = new User("test2", "테스트2", "1234", "test2@gmail.com");
 
         userService.join(user1);
         userService.join(user2);
@@ -97,18 +76,24 @@ class UserServiceTest {
     @DisplayName("특정 회원 정보 조회")
     void findOne() {
         //given
-        User user1 = new User();
-        user1.setUserId("test1");
-        user1.setName("테스트");
-        user1.setPassword("1234");
-        user1.setEmail("test1@gmail.com");
+        User user1 = new User("test1", "테스트", "1234", "test1@gmail.com");
 
         userService.join(user1);
 
         //when
-        User result = userService.findOne(user1.getUserId()).get();
+        User result = userService.findOne(user1.getUserId());
 
         //then
         assertThat(result.getUserId()).isEqualTo(user1.getUserId());
+    }
+
+    @Test
+    @DisplayName("특정 회원이 존재하지 않을 경우 예외가 발생해야 한다.")
+    void findOne_not_exist() {
+        //given
+        User user1 = new User("test1", "테스트", "1234", "test1@gmail.com");
+
+        //when
+        assertThrows(NoSuchElementException.class, () -> userService.findOne(user1.getUserId()));
     }
 }

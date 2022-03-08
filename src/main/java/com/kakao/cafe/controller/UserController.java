@@ -5,6 +5,7 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -37,13 +38,13 @@ public class UserController {
 
     @GetMapping("/user/{userId}")
     public String profileForm(@PathVariable String userId, Model model) {
-        User user = userService.findOne(userId).get();
+        User user = userService.findOne(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @PostMapping("/user")
-    public String create(User user) {
+    public String create(@ModelAttribute User user) {
         userService.join(user);
         return "redirect:/user/list";
     }
