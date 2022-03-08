@@ -15,7 +15,4 @@ public interface UserRepository {
     Optional<Object> findByEmail(String email);
 
     List<User> findAll();
-
-    void clearStore();
-
 }

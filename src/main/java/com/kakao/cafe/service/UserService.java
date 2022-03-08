@@ -3,10 +3,13 @@ package com.kakao.cafe.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorMessage;
 import com.kakao.cafe.repository.UserRepository;
 
+@Service
 public class UserService {
     private final UserRepository userRepository;
 
@@ -36,13 +39,13 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
-            new IllegalArgumentException(ErrorMessage.NO_MATCH.get())
+            new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get())
         );
     }
 
     public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname).orElseThrow(() ->
-            new IllegalArgumentException(ErrorMessage.NO_MATCH.get())
+            new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get())
         );
     }
 

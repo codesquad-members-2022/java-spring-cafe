@@ -24,7 +24,7 @@ class UserServiceTest {
     @DisplayName("회원가입을 하면 회원 정보가 MemoryUserRepository에 저장된다")
     void join_success() {
         User user1 = new User();
-        user1.setNickname("bc");
+        user1.setNickname("bcdd");
         user1.setPassword("1234");
         userService.join(user1);
 
@@ -38,13 +38,13 @@ class UserServiceTest {
     void join_validateUniqueNickname() {
         User user1 = new User();
         user1.setEmail("BC@gmail.com");
-        user1.setNickname("BC");
+        user1.setNickname("BCdd");
         user1.setPassword("1234");
         userService.join(user1);
 
         User user2 = new User();
         user2.setEmail("HARRY@gmail.com");
-        user2.setNickname("BC");
+        user2.setNickname("BCdd");
         user2.setPassword("1234555");
 
         User user3 = new User();

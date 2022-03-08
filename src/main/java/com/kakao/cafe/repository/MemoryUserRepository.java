@@ -13,15 +13,14 @@ public class MemoryUserRepository implements UserRepository {
 
     private Map<Long, User> userIdMap = new HashMap<>();
     private Map<String, User> userNicknameMap = new HashMap<>(); // 닉네임으로 검색하기 위해 추가
-    private Map<String, User> userEmailMap = new HashMap<>(); // 닉네임으로 검색하기 위해 추가
+    private Map<String, User> userEmailMap = new HashMap<>();
     private long sequence = 0L;
 
     @Override
     public void save(User user) {
-        LocalDate today = LocalDate.now();
         sequence++;
         user.setId(sequence);
-        user.setDate(today.toString());
+        user.setDate(LocalDate.now().toString());
         userIdMap.put(sequence, user);
         userNicknameMap.put(user.getNickname(), user);
         userEmailMap.put(user.getEmail(), user);
@@ -45,11 +44,6 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(userIdMap.values());
-    }
-
-    @Override
-    public void clearStore() {
-        userIdMap.clear();
     }
 
 }
