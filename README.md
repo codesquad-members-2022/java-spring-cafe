@@ -12,4 +12,4 @@
 - [x] Dto를 전달받아 전달하는 메서드 Service에 구현하기
 - [x] ArticleService Unit Test 만들기
 - [x] UserService Unit Test 만들기
-- [ ] UserController Unit Test 만들기
+- [x] UserController Unit Test 만들기
