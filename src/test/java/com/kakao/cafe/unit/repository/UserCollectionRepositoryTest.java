@@ -6,16 +6,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.repository.UserCollectionRepository;
+import com.kakao.cafe.repository.collections.UserCollectionRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 class UserCollectionRepositoryTest {
 
     private final UserCollectionRepository userRepository = new UserCollectionRepository();

@@ -1,4 +1,4 @@
-package com.kakao.cafe.integration;
+package com.kakao.cafe.integration.controller;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;

@@ -1,13 +1,12 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.collections;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.repository.ArticleRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public class ArticleCollectionRepository implements ArticleRepository {
 
     private List<Article> articles = Collections.synchronizedList(new ArrayList<>());

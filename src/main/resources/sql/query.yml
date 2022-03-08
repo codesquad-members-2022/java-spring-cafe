@@ -1,0 +1,3 @@
+INSERT_ARTICLE: >
+  INSERT INTO article(writer, title, contents, created_date)
+  VALUES (:writer, :title, :contents, :createdDate)

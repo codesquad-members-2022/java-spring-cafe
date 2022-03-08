@@ -1,8 +1,9 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.collections;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
