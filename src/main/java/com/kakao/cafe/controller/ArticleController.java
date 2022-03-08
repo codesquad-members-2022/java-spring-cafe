@@ -21,12 +21,12 @@ public class ArticleController {
     }
 
     @GetMapping("/questions")
-    public String createForm() {
+    public String formQuestion() {
         return "qna/form";
     }
 
     @PostMapping("/questions")
-    public ModelAndView create(ArticleForm articleForm) throws Exception {
+    public ModelAndView createQuestion(ArticleForm articleForm) throws Exception {
         Article article = articleService.write(articleForm);
         ModelAndView mav = new ModelAndView("redirect:/");
         mav.addObject("article", article);
@@ -34,14 +34,14 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String list(Model model) {
+    public String listQuestions(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "qna/list";
     }
 
     @GetMapping("articles/{id}")
-    public String show(@PathVariable(value = "id") Integer articleId, Model model) {
+    public String showQuestion(@PathVariable(value = "id") Integer articleId, Model model) {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";

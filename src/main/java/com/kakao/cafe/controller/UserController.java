@@ -24,26 +24,26 @@ public class UserController {
     }
 
     @GetMapping
-    public String list(Model model) {
+    public String listUsers(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String show(@PathVariable String userId, Model model) {
+    public String showUser(@PathVariable String userId, Model model) {
         User user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @GetMapping("/form")
-    public String createForm() {
+    public String formCreateUser() {
         return "user/form";
     }
 
     @PostMapping
-    public ModelAndView create(UserForm userForm) {
+    public ModelAndView createUser(UserForm userForm) {
         User user = userService.register(userForm);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
@@ -52,14 +52,14 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) {
+    public String formUpdateUser(@PathVariable String userId, Model model) {
         User user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/update_form";
     }
 
     @PutMapping("/{userId}")
-    public ModelAndView update(@PathVariable String userId, UserForm userForm) {
+    public ModelAndView updateUser(@PathVariable String userId, UserForm userForm) {
         userForm.setUserId(userId);
         User user = userService.updateUser(userForm);
 

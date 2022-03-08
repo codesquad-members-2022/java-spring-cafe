@@ -33,9 +33,9 @@ public class UserJdbcRepository implements UserRepository {
     public User save(User user) {
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
-        String sql = count(parameterSource) > 0
-            ? queryProps.get(Query.UPDATE_USER)
-            : queryProps.get(Query.INSERT_USER);
+        String sql = count(parameterSource) == 0
+            ? queryProps.get(Query.INSERT_USER)
+            : queryProps.get(Query.UPDATE_USER);
 
         jdbcTemplate.update(sql, parameterSource);
         return user;
@@ -63,7 +63,8 @@ public class UserJdbcRepository implements UserRepository {
 
         try {
             User user = jdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().addValue("userId", userId),
+                new MapSqlParameterSource()
+                    .addValue("userId", userId),
                 (rs, rowNum) ->
                     new User.Builder()
                         .userId(rs.getString(USER_ID))

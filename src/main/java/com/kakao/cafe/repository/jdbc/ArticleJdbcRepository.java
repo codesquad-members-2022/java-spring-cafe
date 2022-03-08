@@ -71,7 +71,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
         try {
             Article article = jdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource().addValue(ARTICLE_ID, articleId),
+                new MapSqlParameterSource()
+                    .addValue(ARTICLE_ID, articleId),
                 (rs, rowNum) ->
                     new Builder()
                         .articleId(rs.getInt(ARTICLE_ID))
