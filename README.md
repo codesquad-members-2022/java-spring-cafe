@@ -26,15 +26,14 @@
 - [ ] 목록 조회 페이지에서는 가입한 회원들의 목록을 출력한다.
 
 #### 세부 요구사항
-- [ ] 회원목록 페이지는 static/user/list.html을 사용한다.
-- [ ] static에 있는 html을 templates로 이동한다.
-- [ ] Controller 클래스는 회원가입하기 과정에서 추가한 UserController를 그대로 사용한다.
-- [ ] 회원목록 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
-  - [ ] @GetMapping을 추가하고 URL 매핑한다.
-- [ ] Model을 메소드의 인자로 받은 후 Model에 사용자 목록을 users라는 이름으로 전달한다. 
-- [ ] 사용자 목록을 user/list.html로 전달하기 위해 메소드 반환 값을 "user/list"로 한다.
-- [ ] user/list.html 에서 사용자 목록을 출력한다.
-- [ ] user/list.html 에서 사용자 목록 전체를 조회하는 방법은 다음과 같다.
+- [x] 회원목록 페이지는 static/user/list.html을 사용한다.
+- [x] static에 있는 html을 templates로 이동한다.
+- [x] Controller 클래스는 회원가입하기 과정에서 추가한 UserController를 그대로 사용한다.
+- [x] 회원목록 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
+  - [x] @GetMapping을 추가하고 URL 매핑한다.
+- [x] Model을 메소드의 인자로 받은 후 Model에 사용자 목록을 users라는 이름으로 전달한다. 
+- [x] 사용자 목록을 user/list.html로 전달하기 위해 메소드 반환 값을 "user/list"로 한다.
+- [x] user/list.html 에서 사용자 목록을 출력한다.
 
 ### 회원 프로필 조회 기능 구현
 - url : `GET 요청 - /users/{userId}`
