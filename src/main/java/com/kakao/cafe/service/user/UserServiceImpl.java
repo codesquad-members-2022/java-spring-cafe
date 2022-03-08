@@ -20,9 +20,9 @@ public class UserServiceImpl implements UserService {
         String userId = userForm.getUserId();
         String password = userForm.getPassword();
         String email = userForm.getEmail();
-        String username = userForm.getUsername();
+        String name = userForm.getName();
 
-        User user = new User(userId, password, email, username);
+        User user = new User(userId, password, email, name);
 
         repository.save(user);
     }

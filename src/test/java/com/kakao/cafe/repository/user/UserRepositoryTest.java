@@ -37,7 +37,7 @@ public class UserRepositoryTest {
         User result = repository.findById(1L).get();
 
         assertThat(result.getUserId()).isEqualTo("forky");
-        assertThat(result.getUsername()).isEqualTo("퐄퐄퐄");
+        assertThat(result.getName()).isEqualTo("퐄퐄퐄");
     }
 
     @Test
@@ -49,7 +49,7 @@ public class UserRepositoryTest {
         User result = repository.findByUserId("forky").get();
 
         assertThat(result.getUserId()).isEqualTo("forky");
-        assertThat(result.getUsername()).isEqualTo("퐄퐄퐄");
+        assertThat(result.getName()).isEqualTo("퐄퐄퐄");
     }
 
     @Test

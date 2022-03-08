@@ -5,13 +5,13 @@ public class UserForm {
     private String userId;
     private String password;
     private String email;
-    private String username;
+    private String name;
 
-    public UserForm(String userId, String password, String email, String username) {
+    public UserForm(String userId, String password, String email, String name) {
         this.userId = userId;
         this.password = password;
         this.email = email;
-        this.username = username;
+        this.name = name;
     }
 
     public String getUserId() {
@@ -26,7 +26,7 @@ public class UserForm {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 }
