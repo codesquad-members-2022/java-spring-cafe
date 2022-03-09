@@ -15,32 +15,24 @@ public class ModifyProfileRequest {
     private String name;
     private String email;
 
+    public ModifyProfileRequest(int index, String userId, String password, String nowPassword,
+                                String newPassword, String name, String email) {
+
+        this.index = index;
+        this.userId = userId;
+        this.password = password;
+        this.nowPassword = nowPassword;
+        this.newPassword = newPassword;
+        this.name = name;
+        this.email = email;
+    }
+
     public void setIndex(int index) {
         this.index = index;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setNowPassword(String nowPassword) {
-        this.nowPassword = nowPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void isValidRequest() {
