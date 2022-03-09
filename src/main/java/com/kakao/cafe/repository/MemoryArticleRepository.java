@@ -3,13 +3,14 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private final List<Article> articleList = new ArrayList<>();
+    private final List<Article> articleList = Collections.synchronizedList(new ArrayList<>());
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @Override
