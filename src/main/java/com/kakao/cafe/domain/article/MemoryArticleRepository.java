@@ -22,7 +22,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(int id) {
         int index = id - STORAGE_KEY;
-        if(checkIndex(index)) {
+        if(hasIndexInArticlesBound(index)) {
             return Optional.ofNullable(articles.get(index));
         }
         return Optional.empty();
@@ -42,7 +42,7 @@ public class MemoryArticleRepository implements ArticleRepository {
         return articles.size() + STORAGE_KEY;
     }
 
-    private boolean checkIndex(int index) {
+    private boolean hasIndexInArticlesBound(int index) {
         return index < articles.size() && index >= 0;
     }
 }

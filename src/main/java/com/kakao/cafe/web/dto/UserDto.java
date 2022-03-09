@@ -26,7 +26,7 @@ public class UserDto {
     }
 
     public User toEntity() {
-        return new User(this);
+        return User.from(this);
     }
 
     public String getUserId() {

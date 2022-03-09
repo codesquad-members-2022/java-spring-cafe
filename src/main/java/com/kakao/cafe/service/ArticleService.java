@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.exception.ClientException;
-import com.kakao.cafe.web.dto.ArticleDto;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public class ArticleService {
 
     public ArticleResponseDto findOne(int id) {
         Article article = articleRepository.findById(id).orElseThrow(() -> {
-            throw new ClientException(HttpStatus.BAD_REQUEST, "게시글을 찾을 수 없습니다.");
+            throw new ClientException(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.");
         });
         return new ArticleResponseDto(article);
 

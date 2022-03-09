@@ -31,13 +31,13 @@ public class UserController {
 
     @GetMapping("/user/sign-up")
     public String joinForm() {
-        logger.info("user in joinForm");
+        logger.info("User in joinForm");
         return "/user/form";
     }
 
     @PostMapping("/user/sign-up")
     public String joinUser(@Valid UserDto userDto) {
-        logger.info("{} joined", userDto);
+        logger.info("{} sign-up", userDto);
         userService.join(userDto.toEntity());
 
         return "redirect:/users";
@@ -45,7 +45,7 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsersAll(Model model) {
-        logger.info("search all users");
+        logger.info("Show all users");
         List<UserResponseDto> userResponseDtos = userService.findAll();
         model.addAttribute("users", userResponseDtos);
 
@@ -54,7 +54,7 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public String showProfile(@PathVariable String id, Model model) {
-        logger.info("search {}", id);
+        logger.info("Search for {} to show profile", id);
         UserResponseDto userResponseDto = userService.findUser(id);
         model.addAttribute("user", userResponseDto);
 
@@ -63,7 +63,7 @@ public class UserController {
 
     @GetMapping("users/{id}/form")
     public String updateForm(@PathVariable String id, Model model) {
-        logger.info("{} in updateForm", id);
+        logger.info("{} in updateForm for update info", id);
         UserResponseDto userResponseDto = userService.findUser(id);
         model.addAttribute("user", userResponseDto);
 
@@ -72,7 +72,7 @@ public class UserController {
 
     @PutMapping("users/{id}/update")
     public String updateInfo(@PathVariable String id, UserDto userDto) {
-        logger.info("{} update info {}", id, userDto);
+        logger.info("{} updated info {}", id, userDto);
         userService.updateUserInfo(userDto.toEntity());
 
         return "redirect:/users";

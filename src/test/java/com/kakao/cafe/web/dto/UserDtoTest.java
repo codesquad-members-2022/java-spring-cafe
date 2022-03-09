@@ -28,7 +28,6 @@ class UserDtoTest {
         UserDto userDtoNull = new UserDto(null, null, null, null);
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDtoNull);
 
-        violations.forEach(i -> System.out.println(i.getMessage()));
         assertThat(violations.size()).isEqualTo(4);
     }
 
@@ -38,7 +37,6 @@ class UserDtoTest {
         UserDto userDtoEmpty = new UserDto("", "", "", "");
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDtoEmpty);
 
-        violations.forEach(i -> System.out.println(i.getMessage()));
         assertThat(violations.size()).isEqualTo(4);
     }
 
@@ -48,7 +46,6 @@ class UserDtoTest {
         UserDto userDtoEmpty = new UserDto(" ", " ", " ", " ");
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDtoEmpty);
 
-        violations.forEach(i -> System.out.println(i.getMessage()));
         assertThat(violations.size()).isEqualTo(4);
     }
 
@@ -58,7 +55,6 @@ class UserDtoTest {
         UserDto userDtoWrongEmail = new UserDto("ron2", "1234", "ron2", "failEmail");
         Set<ConstraintViolation<UserDto>> violations = validator.validate(userDtoWrongEmail);
 
-        violations.forEach(i -> System.out.println(i.getMessage()));
         assertThat(violations.size()).isEqualTo(1);
     }
 

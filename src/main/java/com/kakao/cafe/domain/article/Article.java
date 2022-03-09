@@ -47,11 +47,11 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return id == article.id && Objects.equals(writer, article.writer) && Objects.equals(title, article.title) && Objects.equals(contents, article.contents);
+        return getId() == article.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, title, contents);
+        return Objects.hash(getId());
     }
 }

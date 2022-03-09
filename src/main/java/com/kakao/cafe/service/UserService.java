@@ -49,20 +49,20 @@ public class UserService {
 
     private void checkDuplicateId(User user) {
         userRepository.findById(user.getUserId()).ifPresent(u -> {
-            throw new ClientException(HttpStatus.BAD_REQUEST, "아이디가 이미 존재합니다.");
+            throw new ClientException(HttpStatus.CONFLICT, "아이디가 이미 존재합니다.");
         });
     }
 
     private User findOne(String userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> {
-                    throw new ClientException(HttpStatus.BAD_REQUEST, "찾으시는 유저가 없습니다.");
+                    throw new ClientException(HttpStatus.NOT_FOUND, "찾으시는 유저가 없습니다.");
                 });
     }
 
     private void checkPassword(User user, User target) {
         if(!target.isSamePassword(user)) {
-            throw new ClientException(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+            throw new ClientException(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다.");
         }
     }
 }

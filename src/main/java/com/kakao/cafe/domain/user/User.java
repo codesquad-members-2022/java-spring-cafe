@@ -2,6 +2,8 @@ package com.kakao.cafe.domain.user;
 
 import com.kakao.cafe.web.dto.UserDto;
 
+import java.util.Objects;
+
 public class User {
 
     private final String userId;
@@ -16,11 +18,8 @@ public class User {
         this.email = email;
     }
 
-    public User(UserDto userDto) {
-        this.userId = userDto.getUserId();
-        this.password = userDto.getPassword();
-        this.name = userDto.getName();
-        this.email = userDto.getEmail();
+    public static User from(UserDto userDto) {
+        return new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
     }
 
     public boolean isSameId(String id) {
@@ -47,4 +46,16 @@ public class User {
         return email;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getPassword(), user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getPassword());
+    }
 }
