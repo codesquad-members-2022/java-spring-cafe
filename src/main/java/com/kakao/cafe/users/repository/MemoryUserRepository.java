@@ -1,8 +1,8 @@
-package com.kakao.cafe.users.domain;
+package com.kakao.cafe.users.repository;
 
-import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
 import com.kakao.cafe.exception.repository.RequiredFieldNotFoundException;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
+import com.kakao.cafe.users.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 

@@ -1,9 +1,9 @@
-package com.kakao.cafe.users;
+package com.kakao.cafe.users.service;
 
 import com.kakao.cafe.users.domain.User;
-import com.kakao.cafe.users.domain.UserRepository;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserNotFountException;
+import com.kakao.cafe.users.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

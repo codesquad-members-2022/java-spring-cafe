@@ -1,10 +1,9 @@
-package com.kakao.cafe.users.domain.controller;
+package com.kakao.cafe.users.controller;
 
-import com.kakao.cafe.users.UserService;
-import com.kakao.cafe.users.controller.UserController;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserNotFountException;
+import com.kakao.cafe.users.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -25,7 +24,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

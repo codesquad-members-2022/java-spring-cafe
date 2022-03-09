@@ -1,6 +1,6 @@
 package com.kakao.cafe.users.controller;
 
-import com.kakao.cafe.users.UserService;
+import com.kakao.cafe.users.service.UserService;
 import com.kakao.cafe.users.controller.dto.UserResponseDto;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;

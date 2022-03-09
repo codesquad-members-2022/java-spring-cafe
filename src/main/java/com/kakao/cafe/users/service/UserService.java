@@ -1,7 +1,7 @@
-package com.kakao.cafe.users;
+package com.kakao.cafe.users.service;
 
 import com.kakao.cafe.users.domain.User;
-import com.kakao.cafe.users.domain.UserRepository;
+import com.kakao.cafe.users.repository.UserRepository;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserNotFountException;
 import com.kakao.cafe.users.exception.UserUnsavedException;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {

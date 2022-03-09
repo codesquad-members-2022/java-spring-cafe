@@ -1,5 +1,6 @@
-package com.kakao.cafe.users.domain;
+package com.kakao.cafe.users.repository;
 
+import com.kakao.cafe.users.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
