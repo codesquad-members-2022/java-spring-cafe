@@ -2,11 +2,9 @@ package com.kakao.cafe.domain.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
 public class UserMemoryRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(UserMemoryRepository.class);
     private final List<User> userList = new ArrayList<>();
