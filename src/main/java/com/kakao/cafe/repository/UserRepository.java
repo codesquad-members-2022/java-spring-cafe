@@ -53,4 +53,8 @@ public class UserRepository implements CustomRepository<User> {
             .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_USER_ID));
         user.updateInfo(updateUser);
     }
+
+    public void clear() {
+        users.clear();
+    }
 }

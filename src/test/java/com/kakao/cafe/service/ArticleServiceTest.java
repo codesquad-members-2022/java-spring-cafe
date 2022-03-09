@@ -13,12 +13,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 
-@ExtendWith(SpringExtension.class) // MockitoExtension을 포함하는 개념
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
     @InjectMocks
@@ -54,8 +55,8 @@ class ArticleServiceTest {
     @Test
     void show_articles_by_index() {
         // given
-        given(articleRepository.findByIndex(0))
-            .willReturn(Optional.ofNullable(article1));
+        when(articleRepository.findByIndex(0))
+            .thenReturn(Optional.ofNullable(article1));
 
         // when
         Article article = articleService.showArticle(0);
@@ -68,8 +69,8 @@ class ArticleServiceTest {
     @Test
     void show_articles_throw_exception() {
         // given
-        given(articleRepository.findByIndex(0))
-            .willReturn(Optional.ofNullable(article1));
+        lenient().when(articleRepository.findByIndex(0))
+            .thenReturn(Optional.ofNullable(article1));
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> {

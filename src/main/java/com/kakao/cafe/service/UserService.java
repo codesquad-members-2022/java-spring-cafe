@@ -56,4 +56,8 @@ public class UserService {
     public void update(String userId, User updateUser) {
         userRepository.update(userId, updateUser);
     }
+
+    public void clear() {
+        userRepository.clear();
+    }
 }
