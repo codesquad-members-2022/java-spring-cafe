@@ -17,6 +17,15 @@ public class Article {
         return articleId;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getUploadDate() {
+        return uploadDate;
+    }
+
+
     public String getWriter() {
         return writer;
     }

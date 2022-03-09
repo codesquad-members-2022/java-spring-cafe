@@ -6,6 +6,8 @@ import com.kakao.cafe.repository.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArticleService {
 
@@ -18,6 +20,9 @@ public class ArticleService {
         this.userService = userService;
     }
 
+    public List<Article> findAllArticle() {
+        return articleRepository.getArticleList();
+    }
 
     public void createArticle(Article article) {
         validUser(article.getWriter());
