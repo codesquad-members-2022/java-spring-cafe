@@ -4,14 +4,10 @@ import com.kakao.cafe.users.UserService;
 import com.kakao.cafe.users.controller.dto.UserResponseDto;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
-import com.kakao.cafe.users.exception.UserNotFountException;
-import com.kakao.cafe.users.exception.UserRuntimeException;
 import com.kakao.cafe.users.exception.UserUnsavedException;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -58,24 +54,11 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public ModelAndView findProfile(@PathVariable("id") Long id, ModelAndView modelAndView) {
-
-        try {
-            User user = userService.findOne(id);
-            modelAndView.addObject(user);
-            modelAndView.setViewName("user/profile");
-        } catch (UserNotFountException e) {
-            modelAndView.setViewName("user/list");
-            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
-            modelAndView.addObject("errorMessage", "회원이 없습니다.");
-        }
+        User user = userService.findOne(id);
+        modelAndView.addObject(user);
+        modelAndView.setViewName("user/profile");
 
         return modelAndView;
-    }
-
-    @ExceptionHandler(UserRuntimeException.class)
-    public String handleUserRuntimeException() {
-        LoggerFactory.getLogger(getClass()).info("this is handleUserRuntimeException method");
-        return "error/500";
     }
 
     private List<UserResponseDto> toUserResponseDtoList(List<User> users) {
