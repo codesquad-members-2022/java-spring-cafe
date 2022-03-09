@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.SingUpRequest;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.service.VolatilityUserService;
@@ -52,10 +53,11 @@ public class UserControllerUnitTest {
     static void init() {
         users = new ArrayList<>();
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(User.builder("user" + (i + 1))
-                    .name("name" + (i + 1))
-                    .email("user" + (i + 1) + "@gmail.com")
-                    .build()
+            users.add(
+                    new User(-1,"user" + (i + 1),
+                            "1234",
+                            "name" + (i + 1),
+                            "user" + (i + 1) + "@gmail.com")
             );
         }
     }
@@ -74,10 +76,10 @@ public class UserControllerUnitTest {
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
-                Arguments.of(User.builder("user5").name("name5").email("user5@gmail.com").build()),
-                Arguments.of(User.builder("user6").name("name6").email("user6@gmail.com").build()),
-                Arguments.of(User.builder("user7").name("name7").email("user7@gmail.com").build()),
-                Arguments.of(User.builder("user8").name("name8").email("user8@gmail.com").build())
+                Arguments.of(new SingUpRequest("user5", "1234","name5", "user5@gmail.com")),
+                Arguments.of(new SingUpRequest("user6", "1234","name6", "user6@gmail.com")),
+                Arguments.of(new SingUpRequest("user7", "1234","name7", "user7@gmail.com")),
+                Arguments.of(new SingUpRequest("user8", "1234","name8", "user8@gmail.com"))
         );
     }
 
@@ -96,10 +98,10 @@ public class UserControllerUnitTest {
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(
-                Arguments.of(User.builder("user1").name("name1").email("user1@gmail.com").build()),
-                Arguments.of(User.builder("user2").name("name2").email("user2@gmail.com").build()),
-                Arguments.of(User.builder("user3").name("name3").email("user3@gmail.com").build()),
-                Arguments.of(User.builder("user4").name("name4").email("user4@gmail.com").build())
+                Arguments.of(new SingUpRequest("user1", "1234","name1", "user1@gmail.com")),
+                Arguments.of(new SingUpRequest("user2", "1234","name2", "user2@gmail.com")),
+                Arguments.of(new SingUpRequest("user3", "1234","name3", "user3@gmail.com")),
+                Arguments.of(new SingUpRequest("user4", "1234","name4", "user4@gmail.com"))
         );
     }
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {

@@ -36,7 +36,7 @@ class VolatilityUserServiceUnitTest {
     @Test
     void addUserSuccess() {
         // given
-        User user = User.builder("user").build();
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         given(userRepository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
         given(userRepository.save(user))
@@ -53,7 +53,7 @@ class VolatilityUserServiceUnitTest {
 
     @Test
     void addUserFail() {
-        User user = User.builder("user").build();
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         given(userRepository.findOne(any(String.class)))
                 .willReturn(Optional.ofNullable(user));
 

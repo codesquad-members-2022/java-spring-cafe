@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifyProfileRequest;
+import com.kakao.cafe.dto.SingUpRequest;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +31,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String signUp(User user, HttpServletRequest request) {
+    public String signUp(SingUpRequest singUpRequest, HttpServletRequest request) {
         logRequestInfo(request);
 
-        userService.add(user);
+        userService.add(singUpRequest.convertToUser());
         return "redirect:/users";
     }
 

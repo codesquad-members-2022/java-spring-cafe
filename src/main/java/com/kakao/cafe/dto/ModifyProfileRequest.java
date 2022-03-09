@@ -42,7 +42,7 @@ public class ModifyProfileRequest {
     }
 
     public User convertToUser() {
-        return User.builder(userId).password(newPassword).name(name).email(email).index(index).build();
+        return new User(index, userId, newPassword, name, email);
     }
 
     @Override

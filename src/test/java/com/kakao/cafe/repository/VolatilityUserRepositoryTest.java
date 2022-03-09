@@ -27,10 +27,10 @@ class VolatilityUserRepositoryTest {
     @Test
     void selectAll() {
         //given
-        User user1 = User.builder("user1").build();
+        User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
         userRepository.save(user1);
 
-        User user2 = User.builder("user2").build();
+        User user2 = new User(-1, "user2", "1234", "name2", "user2@gmail.com");
         userRepository.save(user2);
 
         //when
@@ -43,7 +43,7 @@ class VolatilityUserRepositoryTest {
     @Test
     void insertUser() {
         //given
-        User user = User.builder("user").build();
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
         //when
         userRepository.save(user);
@@ -56,7 +56,7 @@ class VolatilityUserRepositoryTest {
     @Test
     void selectUser() {
         //given
-        User user = User.builder("user").build();
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         userRepository.save(user);
 
         //when
