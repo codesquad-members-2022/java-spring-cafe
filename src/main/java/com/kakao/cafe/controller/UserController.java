@@ -29,7 +29,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/join")
+    @PostMapping("/register")
     public String signUp(User user, HttpServletRequest request) {
         logRequestInfo(request);
 

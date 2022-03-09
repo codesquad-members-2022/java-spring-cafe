@@ -67,7 +67,7 @@ class UserControllerTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -86,7 +86,7 @@ class UserControllerTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest());

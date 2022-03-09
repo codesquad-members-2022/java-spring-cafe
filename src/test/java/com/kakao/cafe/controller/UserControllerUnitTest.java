@@ -65,7 +65,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(User user) throws Exception {
         given(service.add(user)).willReturn(user);
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -86,7 +86,7 @@ public class UserControllerUnitTest {
     @MethodSource("params4SignUpFail")
     void signUpFail(User user) throws Exception {
         given(service.add(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
