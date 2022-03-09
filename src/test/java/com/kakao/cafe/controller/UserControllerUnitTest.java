@@ -65,9 +65,10 @@ public class UserControllerUnitTest {
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void signUpSuccess(User user) throws Exception {
+    void signUpSuccess(SingUpRequest singUpRequest) throws Exception {
+        User user = singUpRequest.convertToUser();
         given(service.add(user)).willReturn(user);
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(singUpRequest)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -86,9 +87,10 @@ public class UserControllerUnitTest {
     @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void signUpFail(User user) throws Exception {
+    void signUpFail(SingUpRequest singUpRequest) throws Exception {
+        User user = singUpRequest.convertToUser();
         given(service.add(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(singUpRequest)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
@@ -131,7 +133,8 @@ public class UserControllerUnitTest {
     @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void getUserProfileSuccess(User user) throws Exception {
+    void getUserProfileSuccess(SingUpRequest singUpRequest) throws Exception {
+        User user = singUpRequest.convertToUser();
         String userId = user.getUserId();
         given(service.search(userId)).willReturn(user);
         mvc.perform(get("/users/" + userId))
@@ -149,7 +152,8 @@ public class UserControllerUnitTest {
     @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void getUserProfileFail(User user) throws Exception {
+    void getUserProfileFail(SingUpRequest singUpRequest) throws Exception {
+        User user = singUpRequest.convertToUser();
         String userId = user.getUserId();
         given(service.search(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
         mvc.perform(get("/users/" + userId))

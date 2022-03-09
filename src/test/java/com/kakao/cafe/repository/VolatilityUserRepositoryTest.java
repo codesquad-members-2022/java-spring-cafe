@@ -43,7 +43,7 @@ class VolatilityUserRepositoryTest {
     @Test
     void insertUser() {
         //given
-        User user = new User(1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
 
         //when
         userRepository.save(user);

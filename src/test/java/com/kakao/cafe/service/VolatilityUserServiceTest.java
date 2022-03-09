@@ -31,7 +31,7 @@ class VolatilityUserServiceTest {
     @Test
     void addUserSuccess() {
         //given
-        User user = new User(1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
 
         //when
         User newUser = userService.add(user);
