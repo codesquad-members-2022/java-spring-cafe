@@ -53,9 +53,10 @@ public class UserService {
     }
 
     public void modify(UserUpdateFormDto userUpdateFormDto) {
-        User user = getExistenceValidatedUser(userUpdateFormDto.getUserId());
-        validateUserPassword(user, userUpdateFormDto.getOldPassword());
-        user.update(userUpdateFormDto.toEntity());
+        User previousUser = getExistenceValidatedUser(userUpdateFormDto.getUserId());
+        validateUserPassword(previousUser, userUpdateFormDto.getOldPassword());
+        User newUser = userUpdateFormDto.toEntity();
+        userRepository.update(previousUser, newUser);
     }
 
     private void validateUserPassword(User user, String password) {
