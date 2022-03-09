@@ -29,8 +29,6 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        List<User> userList = new ArrayList<>(userHashMap.values());
-        Collections.reverse(userList);
-        return userList;
+        return new ArrayList<>(userHashMap.values());
     }
 }

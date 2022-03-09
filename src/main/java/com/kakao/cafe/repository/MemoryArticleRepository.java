@@ -21,8 +21,11 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(articleList);
+        List<Article> newArticleList = new ArrayList<>(articleList);
+        Collections.reverse(newArticleList);
+        return newArticleList;
     }
+
 
     @Override
     public Optional<Article> findById(String articleId) {
