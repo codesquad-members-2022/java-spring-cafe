@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.web.dto.UserUpdateDto;
+
 public class User {
     private Long id;
     private String userId;
@@ -36,5 +38,11 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public void updateProfile(UserUpdateDto userUpdateDto) {
+        this.name = userUpdateDto.getName();
+        this.password = userUpdateDto.getPassword();
+        this.email = userUpdateDto.getEmail();
     }
 }
