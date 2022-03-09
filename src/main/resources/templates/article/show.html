@@ -1,29 +1,28 @@
 <!DOCTYPE HTML>
 <html lang="kr" class="container">
 <head>
-    <title>Home Page</title>
+    <title>질문 상세보기</title>
 </head>
 
 <body class="main">
+<div>
+    {{#foundArticle}}
     <div>
-        <div>
-            <li><a href="user/create">회원 가입</a></li>
-            <li><a href="user/list">유저 리스트</a></li>
-        </div>
+        <h4 class="h4">제목</h4>
+        <p>{{articleTitle}}</p>
     </div>
+
+    <div>
+        <h4 class="h4">내용</h4>
+        <p>{{articleContent}}</p>
+    </div>
+    {{/foundArticle}}
+</div>
 </body>
 
 </html>
 
 <style>
-    li {
-        list-style: none;
-    }
-
-    a {
-        text-decoration-line: none;
-    }
-
     .container {
         height: 100%;
         width: 100%;
@@ -52,6 +51,10 @@
         align-items: flex-start;
         justify-content: center;
         margin-bottom: 5px;
+    }
+
+    .padding {
+        margin-top: 10px;
     }
 
 </style>

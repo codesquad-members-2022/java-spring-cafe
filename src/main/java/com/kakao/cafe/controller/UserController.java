@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.controller.userdto.UserCreateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -31,15 +33,16 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(UserForm form) {
-        User user = new User();
-        user.setUserName(form.getUserName());
-        user.setUserPassword(form.getUserPassword());
-        user.setUserEmail(form.getUserEmail());
+    public String createUser(UserCreateDto userCreateDto) {
+        User user = new User(
+                userCreateDto.getUserName(),
+                userCreateDto.getUserPassword(),
+                userCreateDto.getUserEmail()
+        );
 
-        // service 객체로 매핑된 user 객체 전달
         userService.createUser(user);
 
+        // 아래 @GetMapping("/user/list") 컨트롤러 호출을 위해 redirect 사용
         return "redirect:/user/list";
     }
 
@@ -48,18 +51,15 @@ public class UserController {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
 
-        return "user/list";
+        return "/user/list";
     }
 
     @GetMapping("/user/{userName}")
     public String userProfile(@PathVariable String userName, Model model) {
+        Optional<User> user = userService.findUser(userName);
+        user.ifPresent(foundUser ->
+                model.addAttribute("foundUser", foundUser));
 
-        // userName 으로 user 를 찾고 있다면 model 에 적재해서 view 단에서 사용
-        userService.findUser(userName)
-            .ifPresent(user -> {
-                model.addAttribute("foundUser", user);
-            });
-
-        return "user/profile";
+        return "/user/profile";
     }
 }

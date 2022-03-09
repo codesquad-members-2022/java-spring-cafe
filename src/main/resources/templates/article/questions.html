@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html lang="kr" class="container">
+<head>
+    <title>질문 페이지</title>
+</head>
+
+<body class="main">
+<div>
+    <form action="/article/questions" method="post">
+
+        <div>
+            <h4 class="h4">제목 입력</h4>
+
+            <!-- label for 의 name 은 결합하고자 하는 요소의 id 값과 동일해야 한다.-->
+            <label for="title"></label>
+
+            <!-- name 은 action 에 해당하는 페이지로 전달하는 파라미터로 사용 -->
+            <input type="text" name="articleTitle" id="title" placeholder="제목을 입력하세요.">
+        </div>
+
+        <div>
+            <h4 class="h4">내용 입력</h4>
+            <label for="content"></label>
+            <input type="text" name="articleContent" id="content" placeholder="질문을 입력하세요.">
+        </div>
+
+        <button type="submit" class="padding">질문 등록</button>
+
+    </form>
+</div>
+</body>
+
+</html>
+
+<style>
+    .container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    .main {
+        width: 50%;
+        height: 33%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        border: 2px solid black;
+        border-radius: 8px;
+
+    }
+
+    .h4 {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+
+    .padding {
+        margin-top: 10px;
+    }
+
+</style>
