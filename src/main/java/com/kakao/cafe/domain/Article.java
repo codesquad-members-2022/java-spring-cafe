@@ -45,4 +45,8 @@ public class Article {
         return date.toString();
     }
 
+    public static void clearCount() {
+        articleCount = 0;
+    }
+
 }
