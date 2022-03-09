@@ -3,7 +3,10 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.MemoryUserRepository;
+import com.kakao.cafe.repository.UserRepository;
+import org.apache.catalina.users.MemoryUser;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,7 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 
-    UserService userService = new UserService(new MemoryUserRepository());
+    MemoryUserRepository repository = new MemoryUserRepository();
+    UserService userService = new UserService(repository);
+
+    @AfterEach
+    public void afterEach() {
+        repository.clearUserList();
+    }
 
     @Test
     void join() {
