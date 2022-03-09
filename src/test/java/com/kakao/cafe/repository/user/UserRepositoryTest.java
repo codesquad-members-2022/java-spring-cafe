@@ -4,10 +4,13 @@ import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class UserRepositoryTest {
 
@@ -26,18 +29,6 @@ public class UserRepositoryTest {
         User searchedUser = repository.save(user);
 
         assertThat(user).isSameAs(searchedUser);
-    }
-
-    @Test
-    @DisplayName("id 값으로 데이터 조회한다.")
-    void findById() {
-        User user = new User("forky", "1111", "hello@spring.com", "퐄퐄퐄");
-        repository.save(user);
-
-        User result = repository.findById(1L).get();
-
-        assertThat(result.getUserId()).isEqualTo("forky");
-        assertThat(result.getName()).isEqualTo("퐄퐄퐄");
     }
 
     @Test

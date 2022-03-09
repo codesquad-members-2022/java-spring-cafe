@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.user;
 
+import java.util.Objects;
+
 public class User {
 
     private Long id;
@@ -37,5 +39,15 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return userId.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, password, email, name);
     }
 }
