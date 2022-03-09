@@ -1,7 +1,7 @@
 package com.kakao.cafe.unit.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -68,7 +68,7 @@ public class ArticleServiceTest {
         Article savedArticle = articleService.write(articleForm);
 
         // then
-        assertThat(savedArticle).isEqualTo(article);
+        then(savedArticle).isEqualTo(article);
     }
 
     @Test
@@ -80,8 +80,11 @@ public class ArticleServiceTest {
         given(userRepository.findByUserId(any(String.class)))
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        // when, then
-        assertThatThrownBy(() -> articleService.write(articleForm))
+        // when
+        Throwable throwable = catchThrowable(() -> articleService.write(articleForm));
+
+        // when
+        then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
@@ -97,7 +100,7 @@ public class ArticleServiceTest {
         List<Article> articles = articleService.findArticles();
 
         // then
-        assertThat(articles).containsExactlyElementsOf(List.of(article));
+        then(articles).containsExactlyElementsOf(List.of(article));
     }
 
     @Test
@@ -111,7 +114,7 @@ public class ArticleServiceTest {
         Article findArticle = articleService.findArticle(article.getArticleId());
 
         // then
-        assertThat(findArticle).isEqualTo(article);
+        then(findArticle).isEqualTo(article);
     }
 
     @Test
@@ -121,8 +124,11 @@ public class ArticleServiceTest {
         given(articleRepository.findById(any()))
             .willReturn(Optional.empty());
 
-        // when, then
-        assertThatThrownBy(() -> articleService.findArticle(any()))
+        // when
+        Throwable throwable = catchThrowable(() -> articleService.findArticle(any()));
+
+        // then
+        then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }

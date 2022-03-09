@@ -1,6 +1,7 @@
 package com.kakao.cafe.integration.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
@@ -42,10 +43,10 @@ public class ArticleJdbcRepositoryTest {
         Article savedArticle = articleRepository.save(article);
 
         // then
-        assertThat(savedArticle.getArticleId()).isEqualTo(1);
-        assertThat(savedArticle.getWriter()).isEqualTo("writer");
-        assertThat(savedArticle.getTitle()).isEqualTo("title");
-        assertThat(savedArticle.getContents()).isEqualTo("contents");
+        then(savedArticle.getArticleId()).isEqualTo(1);
+        then(savedArticle.getWriter()).isEqualTo("writer");
+        then(savedArticle.getTitle()).isEqualTo("title");
+        then(savedArticle.getContents()).isEqualTo("contents");
     }
 
     @Test
@@ -58,7 +59,7 @@ public class ArticleJdbcRepositoryTest {
         List<Article> findArticles = articleRepository.findAll();
 
         // then
-        assertThat(findArticles).containsExactlyElementsOf(List.of(savedArticle));
+        then(findArticles).containsExactlyElementsOf(List.of(savedArticle));
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ArticleJdbcRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(savedArticle.getArticleId());
 
         // then
-        assertThat(findArticle).hasValue(savedArticle);
+        then(findArticle).hasValue(savedArticle);
     }
 
     @Test
@@ -81,7 +82,7 @@ public class ArticleJdbcRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
-        assertThat(findArticle).isEqualTo(Optional.empty());
+        then(findArticle).isEqualTo(Optional.empty());
     }
 
 }

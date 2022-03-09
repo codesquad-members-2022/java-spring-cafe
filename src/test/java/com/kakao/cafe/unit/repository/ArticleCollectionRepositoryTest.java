@@ -1,6 +1,6 @@
 package com.kakao.cafe.unit.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.collections.ArticleCollectionRepository;
@@ -29,9 +29,9 @@ public class ArticleCollectionRepositoryTest {
     @DisplayName("질문 객체를 저장소에 저장한다")
     public void saveTest() {
         // then
-        assertThat(article.getWriter()).isEqualTo("writer");
-        assertThat(article.getTitle()).isEqualTo("title");
-        assertThat(article.getContents()).isEqualTo("contents");
+        then(article.getWriter()).isEqualTo("writer");
+        then(article.getTitle()).isEqualTo("title");
+        then(article.getContents()).isEqualTo("contents");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ArticleCollectionRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles).containsExactly(article);
+        then(articles).containsExactly(article);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ArticleCollectionRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
-        assertThat(findArticle).hasValue(article);
+        then(findArticle).hasValue(article);
     }
 
 }

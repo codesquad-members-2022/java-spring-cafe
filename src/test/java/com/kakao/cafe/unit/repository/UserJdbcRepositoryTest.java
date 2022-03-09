@@ -1,6 +1,7 @@
 package com.kakao.cafe.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -65,10 +66,10 @@ public class UserJdbcRepositoryTest {
         User savedUser = userRepository.save(user);
 
         // then
-        assertThat(savedUser.getUserId()).isEqualTo("userId");
-        assertThat(savedUser.getPassword()).isEqualTo("userPassword");
-        assertThat(savedUser.getName()).isEqualTo("userName");
-        assertThat(savedUser.getEmail()).isEqualTo("user@example.com");
+        then(savedUser.getUserId()).isEqualTo("userId");
+        then(savedUser.getPassword()).isEqualTo("userPassword");
+        then(savedUser.getName()).isEqualTo("userName");
+        then(savedUser.getEmail()).isEqualTo("user@example.com");
     }
 
     @Test
@@ -93,10 +94,10 @@ public class UserJdbcRepositoryTest {
         User savedUser = userRepository.save(changedUser);
 
         // then
-        assertThat(savedUser.getUserId()).isEqualTo("userId");
-        assertThat(savedUser.getPassword()).isEqualTo("userPassword");
-        assertThat(savedUser.getName()).isEqualTo("otherName");
-        assertThat(savedUser.getEmail()).isEqualTo("other@example.com");
+        then(savedUser.getUserId()).isEqualTo("userId");
+        then(savedUser.getPassword()).isEqualTo("userPassword");
+        then(savedUser.getName()).isEqualTo("otherName");
+        then(savedUser.getEmail()).isEqualTo("other@example.com");
     }
 
     @Test
@@ -110,7 +111,7 @@ public class UserJdbcRepositoryTest {
         List<User> users = userRepository.findAll();
 
         // then
-        assertThat(users).containsExactly(user);
+        then(users).containsExactly(user);
     }
 
     @Test
@@ -125,7 +126,7 @@ public class UserJdbcRepositoryTest {
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).hasValue(user);
+        then(findUser).hasValue(user);
     }
 
     @Test
@@ -140,6 +141,6 @@ public class UserJdbcRepositoryTest {
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).isEqualTo(Optional.empty());
+        then(findUser).isEqualTo(Optional.empty());
     }
 }

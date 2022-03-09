@@ -1,6 +1,6 @@
 package com.kakao.cafe.unit.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -73,10 +73,10 @@ public class ArticleJdbcRepositoryTest {
         Article savedArticle = articleRepository.save(article);
 
         // then
-        assertThat(savedArticle.getArticleId()).isEqualTo(1);
-        assertThat(savedArticle.getWriter()).isEqualTo("writer");
-        assertThat(savedArticle.getTitle()).isEqualTo("title");
-        assertThat(savedArticle.getContents()).isEqualTo("contents");
+        then(savedArticle.getArticleId()).isEqualTo(1);
+        then(savedArticle.getWriter()).isEqualTo("writer");
+        then(savedArticle.getTitle()).isEqualTo("title");
+        then(savedArticle.getContents()).isEqualTo("contents");
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ArticleJdbcRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles).containsExactlyElementsOf(List.of(article));
+        then(articles).containsExactlyElementsOf(List.of(article));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ArticleJdbcRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
-        assertThat(findArticle).hasValue(article);
+        then(findArticle).hasValue(article);
     }
 
     @Test
@@ -120,7 +120,7 @@ public class ArticleJdbcRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
-        assertThat(findArticle).isEqualTo(Optional.empty());
+        then(findArticle).isEqualTo(Optional.empty());
     }
 
 }

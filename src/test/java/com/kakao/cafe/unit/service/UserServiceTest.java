@@ -1,7 +1,7 @@
 package com.kakao.cafe.unit.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -60,10 +60,10 @@ public class UserServiceTest {
         User savedUser = userService.register(userForm);
 
         // then
-        assertThat(savedUser.getUserId()).isEqualTo("userId");
-        assertThat(savedUser.getPassword()).isEqualTo("userPassword");
-        assertThat(savedUser.getName()).isEqualTo("userName");
-        assertThat(savedUser.getEmail()).isEqualTo("user@example.com");
+        then(savedUser.getUserId()).isEqualTo("userId");
+        then(savedUser.getPassword()).isEqualTo("userPassword");
+        then(savedUser.getName()).isEqualTo("userName");
+        then(savedUser.getEmail()).isEqualTo("user@example.com");
     }
 
     @Test
@@ -76,8 +76,11 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
+        // when
+        Throwable throwable = catchThrowable(() -> userService.register(userForm));
+
         // when, then
-        assertThatThrownBy(() -> userService.register(userForm))
+        then(throwable)
             .isInstanceOf(DuplicateException.class)
             .hasMessage(ErrorCode.DUPLICATE_USER.getMessage());
     }
@@ -93,7 +96,7 @@ public class UserServiceTest {
         List<User> users = userService.findUsers();
 
         // then
-        assertThat(users).containsExactlyElementsOf(List.of(user));
+        then(users).containsExactlyElementsOf(List.of(user));
     }
 
     @Test
@@ -107,7 +110,7 @@ public class UserServiceTest {
         User findUser = userService.findUser("userId");
 
         // then
-        assertThat(findUser).isEqualTo(user);
+        then(findUser).isEqualTo(user);
     }
 
     @Test
@@ -117,8 +120,11 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
-        // when, then
-        assertThatThrownBy(() -> userService.findUser(any()))
+        // when
+        Throwable throwable = catchThrowable(() -> userService.findUser(any()));
+
+        // then
+        then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
@@ -147,10 +153,10 @@ public class UserServiceTest {
         // when
         User updatedUser = userService.updateUser(userForm);
 
-        assertThat(updatedUser.getUserId()).isEqualTo("userId");
-        assertThat(updatedUser.getPassword()).isEqualTo("userPassword");
-        assertThat(updatedUser.getName()).isEqualTo("other");
-        assertThat(updatedUser.getEmail()).isEqualTo("other@example.com");
+        then(updatedUser.getUserId()).isEqualTo("userId");
+        then(updatedUser.getPassword()).isEqualTo("userPassword");
+        then(updatedUser.getName()).isEqualTo("other");
+        then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
     @Test
@@ -163,8 +169,11 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
-        // when, then
-        assertThatThrownBy(() -> userService.updateUser(userForm))
+        // when
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+
+        // then
+        then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
@@ -179,8 +188,11 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
-        // when, then
-        assertThatThrownBy(() -> userService.updateUser(userForm))
+        // when
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+
+        // then
+        then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
@@ -195,8 +207,11 @@ public class UserServiceTest {
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
-        // when, then
-        assertThatThrownBy(() -> userService.updateUser(userForm))
+        // when
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+
+        // then
+        then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }

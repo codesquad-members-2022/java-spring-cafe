@@ -1,7 +1,7 @@
 package com.kakao.cafe.unit.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.BDDAssertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorCode;
@@ -33,8 +33,8 @@ public class UserTest {
         User updatedUser = user.update(other);
 
         // then
-        assertThat(updatedUser.getName()).isEqualTo(other.getName());
-        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
+        then(updatedUser.getName()).isEqualTo(other.getName());
+        then(updatedUser.getEmail()).isEqualTo(other.getEmail());
     }
 
     @Test
@@ -55,8 +55,11 @@ public class UserTest {
             .email("other@example.com")
             .build();
 
-        // when, then
-        assertThatThrownBy(() -> user.update(other))
+        // when
+        Throwable throwable = catchThrowable(() -> user.update(other));
+
+        // then
+        then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
@@ -79,8 +82,11 @@ public class UserTest {
             .email("other@example.com")
             .build();
 
-        // when, then
-        assertThatThrownBy(() -> user.update(other))
+        // when
+        Throwable throwable = catchThrowable(() -> user.update(other));
+
+        // then
+        then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }

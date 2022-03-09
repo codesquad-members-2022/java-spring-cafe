@@ -2,6 +2,8 @@ package com.kakao.cafe.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorCode;
@@ -33,10 +35,10 @@ class UserCollectionRepositoryTest {
     @DisplayName("유저 객체를 저장한다")
     public void savePersistTest() {
         // then
-        assertThat(user.getUserId()).isEqualTo("userId");
-        assertThat(user.getPassword()).isEqualTo("userPassword");
-        assertThat(user.getName()).isEqualTo("userName");
-        assertThat(user.getEmail()).isEqualTo("user@example.com");
+        then(user.getUserId()).isEqualTo("userId");
+        then(user.getPassword()).isEqualTo("userPassword");
+        then(user.getName()).isEqualTo("userName");
+        then(user.getEmail()).isEqualTo("user@example.com");
     }
 
     @Test
@@ -46,7 +48,7 @@ class UserCollectionRepositoryTest {
         List<User> users = userRepository.findAll();
 
         // then
-        assertThat(users).containsExactly(user);
+        then(users).containsExactly(user);
     }
 
     @Test
@@ -56,7 +58,7 @@ class UserCollectionRepositoryTest {
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).hasValue(user);
+        then(findUser).hasValue(user);
     }
 
     @Test
@@ -75,11 +77,11 @@ class UserCollectionRepositoryTest {
         User updatedUser = userRepository.save(changedUser);
 
         // then
-        assertThat(updatedUser.getUserNum()).isEqualTo(1);
-        assertThat(updatedUser.getUserId()).isEqualTo("userId");
-        assertThat(updatedUser.getPassword()).isEqualTo("userPassword");
-        assertThat(updatedUser.getName()).isEqualTo("otherName");
-        assertThat(updatedUser.getEmail()).isEqualTo("other@example.com");
+        then(updatedUser.getUserNum()).isEqualTo(1);
+        then(updatedUser.getUserId()).isEqualTo("userId");
+        then(updatedUser.getPassword()).isEqualTo("userPassword");
+        then(updatedUser.getName()).isEqualTo("otherName");
+        then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
     @Test
@@ -94,8 +96,11 @@ class UserCollectionRepositoryTest {
             .email("other@example.com")
             .build();
 
-        // when, then
-        assertThatThrownBy(() -> userRepository.save(changedUser))
+        // when
+        Throwable throwable = catchThrowable(() -> userRepository.save(changedUser));
+
+        // then
+        then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
