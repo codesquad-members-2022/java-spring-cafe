@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SingUpRequest;
 import com.kakao.cafe.repository.Repository;
-import com.kakao.cafe.repositoryimpl.VolatilityUserRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

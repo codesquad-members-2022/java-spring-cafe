@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifyProfileRequest;
 import com.kakao.cafe.dto.SingUpRequest;
 import com.kakao.cafe.service.UserService;
