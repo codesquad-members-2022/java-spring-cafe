@@ -1,4 +1,4 @@
-package com.kakao.cafe.unit.service;
+package com.kakao.cafe.unit.service.mock;
 
 import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;

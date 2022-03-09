@@ -1,9 +1,8 @@
-package com.kakao.cafe.unit.service;
+package com.kakao.cafe.unit.service.stub;
 
 import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserForm;
@@ -18,24 +17,52 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    @InjectMocks
+    private static class UserStubRepository implements UserRepository {
+
+        private final User user = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
+
+        @Override
+        public User save(User user) {
+            if (user.getUserId().equals("newId")) {
+                return this.user;
+            }
+            if (user.getUserId().equals("dupId")) {
+                throw new DuplicateException(ErrorCode.DUPLICATE_USER);
+            }
+            return this.user.update(user);
+        }
+
+        @Override
+        public List<User> findAll() {
+            return List.of(user);
+        }
+
+        @Override
+        public Optional<User> findByUserId(String userId) {
+            return userId == null || userId.equals("newId") ? Optional.empty() : Optional.of(user);
+        }
+
+        @Override
+        public void deleteAll() {
+
+        }
+    }
+
     private UserService userService;
-
-    @Mock
-    private UserRepository userRepository;
-
     User user;
 
     @BeforeEach
     public void setUp() {
+        userService = new UserService(new UserStubRepository());
+
         user = new User.Builder()
             .userId("userId")
             .password("userPassword")
@@ -48,13 +75,8 @@ public class UserServiceTest {
     @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
-        UserForm userForm = new UserForm("userId", "userPassword", "userName", "user@example.com");
-
-        given(userRepository.save(any()))
-            .willReturn(user);
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.empty());
+        UserForm userForm = new UserForm("newId", "otherPassword", "otherName",
+            "other@example.com");
 
         // when
         User savedUser = userService.register(userForm);
@@ -70,11 +92,7 @@ public class UserServiceTest {
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
-            "other@example.com");
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
+        UserForm userForm = new UserForm("dupId", "userPassword", "userName", "user@example.com");
 
         // when
         Throwable throwable = catchThrowable(() -> userService.register(userForm));
@@ -88,10 +106,6 @@ public class UserServiceTest {
     @Test
     @DisplayName("모든 유저를 조회한다")
     public void findUsersTest() {
-        // given
-        given(userRepository.findAll())
-            .willReturn(List.of(user));
-
         // when
         List<User> users = userService.findUsers();
 
@@ -102,10 +116,6 @@ public class UserServiceTest {
     @Test
     @DisplayName("유저 아이디를 입력해 유저를 조회한다")
     public void findUserTest() {
-        // given
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
-
         // when
         User findUser = userService.findUser("userId");
 
@@ -116,10 +126,6 @@ public class UserServiceTest {
     @Test
     @DisplayName("등록되지 않은 유저 아이디로 유저를 조화하면 예외를 반환한다")
     public void findUserExceptionTest() {
-        // given
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.empty());
-
         // when
         Throwable throwable = catchThrowable(() -> userService.findUser(any()));
 
@@ -136,26 +142,12 @@ public class UserServiceTest {
         UserForm userForm = new UserForm("userId", "userPassword", "otherName",
             "other@example.com");
 
-        User changedUser = new User.Builder()
-            .userNum(1)
-            .userId("userId")
-            .password("userPassword")
-            .name("other")
-            .email("other@example.com")
-            .build();
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
-
-        given(userRepository.save(any()))
-            .willReturn(changedUser);
-
         // when
         User updatedUser = userService.updateUser(userForm);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
-        then(updatedUser.getName()).isEqualTo("other");
+        then(updatedUser.getName()).isEqualTo("otherName");
         then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
@@ -163,11 +155,8 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
+        UserForm userForm = new UserForm("newId", "userPassword", "otherName",
             "other@example.com");
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.empty());
 
         // when
         Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
@@ -185,9 +174,6 @@ public class UserServiceTest {
         UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
             "other@example.com");
 
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
-
         // when
         Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
 
@@ -203,9 +189,6 @@ public class UserServiceTest {
         // given
         UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
             "other@example.com");
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
 
         // when
         Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
