@@ -1,8 +1,10 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.repository.jdbc.Query;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.core.io.ClassPathResource;
@@ -16,8 +18,9 @@ public class QueryProps {
 
     public QueryProps() {
         try {
+
             ClassPathResource resource = new ClassPathResource("query.yml");
-            props = new Yaml().load(new FileReader(resource.getFile()));
+            props = new Yaml().load(new InputStreamReader(resource.getInputStream()));
 
         } catch (IOException e) {
             e.printStackTrace();
