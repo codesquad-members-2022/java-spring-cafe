@@ -1,7 +1,7 @@
 package com.kakao.cafe.users.controller;
 
 import com.kakao.cafe.users.service.UserService;
-import com.kakao.cafe.users.controller.dto.UserResponseDto;
+import com.kakao.cafe.users.controller.dto.UserResponse;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserUnsavedException;
@@ -43,6 +43,7 @@ public class UserController {
         return model;
     }
 
+
     @GetMapping("/users")
     public ModelAndView userList(ModelAndView modelAndView) {
         List<User> users = userService.findUsers();
@@ -55,15 +56,15 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ModelAndView findProfile(@PathVariable("id") Long id, ModelAndView modelAndView) {
         User user = userService.findOne(id);
-        modelAndView.addObject(user);
+        modelAndView.addObject("user", UserResponse.of(user));
         modelAndView.setViewName("user/profile");
 
         return modelAndView;
     }
 
-    private List<UserResponseDto> toUserResponseDtoList(List<User> users) {
+    private List<UserResponse> toUserResponseDtoList(List<User> users) {
         return users.stream()
-                .map(UserResponseDto::of)
+                .map(UserResponse::of)
                 .collect(Collectors.toUnmodifiableList());
     }
 

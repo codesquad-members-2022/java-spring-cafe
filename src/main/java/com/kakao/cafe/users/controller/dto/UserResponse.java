@@ -4,7 +4,7 @@ import com.kakao.cafe.users.domain.User;
 
 import java.time.LocalDate;
 
-public class UserResponseDto {
+public class UserResponse {
 
     private final Long id;
     private final String userId;
@@ -12,7 +12,7 @@ public class UserResponseDto {
     private final String email;
     private final LocalDate createdDate;
 
-    private UserResponseDto(Long id, String userId, String name, String email, LocalDate createdDate) {
+    private UserResponse(Long id, String userId, String name, String email, LocalDate createdDate) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -20,8 +20,8 @@ public class UserResponseDto {
         this.createdDate = createdDate;
     }
 
-    public static UserResponseDto of(User user) {
-        return new UserResponseDto(
+    public static UserResponse of(User user) {
+        return new UserResponse(
                 user.getId(),
                 user.getUserId(),
                 user.getName(),
