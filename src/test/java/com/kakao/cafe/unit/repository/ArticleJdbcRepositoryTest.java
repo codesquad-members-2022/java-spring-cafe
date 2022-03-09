@@ -27,6 +27,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("ArticleJdbcRepository 단위 테스트")
 public class ArticleJdbcRepositoryTest {
 
     @InjectMocks

@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(UserController.class)
+@DisplayName("UserController 단위 테스트")
 class UserControllerTest {
 
     @Autowired

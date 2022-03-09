@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("ArticleCollectionRepository 단위 테스트")
 public class ArticleCollectionRepositoryTest {
 
     private final ArticleCollectionRepository articleRepository = new ArticleCollectionRepository();

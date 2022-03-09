@@ -24,6 +24,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("UserJdbcRepository 단위 테스트")
 public class UserJdbcRepositoryTest {
 
     @InjectMocks

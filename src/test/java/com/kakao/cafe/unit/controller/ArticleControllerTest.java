@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(ArticleController.class)
+@DisplayName("ArticleController 단위 테스트")
 public class ArticleControllerTest {
 
     @Autowired

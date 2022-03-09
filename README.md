@@ -2,6 +2,14 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
+
+<br/>
+<details>
+<summary>☝ 1단계 요구사항</summary>
+<div markdown="1">
+<br/>
+
 ## 스프링 카페 1단계 - 회원 가입 및 목록 기능
 
 ### 회원가입 기능 구현
@@ -43,6 +51,15 @@
 - [X] ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장한다.
 - [X] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.
 
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary>✌ 2단계 요구사항</summary>
+<div markdown="1">
+<br/>
 
 ## 스프링 카페 2단계 - 글 쓰기 기능 구현
 
@@ -86,6 +103,15 @@
 - [X] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
 - [X] UserRepository의 save() 메소드를 사용해 업데이트한다.
 
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary>🤘 3단계 요구사항</summary>
+<div markdown="1">
+<br/>
 
 ## 스프링 카페 3단계 - DB에 저장하기
 
@@ -104,3 +130,7 @@
   - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
 - [X] 배포하기
   - heroku를 사용해서 배포를 진행한다.
+
+<br/>
+</div>
+</details>

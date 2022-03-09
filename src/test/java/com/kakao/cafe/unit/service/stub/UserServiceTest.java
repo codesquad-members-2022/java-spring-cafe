@@ -2,7 +2,6 @@ package com.kakao.cafe.unit.service.stub;
 
 import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
-import static org.mockito.ArgumentMatchers.any;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserForm;
@@ -18,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("UserService stub 단위 테스트")
 public class UserServiceTest {
 
     private static class UserStubRepository implements UserRepository {
@@ -127,7 +127,7 @@ public class UserServiceTest {
     @DisplayName("등록되지 않은 유저 아이디로 유저를 조화하면 예외를 반환한다")
     public void findUserExceptionTest() {
         // when
-        Throwable throwable = catchThrowable(() -> userService.findUser(any()));
+        Throwable throwable = catchThrowable(() -> userService.findUser(null));
 
         // then
         then(throwable)

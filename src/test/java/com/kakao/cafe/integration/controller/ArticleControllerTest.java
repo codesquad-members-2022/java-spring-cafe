@@ -31,6 +31,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @ComponentScan
 @AutoConfigureMockMvc
+@DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
 
     @Autowired

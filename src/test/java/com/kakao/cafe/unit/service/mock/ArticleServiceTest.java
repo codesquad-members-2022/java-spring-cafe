@@ -24,6 +24,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@DisplayName("ArticleService mock 단위 테스트")
 public class ArticleServiceTest {
 
     @InjectMocks

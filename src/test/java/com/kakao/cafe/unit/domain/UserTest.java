@@ -9,6 +9,7 @@ import com.kakao.cafe.exception.InvalidRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("User 도메인 단위 테스트")
 public class UserTest {
 
     @Test

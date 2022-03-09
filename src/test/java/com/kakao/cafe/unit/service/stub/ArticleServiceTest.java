@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("ArticleService stub 단위 테스트")
 public class ArticleServiceTest {
 
     private static class ArticleStubRepository implements ArticleRepository {

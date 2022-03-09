@@ -30,6 +30,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @ComponentScan
 @AutoConfigureMockMvc
+@DisplayName("UserController 통합 테스트")
 public class UserControllerTest {
 
     @Autowired

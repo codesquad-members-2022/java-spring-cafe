@@ -20,6 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 @JdbcTest
 @Sql("classpath:/schema.sql")
 @Import({ArticleJdbcRepository.class, GeneratedKeyHolderFactory.class, QueryProps.class})
+@DisplayName("ArticleJdbcRepository JDBC 통합 테스트")
 public class ArticleJdbcRepositoryTest {
 
     @Autowired

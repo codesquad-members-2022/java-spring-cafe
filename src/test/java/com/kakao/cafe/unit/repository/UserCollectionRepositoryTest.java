@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("UserCollectionRepository 단위 테스트")
 class UserCollectionRepositoryTest {
 
     private final UserCollectionRepository userRepository = new UserCollectionRepository();
