@@ -1,8 +1,10 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
 
 public class MemoryUserRepository implements UserRepository{
 
@@ -32,5 +34,9 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public List<User> findAll() {
         return new ArrayList<>(users.values());
+    }
+
+    public void clearStore(){
+        users.clear();
     }
 }
