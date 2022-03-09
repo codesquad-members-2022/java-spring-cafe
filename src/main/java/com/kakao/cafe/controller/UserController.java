@@ -19,12 +19,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/users/join")
+    @GetMapping("/users/join")
     public String joinForm() {
         return "user/form";
     }
 
-    @PostMapping(value = "/users/join")
+    @PostMapping("/users/join")
     public String create(UserForm form) {
         User user = new User();
         user.setUserId(form.getUserId());
@@ -37,14 +37,14 @@ public class UserController {
         return "redirect:/users";
     }
 
-    @GetMapping(value = "/users")
+    @GetMapping("/users")
     public String list(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "users/list";
     }
 
-    @GetMapping(value = "/users/{userId}")
+    @GetMapping("/users/{userId}")
     public String profile(@PathVariable String userId, Model model) {
         model.addAttribute("userProfile", userService.findById(userId));
         return "user/profile";
