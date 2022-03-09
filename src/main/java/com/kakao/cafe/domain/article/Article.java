@@ -7,6 +7,10 @@ public class Article {
     private String contents;
     private String createdDate;
 
+    public Article() {
+
+    }
+
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
@@ -15,6 +19,18 @@ public class Article {
 
     public boolean isTheSameId(Long id) {
         return this.id.equals(id);
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public void setCreatedDate(String createdDate) {
@@ -31,5 +47,13 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getContents() {
+        return contents;
     }
 }
