@@ -56,7 +56,7 @@
   - [x] static에 있는 html을 templates로 이동한다.
   - [x] 앞 단계의 사용자 목록 html인 user/list.html 파일에 닉네임을 클릭하면 프로필 페이지로 이동하도록 한다.
     - html에서 페이지 이동은 <a /> 태그를 이용해 가능하다.
-    - <a href="/users/{{userId}}" />와 같이 구현한다.
+    - \<a href="/users/{{userId}}" />와 같이 구현한다.
   - [x] Controller 클래스는 앞 단계에서 사용한 UserController를 그대로 사용한다.
   - [x] 회원프로필 요청(GET 요청)을 처리할 메소드를 추가하고 매핑한다.
     - @GetMapping을 추가하고 URL 매핑한다.
