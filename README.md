@@ -4,10 +4,10 @@
 
 ## Step04 ToDo-List
 - [ ] LoginServce 만들기
-    - [ ] 아이디로 찾아온 User의 password가 사용자가 넘긴 password와 동일하다면 user 반환
-    - [ ] 동일하지 않다면 null 반환하기
-    - [ ] 해당 id의 유저가 있는지 확인: bool값 반환하기
-    - [ ] 로그아웃 구현하기
+    - [x] 아이디로 찾아온 User의 password가 사용자가 넘긴 password와 동일하다면 user 반환
+    - [x] 동일하지 않다면 null 반환하기
+    - [ ] ~~해당 id의 유저가 있는지 확인: bool값 반환하기~~ 생각해보니 아이디로 찾았을때 없으면 그걸로 끝이다... 회원 가입도 아닌데, 중복 아이디 거증을 할 필요는 없는것 같다.
+    - [x] 로그아웃 구현하기
 
 ## Step03 ToDo-List
 - [x] user form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)

@@ -67,4 +67,8 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    public boolean isSamePassword(String password) {
+        return this.password == password;
+    }
 }
