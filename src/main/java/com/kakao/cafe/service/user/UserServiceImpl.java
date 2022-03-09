@@ -1,7 +1,7 @@
 package com.kakao.cafe.service.user;
 
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserForm;
+import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,21 +20,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserForm userForm) {
-        String userId = userForm.getUserId();
-        String password = userForm.getPassword();
-        String email = userForm.getEmail();
-        String name = userForm.getName();
+    public void createUser(UserDto userDto) {
+        String userId = userDto.getUserId();
+        String password = userDto.getPassword();
+        String email = userDto.getEmail();
+        String name = userDto.getName();
 
         User user = new User(userId, password, email, name);
 
         validateUser(user);
         repository.save(user);
-    }
-
-    @Override
-    public Optional<User> findSingleUser(Long id) {
-        return repository.findById(id);
     }
 
     @Override
