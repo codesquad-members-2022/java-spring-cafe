@@ -29,7 +29,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         return store.stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.isSameUser(userId))
                 .findAny();
     }
 }
