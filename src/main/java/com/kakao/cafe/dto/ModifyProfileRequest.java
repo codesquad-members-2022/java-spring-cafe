@@ -44,4 +44,17 @@ public class ModifyProfileRequest {
     public User convertToUser() {
         return User.builder(userId).password(newPassword).name(name).email(email).index(index).build();
     }
+
+    @Override
+    public String toString() {
+        return "ModifyProfileRequest{" +
+                "index=" + index +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", nowPassword='" + nowPassword + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

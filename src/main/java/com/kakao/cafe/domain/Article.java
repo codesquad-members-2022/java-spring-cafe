@@ -10,8 +10,7 @@ public class Article {
     private String contents;
     private LocalDate createDate;
 
-    public Article(String id, String writer, String title, String contents) {
-        this.id = id;
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

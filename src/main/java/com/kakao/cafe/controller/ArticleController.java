@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.WriteArticleRequest;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +29,12 @@ public class ArticleController {
     }
 
     @PostMapping("/write")
-    public String writeArticle(Article article,
+    public String writeArticle(WriteArticleRequest writeArticleRequest,
                                HttpServletRequest request) {
 
         logRequestInfo(request);
 
-        articleService.add(article);
+        articleService.add(writeArticleRequest.convertToArticle());
         return "redirect:/";
     }
 
