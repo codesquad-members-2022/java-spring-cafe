@@ -1,33 +1,13 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>kakao Java Web Programming</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="../css/reset.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link href="../css/user/list.css" rel="stylesheet">
+    <div th:replace="~{/fragment/header :: headerFragment}"></div>
+    <link href="/css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
-<nav class="navbar navbar-fixed-top header">
-    <div class="col-md-12">
-        <div class="navbar-header">
-            <a href="../../templates/index.html" class="navbar-brand">
-                <img src="../images/KakaoCI.png" />
-            </a>
-
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="../../templates/index.html">메인 페이지</a></li>
-            <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-            <li><a class="black-component" href="form.html" role="button">회원가입</a></li>
-        </ul>
-    </div>
-</nav>
+    <nav class="navbar navbar-fixed-top header" th:replace="~{/fragment/navigation :: navigationFragment}">
+    </nav>
 
 <div class="description">
     <div class="desc-container">
@@ -44,31 +24,15 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
+                    <th>NO.</th> <th>닉네임</th> <th>이메일</th> <th>회원가입일</th><th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>테스터 1</td> <td>test1@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 2</td> <td>test2@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 3</td> <td>test3@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 4</td> <td>test4@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 5</td> <td>test5@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 6</td> <td>test6@gmail.com</td><td>2021-12-14</td>
-                </tr>
-                <tr>
-                    <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>
-                </tr>
+                <tr th:each="user : ${users}">
+                    <td><a th:href="@{/user/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a></td>
+                    <td><a th:href="@{/user/{nickname}(nickname=${user.getNickname()})}" th:text="${user.getNickname()}"></a></td>
+                    <td><a th:href="@{/user/{nickname}(nickname=${user.getNickname()})}" th:text="${user.getEmail()}"></a></td>
+                    <td><a th:text="0000-00-00"></a></td>
                 </tbody>
             </table>
         </div>
