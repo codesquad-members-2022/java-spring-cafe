@@ -1,13 +1,15 @@
 package com.kakao.cafe.domain.user;
 
+import com.kakao.cafe.web.dto.UserDto;
+
+import java.util.Objects;
+
 public class User {
 
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
-
-    public User() {}
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public User(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -16,8 +18,16 @@ public class User {
         this.email = email;
     }
 
+    public static User from(UserDto userDto) {
+        return new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
+    }
+
     public boolean isSameId(String id) {
         return this.userId.equals(id);
+    }
+
+    public boolean isSamePassword(User user) {
+        return this.password.equals(user.password);
     }
 
     public String getUserId() {
@@ -36,19 +46,16 @@ public class User {
         return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getPassword(), user.getPassword());
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUserId(), getPassword());
     }
 }

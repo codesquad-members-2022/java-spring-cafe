@@ -11,14 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
 @Controller
 public class UserController {
 
-    Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -27,15 +29,15 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
+    @GetMapping("/user/sign-up")
     public String joinForm() {
-        logger.info("user in joinForm");
-        return "form";
+        logger.info("User in joinForm");
+        return "/user/form";
     }
 
-    @PostMapping("/user/create")
-    public String joinUser(UserDto userDto) {
-        logger.info("{} joined", userDto);
+    @PostMapping("/user/sign-up")
+    public String joinUser(@Valid UserDto userDto) {
+        logger.info("{} sign-up", userDto);
         userService.join(userDto.toEntity());
 
         return "redirect:/users";
@@ -43,20 +45,37 @@ public class UserController {
 
     @GetMapping("/users")
     public String showUsersAll(Model model) {
-        logger.info("search all users");
+        logger.info("Show all users");
         List<UserResponseDto> userResponseDtos = userService.findAll();
         model.addAttribute("users", userResponseDtos);
 
-        return "list";
+        return "/user/list";
     }
 
-@GetMapping("/users/{userid}")
-    public String showProfile(@PathVariable String userid, Model model) {
-        logger.info("search {}",userid);
-        UserResponseDto userResponseDto = userService.findUser(userid);
+    @GetMapping("/users/{id}")
+    public String showProfile(@PathVariable String id, Model model) {
+        logger.info("Search for {} to show profile", id);
+        UserResponseDto userResponseDto = userService.findUser(id);
         model.addAttribute("user", userResponseDto);
 
-        return "profile";
+        return "/user/profile";
+    }
+
+    @GetMapping("users/{id}/form")
+    public String updateForm(@PathVariable String id, Model model) {
+        logger.info("{} in updateForm for update info", id);
+        UserResponseDto userResponseDto = userService.findUser(id);
+        model.addAttribute("user", userResponseDto);
+
+        return "/user/update_form";
+    }
+
+    @PutMapping("users/{id}/update")
+    public String updateInfo(@PathVariable String id, UserDto userDto) {
+        logger.info("{} updated info {}", id, userDto);
+        userService.updateUserInfo(userDto.toEntity());
+
+        return "redirect:/users";
     }
 
 }

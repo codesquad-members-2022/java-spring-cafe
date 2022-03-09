@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.MemoryUserRepository;
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -64,6 +65,43 @@ class UserServiceTest {
         UserResponseDto dto = userService.findUser("ron2");
 
         assertThat(dto.getUserId()).isEqualTo(user1.getUserId());
+    }
+
+    @Test
+    @DisplayName("같은 아이디와 같은 비밀번호를 가졌다면 유저정보를 수정한다.")
+    void updateUserInfoTest() {
+        User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
+        userService.join(user1);
+
+        UserResponseDto ron2 = userService.findUser("ron2");
+        assertThat(ron2.getEmail()).isEqualTo(user1.getName());
+        assertThat(ron2.getEmail()).isEqualTo(user1.getEmail());
+
+
+        User updateUser = new User("ron2", "1234", "니로", "2ron@naver.com");
+        userService.updateUserInfo(updateUser);
+
+        UserResponseDto updateRon2 = userService.findUser("ron2");
+        assertThat(userService.findAll().size()).isEqualTo(1);
+        assertThat(updateRon2.getName()).isNotEqualTo(user1.getName());
+        assertThat(updateRon2.getEmail()).isNotEqualTo(user1.getEmail());
+        assertThat(updateRon2.getName()).isEqualTo(updateUser.getName());
+        assertThat(updateRon2.getEmail()).isEqualTo(updateUser.getEmail());
+    }
+
+    @Test
+    @DisplayName("유저정보를 업데이트할 때, 비밀번호가 다르다면 ClientExceptin이 발생한다.")
+    void updateUserInfo_wrongPassword_throw_test() {
+        User user1 = new User("ron2", "1234", "로니", "ron2@gmail.com");
+        userService.join(user1);
+
+        User updateUser = new User("ron2", "1111", "니로", "2ron@naver.com");
+
+        assertThatThrownBy(()->userService.updateUserInfo(updateUser))
+                .isInstanceOf(ClientException.class)
+                .hasMessage("비밀번호가 일치하지 않습니다.");
+
+
     }
 
 }

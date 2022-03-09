@@ -17,7 +17,7 @@ class HomeControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("index.html 매핑 테스트")
+    @DisplayName("GetMapping index.html 테스트")
     void homeTest() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
