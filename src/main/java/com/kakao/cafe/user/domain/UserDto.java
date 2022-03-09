@@ -1,8 +1,7 @@
 package com.kakao.cafe.user.domain;
 
-import static com.kakao.cafe.common.utils.TypeFormatter.*;
-
-import java.util.Objects;
+import static com.kakao.cafe.common.utils.StringValidator.*;
+import static com.kakao.cafe.common.utils.TypeConvertor.*;
 
 import org.slf4j.Logger;
 
@@ -58,23 +57,10 @@ public class UserDto {
 		}
 
 		private boolean isOneMoreBlank() {
-			return isUserIdBlank() || isNameBlank() || isPasswordBlank() || isEmailBlank();
-		}
-
-		private boolean isEmailBlank() {
-			return (Objects.isNull(this.email) || this.email.isBlank());
-		}
-
-		private boolean isPasswordBlank() {
-			return (Objects.isNull(this.password) || this.password.isBlank());
-		}
-
-		private boolean isNameBlank() {
-			return (Objects.isNull(this.name) || this.name.isBlank());
-		}
-
-		private boolean isUserIdBlank() {
-			return (Objects.isNull(this.userId) || this.userId.isBlank());
+			return (isNullOrBlank(this.userId) ||
+				isNullOrBlank(this.name) ||
+				isNullOrBlank(this.password) ||
+				isNullOrBlank(this.email));
 		}
 
 		@Override
@@ -133,5 +119,4 @@ public class UserDto {
 			this.email = email;
 		}
 	}
-
 }

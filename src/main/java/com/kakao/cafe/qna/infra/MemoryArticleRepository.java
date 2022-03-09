@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,24 +19,26 @@ import com.kakao.cafe.qna.domain.ArticleRepository;
 public class MemoryArticleRepository implements ArticleRepository {
 	private static final String ERROR_OF_ARTICLE_ID = "article id";
 
+	private final Map<Long, Article> data = new LinkedHashMap<>();
 	private Logger logger = LoggerFactory.getLogger(MemoryArticleRepository.class);
-	private Map<Long, Article> data = new LinkedHashMap<>();
 
 	@Override
-	public void save(Article entity) {
-		if (entity.getId() != null && data.containsKey(entity.getId())) {
-			data.replace(entity.getId(),
-				new Article(entity.getId(),
+	public long save(Article entity) {
+		Long id = entity.getId();
+		if (id != null && data.containsKey(id)) {
+			data.replace(id,
+				new Article(id,
 					entity.getWriter(),
 					entity.getTitle(),
 					entity.getContent(),
 					entity.getWritingDate()));
-			return;
+			return id;
 		}
-		Long id = getNextId();
+		id = getNextId();
 		data.put(id, entity);
 		entity.setId(id);
 		logger.info("question db save : {}",entity);
+		return id;
 	}
 
 	private Long getNextId() {
@@ -65,6 +66,6 @@ public class MemoryArticleRepository implements ArticleRepository {
 
 	@Override
 	public void deleteAll() {
-		this.data = new LinkedHashMap<>();
+		this.data.clear();
 	}
 }

@@ -49,7 +49,6 @@ public class ArticleController {
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
 		String requestURI = request.getRequestURI();
-		System.out.println(requestURI);
 		ModelAndView mav = new ModelAndView(requestURI);
 		mav.addObject("message", toMessageLines(exception.getMessage()));
 		return mav;

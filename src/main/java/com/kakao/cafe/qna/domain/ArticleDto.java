@@ -1,9 +1,9 @@
 package com.kakao.cafe.qna.domain;
 
-import static com.kakao.cafe.common.utils.TypeFormatter.*;
+import static com.kakao.cafe.common.utils.StringValidator.*;
+import static com.kakao.cafe.common.utils.TypeConvertor.*;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -55,15 +55,15 @@ public class ArticleDto {
 		}
 
 		private boolean isContentsBlank() {
-			return Objects.isNull(this.contents) || this.contents.isBlank();
+			return isNullOrBlank(this.contents);
 		}
 
 		private boolean isTitleBlank() {
-			return Objects.isNull(this.title) || this.title.isBlank();
+			return isNullOrBlank(this.title);
 		}
 
 		private boolean isWriterBlank() {
-			return Objects.isNull(this.writer) || this.writer.isBlank();
+			return isNullOrBlank(this.writer);
 		}
 
 		public String getErrorMessageWithBlank() {
@@ -109,8 +109,6 @@ public class ArticleDto {
 			this.writer = article.getWriter();
 			this.title = article.getTitle();
 			this.contents = StringEscapeUtils.unescapeHtml4(article.getContent());
-			System.out.println("content > "+ contents);
-
 			this.writingDate = article.getWritingDate();
 		}
 

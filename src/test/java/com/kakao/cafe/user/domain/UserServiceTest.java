@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Optional;
 
@@ -8,49 +9,51 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.practice.DbText;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserDto;
 import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.domain.UserService;
 import com.kakao.cafe.user.infra.MemoryUserRepository;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
-	@Autowired
+	@InjectMocks
 	private UserService userService;
-	@Autowired
+
+	@Mock
 	private UserRepository userRepository;
 
-	@BeforeEach
-	void beforeEach() {
-		this.userRepository = new MemoryUserRepository();
-		this.userService = new UserService(userRepository);
-	}
-
-	@AfterEach
-	void afterEach() {
-		this.userRepository.deleteAll();
-	}
+	private UserDto.Request userDto = getUserDto();
 
 	@Test
 	@DisplayName("가입요청한 사용자 정보를 받으면 db에 저장하여 확인할 수 있다.")
 	void register_test() {
-		UserDto.Request userDto = getUserDto();
+		long expected = 1L;
+		when(userRepository.save(any()))
+			.thenReturn(expected);
 
-		userService.register(userDto);
-		Optional<User> actual = userRepository.findById(1L);
+		long actual = userService.register(userDto);
 
-		assertThat(actual.isPresent()).isTrue();
+		assertThat(actual).isEqualTo(expected);
 	}
 
 	@Test
 	@DisplayName("가입요청한 사용자 정보중 userId와 email의 중복시 예외 발생한다.")
 	void duplicated_register_test() {
-		UserDto.Request userDto = getUserDto();
-		userService.register(userDto);
+		when(userRepository.existByUserId(userDto.getUserId()))
+			.thenReturn(true);
 
 		assertThatThrownBy(() ->userService.register(userDto))
 			.isInstanceOf(IllegalArgumentException.class);
@@ -71,5 +74,4 @@ class UserServiceTest {
 		dto.setPassword("pwd1234");
 		return dto;
 	}
-
 }
