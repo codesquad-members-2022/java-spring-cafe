@@ -25,6 +25,9 @@ public class Article {
         return uploadDate;
     }
 
+    public String getContent() {
+        return content;
+    }
 
     public String getWriter() {
         return writer;

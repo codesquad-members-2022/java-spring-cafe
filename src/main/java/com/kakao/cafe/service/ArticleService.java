@@ -24,6 +24,11 @@ public class ArticleService {
         return articleRepository.getArticleList();
     }
 
+    public Article findOneArticle(int articleId) {
+        return articleRepository.findById(articleId);
+    }
+
+
     public void createArticle(Article article) {
         validUser(article.getWriter());
         articleRepository.save(article);
