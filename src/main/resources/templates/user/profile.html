@@ -44,9 +44,11 @@
             </div>
         </div>
         <div class="post-btn-container">
-            <a class="black-component"
-               role="button">회원정보 수정</a>
-            <!--        <a href="post/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>-->
+            {{#userProfile}}
+            <a class="black-component" href="/user/{{nickname}}/form" role="button">회원정보 수정</a>
+            {{/userProfile}}
+
+            <!--        <a href="post/form_honux.html" class="btn btn-primary pull-right" role="button">글쓰기</a>-->
         </div>
     </form>
 </div>

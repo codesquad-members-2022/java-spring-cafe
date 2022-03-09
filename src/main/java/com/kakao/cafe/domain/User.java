@@ -8,6 +8,8 @@ public class User {
     private String date;
     private String password;
 
+    //TODO : User 안에서 matchesId() 같은걸 만들어서 직접 필드 값을 내보내지 않도록 하자
+
     public String getEmail() {
         return email;
     }

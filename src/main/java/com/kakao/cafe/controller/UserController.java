@@ -39,11 +39,21 @@ public class UserController {
         return "redirect:/user/list"; // redirect 역할 : 파일(list.html)이 아닌 URL(/user/list)을 호출한다
     }
 
-    @GetMapping("/users/{nickname}")
-    public String profile(@PathVariable String nickname, Model model) {
+    @GetMapping("/user/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("userProfile", user);
         return "user/profile";
     }
+
+    @GetMapping("/user/{nickname}/form")
+    public String profileForm(@PathVariable String nickname, Model model) {
+        User user = userService.findByNickname(nickname);
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
+    // @PutMapping("/user")
+    // public String updateForm()
 }
 
