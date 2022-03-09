@@ -53,6 +53,7 @@ public class MemoryMemberRepositoryTest {
         repository.save(secondUser);
 
         List<User> result = repository.findAll();
+//        result.add(new User(new UserForm("sampleIdTwo", "sampleNameTwo", "sampleTwo@email.com")));
 
         assertThat(result).isEqualTo(users);
     }
