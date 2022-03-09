@@ -25,8 +25,7 @@ public class VolatilityArticleRepositoryImpl extends VolatilityArticleRepository
 
     @Override
     public Optional<Article> findOne(Integer index) {
-
-        return null;
+        return Optional.ofNullable(articles.get(index - 1));
     }
 
     @Override

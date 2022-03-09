@@ -25,4 +25,10 @@ public class VolatilityArticleService implements ArticleService {
         return articleRepository.save(article)
                 .orElseThrow(() -> new RuntimeException());
     }
+
+    @Override
+    public Article search(int id) {
+        return articleRepository.findOne(id)
+                .orElseThrow(() -> new RuntimeException());
+    }
 }
