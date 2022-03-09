@@ -4,16 +4,18 @@ import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private static final Map<Long, User> store = new HashMap<>();
-    private static long sequence = 0L;
+    private final Map<Long, User> store = new ConcurrentHashMap<>();
+    private final AtomicLong sequence = new AtomicLong();
 
     @Override
     public User save(User user) {
-        user.setId(sequence++);
+        user.setId(sequence.getAndIncrement());
         store.put(user.getId(), user);
         return user;
     }
