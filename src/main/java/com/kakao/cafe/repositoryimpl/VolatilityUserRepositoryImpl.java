@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repositoryimpl;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.VolatilityUserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

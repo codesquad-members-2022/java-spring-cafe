@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.VolatilityUserRepositoryImpl;
+import com.kakao.cafe.repositoryimpl.VolatilityUserRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
