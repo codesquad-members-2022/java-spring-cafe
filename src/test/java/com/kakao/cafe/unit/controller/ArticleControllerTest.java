@@ -13,8 +13,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,7 +124,7 @@ public class ArticleControllerTest {
     public void showArticleValidateTest() throws Exception {
         // given
         given(articleService.findArticle(any()))
-            .willThrow(new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
+            .willThrow(new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
 
         // when
         ResultActions actions = performGet("/articles/2");

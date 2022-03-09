@@ -2,8 +2,9 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserForm;
-import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.Mapper;
 import java.util.List;
@@ -29,13 +30,13 @@ public class UserService {
 
     public User findUser(String userId) {
         return userRepository.findByUserId(userId)
-            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
     }
 
     private void validateUserId(String userId) {
         userRepository.findByUserId(userId)
             .ifPresent((user) -> {
-                throw new CustomException(ErrorCode.DUPLICATE_USER);
+                throw new DuplicateException(ErrorCode.DUPLICATE_USER);
             });
     }
 

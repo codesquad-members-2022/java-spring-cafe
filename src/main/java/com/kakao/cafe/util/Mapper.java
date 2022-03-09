@@ -1,7 +1,7 @@
 package com.kakao.cafe.util;
 
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InternalOperationException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -12,14 +12,14 @@ public class Mapper {
 
     public static <T> T map(Object obj, Class<T> type) {
         if (obj == null || type == null) {
-            throw new CustomException(ErrorCode.BAD_REQUEST);
+            throw new InternalOperationException(ErrorCode.INTERNAL_ERROR);
         }
 
         try {
             Map<String, Object> sourceMap = sourceToMap(obj);
             return mapToTarget(sourceMap, type);
         } catch (Exception e) {
-            throw new CustomException(ErrorCode.BAD_REQUEST);
+            throw new InternalOperationException(ErrorCode.INTERNAL_ERROR);
         }
     }
 

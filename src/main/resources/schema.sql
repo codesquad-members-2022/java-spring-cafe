@@ -1,3 +1,4 @@
+-- DDL
 
 DROP TABLE IF EXISTS article;
 

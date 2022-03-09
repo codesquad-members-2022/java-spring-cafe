@@ -7,8 +7,10 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserForm;
-import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -76,7 +78,7 @@ public class UserServiceTest {
 
         // when, then
         assertThatThrownBy(() -> userService.register(userForm))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(DuplicateException.class)
             .hasMessage(ErrorCode.DUPLICATE_USER.getMessage());
     }
 
@@ -117,7 +119,7 @@ public class UserServiceTest {
 
         // when, then
         assertThatThrownBy(() -> userService.findUser(any()))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
@@ -163,7 +165,7 @@ public class UserServiceTest {
 
         // when, then
         assertThatThrownBy(() -> userService.updateUser(userForm))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
@@ -179,7 +181,7 @@ public class UserServiceTest {
 
         // when, then
         assertThatThrownBy(() -> userService.updateUser(userForm))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
@@ -195,7 +197,7 @@ public class UserServiceTest {
 
         // when, then
         assertThatThrownBy(() -> userService.updateUser(userForm))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 

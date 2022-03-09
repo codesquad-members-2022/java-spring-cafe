@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +57,7 @@ public class UserTest {
 
         // when, then
         assertThatThrownBy(() -> user.update(other))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
@@ -81,7 +81,7 @@ public class UserTest {
 
         // when, then
         assertThatThrownBy(() -> user.update(other))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 

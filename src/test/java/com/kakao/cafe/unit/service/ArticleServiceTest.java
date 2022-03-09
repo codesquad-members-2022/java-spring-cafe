@@ -6,10 +6,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User.Builder;
 import com.kakao.cafe.dto.ArticleForm;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +32,9 @@ public class ArticleServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     Article article;
 
     @BeforeEach
@@ -48,6 +53,14 @@ public class ArticleServiceTest {
         // given
         ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
 
+        given(userRepository.findByUserId(any(String.class)))
+            .willReturn(Optional.of(new Builder()
+                .userId("writer")
+                .password("userPassword")
+                .name("userName")
+                .email("email@example.com")
+                .build()));
+
         given(articleRepository.save(any(Article.class)))
             .willReturn(article);
 
@@ -56,6 +69,21 @@ public class ArticleServiceTest {
 
         // then
         assertThat(savedArticle).isEqualTo(article);
+    }
+
+    @Test
+    @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
+    public void writeValidationTest() {
+        // given
+        ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
+
+        given(userRepository.findByUserId(any(String.class)))
+            .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        // when, then
+        assertThatThrownBy(() -> articleService.write(articleForm))
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 
     @Test
@@ -95,7 +123,7 @@ public class ArticleServiceTest {
 
         // when, then
         assertThatThrownBy(() -> articleService.findArticle(any()))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 

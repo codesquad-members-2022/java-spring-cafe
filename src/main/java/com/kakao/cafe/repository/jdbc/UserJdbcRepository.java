@@ -2,8 +2,8 @@ package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InternalOperationException;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
@@ -93,7 +93,7 @@ public class UserJdbcRepository implements UserRepository {
             parameterSource, Integer.class);
 
         if (count == null) {
-            throw new CustomException(ErrorCode.BAD_REQUEST);
+            throw new InternalOperationException(ErrorCode.INTERNAL_ERROR);
         }
 
         return count;

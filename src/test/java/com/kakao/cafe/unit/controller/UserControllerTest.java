@@ -14,8 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
+import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -129,10 +131,8 @@ class UserControllerTest {
     @DisplayName("유저 회원가입할 때 이미 있는 유저 아이디면 예외 페이지로 이동한다")
     public void createUserValidateTest() throws Exception {
         // given
-        CustomException exception = new CustomException(ErrorCode.DUPLICATE_USER);
-
         given(userService.register(any()))
-            .willThrow(exception);
+            .willThrow(new DuplicateException(ErrorCode.DUPLICATE_USER));
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
@@ -153,10 +153,8 @@ class UserControllerTest {
     @DisplayName("등록되지 않은 유저 아이디로 유저를 조회하면 예외 페이지로 이동한다")
     public void showUserValidateTest() throws Exception {
         // given
-        CustomException exception = new CustomException(ErrorCode.USER_NOT_FOUND);
-
         given(userService.findUser(any()))
-            .willThrow(exception);
+            .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
         ResultActions actions = performGet("/users/userId");
@@ -219,7 +217,7 @@ class UserControllerTest {
     public void updateUserIncorrectUserIdTest() throws Exception {
         // given
         given(userService.updateUser(any()))
-            .willThrow(new CustomException(ErrorCode.USER_NOT_FOUND));
+            .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/otherId")
@@ -241,7 +239,7 @@ class UserControllerTest {
     public void updateUserIncorrectPasswordTest() throws Exception {
         // given
         given(userService.updateUser(any()))
-            .willThrow(new CustomException(ErrorCode.INCORRECT_USER));
+            .willThrow(new InvalidRequestException(ErrorCode.INCORRECT_USER));
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")

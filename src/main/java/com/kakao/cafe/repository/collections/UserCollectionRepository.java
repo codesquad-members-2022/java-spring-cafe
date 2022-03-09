@@ -1,8 +1,8 @@
 package com.kakao.cafe.repository.collections;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +25,7 @@ public class UserCollectionRepository implements UserRepository {
         }
         // merge
         User findUser = findByUserId(user.getUserId())
-            .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
         findUser.update(user);
         return user;
     }

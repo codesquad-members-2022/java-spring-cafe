@@ -10,8 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,8 +44,17 @@ public class ArticleControllerTest {
     @Component
     public static class ArticleSetUp {
 
-        @Autowired
-        private ArticleRepository articleRepository;
+        private final ArticleRepository articleRepository;
+        private final UserRepository userRepository;
+
+        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository) {
+            this.articleRepository = articleRepository;
+            this.userRepository = userRepository;
+        }
+
+        public User saveUser(User user) {
+            return userRepository.save(user);
+        }
 
         public Article saveArticle(Article article) {
             return articleRepository.save(article);
@@ -88,6 +99,16 @@ public class ArticleControllerTest {
     @Test
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
+        // given
+        articleSetUp.saveUser(
+            new User.Builder()
+                .userId("writer")
+                .password("userPassword")
+                .name("userName")
+                .email("user@example.com")
+                .build()
+        );
+
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
             .param("writer", "writer")

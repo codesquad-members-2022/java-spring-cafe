@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
 import java.util.Objects;
 
 public class User {
@@ -88,7 +88,7 @@ public class User {
 
     public User update(User user) {
         if (!userId.equals(user.userId) || !password.equals(user.password)) {
-            throw new CustomException(ErrorCode.INCORRECT_USER);
+            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
 
         this.name = user.name;

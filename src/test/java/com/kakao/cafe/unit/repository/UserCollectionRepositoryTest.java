@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.collections.UserCollectionRepository;
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +96,7 @@ class UserCollectionRepositoryTest {
 
         // when, then
         assertThatThrownBy(() -> userRepository.save(changedUser))
-            .isInstanceOf(CustomException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 }
