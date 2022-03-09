@@ -25,21 +25,9 @@ public class MemoryUserRepository implements UserRepository {
         validateRequiredField(user);
         validateUserIdUnique(user);
 
-        User preparedUser = prepareFirstAddUserAndGet(user);
-        userRegistry.add(preparedUser);
-        return Optional.of(preparedUser.getId());
-    }
-
-    private User prepareFirstAddUserAndGet(User user) {
-        return new User.Builder()
-                .setId(idGenerator.getAndIncrement())
-                .setUserId(user.getUserId())
-                .setPasswd(user.getPasswd())
-                .setName(user.getName())
-                .setEmail(user.getEmail())
-                .setCreatedDate(LocalDateTime.now())
-                .setModifiedDate(LocalDateTime.now())
-                .build();
+        user.setId(idGenerator.getAndIncrement());
+        userRegistry.add(user);
+        return Optional.of(user.getId());
     }
 
     @Override

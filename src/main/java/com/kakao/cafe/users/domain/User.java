@@ -1,10 +1,12 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.users.controller.dto.UserJoinRequest;
+
 import java.time.LocalDateTime;
 
 public class User {
 
-    private final Long id;
+    private Long id;
     private final String userId;
     private final String passwd;
     private final String name;
@@ -22,8 +24,22 @@ public class User {
         this.modifiedDate = modifiedDate;
     }
 
+    public static User createWithJoinRequest(UserJoinRequest joinRequest) {
+        return new User(null,
+                joinRequest.getUserId(),
+                joinRequest.getPasswd(),
+                joinRequest.getName(),
+                joinRequest.getEmail(),
+                LocalDateTime.now(),
+                LocalDateTime.now());
+    }
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserId() {

@@ -1,5 +1,6 @@
 package com.kakao.cafe.users.controller;
 
+import com.kakao.cafe.users.controller.dto.UserJoinRequest;
 import com.kakao.cafe.users.service.UserService;
 import com.kakao.cafe.users.controller.dto.UserResponse;
 import com.kakao.cafe.users.domain.User;
@@ -27,12 +28,11 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ModelAndView join(User user, ModelAndView model) {
+    public ModelAndView join(UserJoinRequest joinRequest, ModelAndView model) {
 
         try {
-            userService.join(user);
+            userService.join(joinRequest);
         } catch (UserUnsavedException | UserDuplicatedException e) {
-            model.getModel().put("user", user);
             model.getModel().put("errorMessage", e.getMessage());
             model.setStatus(HttpStatus.BAD_REQUEST);
             model.setViewName("user/form");

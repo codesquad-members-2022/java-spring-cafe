@@ -1,10 +1,11 @@
 package com.kakao.cafe.users.service;
 
+import com.kakao.cafe.users.controller.dto.UserJoinRequest;
 import com.kakao.cafe.users.domain.User;
-import com.kakao.cafe.users.repository.UserRepository;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserNotFountException;
 import com.kakao.cafe.users.exception.UserUnsavedException;
+import com.kakao.cafe.users.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,10 @@ public class UserService {
         this.userRepository = repository;
     }
 
-    public Long join(User user) {
-        validateDuplicateUser(user);
-        return userRepository.save(user)
+    public Long join(UserJoinRequest joinRequest) {
+        validateDuplicateUser(joinRequest);
+        
+        return userRepository.save(User.createWithJoinRequest(joinRequest))
                 .orElseThrow(UserUnsavedException::new);
     }
 
@@ -37,8 +39,8 @@ public class UserService {
                 .orElse(Collections.emptyList());
     }
 
-    private void validateDuplicateUser(User user) throws UserDuplicatedException {
-        if (userRepository.findByUserId(user.getUserId()).isPresent()) {
+    private void validateDuplicateUser(UserJoinRequest joinRequest) throws UserDuplicatedException {
+        if (userRepository.findByUserId(joinRequest.getUserId()).isPresent()) {
             throw new UserDuplicatedException();
         }
     }

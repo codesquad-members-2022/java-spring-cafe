@@ -1,36 +1,30 @@
 package com.kakao.cafe.users.service;
 
+import com.kakao.cafe.users.controller.dto.UserJoinRequest;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
 import com.kakao.cafe.users.exception.UserNotFountException;
+import com.kakao.cafe.users.repository.MemoryUserRepository;
 import com.kakao.cafe.users.repository.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    @Mock
-    private UserRepository userRepository;
+    private final UserRepository userRepository = new MemoryUserRepository();
+    private final UserService userService = new UserService(userRepository);
 
-    @InjectMocks
-    private UserService userService;
+    @BeforeEach
+    void beforeEach() {
+        userRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("join 메소드는")
@@ -40,42 +34,32 @@ class UserServiceTest {
         @DisplayName("회원의 userId 가 중복되지 않으면, 회원가입에 성공한다.")
         void nonDuplicatedUserId_joinSuccess() {
             // arrange
-            User user = new User.Builder()
-                    .setId(1L)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-            when(userRepository.save(user)).thenReturn(Optional.of(user.getId()));
-            when(userRepository.findByUserId(any())).thenReturn(Optional.empty()); // 중복된 회원이 없음
+            UserJoinRequest joinRequest =
+                    new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
 
             // act
-            Long id = userService.join(user);
+            Long savedId = userService.join(joinRequest);
+            User savedUser = userRepository.findById(savedId).orElseThrow();
 
             // assert
-            assertThat(id).isEqualTo(user.getId());
+            assertThat(savedUser.getUserId()).isEqualTo(joinRequest.getUserId());
+            assertThat(savedUser.getPasswd()).isEqualTo(joinRequest.getPasswd());
+            assertThat(savedUser.getName()).isEqualTo(joinRequest.getName());
+            assertThat(savedUser.getEmail()).isEqualTo(joinRequest.getEmail());
         }
 
         @Test
         @DisplayName("회원의 userId 가 중복되면, 회원가입에 실패한다.")
         void duplicatedUserId_joinSuccess() {
             // arrange
-            User user = new User.Builder()
-                    .setId(1L)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-            when(userRepository.findByUserId(any())).thenReturn(Optional.of(user)); // 중복된 회원 있음
+            UserJoinRequest joinRequest =
+                    new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
 
             // assert
-            assertThatThrownBy(() -> userService.join(user))
+            assertThatThrownBy(() -> {
+                userService.join(joinRequest);
+                userService.join(joinRequest);
+            })
                     .isInstanceOf(UserDuplicatedException.class)
                     .hasMessageContaining("이미 존재하는 회원입니다.");
         }
@@ -89,23 +73,18 @@ class UserServiceTest {
         @DisplayName("저장된 회원의 id 를 조회하면, User 를 반환한다.")
         void savedUserExist_findSuccess() {
             // arrange
-            Long savedId = 1L;
-            User user = new User.Builder()
-                    .setId(savedId)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-            when(userRepository.findById(any())).thenReturn(Optional.of(user));
+            UserJoinRequest joinRequest =
+                    new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
+            Long savedId = userService.join(joinRequest);
 
             // act
             User findUser = userService.findOne(savedId);
 
             // assert
-            assertThatIsEqualToAllUserField(findUser, user);
+            assertThat(findUser.getUserId()).isEqualTo(joinRequest.getUserId());
+            assertThat(findUser.getPasswd()).isEqualTo(joinRequest.getPasswd());
+            assertThat(findUser.getName()).isEqualTo(joinRequest.getName());
+            assertThat(findUser.getEmail()).isEqualTo(joinRequest.getEmail());
         }
 
         @Test
@@ -113,7 +92,6 @@ class UserServiceTest {
         void unSavedUserId_findFailed() {
             // arrange
             Long unsavedId = 1L;
-            when(userRepository.findById(anyLong())).thenReturn(Optional.empty()); // 중복된 회원 있음
 
             // assert
             assertThatThrownBy(()->userService.findOne(unsavedId))
@@ -129,31 +107,26 @@ class UserServiceTest {
         @DisplayName("회원이 저장되어 있으면, List<User> 를 반환한다.")
         void userExist_findUsersReturnsList() {
             // arrange
-            User expectedUser = new User.Builder()
-                    .setId(1L)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-            when(userRepository.findAll()).thenReturn(Optional.of(List.of(expectedUser)));
+            UserJoinRequest joinRequest =
+                    new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
+            userService.join(joinRequest);
 
             // act
             List<User> users = userService.findUsers();
 
             // assert
             assertThat(users).size().isEqualTo(1);
-            assertThatIsEqualToAllUserField(users.get(0), expectedUser);
+
+            User savedUser = users.get(0);
+            assertThat(savedUser.getUserId()).isEqualTo(joinRequest.getUserId());
+            assertThat(savedUser.getPasswd()).isEqualTo(joinRequest.getPasswd());
+            assertThat(savedUser.getName()).isEqualTo(joinRequest.getName());
+            assertThat(savedUser.getEmail()).isEqualTo(joinRequest.getEmail());
         }
 
         @Test
         @DisplayName("저장된 회원이 없으면, 빈 리스트를 반환한다.")
         void userNotExist_findUsersReturnsEmptyList() {
-            // arrange
-            when(userRepository.findAll()).thenReturn(Optional.of(Collections.emptyList())); // 중복된 회원 있음
-
             // act
             List<User> users = userService.findUsers();
 
