@@ -38,6 +38,6 @@ public class ArticleController {
     public String view(@PathVariable int index, Model model) {
         Article article = articleService.findById(index);
         model.addAttribute("article", article);
-        return "qna/show";
+        return "/qna/show";
     }
 }
