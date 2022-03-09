@@ -1,11 +1,9 @@
-package com.kakao.cafe.domain.users;
+package com.kakao.cafe.domain.user;
 
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import com.kakao.cafe.domain.User;
 
 class UserTest {
 
@@ -18,5 +16,4 @@ class UserTest {
         // then
         assertThat(user).isInstanceOf(User.class);
     }
-
 }

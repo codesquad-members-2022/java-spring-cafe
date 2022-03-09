@@ -1,29 +1,42 @@
 package com.kakao.cafe.repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
-import com.kakao.cafe.domain.exception.DuplicatedIdException;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
+import com.kakao.cafe.domain.user.User;
 
-@Repository
-public class UserRepository {
+@Component
+public class UserRepository implements CustomRepository<User> {
+
+    private static final String DUPLICATED_USER_ID = "[ERROR] 존재하는 ID입니다. 다시 입력하세요.";
+    private static final String NOT_FOUNDED_USER_ID = "[ERROR] 존재하지 않는 ID입니다.";
+
     private final List<User> users;
 
     public UserRepository(List<User> users) {
         this.users = users;
     }
 
+    public Optional<User> findByUserId(String userId) {
+        return users.stream()
+            .filter(u -> u.getUserId().equals(userId))
+            .findAny();
+    }
+
+    @Override
+    public List<User> findAll() {
+        return List.copyOf(users);
+    }
+
+    @Override
     public void save(User user) {
-        duplicateUsernameCheck(user);
+        duplicateUserIdCheck(user);
         users.add(user);
     }
 
-    private void duplicateUsernameCheck(User inputUser) {
+    private void duplicateUserIdCheck(User inputUser) {
         for (User user : users) {
             checkIfTheNameIsSame(inputUser, user);
         }
@@ -31,24 +44,13 @@ public class UserRepository {
 
     private void checkIfTheNameIsSame(User inputUser, User user) {
         if (user.getUserId().equals(inputUser.getUserId())) {
-            throw new DuplicatedIdException();
+            throw new IllegalArgumentException(DUPLICATED_USER_ID);
         }
     }
 
-    public List<UserDto> findAll() {
-        List<UserDto> userDtoList = new ArrayList<>();
-        int number = 1;
-        for (User user : users) {
-            userDtoList.add(new UserDto(number++, user.getUserId(), user.getName(), user.getEmail()));
-        }
-        return userDtoList;
-    }
-
-    public UserProfileDto findByUserId(String userId) {
-        User user = users.stream()
-            .filter(u -> u.getUserId().equals(userId))
-            .findAny()
-            .orElseThrow();
-        return new UserProfileDto(user.getName(), user.getEmail());
+    public void update(String userId, User updateUser) {
+        User user = findByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_USER_ID));
+        user.updateInfo(updateUser);
     }
 }

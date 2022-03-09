@@ -1,20 +1,17 @@
 package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.kakao.cafe.domain.exception.DuplicatedIdException;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserDto;
-import com.kakao.cafe.domain.dto.UserProfileDto;
+import com.kakao.cafe.domain.user.User;
 
 class UserRepositoryTest {
 
@@ -35,12 +32,12 @@ class UserRepositoryTest {
         userRepository.save(user2);
 
         // when
-        List<UserDto> users = userRepository.findAll();
+        List<User> users = userRepository.findAll();
 
         // then
         assertThat(users.size()).isEqualTo(2);
-        for (UserDto user : users) {
-            assertThat(user).isInstanceOf(UserDto.class);
+        for (User user : users) {
+            assertThat(user).isInstanceOf(User.class);
         }
     }
 
@@ -54,23 +51,10 @@ class UserRepositoryTest {
         userRepository.save(user2);
 
         // when
-        UserProfileDto userDto = userRepository.findByUserId("lucid");
+        Optional<User> user = userRepository.findByUserId("lucid");
 
         // then
-        assertThat(userDto.getEmail()).isEqualTo("leejohy@naver.com");
-    }
-
-    @DisplayName("findByUserId로 없는 id를 조회하면 예외가 발생한다.")
-    @Test
-    void findByUserId_No_User_Test() {
-        // given
-        User user1 = new User("lucid", "1234", "leejo", "leejohy@naver.com");
-        userRepository.save(user1);
-
-        // when & then
-        Assertions.assertThrows(NoSuchElementException.class, () -> {
-            userRepository.findByUserId("lee");
-        });
+        assertThat(user.get().getEmail()).isEqualTo("leejohy@naver.com");
     }
 
     @DisplayName("동일한 아이디로 가입하면 예외가 발생한다.")
@@ -81,9 +65,10 @@ class UserRepositoryTest {
 
         userRepository.save(user1);
 
-        Assertions.assertThrows(DuplicatedIdException.class, () -> {
-            userRepository.save(user2);
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+            () -> {
+                userRepository.save(user2);
+            });
+        assertThat(exception.getMessage()).isEqualTo("[ERROR] 존재하는 ID입니다. 다시 입력하세요.");
     }
-
 }
