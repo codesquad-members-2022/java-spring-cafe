@@ -92,8 +92,10 @@ class ArticleControllerTest {
             .willReturn(articleDetailDto);
 
         // when
-        ResultActions resultActions = mvc.perform(get("/questions/1"))
-            .andExpect(model().attribute("writer", articleDetailDto.getWriter()))
+        ResultActions resultActions = mvc.perform(get("/questions/1"));
+
+        // then
+        resultActions.andExpect(model().attribute("writer", articleDetailDto.getWriter()))
             .andExpect(model().attribute("title", articleDetailDto.getTitle()))
             .andExpect(model().attribute("contents", articleDetailDto.getContents()))
             .andExpect(model().attribute("createdTime", articleDetailDto.getCreatedTime()))
