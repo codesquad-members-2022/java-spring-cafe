@@ -2,10 +2,14 @@ package com.kakao.cafe.web.users;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.validation.UserValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +19,17 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserValidation userValidation;
     private final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserValidation userValidation) {
         this.userService = userService;
+        this.userValidation = userValidation;
+    }
+
+    @InitBinder
+    public void init(WebDataBinder dataBinder) {
+        dataBinder.addValidators(userValidation);
     }
 
     @GetMapping
@@ -37,7 +48,12 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String saveUser(@ModelAttribute User user) {
+    public String saveUser(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "/user/form";
+        }
+
         userService.register(user);
         log.info("save user = {}", user);
         return "redirect:/users";
@@ -52,7 +68,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model){
+    public String updateForm(@PathVariable String userId, Model model) {
         User findUser = userService.findUserById(userId);
         log.info("get profile update form");
         model.addAttribute("user", findUser);
@@ -60,7 +76,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/update")
-    public String updateProfile(@ModelAttribute User user){
+    public String updateProfile(@ModelAttribute User user) {
         userService.userUpdate(user);
         return "redirect:/users";
     }

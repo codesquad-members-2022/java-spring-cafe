@@ -2,6 +2,7 @@ package com.kakao.cafe.web.questions;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.web.validation.ArticleValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +30,9 @@ class ArticleControllerTest {
     @MockBean
     private ArticleService mockArticleService;
 
+    @MockBean
+    private ArticleValidation articleValidation;
+
     private Article article1, article2;
 
     @BeforeEach
@@ -37,6 +41,7 @@ class ArticleControllerTest {
         article2 = new Article("testB", "titleB", "contentB", LocalDateTime.now());
         article1.setId(1L);
         article2.setId(2L);
+        given(articleValidation.supports(any())).willReturn(true);
     }
 
     @Test
