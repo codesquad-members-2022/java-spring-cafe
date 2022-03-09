@@ -6,6 +6,20 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
 <br/>
 <details>
+<summary> 단위/통합 테스트 결과</summary>
+<div markdown="1">
+<br/>
+
+![image](https://user-images.githubusercontent.com/50660684/157399780-080f719d-d030-456e-a991-f119cd529d39.png)
+![image](https://user-images.githubusercontent.com/50660684/157399988-678e26bc-d0a7-460a-b72d-48270d20a037.png)
+
+    
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
 <summary>☝ 1단계 요구사항</summary>
 <div markdown="1">
 <br/>
