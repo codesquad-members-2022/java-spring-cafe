@@ -1,13 +1,10 @@
 package com.kakao.cafe.domain.article;
 
-import org.springframework.stereotype.Repository;
-
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Repository
 public class ArticleMemoryRepository implements ArticleRepository {
-    private static final String ARTICLE_CREATED_DATE_PATTERN= "yyyy-MM-dd HH:mm";
+    private static final String ARTICLE_CREATED_DATE_PATTERN = "yyyy-MM-dd HH:mm";
 
     private final List<Article> articleList = new ArrayList<>();
     private final SimpleDateFormat formatter = new SimpleDateFormat(ARTICLE_CREATED_DATE_PATTERN);
