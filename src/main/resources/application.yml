@@ -1,0 +1,50 @@
+# active profile
+spring:
+  profiles:
+    active: "dev,mustache"
+
+---
+# dev profile
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:spring-cafe;mode=MYSQL;
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  sql:
+    init:
+      platform: h2
+      mode: always
+      schema-locations: classpath:sql/schema-h2.sql
+      data-locations: classpath:sql/data-h2.sql
+
+---
+# local profile
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/study/h2/db-file/spring-cafe;mode=MYSQL;
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: mustache
+  mustache:
+    suffix: .html
+    cache: false
