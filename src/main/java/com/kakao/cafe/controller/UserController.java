@@ -87,13 +87,11 @@ public class UserController {
     }
 
     private void logRequestInfo(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        String method = request.getMethod();
         Map<String, Object> params = new HashMap<>();
         request.getParameterNames().asIterator()
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
-        log.debug("{} {} {}", method, requestURI, params);
+        log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
     private void setResponseInfo(HttpServletResponse response) {
@@ -101,7 +99,11 @@ public class UserController {
         response.setCharacterEncoding("UTF-8");
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class, NoSuchElementException.class, IllegalStateException.class })
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            NoSuchElementException.class,
+            IllegalStateException.class })
+
     private ResponseEntity<String> except(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
