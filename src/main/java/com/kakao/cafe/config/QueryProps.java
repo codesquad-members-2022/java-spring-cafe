@@ -16,7 +16,6 @@ public class QueryProps {
 
     public QueryProps() {
         try {
-
             ClassPathResource resource = new ClassPathResource("query.yml");
             props = new Yaml().load(new InputStreamReader(resource.getInputStream()));
 
