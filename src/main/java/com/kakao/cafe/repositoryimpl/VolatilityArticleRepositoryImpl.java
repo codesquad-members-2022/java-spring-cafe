@@ -19,8 +19,7 @@ public class VolatilityArticleRepositoryImpl extends VolatilityArticleRepository
 
     @Override
     public synchronized Optional<Article> save(Article article) {
-        Article result = persist(article);
-        return Optional.ofNullable(result);
+        return Optional.ofNullable(persist(article));
     }
 
     @Override

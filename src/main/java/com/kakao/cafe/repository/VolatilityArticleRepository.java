@@ -10,6 +10,7 @@ public abstract class VolatilityArticleRepository implements Repository<Article,
 
     protected Article persist(Article article) {
         article.setId(Integer.toString(articles.size() + 1));
+
         return articles.add(article) ? article : null;
     }
 }

@@ -41,6 +41,7 @@ public class UserController {
     public ModelAndView getUserList(HttpServletRequest request,
                                     HttpServletResponse response,
                                     ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -54,6 +55,7 @@ public class UserController {
                                        HttpServletRequest request,
                                        HttpServletResponse response,
                                        ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -67,6 +69,7 @@ public class UserController {
                                        HttpServletRequest request,
                                        HttpServletResponse response,
                                        ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
