@@ -16,14 +16,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public void save(Article article) {
         article.setCreatedTime(currentTime());
-        articleList.add(article);
+        articleList.add(0, article);
     }
 
     @Override
     public List<Article> findAll() {
-        List<Article> newArticleList = new ArrayList<>(articleList);
-        Collections.reverse(newArticleList);
-        return newArticleList;
+        return new ArrayList<>(articleList);
     }
 
 
