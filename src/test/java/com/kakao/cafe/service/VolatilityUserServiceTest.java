@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
-import com.kakao.cafe.repositoryimpl.VolatilityUserRepositoryImpl;
+import com.kakao.cafe.repository.Repository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ class VolatilityUserServiceTest {
     VolatilityUserService userService;
 
     @Autowired
-    VolatilityUserRepositoryImpl userRepository;
+    Repository<User, String> repository;
 
     @AfterEach
     public void afterEach() {
-        userRepository.clear();
+        repository.clear();
     }
 
     @Test

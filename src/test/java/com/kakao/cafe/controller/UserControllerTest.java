@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SingUpRequest;
+import com.kakao.cafe.repository.Repository;
 import com.kakao.cafe.repositoryimpl.VolatilityUserRepositoryImpl;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ class UserControllerTest {
     MockMvc mvc;
 
     @Autowired
-    VolatilityUserRepositoryImpl userRepository;
+    Repository<User, String> repository;
 
     static List<User> users;
 
@@ -61,8 +62,8 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.clear();
-        users.forEach(userRepository::save);
+        repository.clear();
+        users.forEach(repository::save);
     }
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")

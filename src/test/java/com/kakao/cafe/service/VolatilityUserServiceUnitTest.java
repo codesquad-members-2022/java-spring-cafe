@@ -2,8 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
-import com.kakao.cafe.repositoryimpl.VolatilityUserRepositoryImpl;
-import org.junit.jupiter.api.AfterEach;
+import com.kakao.cafe.repository.Repository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,20 +25,15 @@ class VolatilityUserServiceUnitTest {
     VolatilityUserService userService;
 
     @Mock
-    VolatilityUserRepositoryImpl userRepository;
-
-    @AfterEach
-    public void afterEach() {
-        userRepository.clear();
-    }
+    Repository<User, String> repository;
 
     @Test
     void addUserSuccess() {
         // given
         User user = new User(-1, "user", "1234", "name", "user@gmail.com");
-        given(userRepository.findOne(user.getUserId()))
+        given(repository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
-        given(userRepository.save(user))
+        given(repository.save(user))
                 .willReturn(Optional.of(user));
 
         // when
@@ -48,19 +42,19 @@ class VolatilityUserServiceUnitTest {
         // then
         assertThat(newUser).isEqualTo(user);
 
-        verify(userRepository).findOne(user.getUserId());
+        verify(repository).findOne(user.getUserId());
     }
 
     @Test
     void addUserFail() {
         User user = new User(-1, "user", "1234", "name", "user@gmail.com");
-        given(userRepository.findOne(any(String.class)))
+        given(repository.findOne(any(String.class)))
                 .willReturn(Optional.ofNullable(user));
 
         assertThatThrownBy(() -> userService.add(user))
                 .isInstanceOf(DuplicateUserIdException.class)
                 .hasMessage(EXISTENT_ID_MESSAGE);
 
-        verify(userRepository).findOne(any(String.class));
+        verify(repository).findOne(any(String.class));
     }
 }

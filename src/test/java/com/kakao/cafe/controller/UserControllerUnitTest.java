@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.SingUpRequest;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
+import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.service.VolatilityUserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -45,7 +46,7 @@ public class UserControllerUnitTest {
     MockMvc mvc;
 
     @MockBean
-    VolatilityUserService service;
+    UserService service;
 
     static List<User> users;
 
