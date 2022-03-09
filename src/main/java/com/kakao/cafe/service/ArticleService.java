@@ -40,4 +40,8 @@ public class ArticleService {
         }
     }
 
+    public synchronized int getRepositorySize() {
+        return articleRepository.getArticleList().size();
+    }
+
 }

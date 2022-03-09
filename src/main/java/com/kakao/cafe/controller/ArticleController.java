@@ -8,11 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@RequestMapping("qna/")
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -22,7 +25,8 @@ public class ArticleController {
 
     @PostMapping("/qna/create")
     public String createArticle(HttpServletRequest request) {
-        Article article = new Article(request.getParameter("writer"),
+        Article article = new Article(articleService.getRepositorySize(),
+                                      request.getParameter("writer"),
                                       request.getParameter("title"),
                                       request.getParameter("contents"));
 
@@ -32,7 +36,8 @@ public class ArticleController {
     }
 
     @GetMapping("qna/form")
-    public String writeArticle() {
+    public String writeArticle(ModelAndView modelAndView) {
+        modelAndView.setViewName("qna/form");
         return "qna/form";
     }
 

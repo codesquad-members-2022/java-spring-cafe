@@ -4,11 +4,12 @@ import com.kakao.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository{
 
-    private final List<Article> articleList = new ArrayList<>();
+    private final List<Article> articleList = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(Article article) {

@@ -4,9 +4,6 @@ import java.util.Date;
 
 public class Article {
 
-    private static final Date date = new Date();
-    private static int articleCount = 0;
-
     private int articleId;
     private String subject;
     private String content;
@@ -33,20 +30,13 @@ public class Article {
         return writer;
     }
 
-    public Article(String userId, String subject, String content) {
-        this.articleId = articleCount++;
+
+    public Article(int articleId, String userId, String subject, String content) {
+        this.articleId = articleId;
         this.subject = subject;
         this.content = content;
-        this.uploadDate = generateUploadDate();
+        this.uploadDate = new Date().toString();
         this.writer = userId;
-    }
-
-    private String generateUploadDate() {
-        return date.toString();
-    }
-
-    public static void clearCount() {
-        articleCount = 0;
     }
 
 }

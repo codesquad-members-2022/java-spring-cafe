@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ArticleRepository {
 
-    //private final List<Article> articleList = new ArrayList<>();
-
     void save(Article article);
 
     List<Article> getArticleList();
