@@ -13,7 +13,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         store.add(user);
-        return store.get(store.size() - 1);
+        return user;
     }
 
     @Override
