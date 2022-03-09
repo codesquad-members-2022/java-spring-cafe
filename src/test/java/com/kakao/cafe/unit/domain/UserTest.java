@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 public class UserTest {
 
     @Test
-    @DisplayName("유저 아이디와 비밀번호가 일치하면 엔티티의 속성을 변경한다")
+    @DisplayName("유저 아이디와 비밀번호가 일치하면 유저 객체의 속성을 변경한다")
     public void updateUserTest() {
         // given
         User user = new User.Builder()
