@@ -21,7 +21,6 @@ public class MemoryUserRepository implements UserRepository {
         return Collections.unmodifiableList(store);
     }
 
-    @Override
     public void clear() {
         store.clear();
     }

@@ -11,7 +11,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    default void clear() {};
-
     Optional<User> findByUserId(String userId);
 }
