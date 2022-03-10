@@ -26,4 +26,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
+    public Article findOne(int id) {
+        return articleRepository.findById(id).orElseThrow();
+    }
 }
