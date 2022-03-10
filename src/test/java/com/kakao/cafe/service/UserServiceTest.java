@@ -24,11 +24,11 @@ class UserServiceTest {
     @DisplayName("회원가입을 하면 회원 정보가 MemoryUserRepository에 저장된다")
     void join_success() {
         User user1 = new User();
-        user1.setNickname("bcdd");
+        user1.setNickname("BC");
         user1.setPassword("1234");
         userService.join(user1);
 
-        User user = userService.findById(user1.getId());
+        User user = userService.findByNickname("BC");
         assertThat(user.getNickname()).isEqualTo(user1.getNickname());
         assertThat(user.getPassword()).isEqualTo(user1.getPassword());
     }
@@ -76,8 +76,8 @@ class UserServiceTest {
         user2.setPassword("1234555");
         userService.join(user2);
 
-        assertThat(user1.getId()).isEqualTo(1);
-        assertThat(user2.getId()).isEqualTo(2);
+        assertThat(user1.matchesId(1)).isTrue();
+        assertThat(user2.matchesId(2)).isTrue();
 
     }
 }

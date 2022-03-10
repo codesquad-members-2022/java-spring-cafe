@@ -25,10 +25,6 @@ public class User {
         this.date = date;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
