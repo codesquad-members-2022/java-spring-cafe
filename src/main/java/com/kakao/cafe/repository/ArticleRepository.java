@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +12,7 @@ import com.kakao.cafe.domain.article.Article;
 @Component
 public class ArticleRepository implements CustomRepository<Article> {
 
-    private final List<Article> articles;
-
-    public ArticleRepository(List<Article> articles) {
-        this.articles = articles;
-    }
+    private final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public List<Article> findAll() {

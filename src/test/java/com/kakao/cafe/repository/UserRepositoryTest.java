@@ -19,7 +19,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void init() {
-        userRepository = new UserRepository(new ArrayList<>());
+        userRepository = new UserRepository();
     }
 
     @DisplayName("findAll을 호출하면 UserDto로 User 목록을 반환받는다.")

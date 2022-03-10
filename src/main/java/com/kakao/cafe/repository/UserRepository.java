@@ -1,5 +1,7 @@
 package com.kakao.cafe.repository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,11 +15,7 @@ public class UserRepository implements CustomRepository<User> {
     private static final String DUPLICATED_USER_ID = "[ERROR] 존재하는 ID입니다. 다시 입력하세요.";
     private static final String NOT_FOUNDED_USER_ID = "[ERROR] 존재하지 않는 ID입니다.";
 
-    private final List<User> users;
-
-    public UserRepository(List<User> users) {
-        this.users = users;
-    }
+    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     public Optional<User> findByUserId(String userId) {
         return users.stream()
@@ -27,7 +25,7 @@ public class UserRepository implements CustomRepository<User> {
 
     @Override
     public List<User> findAll() {
-        return List.copyOf(users);
+        return new ArrayList<>(users);
     }
 
     @Override
