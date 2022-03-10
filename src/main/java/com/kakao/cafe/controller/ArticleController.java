@@ -25,7 +25,7 @@ public class ArticleController {
     }
 
     @PostMapping("/new")
-    public String generateQuestions(@ModelAttribute Article article) {
+    public String registerQuestions(@ModelAttribute Article article) {
         articleService.generateArticle(article);
         log.info("작성 성공 = {}", article.getTitle());
         return "redirect:/";
