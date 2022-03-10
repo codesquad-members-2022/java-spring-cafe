@@ -4,6 +4,7 @@ import com.kakao.cafe.controller.ArticleDto;
 
 public class Article {
 
+    private Long id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -25,4 +26,14 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+
 }
