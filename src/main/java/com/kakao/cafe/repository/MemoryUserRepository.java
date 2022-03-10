@@ -24,28 +24,21 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(int id) {
-        return users.stream()
-            .filter(u -> u.getId() == id)
-            .findAny();
+        return users.stream().filter(u -> u.matchesId(id)).findAny();
     }
 
     @Override
     public Optional<User> findByNickname(String nickname) {
-        return users.stream()
-            .filter(u -> u.getNickname().equals(nickname))
-            .findAny();
+        return users.stream().filter(u -> u.matchesNickname(nickname)).findAny();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
-        return users.stream()
-            .filter(u -> u.getEmail().equals(email))
-            .findAny();
+        return users.stream().filter(u -> u.matchesEmail(email)).findAny();
     }
 
     @Override
     public List<User> findAll() {
         return new ArrayList<>(users);
     }
-
 }

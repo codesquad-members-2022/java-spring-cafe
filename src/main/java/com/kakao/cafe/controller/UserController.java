@@ -21,32 +21,32 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/list")
+    @GetMapping("/user/list") // 회원 목록으로 이동
     public String list(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
 
-    @PostMapping("/user")
+    @GetMapping("/user/form") // 회원 가입 페이지로 이동
+    public String form() {
+        return "/user/form";
+    }
+
+    @PostMapping("/user") // 회원 가입
     public String create(User user) {
         userService.join(user);
         return "redirect:/user/list"; // redirect 역할 : 파일(list.html)이 아닌 URL(/user/list)을 호출한다
     }
 
-    @GetMapping("/user/{nickname}")
+    @GetMapping("/user/{nickname}") // 회원 정보 조회 페이지로 이동
     public String viewProfile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("userProfile", user);
         return "/user/profile";
     }
 
-    @GetMapping("/user/form")
-    public String form() {
-        return "/user/form";
-    }
-
-    @GetMapping("/user/{nickname}/form")
+    @GetMapping("/user/{nickname}/form") // 회원 정보 수정 페이지로 이동
     public String profileForm(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("user", user);
