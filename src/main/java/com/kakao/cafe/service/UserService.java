@@ -5,7 +5,6 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -33,8 +32,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findById(String userId) {
-        return userRepository.findById(userId);
+    public User findById(String userId) {
+        return userRepository.findById(userId).get();
     }
 
 }

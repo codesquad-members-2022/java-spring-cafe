@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        User user = userService.findById(userId).get();
+        User user = userService.findById(userId);
         model.addAttribute("userProfile", user);
         return "user/profile";
     }
