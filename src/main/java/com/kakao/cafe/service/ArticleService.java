@@ -24,4 +24,9 @@ public class ArticleService {
     public List<Article> findArticles() {
         return articleRepository.findAll();
     }
+
+    public Article findArticle(Integer id) {
+        return null;
+    }
+
 }

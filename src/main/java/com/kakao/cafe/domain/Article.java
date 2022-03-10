@@ -18,6 +18,9 @@ public class Article {
         createdTime = LocalDateTime.now();
     }
 
+    public Integer getId() {
+        return id;
+    }
 
     public String getWriter() {
         return writer;
