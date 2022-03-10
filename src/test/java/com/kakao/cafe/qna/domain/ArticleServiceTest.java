@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @ExtendWith(MockitoExtension.class)
+public
 class ArticleServiceTest {
 	public static final String TEST_WRITER = "작성자";
 	public static final String TEST_TITLE = "제목";

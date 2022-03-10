@@ -1,6 +1,7 @@
 package com.kakao.cafe.qna.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Article {
 	private Long id;
@@ -27,6 +28,10 @@ public class Article {
 		this.title = title;
 		this.content = content;
 		this.writingDate = writingDate;
+	}
+
+	public boolean has(Long id) {
+		return this.id == id;
 	}
 
 	public Long getId() {
