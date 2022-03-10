@@ -48,4 +48,11 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/{id}/form")
+    public String update(@PathVariable("id") Long id, Model model) {
+        User user = userService.findOne(id);
+        model.addAttribute("user", user);
+        return "user/updateForm";
+    }
+
 }
