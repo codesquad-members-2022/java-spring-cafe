@@ -36,7 +36,8 @@ public class ArticleController {
 
     @GetMapping("articles/{index}")
     public String detail(@PathVariable("index") int index, Model model) {
-        Article article = articleService.findOneArticle(index).get();
+        Article article = articleService.findOneArticle(index)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         model.addAttribute("article", article);
         return "qna/show";
     }

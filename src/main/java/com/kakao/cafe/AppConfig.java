@@ -8,7 +8,6 @@ import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.service.UserServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +16,7 @@ public class AppConfig {
 
     @Bean
     public UserService userService() {
-        return new UserServiceImpl(userRepository());
+        return new UserService(userRepository());
     }
 
     @Bean

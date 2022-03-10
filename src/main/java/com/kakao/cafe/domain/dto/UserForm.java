@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain.dto;
 
+import com.kakao.cafe.domain.User;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -14,13 +16,18 @@ public class UserForm {
     private String password;
 
     @Email
+    @NotBlank
     private String email;
 
-    public UserForm(@NotBlank String userId, @NotBlank String name, @NotBlank String password, @Email String email) {
+    public UserForm(String userId, String name, String password, String email) {
         this.userId = userId;
         this.name = name;
         this.password = password;
         this.email = email;
+    }
+
+    public User createUser() {
+        return new User(userId, name, password, email);
     }
 
     public String getUserId() {

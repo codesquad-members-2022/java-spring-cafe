@@ -1,13 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
     MemoryUserRepository repository = new MemoryUserRepository();
@@ -25,7 +23,8 @@ class MemoryUserRepositoryTest {
 
         //when
         repository.save(user);
-        User result = repository.findById(user.getId()).get();
+        User result = repository.findByIndex(user.getIndex())
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
 
         //then
         assertThat(user).isEqualTo(result);

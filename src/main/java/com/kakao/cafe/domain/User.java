@@ -1,11 +1,11 @@
 package com.kakao.cafe.domain;
 
 public class User {
-    private int id;
     private String userId;
     private String name;
     private String password;
     private String email;
+    private int index;
 
     public User(String userId, String name, String password, String email) {
         this.userId = userId;
@@ -14,18 +14,9 @@ public class User {
         this.email = email;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getUserId() {
         return userId;
     }
-
     public String getName() {
         return name;
     }
@@ -38,4 +29,15 @@ public class User {
         return email;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isEqaulTo(String userId){
+        return this.userId.equals(userId);
+    }
 }

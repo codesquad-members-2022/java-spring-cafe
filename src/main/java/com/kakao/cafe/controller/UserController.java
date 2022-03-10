@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -25,28 +25,22 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String create(@Validated UserForm userForm){
-        User user = new User(
-                userForm.getUserId(),
-                userForm.getName(),
-                userForm.getPassword(),
-                userForm.getEmail()
-        );
-        userService.join(user);
+    public String create(@Valid UserForm userForm){
+        userService.join(userForm);
         return "redirect:/users";
     }
 
     @GetMapping
-    public String list(Model model){
+    public String getUsers(Model model){
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
-    @GetMapping("/{id}")
-    public String profile(@PathVariable("id") int id, Model model) {
-        User user = userService.findOneUser(id).get();
-        model.addAttribute("user", user);
+    @GetMapping("/{index}")
+    public String profile(@PathVariable("index") int index, Model model) {
+        UserForm userForm = userService.findOneUser(index);
+        model.addAttribute("user", userForm);
         return "user/profile";
     }
 }
