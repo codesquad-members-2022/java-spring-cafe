@@ -14,13 +14,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ArticleServiceTest {
 
-    @Autowired
     private ArticleService articleService;
-
-    @Autowired
     private ArticleRepository articleRepository;
 
     private Article article;
@@ -29,17 +27,18 @@ class ArticleServiceTest {
     void setUp() {
         articleRepository = new MemoryArticleRepository();
         articleService = new ArticleService(articleRepository);
-        article = new Article(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
-        article.setId(1);
+
     }
 
     @Test
     void write_메서드_만약_article이_들어온다면_저장소에_저장한다() {
         ArticleWriteRequest articleWriteRequest = new ArticleWriteRequest("쿠킴", "제목1234", "본문1234");
+        article = new Article(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
+        article.setId(1);
 
-        Article saveArticle = articleService.write(articleWriteRequest);
+        Article result = articleService.write(articleWriteRequest);
 
-        assertThat(saveArticle).isEqualTo(article);
+        assertThat(result).isEqualTo(article);
     }
 
     @Test
@@ -47,9 +46,24 @@ class ArticleServiceTest {
         articleService.write(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
         articleService.write(new ArticleWriteRequest("쿠킴2", "제목1234", "본문1234"));
 
-        List<Article> article = articleService.findArticles();
+        List<Article> result = articleService.findArticles();
 
-        assertThat(article.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
+    void findArticle_메서드_만약_유효한_articleId가_주어진다면_해당_Article를_리턴한다() {
+        Article saveArticle = articleService.write(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
+
+        Article result = articleService.findArticle(saveArticle.getId());
+
+        assertThat(result).isEqualTo(saveArticle);
+    }
+
+    @Test
+    void findArticle_메서드_만약_유효하지않은_articleId가_주어진다면_예외를던진다() {
+        assertThatThrownBy(() -> articleService.findArticle(10))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
@@ -22,6 +23,13 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return Collections.unmodifiableList(articles);
+    }
+
+    @Override
+    public Optional<Article> findByArticleId(Integer id) {
+        return articles.stream()
+                .filter(article -> article.getId().equals(id))
+                .findAny();
     }
 
     public void clear() {

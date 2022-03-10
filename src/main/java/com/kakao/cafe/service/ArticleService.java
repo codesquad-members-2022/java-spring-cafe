@@ -26,7 +26,8 @@ public class ArticleService {
     }
 
     public Article findArticle(Integer id) {
-        return null;
+        return articleRepository.findByArticleId(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 글을 찾을 수 없습니다."));
     }
 
 }

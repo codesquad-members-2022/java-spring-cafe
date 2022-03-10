@@ -7,9 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
 
@@ -34,7 +34,7 @@ class MemoryArticleRepositoryTest {
 
         assertThat(result.getWriter()).isEqualTo("쿠킴");
         assertThat(result.getTitle()).isEqualTo("제목1234");
-        assertThat(result.getText()).isEqualTo("본문1234");
+        assertThat(result.getContents()).isEqualTo("본문1234");
     }
 
     @Test
@@ -45,5 +45,21 @@ class MemoryArticleRepositoryTest {
         List<Article> result = repository.findAll();
 
         assertThat(result.size()).isEqualTo(2);
+    }
+
+    @Test
+    void findByArticleId메소드는_만약_존재하는_id가주어진다면_해당id의_옵셔널_Article를_리턴한다() {
+        Article article = repository.save(new Article(new ArticleWriteRequest("쿠킴1", "제목1234", "본문1234")));
+
+        Optional<Article> result = repository.findByArticleId(1);
+
+        assertThat(result).contains(article);
+    }
+
+    @Test
+    void findByArticleId메소드는_만약_존재하지않는_id가주어진다면_empty옵셔널을_리턴한다() {
+        Optional<Article> result = repository.findByArticleId(1);
+
+        assertThat(result.isEmpty()).isTrue();
     }
 }
