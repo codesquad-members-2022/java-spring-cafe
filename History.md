@@ -83,4 +83,13 @@ HomeController 및 테스트 코드를 추가했다.
 - createForm : `/users/new`로 GET 요청 -> `/users/createUserForm`이 반환됨
 - createForm의 테스트코드 또한 추가했다.
 
+### 7. 회원목록 userList.html 및 의존 정적 리소스 추가
+
+회원 목록 페이지를 담당하는 userList.html 및 의존 정적 리소스를 추가했다.
+
+- 내부적으로 th:each 문법을 적용하여 반복적으로 회원 목록을 출력하기 위함
+- userList.css 추가
+
+---
+
 ---
