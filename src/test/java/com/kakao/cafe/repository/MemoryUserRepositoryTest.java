@@ -109,8 +109,8 @@ class MemoryUserRepositoryTest {
         class 존재하지_않는_이메일을_입력_받으면 {
 
             @Test
-            @DisplayName("Optional.EMPTY를 리턴한다")
-            void Optional_EMPTY를_리턴한다() {
+            @DisplayName("결과를 반환하지 않는다")
+            void 결과를_반환하지_않는다() {
                 final Optional<User> result = repository.findByEmail(nonPresentEmail);
                 assertThat(result.isEmpty()).isTrue();
             }
