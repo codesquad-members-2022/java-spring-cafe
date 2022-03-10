@@ -1,4 +1,4 @@
-package com.kakao.cafe.combination;
+package com.kakao.cafe.integration;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+public class UserControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

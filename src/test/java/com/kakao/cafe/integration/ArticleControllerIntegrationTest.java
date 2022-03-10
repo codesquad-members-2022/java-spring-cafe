@@ -1,4 +1,4 @@
-package com.kakao.cafe.combination;
+package com.kakao.cafe.integration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ArticleControllerTest {
+public class ArticleControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

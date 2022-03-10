@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    private Logger logger = LoggerFactory.getLogger(MainController.class);
+    private final Logger logger = LoggerFactory.getLogger(MainController.class);
 
     private final ArticleService articleService;
 

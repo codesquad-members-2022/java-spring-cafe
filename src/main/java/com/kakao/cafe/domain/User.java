@@ -14,6 +14,11 @@ public class User {
         this.email = email;
     }
 
+    public void updateUserInformation(User user) {
+        name = user.getName();
+        email = user.getEmail();
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -40,6 +45,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "userId = " + userId + " password = " + password + " name = " + name + " email = " + email;
+        return "User{" +
+            "userId='" + userId + '\'' +
+            ", password='" + password + '\'' +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            '}';
     }
 }

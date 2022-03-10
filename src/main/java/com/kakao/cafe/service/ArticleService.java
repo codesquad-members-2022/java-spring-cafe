@@ -2,9 +2,10 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
-import java.util.Date;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -14,7 +15,6 @@ public class ArticleService {
     }
 
     public Article upload(Article userArticle) {
-        userArticle.setCreatedDate(new Date());
         return articleRepository.save(userArticle);
     }
 
@@ -22,7 +22,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findOne(Integer id) {
+    public Article findOne(int id) {
         return articleRepository.findById(id);
     }
 

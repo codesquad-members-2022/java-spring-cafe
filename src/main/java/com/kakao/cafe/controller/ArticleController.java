@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
 
-    private Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 
@@ -23,16 +23,16 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String createArticle(Article article) {
-        logger.info("POST /questions {}", article.toString());
+        logger.info("POST /questions {}", article);
         articleService.upload(article);
 
         return "redirect:/";
     }
 
     @GetMapping("/articles/{index}")
-    public String getArticle(@PathVariable Integer index, Model model) {
-        logger.info("GET /articles/{}", index);
-        Article article = articleService.findOne(index);
+    public String getArticle(@PathVariable("index") int id, Model model) {
+        logger.info("GET /articles/{}", id);
+        Article article = articleService.findOne(id);
         model.addAttribute("article", article);
 
         return "/qna/show";

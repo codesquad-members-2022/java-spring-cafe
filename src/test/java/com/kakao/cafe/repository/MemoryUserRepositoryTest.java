@@ -33,7 +33,7 @@ class MemoryUserRepositoryTest {
         userRepository.save(user);
 
         // then
-        User result = userRepository.findByUserId(user.getUserId()).get();
+        User result = userRepository.findByUserId(user.getUserId());
         assertThat(result).isEqualTo(user);
     }
 
@@ -44,7 +44,7 @@ class MemoryUserRepositoryTest {
         userRepository.save(user);
 
         // when
-        User result = userRepository.findByUserId(user.getUserId()).get();
+        User result = userRepository.findByUserId(user.getUserId());
 
         // then
         assertThat(result).isEqualTo(user);
@@ -74,7 +74,7 @@ class MemoryUserRepositoryTest {
         userRepository.save(new User("ikjo", "1234", "익조", "auddlr100@naver.com"));
 
         // then
-        User result = userRepository.findByUserId(user.getUserId()).get();
+        User result = userRepository.findByUserId(user.getUserId());
         List<User> users = userRepository.findAll();
 
         assertThat(result.getName()).isEqualTo("익조");

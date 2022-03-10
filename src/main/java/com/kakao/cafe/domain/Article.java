@@ -1,31 +1,27 @@
 package com.kakao.cafe.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Article {
 
-    private Integer id;
+    private int id;
     private String writer;
     private String title;
     private String contents;
-    private String createdDate;
+    private LocalDate createdDate;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createdDate = LocalDate.now();
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setCreatedDate(Date date) {
-        this.createdDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
-    }
-
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -43,6 +39,12 @@ public class Article {
 
     @Override
     public String toString() {
-        return "writer = " + writer + " title = " + title + " contents = " + contents;
+        return "Article{" +
+            "id=" + id +
+            ", writer='" + writer + '\'' +
+            ", title='" + title + '\'' +
+            ", contents='" + contents + '\'' +
+            ", createdDate=" + createdDate +
+            '}';
     }
 }

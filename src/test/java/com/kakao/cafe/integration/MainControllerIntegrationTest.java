@@ -1,4 +1,4 @@
-package com.kakao.cafe.combination;
+package com.kakao.cafe.integration;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class MainControllerTest {
+public class MainControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

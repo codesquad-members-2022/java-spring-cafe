@@ -4,7 +4,9 @@ import com.kakao.cafe.domain.Article;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private List<Article> articles = Collections.synchronizedList(new ArrayList<>());
@@ -17,7 +19,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(Integer id) {
+    public Article findById(int id) {
         return articles.get(id - 1);
     }
 

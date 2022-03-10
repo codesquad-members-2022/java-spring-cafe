@@ -4,8 +4,9 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 
 import java.util.List;
-import java.util.Optional;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -20,18 +21,18 @@ public class UserService {
         return userRepository.save(users);
     }
 
-    public User update(String userId, User updatedUsers) {
-        User users = userRepository.findByUserId(userId).get();
-        validatePassword(users, updatedUsers.getPassword());
+    public User update(String userId, User userUpdatedByUser) {
+        User users = userRepository.findByUserId(userId);
+        validatePassword(users, userUpdatedByUser.getPassword());
 
-        return userRepository.save(updatedUsers);
+        return userRepository.save(userUpdatedByUser);
     }
 
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    public Optional<User> findOne(String userId) {
+    public User findOne(String userId) {
         return userRepository.findByUserId(userId);
     }
 
@@ -40,13 +41,13 @@ public class UserService {
     }
 
     private void validateDuplicateUser(String userId) {
-        userRepository.findByUserId(userId).ifPresent(m -> {
+        if (userRepository.findByUserId(userId) != null) {
             throw new IllegalStateException("이미 존재하는 사용자입니다.");
-        });
+        }
     }
 
     private void validatePassword(User users, String password) {
-        if (users.hasSamePassword(password) == false) {
+        if (!users.hasSamePassword(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }

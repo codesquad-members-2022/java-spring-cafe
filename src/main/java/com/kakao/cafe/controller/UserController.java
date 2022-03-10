@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class UserController {
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -33,7 +33,7 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String getUserProfile(@PathVariable String userId, Model model) {
         logger.info("GET /users/{}", userId);
-        model.addAttribute("user", userService.findOne(userId).get());
+        model.addAttribute("user", userService.findOne(userId));
 
         return "/user/profile";
     }
@@ -41,23 +41,23 @@ public class UserController {
     @GetMapping("/users/{id}/form")
     public String updateForm(@PathVariable String id, Model model) {
         logger.info("GET /users/{}/form", id);
-        model.addAttribute("user", userService.findOne(id).get());
+        model.addAttribute("user", userService.findOne(id));
 
         return "/user/updateForm";
     }
 
     @PostMapping("/users")
     public String createUser(User user) {
-        logger.info("POST /users {}", user.toString());
+        logger.info("POST /users {}", user);
         userService.join(user);
 
         return "redirect:/users";
     }
 
     @PutMapping("/users/{id}/update")
-    public String updateUser(@PathVariable String id, User updatedUser) {
-        logger.info("PUT /users {}", updatedUser.toString());
-        userService.update(id, updatedUser);
+    public String updateUser(@PathVariable String id, User userDataUpdatedByUser) {
+        logger.info("PUT /users {}", userDataUpdatedByUser);
+        userService.update(id, userDataUpdatedByUser);
 
         return "redirect:/users";
     }

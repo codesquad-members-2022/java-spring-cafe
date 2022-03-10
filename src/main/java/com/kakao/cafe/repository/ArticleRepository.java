@@ -6,7 +6,7 @@ import java.util.List;
 public interface ArticleRepository {
 
     Article save(Article userArticle);
-    Article findById(Integer id);
+    Article findById(int id);
     List<Article> findAll();
     void clear();
 

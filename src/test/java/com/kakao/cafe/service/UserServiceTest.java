@@ -11,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -36,7 +35,7 @@ public class UserServiceTest {
     @Test
     void 회원_가입() {
         // given
-        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(null));
+        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(null);
         given(userRepository.save(userInformation)).willReturn(userInformation);
 
         // when
@@ -53,7 +52,7 @@ public class UserServiceTest {
     @Test
     void 중복_사용자_예외() {
         // given
-        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(userInformation));
+        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(userInformation);
 
         // when, then
         assertThatThrownBy(() -> userService.join(userInformation))
@@ -65,10 +64,10 @@ public class UserServiceTest {
     @Test
     void 특정_사용자_정보_조회() {
         // given
-        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(Optional.ofNullable(userInformation));
+        given(userRepository.findByUserId(userInformation.getUserId())).willReturn(userInformation);
 
         // when
-        User result = userService.findOne("ikjo").get();
+        User result = userService.findOne("ikjo");
 
         // then
         assertThat(result.getUserId()).isEqualTo("ikjo");
@@ -96,7 +95,7 @@ public class UserServiceTest {
     void 사용자_정보_수정() {
         // given
         User updatedUserInformation = new User("ikjo", "1234", "익조", "auddlr100@naver.com");
-        given(userRepository.findByUserId("ikjo")).willReturn(Optional.of(userInformation));
+        given(userRepository.findByUserId("ikjo")).willReturn(userInformation);
         given(userRepository.save(updatedUserInformation)).willReturn(updatedUserInformation);
 
         // when

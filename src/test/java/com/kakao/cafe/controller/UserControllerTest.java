@@ -78,7 +78,7 @@ public class UserControllerTest {
     @Test
     void 회원_프로필_보기() throws Exception {
         // given
-        given(userService.findOne("ikjo")).willReturn(Optional.of(user));
+        given(userService.findOne("ikjo")).willReturn(user);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo"));
@@ -93,7 +93,7 @@ public class UserControllerTest {
     @Test
     void 회원_정보_수정_화면_보기() throws Exception {
         // given
-        given(userService.findOne("ikjo")).willReturn(Optional.of(user));
+        given(userService.findOne("ikjo")).willReturn(user);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form"));

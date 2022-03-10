@@ -66,7 +66,6 @@ public class ArticleControllerTest {
     @Test
     void 특정_게시글_조회() throws Exception {
         // given
-        article.setCreatedDate(new Date());
         given(articleService.findOne(1)).willReturn(article);
 
         // when
