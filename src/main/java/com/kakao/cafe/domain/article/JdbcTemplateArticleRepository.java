@@ -6,10 +6,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Repository
@@ -23,10 +26,15 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
-        String sql = "insert into cafe_article (writer, title, contents, writtenTime) values (:writer, :title, :contents, :writtenTime);";
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+    public Article save(Article article) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
+        String sql = "insert into cafe_article (writer, title, contents, writtenTime) values (:writer, :title, :contents, :writtenTime);";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
+
+        article.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+
+        return article;
     }
 
     @Override

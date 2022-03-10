@@ -2,46 +2,50 @@ package com.kakao.cafe.domain.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
 @Primary
 public class JdbctemplateUserRepository implements UserRepository{
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
-    public JdbctemplateUserRepository(JdbcTemplate jdbcTemplate) {
+    public JdbctemplateUserRepository(NamedParameterJdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public void save(User user) {
-        SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
-        jdbcInsert.withTableName("cafe_user");
+    public User save(User user) {
+        BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
 
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("userId", user.getUserId());
-        parameters.put("password", user.getPassword());
-        parameters.put("name", user.getName());
-        parameters.put("email", user.getEmail());
+        String sql = "insert into cafe_user (userId, password, name, email) values (:userId, :password, :name, :email)";
+        if(findById(user.getUserId()).isPresent()) {
+            sql = "update cafe_user set name = :name, email = :email where userId = :userId";
+        }
 
-        jdbcInsert.execute(parameters);
+        jdbcTemplate.update(sql, parameterSource);
+        return user;
     }
 
     @Override
     public Optional<User> findById(String id) {
-        String sql = "select userId, password, name, email from cafe_user where userId = ?";
-        List<User> users = jdbcTemplate.query(sql, userRowMapper(), id);
-        return users.stream().findAny();
+        String sql = "select userId, password, name, email from cafe_user where userId = :userId;";
+
+        try {
+            User target = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("userId", id), userRowMapper());
+            return Optional.ofNullable(target);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -54,7 +58,7 @@ public class JdbctemplateUserRepository implements UserRepository{
     @Override
     public void clear() {
         String sql = "delete from cafe_user";
-        jdbcTemplate.execute(sql);
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 
     private RowMapper<User> userRowMapper() {
@@ -63,4 +67,5 @@ public class JdbctemplateUserRepository implements UserRepository{
                 rs.getString("name"),
                 rs.getString("email"));
     }
+
 }
