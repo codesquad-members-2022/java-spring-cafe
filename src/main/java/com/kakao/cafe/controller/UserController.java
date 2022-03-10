@@ -43,6 +43,7 @@ public class UserController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String show(@PathVariable("id") Long id, Model model) {
+        logger.info("id: {}", id);
         User user = userService.findOne(id);
         model.addAttribute("user", user);
         return "user/profile";
