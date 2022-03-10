@@ -17,6 +17,11 @@ public class MemoryArticleRepository implements ArticleRepository {
         return store.size() - 1;
     }
 
+    @Override
+    public List<Article> findAll() {
+        return List.copyOf(store);
+    }
+
     public void clear() {
         store.clear();
     }
