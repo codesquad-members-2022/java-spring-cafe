@@ -32,3 +32,28 @@
    - toString : 디버그용으로 toString 오버라이드
 
 ---
+
+## 사용자 저장 계층 UserRepository 정의, 테스트코드 작성
+
+사용자 저장계층 UserRepository를 정의하고 테스트코드를 작성했다.
+
+1. 설계
+   - 일단 사양 변경은 고려하지 않고 바로 구현체로 생성
+   - 동시성을 고려하여 ConcurrentHashMap으로 저장. userName(String)이 key, User가 value
+   
+
+2. 메서드
+   - `save(User user)` : 사용자 저장
+     - 검증 : 하위 메서드들로 사용자 이름, 이메일 중복성을 검증하여 중복되면 예외를 throw
+   - `findByUserName(username)` : 사용자 이름으로 조회 후 User를 Opitonal로 반환
+   - `findByUserName(username)` : 사용자 이름으로 조회 후 User를 Opitonal로 반환
+   - `findAll()` : 사용자 전원을 새로운 List를 생성하여 반환. (컬렉션 원본을 넘기지 않음)
+
+3. 테스트 코드
+   - 저장 후 동일한 이름으로 조회시 같은 유저가 반환되는지 테스트
+   - 저장 후 동일한 이메일로 조회시 같은 유저가 반환되는지 테스트
+   - 중복되는 이름의 회원 등록 시 예외 발생
+   - 중복되는 메일의 회원 등록 시 예외 발생
+   - findAll 메서드 호출 시 회원을 제대로 리스트로 반환하는지 테스트
+
+---
