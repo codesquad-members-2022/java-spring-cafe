@@ -24,22 +24,30 @@ class UserServiceTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class signUp_메소드는 {
 
-        private final SignUpRequestDto givenNonDuplicatedRequest = new SignUpRequestDto(
+        private final User alreadyPresentUser = new User(
+            "already@present.user",
+            "already present user1",
+            "password1");
+        private final SignUpRequestDto givenNonDuplicatedEmailRequest = new SignUpRequestDto(
             "new@test.user",
             "test user1",
             "password1");
-        private final SignUpRequestDto givenDuplicatedRequest = new SignUpRequestDto(
+        private final SignUpRequestDto givenDuplicatedEmailRequest = new SignUpRequestDto(
             "already@present.user",
             "test user1",
+            "password1");
+        private final SignUpRequestDto givenNonDuplicatedNicknameRequest = new SignUpRequestDto(
+            "new@test.user",
+            "test user1",
+            "password1");
+        private final SignUpRequestDto givenDuplicatedNicknameRequest = new SignUpRequestDto(
+            "new@test.user",
+            "already present user1",
             "password1");
 
         @BeforeEach
         void beforeEach() {
             userRepository.clear();
-            User alreadyPresentUser = new User(
-                "already@present.user",
-                "already present user1",
-                "password1");
             userRepository.save(alreadyPresentUser);
         }
 
@@ -48,11 +56,11 @@ class UserServiceTest {
         class 중복된_이메일을_가진_회원이_주어지면 {
 
             @Test
-            @DisplayName("\"이미 존재하는 회원입니다.\"라는 IllegalStateException을 던진다")
-            void 이미_존재하는_회원입니다_라는_IllegalStateException을_던진다() {
-                assertThatThrownBy(() -> userService.signUp(givenDuplicatedRequest))
+            @DisplayName("\"이미 존재하는 이메일입니다.\"라는 IllegalStateException을 던진다")
+            void 이미_존재하는_이메일입니다_라는_IllegalStateException을_던진다() {
+                assertThatThrownBy(() -> userService.signUp(givenDuplicatedEmailRequest))
                     .isInstanceOf(IllegalStateException.class)
-                    .hasMessage("이미 존재하는 회원입니다.");
+                    .hasMessage("이미 존재하는 이메일입니다.");
             }
         }
 
@@ -63,7 +71,31 @@ class UserServiceTest {
             @Test
             @DisplayName("주어진 회원을 저장하고 저장된 회원의 index를 리턴한다")
             void 주어진_회원을_저장하고_저장된_회원의_index를_리턴한다() {
-                assertThat(userService.signUp(givenNonDuplicatedRequest)).isEqualTo(1);
+                assertThat(userService.signUp(givenNonDuplicatedEmailRequest)).isEqualTo(1);
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 중복된_닉네임을_가진_회원이_주어지면 {
+
+            @Test
+            @DisplayName("\"이미 존재하는 닉네임입니다.\"라는 IllegalStateException을 던진다")
+            void 이미_존재하는_닉네임입니다_라는_IllegalStateException을_던진다() {
+                assertThatThrownBy(() -> userService.signUp(givenDuplicatedNicknameRequest))
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("이미 존재하는 닉네임입니다.");
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 중복되지_않은_닉네임을_가진_회원이_주어지면 {
+
+            @Test
+            @DisplayName("주어진 회원을 저장하고 저장된 회원의 index를 리턴한다")
+            void 주어진_회원을_저장하고_저장된_회원의_index를_리턴한다() {
+                assertThat(userService.signUp(givenNonDuplicatedNicknameRequest)).isEqualTo(1);
             }
         }
     }
@@ -72,40 +104,40 @@ class UserServiceTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class findUser_메소드는 {
 
-        private final String presentEmail = "already@present.user";
-        private final String nonPresentEmail = "new@test.user";
+        private final User alreadyPresentUser = new User(
+            "already@present.user",
+            "already present user1",
+            "password1");
+        private final String presentNickname = "already present user1";
+        private final String nonPresentNickname = "test user1";
 
         @BeforeEach
         void beforeEach() {
             userRepository.clear();
-            User alreadyPresentUser = new User(
-                "already@present.user",
-                "already present user1",
-                "password1");
             userRepository.save(alreadyPresentUser);
         }
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class 존재하는_이메일이_주어지면 {
+        class 존재하는_닉네임이_주어지면 {
 
             @Test
-            @DisplayName("해당 이메일을 가진 회원 객체를 리턴한다")
-            void 해당_이메일을_가진_회원_객체를_리턴한다() {
-                assertThat(userService.findUser(presentEmail).getEmail()).isEqualTo(presentEmail);
+            @DisplayName("해당 닉네임을 가진 회원 객체를 리턴한다")
+            void 해당_닉네임을_가진_회원_객체를_리턴한다() {
+                assertThat(userService.findUser(presentNickname).getUserId()).isEqualTo(presentNickname);
             }
         }
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class 존재하지_않는_아이디가_주어지면 {
+        class 존재하지_않는_닉네임이_주어지면 {
 
             @Test
-            @DisplayName("\"해당 이메일을 가진 회원이 존재하지 않습니다.\"라는 NoSuchElementException 던진다")
-            void 해당_이메일을_가진_회원이_존재하지_않습니다_라는_NoSuchElementException을_던진다() {
-                assertThatThrownBy(() -> userService.findUser(nonPresentEmail))
+            @DisplayName("\"해당 닉네임을 가진 회원이 존재하지 않습니다.\"라는 NoSuchElementException 던진다")
+            void 해당_닉네임을_가진_회원이_존재하지_않습니다_라는_NoSuchElementException을_던진다() {
+                assertThatThrownBy(() -> userService.findUser(nonPresentNickname))
                     .isInstanceOf(NoSuchElementException.class)
-                    .hasMessage("해당 이메일을 가진 회원이 존재하지 않습니다.");
+                    .hasMessage("해당 닉네임을 가진 회원이 존재하지 않습니다.");
             }
         }
     }
@@ -132,7 +164,7 @@ class UserServiceTest {
             final List<User> result = userRepository.findAll();
             final int[] i = {1};
             result.forEach(user -> {
-                assertThat(user.getNickname())
+                assertThat(user.getUserId())
                     .isEqualTo("test user" + i[0]);
                 i[0]++;
             });

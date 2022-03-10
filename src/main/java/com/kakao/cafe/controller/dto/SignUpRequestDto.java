@@ -5,12 +5,12 @@ import com.kakao.cafe.domain.User;
 public class SignUpRequestDto {
 
     private String email;
-    private String nickname;
+    private String userId;
     private String password;
 
-    public SignUpRequestDto(String email, String nickname, String password) {
+    public SignUpRequestDto(String email, String userId, String password) {
         this.email = email;
-        this.nickname = nickname;
+        this.userId = userId;
         this.password = password;
     }
 
@@ -18,8 +18,8 @@ public class SignUpRequestDto {
         return email;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUserId() {
+        return userId;
     }
 
     public String getPassword() {
@@ -27,6 +27,6 @@ public class SignUpRequestDto {
     }
 
     public User toEntity() {
-        return new User(email, nickname, password);
+        return new User(email, userId, password);
     }
 }

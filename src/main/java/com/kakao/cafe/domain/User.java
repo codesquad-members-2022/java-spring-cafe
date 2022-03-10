@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 public class User {
 
     private String email;
-    private String nickname;
+    private String userId;
     private String password;
     private LocalDateTime createdAt;
 
-    public User(String email, String nickname, String password) {
+    public User(String email, String userId, String password) {
         this.email = email;
-        this.nickname = nickname;
+        this.userId = userId;
         this.password = password;
         this.createdAt = LocalDateTime.now();
     }
@@ -20,8 +20,8 @@ public class User {
         return email;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUserId() {
+        return userId;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -30,5 +30,9 @@ public class User {
 
     public boolean hasSameEmail(String email) {
         return this.email.equals(email);
+    }
+
+    public boolean hasSameUserId(String userId) {
+        return this.userId.equals(userId);
     }
 }

@@ -27,14 +27,18 @@ public class UserService {
     private void validateDuplicatedUser(SignUpRequestDto form) {
         userRepository.findByEmail(form.getEmail())
             .ifPresent(u -> {
-                throw new IllegalStateException("이미 존재하는 회원입니다.");
+                throw new IllegalStateException("이미 존재하는 이메일입니다.");
+            });
+        userRepository.findByUserId(form.getUserId())
+            .ifPresent(u -> {
+                throw new IllegalStateException("이미 존재하는 닉네임입니다.");
             });
     }
 
-    public UserDto findUser(String email) {
-        return userRepository.findByEmail(email)
+    public UserDto findUser(String userId) {
+        return userRepository.findByUserId(userId)
             .map(UserDto::new)
-            .orElseThrow(() -> new NoSuchElementException("해당 이메일을 가진 회원이 존재하지 않습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당 닉네임을 가진 회원이 존재하지 않습니다."));
     }
 
     public List<UserDto> findUsers() {

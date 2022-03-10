@@ -26,6 +26,13 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByUserId(String userId) {
+        return store.stream()
+            .filter(user -> user.hasSameUserId(userId))
+            .findAny();
+    }
+
+    @Override
     public List<User> findAll() {
         return List.copyOf(store);
     }

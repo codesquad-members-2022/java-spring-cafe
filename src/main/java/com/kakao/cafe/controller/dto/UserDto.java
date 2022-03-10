@@ -5,18 +5,18 @@ import java.time.LocalDateTime;
 
 public class UserDto {
 
-    private String nickname;
+    private String userId;
     private String email;
     private LocalDateTime createdAt;
 
     public UserDto(User user) {
-        this.nickname = user.getNickname();
+        this.userId = user.getUserId();
         this.email = user.getEmail();
         this.createdAt = user.getCreatedAt();
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUserId() {
+        return userId;
     }
 
     public String getEmail() {
