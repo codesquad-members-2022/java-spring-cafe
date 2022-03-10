@@ -12,7 +12,7 @@
 
 ---
 
-### 회원 도메인
+### 1. 회원 도메인
 
 회원 도메인을 정의했다.
 
@@ -31,9 +31,8 @@
    - equals, hashcode : userName 기준 동등성 정의 오버라이드
    - toString : 디버그용으로 toString 오버라이드
 
----
 
-## 사용자 저장 계층 UserRepository 정의, 테스트코드 작성
+### 2. 사용자 저장 계층 UserRepository 정의, 테스트코드 작성
 
 사용자 저장계층 UserRepository를 정의하고 테스트코드를 작성했다.
 
@@ -56,14 +55,17 @@
    - 중복되는 메일의 회원 등록 시 예외 발생
    - findAll 메서드 호출 시 회원을 제대로 리스트로 반환하는지 테스트
 
----
-
-## home.html 및 의존 정적 리소스 추가
+### 3. home.html 및 의존 정적 리소스 추가
 
 1. 홈페이지에 해당하는 `home.html`을 추가했다.
 2. `home.html`이 의존하는 정적 리소스들을 추가했다.
   - `reset.css`, `home.css`
   - `KakaoCI.png`
 
+### 4. 홈 컨트롤러 추가
+
+HomeController 및 테스트 코드를 추가했다.
+
+- home() : GET 요청으로 "/"이 맵핑되면, view로 "home" 반환
+
 ---
-  
