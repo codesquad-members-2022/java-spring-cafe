@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class ArticleController {
 
@@ -28,4 +30,10 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping("/")
+    public String articles(Model model) {
+        List<Article> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
+        return "/index";
+    }
 }
