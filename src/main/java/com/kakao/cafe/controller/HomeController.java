@@ -26,7 +26,7 @@ public class HomeController {
     }
 
     @GetMapping
-    public ModelAndView getArticleList(ModelAndView mav,
+    public ModelAndView getArticles(ModelAndView mav,
                                        HttpServletRequest request,
                                        HttpServletResponse response) {
 

@@ -75,7 +75,7 @@
   - [x] 사용자는 게시글을 작성할 수 있어야 한다.
     - ArticleController writeArticle(POST) 메서드 uri: "/articles/write"
   - [x] 모든 사용자는 게시글 목록을 볼 수 있어야 한다.
-    - HomeController getArticleList(GET) 메서드 uri: "/"
+    - HomeController getArticles(GET) 메서드 uri: "/"
   - [x] 모든 사용자는 게시글 상세 내용을 볼 수 있어야 한다.
     - ArticleController getDetail(GET) 메서드 "articles/{id}"
   - [x] (선택) 사용자 정보를 수정할 수 있어야 한다.

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Article {
 
-    private String id;
+    private int id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -18,7 +18,7 @@ public class Article {
         this.createDate = LocalDate.now();
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

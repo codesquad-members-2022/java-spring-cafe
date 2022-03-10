@@ -9,7 +9,7 @@ public abstract class VolatilityArticleRepository implements Repository<Article,
     protected final Vector<Article> articles = new Vector<>();
 
     protected Article persist(Article article) {
-        article.setId(Integer.toString(articles.size() + 1));
+        article.setId(articles.size() + 1);
 
         return articles.add(article) ? article : null;
     }

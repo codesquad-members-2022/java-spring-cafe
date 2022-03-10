@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ModelAndView getUserList(HttpServletRequest request,
+    public ModelAndView getUsers(HttpServletRequest request,
                                     HttpServletResponse response,
                                     ModelAndView mav) {
 

@@ -116,7 +116,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
-    void getUserList() throws Exception {
+    void getUsers() throws Exception {
         given(service.searchAll()).willReturn(users);
         mvc.perform(get("/users"))
                 .andExpectAll(

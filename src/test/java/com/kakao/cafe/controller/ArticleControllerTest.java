@@ -91,7 +91,7 @@ public class ArticleControllerTest {
 
     @DisplayName("메인 페이지를 요청하면 질문글 목록을 출력한다.")
     @Test
-    void getArticleList() throws Exception {
+    void getArticles() throws Exception {
         mvc.perform(get("/"))
                 .andExpectAll(
                         model().attributeExists("articles"),
