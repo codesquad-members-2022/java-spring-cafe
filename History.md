@@ -68,4 +68,11 @@ HomeController 및 테스트 코드를 추가했다.
 
 - home() : GET 요청으로 "/"이 맵핑되면, view로 "home" 반환
 
+### 5. createUserForm.html 및 의존 정적 리소스 추가
+
+회원가입 폼 createUserForm.html을 추가함.
+
+- post방식으로 회원가입을 수행하기 위함
+- 필요한 css파일인 createUserForm.css도 추가했다.
+
 ---
