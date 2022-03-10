@@ -13,6 +13,7 @@ public class PostRepository {
 
     public void save(Post post) {
         post.setId(++seq);
+        post.setLocalDateTime(LocalDateTime.now());
         postMap.put(post.getId(), post);
     }
 

@@ -13,7 +13,6 @@ public class Post {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.localDateTime = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -38,5 +37,9 @@ public class Post {
 
     public LocalDateTime getLocalDateTime() {
         return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 }
