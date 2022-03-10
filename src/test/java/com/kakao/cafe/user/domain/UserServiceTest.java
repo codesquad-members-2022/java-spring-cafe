@@ -29,6 +29,10 @@ import com.kakao.cafe.user.infra.MemoryUserRepository;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
+	public static final String CAFE_USER_ID = "cafe";
+	public static final String CAFE_USER_NAME = "spring";
+	public static final String CAFE_USER_EMAIL = "spring@email.com";
+	public static final String CAFE_USER_PASSWORD = "pwd1234";
 	@InjectMocks
 	private UserService userService;
 
@@ -40,13 +44,13 @@ class UserServiceTest {
 	@Test
 	@DisplayName("가입요청한 사용자 정보를 받으면 db에 저장하여 확인할 수 있다.")
 	void register_test() {
-		long expected = 1L;
+		User expected = new User(1L, CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
 		when(userRepository.save(any()))
 			.thenReturn(expected);
 
 		long actual = userService.register(userDto);
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected.getId());
 	}
 
 	@Test
@@ -68,10 +72,10 @@ class UserServiceTest {
 
 	private UserDto.Request getUserDto() {
 		UserDto.Request dto = new UserDto.Request();
-		dto.setUserId("cafe");
-		dto.setName("spring");
-		dto.setEmail("spring@email.com");
-		dto.setPassword("pwd1234");
+		dto.setUserId(CAFE_USER_ID);
+		dto.setName(CAFE_USER_NAME);
+		dto.setEmail(CAFE_USER_EMAIL);
+		dto.setPassword(CAFE_USER_PASSWORD);
 		return dto;
 	}
 }

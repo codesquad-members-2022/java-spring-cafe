@@ -18,7 +18,7 @@ public class MemoryUserRepository implements UserRepository {
 	private final Map<Long, User> data = new LinkedHashMap<>();
 
 	@Override
-	public long save(User entity) {
+	public User save(User entity) {
 		Long id = entity.getId();
 		if (id != null && data.containsKey(id)) {
 			data.replace(id,
@@ -27,12 +27,12 @@ public class MemoryUserRepository implements UserRepository {
 					entity.getName(),
 					entity.getEmail(),
 					entity.getPassword()));
-			return id;
+			return entity;
 		}
 		id = getNextId();
 		data.put(id, entity);
 		entity.setId(id);
-		return id;
+		return entity;
 	}
 
 	private Long getNextId() {

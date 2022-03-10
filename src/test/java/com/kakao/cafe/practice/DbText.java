@@ -94,7 +94,7 @@ public class DbText {
 
 		while (rs.next()) {
 			User user = new User(rs.getLong("id"),
-				rs.getString("userId"),
+				rs.getString("user_id"),
 				rs.getString("name"),
 				rs.getString("email"),
 				rs.getString("password"));

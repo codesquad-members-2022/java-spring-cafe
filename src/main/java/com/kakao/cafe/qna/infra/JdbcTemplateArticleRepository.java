@@ -80,13 +80,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public long save(Article entity) {
+	public Article save(Article entity) {
 		if (!Objects.isNull(entity.getId())) {
 			updateArticle(entity);
-			return entity.getId();
+			return entity;
 		}
 		insert(entity);
-		return entity.getId();
+		return entity;
 	}
 
 	private void updateArticle(Article entity) {
@@ -117,7 +117,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		parameters.put(WRITER.getColumnName(), entity.getWriter());
 		parameters.put(TITLE.getColumnName(), entity.getTitle());
 		parameters.put(CONTENT.getColumnName(), entity.getContent());
-		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());  //  todo
+		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());
 		return parameters;
 	}
 

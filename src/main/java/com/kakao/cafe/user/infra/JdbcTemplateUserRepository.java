@@ -79,13 +79,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	}
 
 	@Override
-	public long save(User entity) {
+	public User save(User entity) {
 		if (!Objects.isNull(entity.getId())) {
 			updateUser(entity);
-			return entity.getId();
+			return entity;
 		}
 		insert(entity);
-		return entity.getId();
+		return entity;
 	}
 
 	private void updateUser(User entity) {

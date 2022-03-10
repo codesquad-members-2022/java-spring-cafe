@@ -1,9 +1,9 @@
 package com.kakao.cafe.common.utils;
 
-import java.util.Objects;
+import org.apache.commons.lang3.StringUtils;
 
 public class StringValidator {
 	public static Boolean isNullOrBlank(String text) {
-		return (Objects.isNull(text) || text.isBlank());
+		return StringUtils.isEmpty(text);
 	}
 }

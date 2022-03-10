@@ -18,7 +18,8 @@ public class ArticleService {
 
 	public long write(ArticleDto.WriteRequest writeRequest) {
 		Article question = new Article(writeRequest.getWriter(), writeRequest.getTitle(), writeRequest.getContents());
-		return articleRepository.save(question);
+		Article getArticle = articleRepository.save(question);
+		return getArticle.getId();
 	}
 
 	public List<ArticleDto.WriteResponse> getAllArticles() {

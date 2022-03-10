@@ -21,7 +21,8 @@ public class UserService {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
 		User user = new User(userDto.getIdNull(), userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
-		return userRepository.save(user);
+		User getUser = userRepository.save(user);
+		return getUser.getId();
 	}
 
 	public List<User> findUsers() {
