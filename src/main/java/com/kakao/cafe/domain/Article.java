@@ -8,13 +8,13 @@ public class Article {
     private Integer id;
     private final String writer;
     private final String title;
-    private final String text;
+    private final String contents;
     private final LocalDateTime createdTime;
 
     public Article(ArticleWriteRequest articleWriteRequest) {
         writer = articleWriteRequest.getWriter();
         title = articleWriteRequest.getTitle();
-        text = articleWriteRequest.getText();
+        contents = articleWriteRequest.getContents();
         createdTime = LocalDateTime.now();
     }
 
@@ -30,8 +30,8 @@ public class Article {
         return title;
     }
 
-    public String getText() {
-        return text;
+    public String getContents() {
+        return contents;
     }
 
     public void setId(Integer id) {

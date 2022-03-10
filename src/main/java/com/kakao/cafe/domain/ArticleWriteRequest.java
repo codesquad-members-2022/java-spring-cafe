@@ -3,12 +3,12 @@ package com.kakao.cafe.domain;
 public class ArticleWriteRequest {
     private final String writer;
     private final String title;
-    private final String text;
+    private final String contents;
 
-    public ArticleWriteRequest(String writer, String title, String text) {
+    public ArticleWriteRequest(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
-        this.text = text;
+        this.contents = contents;
     }
 
     public String getWriter() {
@@ -19,7 +19,5 @@ public class ArticleWriteRequest {
         return title;
     }
 
-    public String getText() {
-        return text;
-    }
+    public String getContents() { return contents; }
 }
