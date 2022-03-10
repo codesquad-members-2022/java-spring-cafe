@@ -22,6 +22,7 @@ public class UserService {
     public void join(User user) {
         validateUniqueNickname(user);
         validateUniqueEmail(user);
+        user.checkBlankInput();
         userRepository.save(user);
     }
 

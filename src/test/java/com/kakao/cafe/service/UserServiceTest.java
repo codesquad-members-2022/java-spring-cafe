@@ -25,6 +25,7 @@ class UserServiceTest {
     void join_success() {
         User user1 = new User();
         user1.setNickname("BC");
+        user1.setEmail("BC@gmail.com");
         user1.setPassword("1234");
         userService.join(user1);
 
