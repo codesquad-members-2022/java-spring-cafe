@@ -17,7 +17,7 @@ class UserRepositoryTest {
     @Autowired UserRepository userRepository = new MemoryUserRepository();
 
     @AfterEach
-    void setUp(){
+    void afterEach(){
         userRepository.clearStorage();
     }
 
