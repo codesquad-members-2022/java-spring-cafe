@@ -8,7 +8,7 @@
 
 ### 전체 요구사항
 
-- [ ] H2 데이터베이스 연동
+- [X] H2 데이터베이스 연동
 - [ ] 게시글 데이터 저장
 - [ ] 게시글 목록 구현
 - [ ] 게시글 상세보기 구현
@@ -19,9 +19,15 @@
 
 ### 1. H2 데이터베이스 연동 
 
-#### 구현 요구 사항
-- [X] 게시글 작성 요청(POST) 생성
-- [X] 사용자가 전달한 값을 Article 클래스를 생성해 저장
-- [X] 게시글 목록을 관리하는 ArrayList를 생성한 후 앞에서 생성한 Article 인스턴스를 여기에 저장
-- [X] 게시글 추가 완료 후 메인 페이지로 리다이렉트
+- yml을 실행용과 테스트용으로 구분
+- JDBC Connection 관련 테스트 완료
+  - [X] JdbcManualTest : 수동 Connection 테스트
+  - [X] JdbcAutoTest : Hikari pool을 이용한 연결 및 DB 조회 테스트
+  - [X] SpringJdbcTest : JdbcTemplate를 이용한 DB 조회 테스트
 
+<br>
+
+### 2. 게시글 데이터 저장
+
+- [ ] Article 클래스를 DB 테이블에 저장할 수 있도록 구현
+- [ ] Article 테이블이 적절한 PK를 가지도록 구현

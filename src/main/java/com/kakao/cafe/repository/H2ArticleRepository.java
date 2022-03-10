@@ -1,0 +1,35 @@
+package com.kakao.cafe.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.kakao.cafe.domain.article.Article;
+
+@Repository
+public class H2ArticleRepository implements CustomRepository<Article> {
+
+    private final JdbcTemplate jdbcTemplate;
+
+    public H2ArticleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public List<Article> findAll() {
+        return null;
+    }
+
+    @Override
+    public void save(Article article) {
+
+    }
+
+    @Override
+    public Optional<Article> findById(Long id) {
+        return Optional.empty();
+    }
+}

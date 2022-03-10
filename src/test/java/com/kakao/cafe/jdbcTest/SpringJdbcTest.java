@@ -38,6 +38,7 @@ public class SpringJdbcTest {
     @Test
     void read_and_mapping_to_TestUser() {
         String sql = "SELECT id, name FROM test where id = ?";
+        // deprecated
         TestUser testUser1 = jdbcTemplate.queryForObject(sql, new Object[] {1}, (rs, rowNum)
             -> new TestUser(rs.getInt("id"), rs.getString("name")));
 

@@ -36,6 +36,11 @@ public class UserRepository implements CustomRepository<User> {
         users.add(user);
     }
 
+    @Override
+    public Optional<User> findById(Long id) {
+        return Optional.empty();
+    }
+
     private void duplicateUserIdCheck(User inputUser) {
         for (User user : users) {
             checkIfTheNameIsSame(inputUser, user);

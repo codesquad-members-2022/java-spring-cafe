@@ -24,8 +24,8 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article showArticle(int index) {
-        return articleRepository.findByIndex(index)
+    public Article showArticle(long index) {
+        return articleRepository.findById(index)
             .orElseThrow(IllegalArgumentException::new);
     }
 }
