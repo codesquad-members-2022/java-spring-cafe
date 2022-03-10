@@ -37,6 +37,10 @@ public class User {
 		this.email = userDto.getEmail();
 	}
 
+	public boolean isDifferent(String password) {
+		return !this.password.equals(password);
+	}
+
 	public Long getId() {
 		return id;
 	}

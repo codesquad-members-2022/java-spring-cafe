@@ -73,6 +73,11 @@ public class MemoryUserRepository implements UserRepository {
 	}
 
 	@Override
+	public Optional<User> findByUserId(String userId) {
+		return Optional.empty();
+	}
+
+	@Override
 	public void deleteAll() {
 		this.data.clear();
 	}

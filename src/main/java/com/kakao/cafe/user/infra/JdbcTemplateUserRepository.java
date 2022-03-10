@@ -174,6 +174,14 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		return getNumberOfExistUserId(sql, namedParameters) != 0;
 	}
 
+	@Override
+	public Optional<User> findByUserId(String userId) {
+		String sql = "SELECT * FROM cafe_users WHERE user_id = :user_id";
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(USER_ID.getColumnName(), userId);
+		User user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
+		return Optional.of(user);
+	}
+
 	private Integer getNumberOfExistUserId(String sql, SqlParameterSource namedParameters) {
 		return namedParameterJdbcTemplate.queryForObject(sql, namedParameters, Integer.class);
 	}
