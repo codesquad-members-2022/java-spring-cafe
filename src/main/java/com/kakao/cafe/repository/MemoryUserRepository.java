@@ -15,7 +15,7 @@ public class MemoryUserRepository{
         return user;
     }
 
-    public Optional<User> findByUserId(String userId) {
+    public User findByUserId(String userId) {
         User foundUser = null;
         for (User user: store) {
             if(userId.equals(user.getUserId())){
@@ -23,7 +23,7 @@ public class MemoryUserRepository{
                 break;
             }
         }
-        return Optional.ofNullable(foundUser);
+        return foundUser;
     }
 
     public List<User> findAll() {

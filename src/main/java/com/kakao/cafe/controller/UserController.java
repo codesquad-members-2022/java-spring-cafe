@@ -38,7 +38,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
-        model.addAttribute("user", userService.findOne(userId).get());
+        model.addAttribute("user", userService.findOne(userId));
         return "user/profile";
     }
 }

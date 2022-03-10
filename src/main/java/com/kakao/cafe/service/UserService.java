@@ -21,7 +21,7 @@ public class UserService {
         return user.getName();
     }
 
-    public Optional<User> findOne(String userId) {
+    public User findOne(String userId) {
         return memoryUserRepository.findByUserId(userId);
     }
     public List<User> findUsers() {
