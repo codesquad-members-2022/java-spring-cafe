@@ -30,5 +30,7 @@ public class UserService {
 
     public List<User> findUsers() { return userRepository.findAll(); }
 
-    public Optional<User> findOne(String email) { return userRepository.findByEmail(email); }
+    public Optional<User> lookForOneUserEmail (String email) { return userRepository.findByEmail(email); }
+
+    public Optional<User> lookForOneUserId (String userId){return userRepository.findByUserId(userId);}
 }

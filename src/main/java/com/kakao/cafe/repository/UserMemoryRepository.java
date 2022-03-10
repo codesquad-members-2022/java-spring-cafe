@@ -11,7 +11,6 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public User save(User user) {
         user.setCreatedDate(LocalDateTime.now());
-        //store.put(user.getEmail(), user);
         store.add(user);
         return user;
     }

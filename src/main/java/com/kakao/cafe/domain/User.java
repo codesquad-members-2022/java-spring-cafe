@@ -6,14 +6,14 @@ public class User {
     private String email;
     private String userId;
     private String password;
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public LocalDateTime getCreatedDate() {
-        return createdDate;
+        return createdAt;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedDate(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getEmail() {
