@@ -57,7 +57,7 @@ class UserServiceTest {
     @Test
     void test_find_User_By_UserId() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // when
@@ -72,7 +72,7 @@ class UserServiceTest {
     @Test
     void test_find_User_By_UserId_for_UserProfileDto() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // when
@@ -86,7 +86,7 @@ class UserServiceTest {
     @Test
     void if_password_incorrect_exception_occur() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // then

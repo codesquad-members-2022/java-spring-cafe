@@ -19,7 +19,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void init() {
-        userRepository = new UserRepository();
+        userRepository = new MemoryUserRepository();
     }
 
     @DisplayName("findAll을 호출하면 UserDto로 User 목록을 반환받는다.")
@@ -51,7 +51,7 @@ class UserRepositoryTest {
         userRepository.save(user2);
 
         // when
-        Optional<User> user = userRepository.findByUserId("lucid");
+        Optional<User> user = userRepository.findById("lucid");
 
         // then
         assertThat(user.get().getEmail()).isEqualTo("leejohy@naver.com");

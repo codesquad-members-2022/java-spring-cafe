@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public User findUserByUserId(String userId) {
-        return userRepository.findByUserId(userId)
+        return userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException(NON_EXISTENT_MEMBER));
     }
 
@@ -54,10 +54,10 @@ public class UserService {
     }
 
     public void update(String userId, User updateUser) {
-        userRepository.update(userId, updateUser);
+        // userRepository.update(userId, updateUser);
     }
 
     public void clear() {
-        userRepository.clear();
+        userRepository.deleteAll();
     }
 }
