@@ -4,6 +4,8 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ class ArticleControllerTest {
     void get_article() throws Exception {
         // given && when
         given(articleService.showArticle(1))
-            .willReturn(new Article("writer1", "title1", "contents1"));
+            .willReturn(new Article("writer1", "title1", "contents1", LocalDateTime.now()));
 
         // then
         mvc.perform(get("/articles/1"))
