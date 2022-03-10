@@ -6,7 +6,7 @@
 
 ## Step1
 
-- [ ] 회원 가입 기능 구현
+- [x] 회원 가입 기능 구현
 - [x] 회원 목록 기능 구현
 - [ ] 회원 프로필 기능 구현
 
@@ -90,13 +90,18 @@ HomeController 및 테스트 코드를 추가했다.
 - 내부적으로 th:each 문법을 적용하여 반복적으로 회원 목록을 출력하기 위함
 - userList.css 추가
 
----
-
 ### 8. UserController - list 메서드 및 테스트 코드 추가(회원목록 구현 완료)
 
 회원 목록 페이지로 맵핑되는 list 메서드 추가,
 
 - `list(...)` : GET 메서드로 `/users`가 맵핑되면, 회원 전체 list를 Model에 담고 `/users/userList` 반환
+- 테스트코드도 추가했다.
+
+### 9. UserController - create 메서드 및 테스트 코드 추가(회원가입 구현 완료)
+
+회원 가입 기능 create 메서드 추가 및 컨트롤러 테스트 코드 추가
+
+- `create(...)` : Post 메서드로 `/users/new`가 맵핑되면, 회원을 가입시키고 `"redirect:/users` 반환
 - 테스트코드도 추가했다.
 
 ---

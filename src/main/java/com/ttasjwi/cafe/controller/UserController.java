@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private final UserRepository userRepository;
 
     public UserController(UserRepository userRepository) {
@@ -24,6 +27,13 @@ public class UserController {
     @GetMapping("/new")
     public String createForm() {
         return "/users/createUserForm";
+    }
+
+    @PostMapping("/new")
+    public String create(@ModelAttribute User user) {
+        userRepository.save(user);
+        log.info("new user={}", user);
+        return "redirect:/users";
     }
 
     @GetMapping
