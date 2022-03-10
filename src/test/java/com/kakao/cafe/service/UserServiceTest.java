@@ -35,7 +35,7 @@ class UserServiceTest {
         String saveEmail = userService.join(user);
 
         // then
-        User findUser = userService.findOne(saveEmail).get();
+        User findUser = userService.lookForOneUserEmail(saveEmail).get();
         assertThat(user.getEmail()).isEqualTo(findUser.getEmail());
     }
 
@@ -60,11 +60,20 @@ class UserServiceTest {
     }
 
     @Test
-    void findOne() {
+    void lookForOneUserEmail() {
         User user = new User();
         user.setEmail("abc123@gmail.com");
         userService.join(user);
 
-        assertThat(userService.findOne(user.getEmail()).get()).isEqualTo(user);
+        assertThat(userService.lookForOneUserEmail(user.getEmail()).get()).isEqualTo(user);
+    }
+
+    @Test
+    void lookForOneUserId() {
+        User user = new User();
+        user.setUserId("유저");
+        userService.join(user);
+
+        assertThat(userService.lookForOneUserId(user.getUserId()).get()).isEqualTo(user);
     }
 }

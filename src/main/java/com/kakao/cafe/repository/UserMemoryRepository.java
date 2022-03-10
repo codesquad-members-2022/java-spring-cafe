@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserMemoryRepository implements UserRepository {
-    private static ArrayList<User> store = new ArrayList<>();
+    private final ArrayList<User> store = new ArrayList<>();
 
     @Override
     public User save(User user) {
