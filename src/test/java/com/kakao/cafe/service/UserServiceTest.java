@@ -48,8 +48,8 @@ class UserServiceTest {
         user1.setEmail("abc123@gmail.com");
         user2.setEmail("def456@gmail.com");
 
-        users.add(user2);
         users.add(user1);
+        users.add(user2);
 
         userService.join(user1);
         userService.join(user2);
