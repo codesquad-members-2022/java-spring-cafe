@@ -1,14 +1,13 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.dto.ArticleForm;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import javax.validation.Valid;
 
 @Controller
 public class ArticleController {
@@ -24,21 +23,15 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String createQuest(@Validated ArticleForm articleForm) {
-        Article article = new Article(
-                articleForm.getTitle(),
-                articleForm.getWriter(),
-                articleForm.getContents()
-        );
-        articleService.post(article);
+    public String createQuest(@Valid ArticleForm articleForm) {
+        articleService.post(articleForm);
         return "redirect:/";
     }
 
     @GetMapping("articles/{index}")
     public String detail(@PathVariable("index") int index, Model model) {
-        Article article = articleService.findOneArticle(index)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-        model.addAttribute("article", article);
+        ArticleForm articleForm = articleService.findOneArticle(index-1);
+        model.addAttribute("article", articleForm);
         return "qna/show";
     }
 }

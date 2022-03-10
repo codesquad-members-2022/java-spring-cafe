@@ -39,7 +39,7 @@ public class UserController {
 
     @GetMapping("/{index}")
     public String profile(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index);
+        UserForm userForm = userService.findOneUser(index-1);
         model.addAttribute("user", userForm);
         return "user/profile";
     }

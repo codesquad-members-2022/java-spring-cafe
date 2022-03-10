@@ -9,6 +9,7 @@ public class Article {
     private String writer;
     private LocalDateTime dateTime;
     private String contents;
+    private int index;
 
 
     public Article(String title, String writer, String contents) {
@@ -40,5 +41,17 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean compareBy(int index) {
+        return this.index == index;
     }
 }

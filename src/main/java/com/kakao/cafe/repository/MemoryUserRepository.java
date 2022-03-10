@@ -11,7 +11,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        for (int i = 0; i < store.size(); i++) {
+        for (int i = 0; i <= store.size(); i++) {
             if (store.get(i) == null) {
                 store.add(i, user);
                 return user;
@@ -32,7 +32,7 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         return store.stream()
-                .filter(user -> user.isEqaulTo(userId))
+                .filter(user -> user.compareById(userId))
                 .findAny();
     }
 

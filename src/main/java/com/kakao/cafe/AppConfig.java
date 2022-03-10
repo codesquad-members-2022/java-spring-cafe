@@ -6,7 +6,6 @@ import com.kakao.cafe.repository.MemoryArticleRepository;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ArticleServiceImpl;
 import com.kakao.cafe.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +25,7 @@ public class AppConfig {
 
     @Bean
     public ArticleService articleService() {
-        return new ArticleServiceImpl(articleRepository());
+        return new ArticleService(articleRepository());
     }
 
     @Bean

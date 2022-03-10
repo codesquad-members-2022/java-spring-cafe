@@ -37,7 +37,7 @@ public class User {
         this.index = index;
     }
 
-    public boolean isEqaulTo(String userId){
+    public boolean compareById(String userId){
         return this.userId.equals(userId);
     }
 }

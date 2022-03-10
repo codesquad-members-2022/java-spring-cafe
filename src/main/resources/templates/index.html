@@ -28,7 +28,7 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a th:href="@{articles/{index}(index=${articles[i].id})}" th:text="${articles[i].title}"></a>
+                                <a th:href="@{articles/{index}(index=${articles[i].id+1})}" th:text="${articles[i].title}"></a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
