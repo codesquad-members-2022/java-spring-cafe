@@ -20,7 +20,9 @@ public class UserService {
     }
 
     public User save(User user) {
-        validateDuplicateUser(user);
+        if (!userRepository.findByUserId(user.getUserId()).isPresent()) {
+            validateDuplicateUser(user);
+        }
         return userRepository.save(user);
     }
 
@@ -42,5 +44,9 @@ public class UserService {
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoMatchUserException(NO_MATCH_USER_MESSAGE));
+    }
+
+    public void deleteAllUsers() {
+        userRepository.deleteAllUsers();
     }
 }

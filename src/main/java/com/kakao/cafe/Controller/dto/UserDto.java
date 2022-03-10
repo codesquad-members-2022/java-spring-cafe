@@ -1,20 +1,23 @@
-package com.kakao.cafe.domain.dto;
+package com.kakao.cafe.Controller.dto;
 
-public class UserCreateDto {
+import com.kakao.cafe.domain.User;
+
+public class UserDto {
 
     private String userId;
-    private String password;
     private String name;
     private String email;
 
-    public UserCreateDto() {
-    }
-
-    public UserCreateDto(String userId, String password, String name, String email) {
+    public UserDto(String userId, String name, String email) {
         this.userId = userId;
-        this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public UserDto(User user) {
+        this.userId = user.getUserId();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getUserId() {
@@ -23,14 +26,6 @@ public class UserCreateDto {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
