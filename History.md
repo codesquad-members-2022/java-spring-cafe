@@ -75,4 +75,12 @@ HomeController 및 테스트 코드를 추가했다.
 - post방식으로 회원가입을 수행하기 위함
 - 필요한 css파일인 createUserForm.css도 추가했다.
 
+### 6. UserController 및 createForm 메서드 추가
+
+회원 관련 로직을 담당하는 UserController 및 회원가입 폼을 반환하는 createForm 메서드(+ 테스트코드) 추가
+
+- UserController : 회원 관련 로직을 담당
+- createForm : `/users/new`로 GET 요청 -> `/users/createUserForm`이 반환됨
+- createForm의 테스트코드 또한 추가했다.
+
 ---
