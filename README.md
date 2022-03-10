@@ -10,6 +10,7 @@
   - [x] 로그아웃 구현하기
 
 - [ ] LoginController 만들기
+  - [x] 로그인 Form 만들기 (step03에서 수동 구현 했으니, BeanValidation 이번에는 사용하기)
   - [ ] "/login"으로 접속 HttpSession에 사용자 정보 추가
   - [ ] 로그인 시 사용자 데이터 view로 넘겨서 로그인 사용자 전용 화면 보여주기
   - [ ] "/logout"으로 세션 expire 시키기
