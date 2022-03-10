@@ -27,7 +27,21 @@ class MemoryArticleRepositoryTest {
         int savedArticleIndex = memoryArticleRepository.save(validArticle);
 
         //then
-        assertThat(savedArticleIndex).isEqualTo(0);
+        assertThat(savedArticleIndex).isEqualTo(1);
+    }
+
+    @Test
+    void findById() {
+        //given
+        User loggedInUser = new User("test@user.com", "testuser", "test");
+        Article givenArticle = new Article(loggedInUser, "test title", "test content");
+        int givenId = memoryArticleRepository.save(givenArticle);
+
+        //when
+        Article result = memoryArticleRepository.findById(givenId);
+
+        //then
+        assertThat(result.getId()).isEqualTo(givenId);
     }
 
     @Test

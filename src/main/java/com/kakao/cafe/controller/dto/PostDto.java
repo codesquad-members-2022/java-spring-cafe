@@ -20,4 +20,28 @@ public class PostDto {
         this.viewCount = post.getViewCount();
         this.createdAt = post.getCreatedAt();
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getWriterNickname() {
+        return writerNickname;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public int getViewCount() {
+        return viewCount;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }
