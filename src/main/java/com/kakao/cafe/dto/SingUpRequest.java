@@ -4,10 +4,10 @@ import com.kakao.cafe.domain.User;
 
 public class SingUpRequest {
 
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public SingUpRequest(String userId, String password, String name, String email) {
         this.userId = userId;

@@ -5,10 +5,10 @@ import java.util.Objects;
 public class User {
 
     private int index;
-    private String userId;
-    private String password;
-    private String name;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String name;
+    private final String email;
 
     public User(int index, String userId, String password, String name, String email) {
         this.index = index;
@@ -22,12 +22,12 @@ public class User {
         return index;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public boolean ownerOf(String id) {

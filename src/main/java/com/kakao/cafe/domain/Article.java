@@ -5,10 +5,10 @@ import java.time.LocalDate;
 public class Article {
 
     private String id;
-    private String writer;
-    private String title;
-    private String contents;
-    private LocalDate createDate;
+    private final String writer;
+    private final String title;
+    private final String contents;
+    private final LocalDate createDate;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;

@@ -8,12 +8,12 @@ import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
 public class ModifyProfileRequest {
 
     private int index;
-    private String userId;
-    private String password;
-    private String nowPassword;
-    private String newPassword;
-    private String name;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String nowPassword;
+    private final String newPassword;
+    private final String name;
+    private final String email;
 
     public ModifyProfileRequest(int index, String userId, String password, String nowPassword,
                                 String newPassword, String name, String email) {
@@ -29,10 +29,6 @@ public class ModifyProfileRequest {
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public void isValidRequest() {

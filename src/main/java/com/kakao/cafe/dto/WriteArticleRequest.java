@@ -4,9 +4,9 @@ import com.kakao.cafe.domain.Article;
 
 public class WriteArticleRequest {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
     public WriteArticleRequest(String writer, String title, String contents) {
         this.writer = writer;
