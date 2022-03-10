@@ -24,7 +24,7 @@ class ArticleRepositoryTest {
     @Test
     void getArticleList() {
         //given
-        Article article = new Article(0,"asdf", "title", "content");
+        Article article = new Article("asdf", "title", "content");
         List<Article> articleList = new ArrayList<>();
         articleList.add(article);
         //when
@@ -36,7 +36,7 @@ class ArticleRepositoryTest {
     @Test
     void save() {
         //given
-        Article article = new Article(0,"asdf", "title", "content");
+        Article article = new Article("asdf", "title", "content");
         //when
         articleRepository.save(article);
         //then
@@ -46,7 +46,7 @@ class ArticleRepositoryTest {
     @Test
     void findById() {
         //given
-        Article article = new Article(0,"asdf", "title", "content");
+        Article article = new Article("asdf", "title", "content");
         articleRepository.save(article);
         //when
         Article foundArticle = articleRepository.findById(0);

@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.JdbcArticleRepository;
 import com.kakao.cafe.repository.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,8 @@ public class ArticleService {
     private final UserService userService;
 
     @Autowired
-    public ArticleService(MemoryArticleRepository memoryArticleRepository, UserService userService) {
-        this.articleRepository = memoryArticleRepository;
+    public ArticleService(JdbcArticleRepository jdbcArticleRepository, UserService userService) {
+        this.articleRepository = jdbcArticleRepository;
         this.userService = userService;
     }
 

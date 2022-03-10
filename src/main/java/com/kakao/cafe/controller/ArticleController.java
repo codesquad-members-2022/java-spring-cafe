@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping("qna/")
+@RequestMapping
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -25,8 +25,7 @@ public class ArticleController {
 
     @PostMapping("/qna/create")
     public String createArticle(HttpServletRequest request) {
-        Article article = new Article(articleService.getRepositorySize(),
-                                      request.getParameter("writer"),
+        Article article = new Article(request.getParameter("writer"),
                                       request.getParameter("title"),
                                       request.getParameter("contents"));
 

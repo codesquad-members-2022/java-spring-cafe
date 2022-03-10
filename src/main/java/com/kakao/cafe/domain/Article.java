@@ -30,12 +30,15 @@ public class Article {
         return writer;
     }
 
-
-    public Article(int articleId, String userId, String subject, String content) {
+    public void setArticleId(int articleId) {
         this.articleId = articleId;
+    }
+
+
+    public Article(String userId, String subject, String content) {
         this.subject = subject;
         this.content = content;
-        this.uploadDate = new Date().toString();
+        this.uploadDate = new java.sql.Date(new Date().getTime()).toString();
         this.writer = userId;
     }
 
