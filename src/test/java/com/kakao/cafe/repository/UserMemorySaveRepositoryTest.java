@@ -60,11 +60,12 @@ class UserMemorySaveRepositoryTest {
         // given
         User[] users = {userA, userB};
         int userCount = users.length;
-        // when
         for (var user : users) {
             userRepository.userSave(user);
         }
+        // when
+        int sizeOfUserList = userRepository.findAllUser().size();
         // then
-        assertThat(userCount).isEqualTo(userRepository.findAllUser().size());
+        assertThat(userCount).isEqualTo(sizeOfUserList);
     }
 }

@@ -33,7 +33,7 @@ class ArticleServiceTest {
     }
 
     @AfterEach
-    void SetDown() {
+    void tearDown() {
         userRepository.clearStore();
         articleRepository.clearStore();
     }
