@@ -12,18 +12,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 @JdbcTest
-@Sql("classpath:/schema.sql")
-@Import({UserJdbcRepository.class, QueryProps.class})
+@Import(QueryProps.class)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("UserJdbcRepository JDBC 통합 테스트")
 public class UserJdbcRepositoryTest {
 
+    private final UserJdbcRepository userRepository;
+
     @Autowired
-    private UserJdbcRepository userRepository;
+    public UserJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate, QueryProps queryProps) {
+        this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
+    }
 
     User user;
 
@@ -42,12 +48,16 @@ public class UserJdbcRepositoryTest {
     public void savePersistTest() {
         // when
         User savedUser = userRepository.save(user);
+        Optional<User> findUser = userRepository.findByUserId(savedUser.getUserId());
 
         // then
-        then(savedUser.getUserId()).isEqualTo("userId");
-        then(savedUser.getPassword()).isEqualTo("userPassword");
-        then(savedUser.getName()).isEqualTo("userName");
-        then(savedUser.getEmail()).isEqualTo("user@example.com");
+        then(findUser)
+            .hasValueSatisfying(user -> {
+                then(user.getUserId()).isEqualTo("userId");
+                then(user.getPassword()).isEqualTo("userPassword");
+                then(user.getName()).isEqualTo("userName");
+                then(user.getEmail()).isEqualTo("user@example.com");
+            });
     }
 
     @Test
@@ -65,12 +75,16 @@ public class UserJdbcRepositoryTest {
 
         // when
         User updatedUser = userRepository.save(changedUser);
+        Optional<User> findUser = userRepository.findByUserId(updatedUser.getUserId());
 
         // then
-        then(updatedUser.getUserId()).isEqualTo("userId");
-        then(updatedUser.getPassword()).isEqualTo("userPassword");
-        then(updatedUser.getName()).isEqualTo("otherName");
-        then(updatedUser.getEmail()).isEqualTo("other@example.com");
+        then(findUser)
+            .hasValueSatisfying(user -> {
+                then(user.getUserId()).isEqualTo("userId");
+                then(user.getPassword()).isEqualTo("userPassword");
+                then(user.getName()).isEqualTo("otherName");
+                then(user.getEmail()).isEqualTo("other@example.com");
+            });
     }
 
     @Test

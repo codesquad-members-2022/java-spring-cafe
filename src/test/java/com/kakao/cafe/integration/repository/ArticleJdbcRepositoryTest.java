@@ -7,24 +7,35 @@ import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.GeneratedKeyHolderFactory;
+import com.kakao.cafe.repository.jdbc.KeyHolderFactory;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
 @Sql("classpath:/schema.sql")
-@Import({ArticleJdbcRepository.class, GeneratedKeyHolderFactory.class, QueryProps.class})
+@Import({GeneratedKeyHolderFactory.class, QueryProps.class})
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("ArticleJdbcRepository JDBC 통합 테스트")
 public class ArticleJdbcRepositoryTest {
 
+    private final ArticleJdbcRepository articleRepository;
+
     @Autowired
-    private ArticleJdbcRepository articleRepository;
+    public ArticleJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
+        KeyHolderFactory keyHolderFactory, QueryProps queryProps) {
+        this.articleRepository = new ArticleJdbcRepository(jdbcTemplate, keyHolderFactory,
+            queryProps);
+    }
 
     Article article;
 
@@ -42,12 +53,15 @@ public class ArticleJdbcRepositoryTest {
     public void saveTest() {
         // when
         Article savedArticle = articleRepository.save(article);
+        Optional<Article> findArticle = articleRepository.findById(savedArticle.getArticleId());
 
         // then
-        then(savedArticle.getArticleId()).isEqualTo(1);
-        then(savedArticle.getWriter()).isEqualTo("writer");
-        then(savedArticle.getTitle()).isEqualTo("title");
-        then(savedArticle.getContents()).isEqualTo("contents");
+        then(findArticle)
+            .hasValueSatisfying(article -> {
+                then(article.getWriter()).isEqualTo("writer");
+                then(article.getTitle()).isEqualTo("title");
+                then(article.getContents()).isEqualTo("contents");
+            });
     }
 
     @Test
