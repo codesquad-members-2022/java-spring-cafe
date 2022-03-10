@@ -29,7 +29,7 @@ public class JdbcPostRepository {
     public Post findById(Long id) {
         Post post = null;
         try {
-            post = jdbcTemplate.query("select * from post where id = ?", postRowMapper())
+            post = jdbcTemplate.query("select * from post where id = ?", postRowMapper(), id)
                     .stream()
                     .findAny()
                     .orElseThrow(SQLException::new);
