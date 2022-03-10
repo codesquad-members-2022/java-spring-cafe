@@ -30,7 +30,6 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>id</th>
                         <th>닉네임</th>
                         <th>이메일</th>
                         <th>회원가입일</th>
@@ -40,10 +39,9 @@
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td><a href="/users/{{id}}">{{id}}</a></td>
-                        <td><a href="/users/{{id}}">{{nickname}}</a></td>
-                        <td><a href="/users/{{id}}">{{email}}</a></td>
-                        <td><a href="/users/{{id}}">{{createdAt}}</a></td>
+                        <td><a href="/users/{{email}}">{{nickname}}</a></td>
+                        <td><a href="/users/{{email}}">{{email}}</a></td>
+                        <td><a href="/users/{{email}}">{{createdAt}}</a></td>
                     </tr>
                     {{/users}}
                     </tbody>

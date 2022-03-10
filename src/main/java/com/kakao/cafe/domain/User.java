@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 public class User {
 
-    private Long id;
     private String email;
     private String nickname;
     private String password;
@@ -14,16 +13,7 @@ public class User {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
-    }
-
-    public static User createUserRecord(Long id, User user) {
-        user.id = id;
-        user.createdAt = LocalDateTime.now();
-        return user;
-    }
-
-    public Long getId() {
-        return id;
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getEmail() {
@@ -36,10 +26,6 @@ public class User {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public boolean hasSameId(Long id) {
-        return this.id.equals(id);
     }
 
     public boolean hasSameEmail(String email) {

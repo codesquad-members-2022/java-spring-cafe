@@ -18,11 +18,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long signUp(SignUpRequestDto form) {
+    public int signUp(SignUpRequestDto form) {
         validateDuplicatedUser(form);
         User newUser = form.toEntity();
-        userRepository.save(newUser);
-        return newUser.getId();
+        return userRepository.save(newUser);
     }
 
     private void validateDuplicatedUser(SignUpRequestDto form) {
@@ -32,10 +31,10 @@ public class UserService {
             });
     }
 
-    public UserDto findUser(Long userId) {
-        return userRepository.findById(userId)
+    public UserDto findUser(String email) {
+        return userRepository.findByEmail(email)
             .map(UserDto::new)
-            .orElseThrow(() -> new NoSuchElementException("해당 아이디를 가진 회원이 존재하지 않습니다."));
+            .orElseThrow(() -> new NoSuchElementException("해당 이메일을 가진 회원이 존재하지 않습니다."));
     }
 
     public List<UserDto> findUsers() {

@@ -33,9 +33,9 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
-    public String profile(@PathVariable Long userId, Model model) {
-        UserDto userDto = userService.findUser(userId);
+    @GetMapping("/users/{email}")
+    public String profile(@PathVariable String email, Model model) {
+        UserDto userDto = userService.findUser(email);
         model.addAttribute("user", userDto);
         return "user/profile";
     }
