@@ -50,4 +50,9 @@ public class Article {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public boolean equalId(Integer referId) {
+        return Objects.equals(this.id, referId);
+    }
+
 }

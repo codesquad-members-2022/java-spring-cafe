@@ -53,4 +53,8 @@ public class User {
     public int hashCode() {
         return Objects.hash(userId);
     }
+
+    public boolean equalId(String referUserId) {
+        return Objects.equals(userId, referUserId);
+    }
 }

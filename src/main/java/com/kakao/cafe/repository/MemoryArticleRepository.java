@@ -28,7 +28,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findByArticleId(Integer id) {
         return articles.stream()
-                .filter(article -> article.getId().equals(id))
+                .filter(article -> article.equalId(id))
                 .findAny();
     }
 
