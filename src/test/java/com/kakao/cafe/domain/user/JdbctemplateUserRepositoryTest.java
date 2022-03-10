@@ -5,10 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
-import org.springframework.test.context.jdbc.Sql;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-
-import javax.sql.DataSource;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,15 +14,14 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 
 @JdbcTest
-@Sql("/ddl.sql")
 class JdbctemplateUserRepositoryTest {
 
     private UserRepository userRepository;
     private User user;
 
     @Autowired
-    public JdbctemplateUserRepositoryTest(DataSource dataSource) {
-        this.userRepository = new JdbctemplateUserRepository(dataSource);
+    public JdbctemplateUserRepositoryTest(JdbcTemplate jdbcTemplate) {
+        userRepository = new JdbctemplateUserRepository(jdbcTemplate);
     }
 
     @BeforeEach
@@ -38,14 +35,13 @@ class JdbctemplateUserRepositoryTest {
 
         userRepository.save(user);
 
-        Optional<User> target = userRepository.findById("ron2");
+        User target = userRepository.findById("ron2").orElseThrow();
 
-        target.ifPresent(u -> {
-            assertThat(u.getUserId()).isEqualTo("ron2");
-            assertThat(u.getPassword()).isEqualTo("1234");
-            assertThat(u.getName()).isEqualTo("로니");
-            assertThat(u.getEmail()).isEqualTo("email@email.com");
-        });
+        assertThat(target.getUserId()).isEqualTo("ron2");
+        assertThat(target.getPassword()).isEqualTo("1234");
+        assertThat(target.getName()).isEqualTo("로니");
+        assertThat(target.getEmail()).isEqualTo("email@email.com");
+
     }
 
     @Test

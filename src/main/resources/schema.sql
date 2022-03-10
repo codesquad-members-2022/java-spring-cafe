@@ -1,4 +1,4 @@
-drop table if exists cafe_user;
+-- drop table if exists cafe_user;
 
 create table cafe_user (
                         userId varchar(255) primary key,
