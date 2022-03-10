@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -42,7 +41,6 @@ public class UserController {
 
         userService.createUser(user);
 
-        // 아래 @GetMapping("/user/list") 컨트롤러 호출을 위해 redirect 사용
         return "redirect:/user/list";
     }
 
@@ -56,10 +54,9 @@ public class UserController {
 
     @GetMapping("/user/{userName}")
     public String userProfile(@PathVariable String userName, Model model) {
-        Optional<User> user = userService.findUser(userName);
-        user.ifPresent(foundUser ->
-                model.addAttribute("foundUser", foundUser));
+        User foundUser = userService.findUser(userName);
+        model.addAttribute("foundUser", foundUser);
 
         return "/user/profile";
-    }
+    }           
 }

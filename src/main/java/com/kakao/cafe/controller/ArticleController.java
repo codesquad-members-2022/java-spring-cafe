@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -49,11 +48,8 @@ public class ArticleController {
 
     @GetMapping("/article/{articleIdx}")
     public String articleDetail(@PathVariable long articleIdx, Model model) {
-        Optional<Article> article = articleService.findArticle(articleIdx);
-
-        article.ifPresent(foundArticle ->
-            model.addAttribute("foundArticle", foundArticle)
-        );
+        Article foundArticle = articleService.findArticle(articleIdx);
+        model.addAttribute("foundArticle", foundArticle);
 
         return "/article/show";
     }
