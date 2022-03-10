@@ -3,8 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +10,6 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
@@ -22,7 +19,6 @@ public class UserService {
     public String signUp(User user) {
         validateDuplicatedUser(user);
         userRepository.userSave(user);
-        log.info("가입 성공: {}", user.getEmail());
         return user.getUserId();
     }
 

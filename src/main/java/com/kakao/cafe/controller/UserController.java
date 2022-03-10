@@ -28,24 +28,30 @@ public class UserController {
 
     @GetMapping("/list")
     public String findAllUser(Model model) {
+        log.info("유저 리스트 조회 시도");
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        log.info("유저 리스트 페이지 접속");
+        log.info("유저 리스트 조회 성공 유저 수={}", users.size());
+        log.debug("유저리스트={}", users);
         return "user/list";
     }
 
     @PostMapping("/create")
     public String users(@ModelAttribute User user) {
+        log.info("유저 회원가입 시도");
         userService.signUp(user);
-        log.info("signUp user = {}", user);
+        log.info("{} 이메일을 가지는 유저 회원가입 성공", user.getEmail());
+        log.debug("회원가입={}", user);
         return "redirect:list";
     }
 
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable String userId, Model model) {
+        log.info("유저 프로필 조회 시도");
         User findUser = userService.findIdUser(userId);
-        log.info("findUser = {}", findUser);
         model.addAttribute("user", findUser);
+        log.info("{} 유저 프로필 조회 성공", findUser.getUserId());
+        log.debug("프로필조회={}", findUser);
         return "user/profile";
     }
 }

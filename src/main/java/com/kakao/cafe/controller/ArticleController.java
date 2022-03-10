@@ -26,16 +26,20 @@ public class ArticleController {
 
     @PostMapping("/new")
     public String registerQuestions(@ModelAttribute Article article) {
-        articleService.generateArticle(article);
-        log.info("작성 성공 = {}", article.getTitle());
+        log.info("질문 작성 시도");
+        articleService.registerArticle(article);
+        log.info("{} 가 {} 질문을 작성했습니다. (작성시간 : {})", article.getWriter(), article.getTitle(), article.getDateOfIssue());
+        log.debug("작성 글={}", article);
         return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
     public String viewDetails(@PathVariable int articleId, Model model) {
+        log.info("질문 상세보기 페이지 접속 시도");
         Article findArticle = articleService.findArticleById(articleId);
-        log.info("findArticle = {}", findArticle);
         model.addAttribute("article", findArticle);
+        log.info("{} 질문 상세페이지 접속 성공", findArticle.getTitle());
+        log.debug("접속 글={}", findArticle);
         return "qna/show";
     }
 }
