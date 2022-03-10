@@ -51,12 +51,9 @@ public class UserService {
         return repository.findAll();
     }
 
-    public User findById(Long id) {
-        if (repository.findById(id).isPresent()) {
-            return repository.findById(id).get();
-        }
-
-        throw new NoSuchElementException("존재하지 않는 회원입니다.");
+    public User findByUserId(String userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
     }
 
 }

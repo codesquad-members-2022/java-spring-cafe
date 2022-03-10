@@ -45,10 +45,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id:[0-9]+}")
-    public String viewUserProfile(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/users/{userId}")
+    public String viewUserProfile(@PathVariable("userId") String userId, Model model) {
         try {
-            model.addAttribute("user", service.findById(id));
+            model.addAttribute("user", service.findByUserId(userId));
             return "/users/profile";
         } catch (NoSuchElementException e) {
             //noinspection SpringMVCViewInspection
