@@ -12,13 +12,13 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        if (!isAlreadyJoin(user)) {
-            join(user);
+        if (isAlreadyJoin(user)) {
+            User originalUser = findByUserId(user.getUserId())
+                    .orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
+            originalUser = user;
             return;
         }
-        User originalUser = findByUserId(user.getUserId())
-                .orElseThrow(() -> new NoSuchElementException("해당 유저가 없습니다."));
-        originalUser = user;
+            join(user);
     }
 
     private void join(User user) {
