@@ -6,7 +6,7 @@ spring:
       enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://bcb35822584fbe:501c0042@us-cdbr-east-05.cleardb.net/heroku_4e96821042e4948?reconnect=true
+    url: jdbc:mysql://bcb35822584fbe:501c0042@us-cdbr-east-05.cleardb.net/heroku_4e96821042e4948?reconnect=true&serverTimezone=Asia/Seoul
     username: bcb35822584fbe
     password:
   h2:
