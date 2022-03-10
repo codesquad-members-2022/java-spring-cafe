@@ -5,9 +5,9 @@ spring:
     livereload:
       enabled: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/springcafe
-    username: sa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://bcb35822584fbe:501c0042@us-cdbr-east-05.cleardb.net/heroku_4e96821042e4948?reconnect=true
+    username: bcb35822584fbe
     password:
   h2:
     console:
