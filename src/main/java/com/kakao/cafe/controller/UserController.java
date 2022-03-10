@@ -26,7 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String list(Model model) {
+    public String users(Model model) {
         List<UserDto> users = userService.findUsers();
         model.addAttribute("users", users);
         model.addAttribute("totalUserCount", users.size());
