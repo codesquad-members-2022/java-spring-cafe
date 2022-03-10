@@ -11,10 +11,10 @@ import org.junit.jupiter.api.Test;
 import com.kakao.cafe.domain.User;
 
 class MemoryUserRepositoryTest {
-	MemoryUserRepository userRepository = new MemoryUserRepository() ;
+	MockRepository userRepository = new MockRepository();
 
 	@AfterEach
-	void afterEach() {
+	void clearRepository() {
 		userRepository.clearList();
 	}
 
@@ -48,3 +48,5 @@ class MemoryUserRepositoryTest {
 		assertThat(result).isEqualTo(user1.getUserId());
 	}
 }
+
+

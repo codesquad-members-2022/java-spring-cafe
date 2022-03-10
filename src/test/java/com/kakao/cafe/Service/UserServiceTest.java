@@ -11,20 +11,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.MemoryUserRepository;
+import com.kakao.cafe.repository.MockRepository;
 
 class UserServiceTest {
-	MemoryUserRepository userRepository;
+
+	MockRepository userRepository;
 	UserService userService;
 
 	@BeforeEach
 	void beforeEach() {
-		userRepository = new MemoryUserRepository();
+		userRepository = new MockRepository();
 		userService = new UserService(userRepository);
 	}
 
 	@AfterEach
-	void afterEach() {
+	void clearRepository() {
 		userRepository.clearList();
 	}
 	@Test
@@ -80,4 +81,6 @@ class UserServiceTest {
 		// then
 		Assertions.assertThrows(IllegalStateException.class, () -> userService.join(user2));
 	}
+
 }
+

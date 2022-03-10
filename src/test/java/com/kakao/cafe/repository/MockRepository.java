@@ -4,13 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
-
 import com.kakao.cafe.domain.User;
 
-@Repository
-public class MemoryUserRepository implements UserRepository {
-
+public class MockRepository implements UserRepository {
 	private static final List<User> userList = new ArrayList<>();
 
 	@Override
@@ -28,5 +24,9 @@ public class MemoryUserRepository implements UserRepository {
 		return userList.stream()
 			.filter(user -> user.getUserId().equals(userId))
 			.findAny();
+	}
+
+	public void clearList() {
+		userList.clear();
 	}
 }
