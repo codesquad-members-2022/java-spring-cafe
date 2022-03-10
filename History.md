@@ -57,3 +57,13 @@
    - findAll 메서드 호출 시 회원을 제대로 리스트로 반환하는지 테스트
 
 ---
+
+## home.html 및 의존 정적 리소스 추가
+
+1. 홈페이지에 해당하는 `home.html`을 추가했다.
+2. `home.html`이 의존하는 정적 리소스들을 추가했다.
+  - `reset.css`, `home.css`
+  - `KakaoCI.png`
+
+---
+  
