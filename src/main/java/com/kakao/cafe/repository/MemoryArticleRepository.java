@@ -13,13 +13,23 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public int save(Article article) {
-        store.add(article);
-        return store.size() - 1;
+        Article newArticle = new Article(nextId(), article);
+        store.add(newArticle);
+        return store.size();
+    }
+
+    @Override
+    public Article findById(int id) {
+        return store.get(id - 1);
     }
 
     @Override
     public List<Article> findAll() {
         return List.copyOf(store);
+    }
+
+    public int nextId() {
+        return store.size() + 1;
     }
 
     public void clear() {

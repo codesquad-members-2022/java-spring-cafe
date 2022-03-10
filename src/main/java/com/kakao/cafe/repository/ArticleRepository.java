@@ -7,5 +7,7 @@ public interface ArticleRepository {
 
     int save(Article article);
 
+    Article findById(int id);
+
     List<Article> findAll();
 }
