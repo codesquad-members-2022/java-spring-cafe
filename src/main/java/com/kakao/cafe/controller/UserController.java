@@ -53,7 +53,10 @@ public class UserController {
         return "/user/updateForm";
     }
 
-    // @PutMapping("/user")
-    // public String updateForm()
+    @PostMapping("/user/{nickname}") // 회원 정보 수정
+    public String updateProfileForm(@PathVariable String nickname, User updatedUser) {
+        User user = userService.findByNickname(nickname);
+        userService.update(user, updatedUser);
+        return "redirect:/user/list";
+    }
 }
-

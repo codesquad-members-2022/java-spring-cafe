@@ -23,6 +23,12 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public void update(User user, User updatedUser) {
+        user.setNickname(updatedUser.getNickname());
+        user.setEmail(updatedUser.getEmail());
+    }
+
+    @Override
     public Optional<User> findById(int id) {
         return users.stream().filter(u -> u.matchesId(id)).findAny();
     }
