@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Article {
 
@@ -19,6 +20,19 @@ public class Article {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(id, article.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
