@@ -34,7 +34,7 @@ public class UserController {
         return "user/form";
     }
 
-    @PostMapping("/create")
+    @PostMapping
     public String create(@Validated UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.error("errors={}", bindingResult);
@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String userProfile(@PathVariable Long userId, Model model) {
+    public String userProfile(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
         return "user/profile";
@@ -61,11 +61,12 @@ public class UserController {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ModelAndView exception(HttpServletRequest request, HttpServletResponse response, IllegalArgumentException exception) throws IOException {
+        logger.error("IllegalArgumentException={}", exception.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("exception", exception.getMessage());
 
         String requestURI = request.getRequestURI();
-        if (requestURI.equals("/users/create")) {
+        if (requestURI.equals("/users")) {
             UserDto userDto = changeParamsToUserDto(request);
             modelAndView.addObject(userDto);
             modelAndView.setViewName("user/form");
@@ -79,10 +80,6 @@ public class UserController {
 
     private UserDto changeParamsToUserDto(HttpServletRequest request) {
         UserDto userDto = new UserDto();
-        String id = request.getParameter("id");
-        if (id != null) {
-            userDto.setId(Long.parseLong(id));
-        }
         userDto.setUserId(request.getParameter("userId"));
         userDto.setPassword(request.getParameter("password"));
         userDto.setName(request.getParameter("name"));

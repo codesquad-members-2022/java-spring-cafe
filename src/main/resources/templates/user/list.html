@@ -20,7 +20,7 @@
                         <th scope="row" th:text="${userStat.count}"></th>
                         <td th:text="${user.userId}"></td>
                         <td>
-                            <a th:href="@{/users/{userId}(userId=${user.id})}" th:text="${user.name}"/>
+                            <a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}"/>
                         </td>
                         <td th:text="${user.email}"></td>
                         <td><a href="#" class="btn btn-success" role="button">수정</a></td>

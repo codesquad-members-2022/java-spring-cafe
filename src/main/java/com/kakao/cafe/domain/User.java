@@ -1,7 +1,6 @@
 package com.kakao.cafe.domain;
 
 public class User {
-    private Long id;
     private String userId;
     private String password;
     private String name;
@@ -12,14 +11,6 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getUserId() {
@@ -36,10 +27,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public boolean isEqualsId(Long id) {
-        return this.id.equals(id);
     }
 
     public boolean isEqualsUserId(String userId) {

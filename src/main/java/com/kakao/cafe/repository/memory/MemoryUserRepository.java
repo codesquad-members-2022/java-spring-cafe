@@ -1,29 +1,27 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
     private final List<User> users = new ArrayList<>();
-    private final AtomicLong sequence = new AtomicLong();
 
     @Override
     public void save(User user) {
-        user.setId(sequence.getAndIncrement());
         users.add(user);
     }
 
     @Override
-    public User findById(Long id) {
+    public User findByUserId(String userId) {
         return users.stream()
-                .filter(user -> user.isEqualsId(id))
+                .filter(user -> user.isEqualsUserId(userId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 사용자는 존재하지 않습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("사용자가 존재하지 않습니다."));
     }
 
     @Override

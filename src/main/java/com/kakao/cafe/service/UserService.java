@@ -19,8 +19,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findOne(Long userId) {
-        return userRepository.findById(userId);
+    public User findOne(String userId) {
+        return userRepository.findByUserId(userId);
     }
 
     public List<User> findUsers() {

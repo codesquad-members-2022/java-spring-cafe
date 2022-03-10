@@ -7,8 +7,6 @@ import javax.validation.constraints.NotBlank;
 
 public class UserDto {
 
-    private Long id;
-
     @NotBlank
     private String userId;
 
@@ -23,14 +21,6 @@ public class UserDto {
 
     public User toEntity() {
         return new User(userId, password, name, email);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUserId() {
