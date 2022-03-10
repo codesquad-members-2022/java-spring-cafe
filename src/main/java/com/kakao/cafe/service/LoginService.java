@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.web.login.dto.LoginDto;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,10 @@ public class LoginService {
         return userRepository.findById(userId)
                 .filter(m -> m.isSamePassword(password))
                 .orElse(null);
+    }
+
+    public User login(LoginDto dto) {
+        return login(dto.getUserId(), dto.getPassword());
     }
 
     public boolean logout(HttpSession session) {
