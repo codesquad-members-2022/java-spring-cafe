@@ -68,7 +68,7 @@ class UserServiceTest {
         user.setUserIdx(++userCount);
         store.put(user.getUserIdx(), user);
 
-        User foundUser = userService.findUser(user.getUserName()).get();
+        User foundUser = userService.findUser(user.getUserName());
 
         assertThat(foundUser.getUserName()).isEqualTo(user.getUserName());
     }
