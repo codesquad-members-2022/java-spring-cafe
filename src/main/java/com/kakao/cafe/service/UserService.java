@@ -26,12 +26,7 @@ public class UserService {
     }
 
     public void update(User user, User updatedUser) {
-        if (!user.matchesNickname(updatedUser.getNickname())) { // 기존 닉네임과 같을 경우 validation 패스
-            validateUniqueNickname(updatedUser);
-        }
-        if (!user.matchesEmail(updatedUser.getEmail())) {
-            validateUniqueEmail(updatedUser);
-        }
+        validateUpdatedInput(user, updatedUser);
         userRepository.update(user, updatedUser);
     }
 
@@ -45,6 +40,18 @@ public class UserService {
         userRepository.findByEmail(user.getEmail()).ifPresent(m -> {
             throw new IllegalArgumentException(ErrorMessage.EXISTING_EMAIL.get());
         });
+    }
+
+    private void validateUpdatedInput(User user, User updatedUser) {
+        if (!user.getPassword().equals(updatedUser.getPassword())) {
+            throw new IllegalArgumentException(ErrorMessage.WRONG_PASSWORD.get());
+        }
+        if (!user.matchesNickname(updatedUser.getNickname())) { // 기존 닉네임과 같을 경우 validation 패스
+            validateUniqueNickname(updatedUser);
+        }
+        if (!user.matchesEmail(updatedUser.getEmail())) {
+            validateUniqueEmail(updatedUser);
+        }
     }
 
     public User findById(int id) {
