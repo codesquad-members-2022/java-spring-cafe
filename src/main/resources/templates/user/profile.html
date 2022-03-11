@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="kr">
+{{> header_form}}
+<body>
+<div class="background">
+    {{> navigation}}
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">회원 정보</p>
+        </header>
+        {{#user}}
+        <div class="info-container">
+            <div class="form-group">
+                <label>닉네임</label>
+                <p class="form-control">{{userId}}</p>
+            </div>
+            <div class="form-group">
+                <label>이메일</label>
+                <p class="form-control">{{email}}</p>
+            </div>
+            <div class="form-group">
+                <label>회원가입일</label>
+                <p class="form-control">{{createdAt}}</p>
+            </div>
+        </div>
+        {{/user}}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+.col-md-12 {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.navbar-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.active {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+}
+
+li {
+    margin: 3px;
+}
+
+.black-component {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 80px;
+    height: 30px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+}
+
+.black-component:hover {
+    background-color: #ffcd00;
+    color: black;
+}
+
+.navbar-right {
+    display: flex;
+}
+
+.container {
+    margin-left: 10%;
+    width: 80%;
+}
+
+.article-doc {
+    line-height: 30px;
+}
+
+.title {
+    font-size: 32px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 100px;
+    margin-bottom: 60px;
+}
+
+.comment {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 1px solid lightgray;
+}
+
+.article-header-text {
+    color: gray;
+    display: flex;
+}
+
+.article-content {
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.article-header {
+    margin-bottom: 50px;
+}
+
+.post-comment {
+    margin-top: 60px;
+}
+
+.post-comment-count {
+    margin-bottom: 30px;
+}
+
+.comment-author-name {
+    font-weight: bold;
+}
+
+.comment-time {
+    color: lightgray;
+}
+
+.comment-content {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post-title {
+    font-weight: bold;
+    margin-top: 20px;
+    margin-left: 3%;
+}
+
+.post-content {
+    margin-top: 20px;
+    margin-left: 3%;
+    font-weight: bold;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn {
+    margin-top: 20px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    width: 200px;
+    height: 30px;
+    font-size: 14px;
+    background-color: black;
+    color: white;
+    margin: 20px;
+}
+
+.post-btn-container {
+    display: flex;
+    justify-content: end;
+}
+
+.btn:hover {
+    background-color: #ffcd00;
+    color: black;
+}
+
+.form-group {
+    padding: 20px;
+    display: flex;
+    border: 1px solid lightgray;
+    margin: 20px;
+    width: 40%;
+}
+
+.form-control {
+    border:none;
+}
+
+.form-control:focus {
+    outline: none;
+}
+
+.comment-writer {
+    font-weight: bold;
+    margin: 20px;
+}
+
+.text-box {
+    border: 1px solid lightgray;
+    margin-top: 20px;
+}
+
+.submit-write {
+
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    width: 25%;
+}
