@@ -146,4 +146,10 @@ HomeController 및 테스트 코드를 추가했다.
 
 - 의존 정적 리소스 : createArticleForm.css 추가
 
+## 2.2 ArticleController - createForm 메서드 추가
+
+게시글 작성 페이지로 맵핑되어 글쓰기 폼의 viewName을 반환하는 createFrom 메서드를 추가했다.
+
+- createForm : `/articles/new`로 GET 요청 -> `/articles/createArticleForm`이 반환됨
+
 ---
