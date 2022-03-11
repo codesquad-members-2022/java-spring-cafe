@@ -7,7 +7,7 @@ import com.kakao.cafe.domain.Article;
 
 public interface ArticleRepository {
 
-    void save(Article article);
+    int save(Article article);
 
     Optional<Article> findById(int index);
 

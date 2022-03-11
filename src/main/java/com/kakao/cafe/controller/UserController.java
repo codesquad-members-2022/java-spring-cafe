@@ -16,44 +16,44 @@ import com.kakao.cafe.service.UserService;
 public class UserController {
     private final UserService userService;
 
-    @Autowired //-> 생성자가 하나일 경우 생략 가능. 하지만 명시해주는게 더 좋은 것 같아 놔둠
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/user/list") // 회원 목록으로 이동
-    public String list(Model model) {
+    @GetMapping("/user/list")
+    public String viewUserList(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "/user/list";
     }
 
-    @GetMapping("/user/form") // 회원 가입 페이지로 이동
-    public String form() {
+    @GetMapping("/user/form")
+    public String viewUserForm() {
         return "/user/form";
     }
 
-    @PostMapping("/user") // 회원 가입
-    public String create(User user) {
+    @PostMapping("/user")
+    public String signIn(User user) {
         userService.join(user);
-        return "redirect:/user/list"; // redirect 역할 : 파일(list.html)이 아닌 URL(/user/list)을 호출한다
+        return "redirect:/user/list";
     }
 
-    @GetMapping("/user/{nickname}") // 회원 정보 조회 페이지로 이동
+    @GetMapping("/user/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("userProfile", user);
         return "/user/profile";
     }
 
-    @GetMapping("/user/{nickname}/form") // 회원 정보 수정 페이지로 이동
-    public String profileForm(@PathVariable String nickname, Model model) {
+    @GetMapping("/user/{nickname}/form")
+    public String viewProfileForm(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("user", user);
         return "/user/updateForm";
     }
 
-    @PostMapping("/user/{nickname}") // 회원 정보 수정
+    @PostMapping("/user/{nickname}")
     public String updateProfileForm(@PathVariable String nickname, User updatedUser) {
         User user = userService.findByNickname(nickname);
         userService.update(user, updatedUser);

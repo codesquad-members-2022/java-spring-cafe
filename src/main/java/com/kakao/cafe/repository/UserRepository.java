@@ -8,8 +8,6 @@ import com.kakao.cafe.domain.User;
 public interface UserRepository {
     void save(User user);
 
-    void update(User user, User updatedUser);
-
     Optional<User> findById(int id);
 
     Optional<User> findByNickname(String nickname);

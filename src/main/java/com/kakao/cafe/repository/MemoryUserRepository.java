@@ -18,14 +18,8 @@ public class MemoryUserRepository implements UserRepository {
     public void save(User user) {
         sequence++;
         user.setId(sequence);
-        user.setDate(LocalDate.now().toString());
+        user.setDate(LocalDate.now());
         users.add(user);
-    }
-
-    @Override
-    public void update(User user, User updatedUser) {
-        user.setNickname(updatedUser.getNickname());
-        user.setEmail(updatedUser.getEmail());
     }
 
     @Override

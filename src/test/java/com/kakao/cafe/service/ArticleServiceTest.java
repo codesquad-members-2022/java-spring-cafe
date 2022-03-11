@@ -22,13 +22,10 @@ class ArticleServiceTest {
     @Test
     @DisplayName("게시글을 등록하면 MemoryArticleRespository 에 저장된다")
     void add() {
-        Article article = new Article();
-        article.setTitle("제목1");
-        article.setContent("내용1");
-        articleService.add(article);
+        Article article = new Article("제목1", "내용1");
+        int id = articleService.add(article);
 
         Article foundArticle = articleService.findById(1);
-        assertThat(article.getId()).isEqualTo(foundArticle.getId());
         assertThat(article.getTitle()).isEqualTo(foundArticle.getTitle());
         assertThat(article.getContent()).isEqualTo(foundArticle.getContent());
     }
@@ -36,18 +33,13 @@ class ArticleServiceTest {
     @Test
     @DisplayName("게시글을 등록하면 오름차순으로 id가 할당된다")
     void add_multiple_articles() {
-        Article article1 = new Article();
-        article1.setTitle("제목1");
-        article1.setContent("내용1");
-        articleService.add(article1);
+        Article article1 = new Article("제목1", "내용1");
+        int id1 = articleService.add(article1);
 
-        Article article2 = new Article();
-        article2.setTitle("제목2");
-        article2.setContent("내용2");
-        articleService.add(article2);
+        Article article2 = new Article("제목2", "내용2");
+        int id2 = articleService.add(article2);
 
-        assertThat(article1.getId()).isEqualTo(1);
-        assertThat(article2.getId()).isEqualTo(2);
-
+        assertThat(id1).isEqualTo(1);
+        assertThat(id2).isEqualTo(2);
     }
 }

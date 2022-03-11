@@ -28,7 +28,7 @@ public class UserService {
 
     public void update(User user, User updatedUser) {
         validateUpdatedInput(user, updatedUser);
-        userRepository.update(user, updatedUser);
+        user.updateProfile(updatedUser.getNickname(), updatedUser.getEmail());
     }
 
     private void validateUniqueNickname(User user) {
@@ -55,11 +55,6 @@ public class UserService {
         }
     }
 
-    public User findById(int id) {
-        return userRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get()));
-    }
-
     public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
             .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get()));
@@ -68,5 +63,4 @@ public class UserService {
     public List<User> findUsers() {
         return new ArrayList<>(userRepository.findAll());
     }
-
 }

@@ -18,24 +18,24 @@ public class ArticleController {
     }
 
     @GetMapping("/qna/form")
-    public String form() {
+    public String viewArticleForm() {
         return "/qna/form";
     }
 
     @GetMapping("/")
-    public String list(Model model) {
+    public String viewArticleList(Model model) {
         model.addAttribute("articles", articleService.findArticles());
         return "/index";
     }
 
     @PostMapping("/questions")
-    public String create(Article article) {
+    public String postArticle(Article article) {
         articleService.add(article);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{index}")
-    public String view(@PathVariable int index, Model model) {
+    public String viewArticle(@PathVariable int index, Model model) {
         Article article = articleService.findById(index);
         model.addAttribute("article", article);
         return "/qna/show";

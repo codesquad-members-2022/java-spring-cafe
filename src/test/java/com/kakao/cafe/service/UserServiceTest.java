@@ -23,10 +23,7 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입을 하면 회원 정보가 MemoryUserRepository에 저장된다")
     void join_success() {
-        User user1 = new User();
-        user1.setNickname("BC");
-        user1.setEmail("BC@gmail.com");
-        user1.setPassword("1234");
+        User user1 = new User("BC", "BC@gmail.com", "1234");
         userService.join(user1);
 
         User user = userService.findByNickname("BC");
@@ -37,21 +34,11 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입시 이미 등록되어있는 닉네임 또는 이메일을 입력하면 예외를 발생시킨다")
     void join_validateUniqueNickname() {
-        User user1 = new User();
-        user1.setEmail("BC@gmail.com");
-        user1.setNickname("BCdd");
-        user1.setPassword("1234");
+        User user1 = new User("BC", "BC@gmail.com", "1234");
         userService.join(user1);
 
-        User user2 = new User();
-        user2.setEmail("HARRY@gmail.com");
-        user2.setNickname("BCdd");
-        user2.setPassword("1234555");
-
-        User user3 = new User();
-        user3.setEmail("BC@gmail.com");
-        user3.setNickname("Zen");
-        user3.setPassword("123335");
+        User user2 = new User("BC", "WJJ@gmail.com", "1g2345");
+        User user3 = new User("CAPI", "BC@gmail.com", "1234");
 
         assertThatThrownBy(() -> userService.join(user2))
             .isInstanceOf(IllegalArgumentException.class)
@@ -65,20 +52,13 @@ class UserServiceTest {
     @Test
     @DisplayName("회원가입을 하면 id가 1부터 오름차순으로 배정된다")
     void join_assign_id() {
-        User user1 = new User();
-        user1.setEmail("HARRY@gmail.com");
-        user1.setNickname("bc");
-        user1.setPassword("1234");
+        User user1 = new User("bc", "HARRY@gmail.com", "1234");
         userService.join(user1);
 
-        User user2 = new User();
-        user2.setEmail("BC@gmail.com");
-        user2.setNickname("BBBB");
-        user2.setPassword("1234555");
+        User user2 = new User("BBBB", "BC@gmail.com", "1234");
         userService.join(user2);
 
         assertThat(user1.matchesId(1)).isTrue();
         assertThat(user2.matchesId(2)).isTrue();
-
     }
 }

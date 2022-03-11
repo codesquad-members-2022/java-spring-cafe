@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import java.time.LocalDate;
+
 import com.kakao.cafe.exception.ErrorMessage;
 
 public class User {
@@ -7,39 +9,38 @@ public class User {
     private int id;
     private String nickname;
     private String email;
-    private String date;
+    private LocalDate date;
     private String password;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public User(String nickname, String email, String password) {
+        this.nickname = nickname;
         this.email = email;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.password = password;
     }
 
     public String getNickname() {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getEmail() {
+        return email;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void updateProfile(String nickname, String email) {
+        this.nickname = nickname;
+        this.email = email;
     }
 
     public boolean matchesId(int id) {

@@ -14,10 +14,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     private List<Article> articles = new ArrayList<>();
 
     @Override
-    public void save(Article article) {
-        article.setId(articles.size() + 1);
-        article.setDate(LocalDate.now().toString());
+    public int save(Article article) {
+        int id = articles.size() + 1;
+        article.setId(id);
+        article.setDate(LocalDate.now());
         articles.add(article);
+        return id;
     }
 
     @Override
