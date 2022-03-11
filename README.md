@@ -53,7 +53,7 @@
 </details>
 
 <details>
-<summary> API 설계 </summary>
+<summary> URL & API </summary>
 <div markdown="1">
 
 | URL | 기능 | 설명 | Response Page | Page Type |
@@ -69,7 +69,7 @@
 
 
 <details>
-<summary> View 결과 </summary>
+<summary> View </summary>
 <div markdown="1">
 
 ![form](https://i.imgur.com/FQrmnMd.jpg)
@@ -83,7 +83,7 @@
 
 
 <details>
-<summary> 단위 테스트 결과 </summary>
+<summary> 테스트 </summary>
 <div markdown="1">
 
 ![UnitTest](https://i.imgur.com/zmIAW72.jpg)
@@ -94,6 +94,62 @@
 
 </div>
 </details>
+
+# Step 2 : 글 쓰기 기능 구현
+<details>
+<summary> 🖼📝 Step 2 결과와 설명 </summary>
+<div markdown="1">
+
+<details>
+<summary> URL & API </summary>
+<div markdown="1">
+
+| URL               | 기능 | 설명 | Response Page | Page Type | 구현 여부 |
+|-------------------| --- | --- | --- | --- | --- |
+| step2             |  |  |  |  |  |
+| GET /questions    | get create qna | 질문하기 화면 | /qna/form.html | 정적 | ✅ |
+| POST /questions   | create qna | 질문하기 생성 | redirect: / | 동적 | ✅ |
+| GET /             | List all posts | 글목록 조회 | index.html | 동적 | ✅ |
+| GET /articles/{index} | get a article | 특정 글 조회 | /qna/show.html | 동적 | ✅ |
+|                   |  |  |  |  |  |
+| step2 추가 요구사항(선택) |  |  |  |  |  |
+| Get /users/{id}/form | get 개인 정보 수정 화면 | 개인 정보 수정 화면 | /user/updateForm.html | 정적 | ☑️ |
+| PUT /users/{id}/update | update User 정보 | 개인정보 수정 | redirect: /users | 동적 | ☑️ |
+|                   |  |  |  |  |  |
+
+</div>
+</details>
+
+
+<details>
+<summary> View  </summary>
+<div markdown="1">
+
+![get /questions](https://i.imgur.com/dKYTAFU.jpg)
+
+![/](https://i.imgur.com/A2Qa3TX.jpg)
+
+![get /articles/1](https://i.imgur.com/LN6MZuC.jpg)
+
+</div>
+</details>
+<details>
+<summary> 테스트 </summary>
+<div markdown="1">
+
+`ArticleControllerTest` : @SpringBootTest, @MockMvc를 활용 인수 테스트  
+`ArticleServiceStubTest` : Mockito를 활용한 Stub 단위 테스트  
+`ArticleServiceTest` : 직접 의존성 주입을 통한 단위 테스트   
+`MemoryUserRepositoryTest` : 직접 의존성 주입을 통한 단순 단위 테스트  
+
+![Imgur](https://i.imgur.com/AbvFkwH.jpg)
+
+</div>
+</details>
+
+</div>
+</details>
+
 
 
 ---
