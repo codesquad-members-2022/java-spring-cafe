@@ -24,7 +24,7 @@
 - [ ] JDBC template 로 개선해보기
 - [ ] DBrepository 예외 던지기
 - [x] findByUserId 로 메서드이름 변경
-- [ ] 자원 청소 부분 중복 제거하기
+- [x] 자원 청소 부분 중복 제거하기
 - [ ] @JdbcTest 적용하기
 
 ## Step03 ToDo-List
