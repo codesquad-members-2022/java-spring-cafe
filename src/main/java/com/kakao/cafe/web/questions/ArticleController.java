@@ -3,14 +3,12 @@ package com.kakao.cafe.web.questions;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.web.questions.dto.ArticleDto;
-import com.kakao.cafe.web.validation.ArticleValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -18,17 +16,10 @@ import org.springframework.web.bind.annotation.*;
 public class ArticleController {
 
     private final ArticleService articleService;
-    private final ArticleValidation articleValidation;
     private final Logger log = LoggerFactory.getLogger(ArticleController.class);
 
-    public ArticleController(ArticleService articleService, ArticleValidation articleValidation) {
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.articleValidation = articleValidation;
-    }
-
-    @InitBinder
-    public void init(WebDataBinder dataBinder) {
-        dataBinder.addValidators(articleValidation);
     }
 
     @GetMapping
