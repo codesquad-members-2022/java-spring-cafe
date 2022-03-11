@@ -1,22 +1,21 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.user.JdbcUserRepository;
 import com.kakao.cafe.domain.user.User;
-import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.web.dto.UserJoinDto;
 import com.kakao.cafe.web.dto.UserUpdateDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private final JdbcUserRepository userRepository;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(JdbcUserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
 
     public void userJoin(UserJoinDto dto) {
         userRepository.save(new User(dto.getUserId(), dto.getPassword()
@@ -30,8 +29,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User userUpdate(Long id, UserUpdateDto userUpdateDto) {
-        return userRepository.updateUser(id, userUpdateDto);
+    public void userUpdate(Long id, UserUpdateDto userUpdateDto) {
+        userRepository.updateUser(id, userUpdateDto);
     }
 
     public User findById(Long id) {
