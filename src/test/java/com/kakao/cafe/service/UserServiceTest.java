@@ -35,15 +35,10 @@ class UserServiceTest {
 
     @BeforeEach
     void setup() {
-        userRegisterFormDto = new UserRegisterFormDto();
-        userRegisterFormDto.setUserId("testId");
-        userRegisterFormDto.setPassword("testPw");
-        userRegisterFormDto.setName("testName");
-        userRegisterFormDto.setEmail("test@test.com");
+        userRegisterFormDto = new UserRegisterFormDto("testId1", "testPw1", "testName1",
+            "test1@test.com");
 
-        user1 = new User.UserBuilder()
-            .setUserId("testId1")
-            .setPassword("testPw1")
+        user1 = new User.UserBuilder("testId1","testPw1")
             .setName("testName1")
             .setEmail("test1@test.com")
             .build();
@@ -72,7 +67,7 @@ class UserServiceTest {
             .willReturn(Optional.ofNullable(user1));
 
         // then
-        assertThatThrownBy(() -> userService.validateDuplicateUserId(userId))
+        assertThatThrownBy(() -> userService.register(userRegisterFormDto))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("동일한 ID를 가지는 회원이 이미 존재합니다.");
     }
@@ -81,9 +76,7 @@ class UserServiceTest {
     @DisplayName("모든 회원을 조회 할 수 있다.")
     void 모든_회원_조회_테스트() {
         // given
-        User user2 = new User.UserBuilder()
-            .setUserId("testId2")
-            .setPassword("testPw2")
+        User user2 = new User.UserBuilder("testId2","testPw2")
             .setName("testName2")
             .setEmail("test2@test.com")
             .build();

@@ -8,9 +8,9 @@ public interface UserRepository {
 
     void save(User user);
 
+    void update(User previousUser, User newUser);
+
     Optional<User> findById(String userId);
 
     List<User> findAll();
-
-    void deleteAll();
 }

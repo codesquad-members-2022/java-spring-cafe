@@ -43,3 +43,48 @@
   - [x] `URL`을 통해 전달한 사용자 아이디 값은 `@PathVariable` 애노테이션을 활용해 전달 받기
   - [x] `ArrayList` 에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 `User` 데이터를 `Model`에 저장
   - [x] `user/profile.html` 에서는 `Controller`에서 전달한 User 데이터를 활용해 사용자 정보 출력
+
+## 2 단계 - 회원 가입 및 목록 기능
+### 기능 요구 사항
+- [x] 게시글 작성 기능
+- [x] 게시글 목록 조회 기능
+- [x] 게시글 상세 내용 조회 기능
+- [x] (선택) 사용자 정보 수정 기능
+### 프로그래밍 요구 사항
+- **글쓰기**
+  - [x] 게시글 페이지는 `static/qna/form.html` 을 수정해서 사용
+  - [x] `static` 에 있는 `html` 을 `templates` 로 이동
+  - [x] 게시글 기능 구현을 담당할 `ArticleController` 를 추가하고 애노테이션 매핑
+  - [x] 게시글 작성 요청(POST)을 처리할 메소드를 추가하고 매핑
+  - [x] 사용자가 전달한 값을 `Article` 클래스를 생성해 저장
+  - [x] 게시글 목록을 관리하는 `ArrayList` 를 생성한 후 앞에서 생성한 `Article` 인스턴스를 `ArrayList` 에 저장
+  - [x] 게시글 추가를 완료한 후 메인 페이지(`“redirect:/”`)로 이동
+
+- **글 목록 조회하기**
+  - [x] 메인 페이지(요청 URL 이 `“/”`)를 담당하는 `Controller` 의 `method` 에서 게시글 목록을 조회
+  - [x] 조회한 게시글 목록을 `Model` 에 저장한 후 `View` 에 전달 
+  - [x] 게시글 목록은 앞의 게시글 작성 단계에서 생성한 `ArrayList` 를 그대로 전달
+  - [x] `View` 에서 `Model` 을 통해 전달한 게시글 목록을 출력
+
+- **게시글 상세보기**
+  - [x] 게시글 목록(`qna/list.html`)의 제목을 클릭했을 때 게시글 상세 페이지에 접속
+  - [x] 게시글 상세 페이지 접근 `URL` 은 `"/articles/{index}"`와 같이 구현
+  - [x] 게시글 객체에 id 인스턴스 변수를 추가하고 `ArrayList`에 게시글 객체를 추가할 때 `ArrayList.size() + 1` 을 게시글 객체의 `id` 로 사용
+  - [x] `Controller` 에 상세 페이지 접근 `method` 를 추가하고 `URL` 은 `/articles/{index}` 로 매핑
+  - [x] `ArrayList`에서 `index - 1` 해당하는 데이터를 조회한 후 `Model` 에 저장해 `/qna/show.html` 에 전달
+  - [x] `/qna/show.html` 에서는 `Controller` 에서 전달한 데이터를 활용해 html 생성
+
+- **회원 정보 수정**
+  - [x] 회원가입한 사용자의 정보를 수정 가능
+  - [x] 비밀번호, 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정 불가
+  - [x] 비밀번호가 일치하는 경우에만 수정 가능
+- 수정화면
+  - [x] 회원가입한 사용자 정보를 수정할 수 있는 수정 화면과 사용자가 수정한 값을 업데이트할 수 있는 기능을 나누어 개발
+  - [x] `/user/form.html` 파일을 `/user/updateForm.html` 로 복사한 후 수정화면을 생성
+
+- 회원 정보 수정
+
+  - [x] UserController 의 사용자가 수정한 정보를 User 클래스에 저장
+  - [x] `{id}` 에 해당하는 User 를 DB 에서 조회
+  - [x] DB 에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트
+  - [ ] UserRepository 의 `save()` 메소드를 사용해 업데이트

@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +10,16 @@ import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<String, User> userHashMap = new LinkedHashMap<>();
-    private Long userNum = 0L;
+    private final Map<String, User> userHashMap = Collections.synchronizedMap(new LinkedHashMap<>());
 
     @Override
     public void save(User user) {
-        user.setUserNum(++userNum);
         userHashMap.put(user.getUserId(), user);
+    }
+
+    @Override
+    public void update(User previousUser, User newUser) {
+        previousUser.update(newUser);
     }
 
     @Override
@@ -26,10 +30,5 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return new ArrayList<>(userHashMap.values());
-    }
-
-    @Override
-    public void deleteAll() {
-        userHashMap.clear();
     }
 }

@@ -2,7 +2,6 @@ package com.kakao.cafe.domain;
 
 public class User {
 
-    private Long userNum;
     private String userId;
     private String password;
     private String name;
@@ -15,12 +14,10 @@ public class User {
         this.email = builder.email;
     }
 
-    public Long getUserNum() {
-        return userNum;
-    }
-
-    public void setUserNum(Long userNum) {
-        this.userNum = userNum;
+    public void update(User user) {
+        this.password = user.getPassword();
+        this.name = user.getName();
+        this.email = user.getEmail();
     }
 
     public String getUserId() {
@@ -47,14 +44,9 @@ public class User {
         private String name;
         private String email;
 
-        public UserBuilder setUserId(String userId) {
+        public UserBuilder(String userId, String password) {
             this.userId = userId;
-            return this;
-        }
-
-        public UserBuilder setPassword(String password) {
             this.password = password;
-            return this;
         }
 
         public UserBuilder setName(String name) {
