@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.kakao.cafe.web.domain.user.User;
 import com.kakao.cafe.web.repository.user.MemoryUserRepository;
 import com.kakao.cafe.web.repository.user.UserRepository;
-import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -20,17 +20,14 @@ class MemoryArticleRepositoryTest {
 		repository.clear();
 	}
 
-	//todo
-	// save가 잘 되었는지 확인을 하기 위해서는 저장소에서 꺼내오는 작업이 필요함
-	// -> 동시에 save, 꺼내오는 과정(findById)를 수행하게 되는데 save만 확인하는 방법은 없을까?
 	@Test
 	@DisplayName("질문을 하면 저장소에 질문이 저장이 되어서 Id값을 통해 찾을 수 있다.")
 	void saveArticleThenFindArticleById() {
 		//given
 		Article article = new Article("writer", "title", "contents");
+		repository.save(article);
 
 		//when
-		repository.save(article);
 		Article result = repository.findById(article.getId()).orElseThrow(NoSuchElementException::new);
 
 		//then
@@ -43,10 +40,10 @@ class MemoryArticleRepositoryTest {
 		//given
 		Article article1 = new Article("writer1", "title1", "contents1");
 		Article article2 = new Article("writer2", "title2", "contents2");
-
-		//when
 		repository.save(article1);
 		repository.save(article2);
+
+		//when
 		List<Article> result = repository.findAll();
 
 		//then
