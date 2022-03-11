@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String selectSql = "SELECT * FROM ARTICLES";
-        return jdbcTemplate.query(selectSql, articleRowMapper());
+        return reverseArticleList(jdbcTemplate.query(selectSql, articleRowMapper()));
     }
 
     private String currentTime() {
@@ -51,5 +52,10 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
             article.setCreatedTime(rs.getString("created_time"));
             return article;
         };
+    }
+
+    private List<Article> reverseArticleList(List<Article> articleList) {
+        Collections.reverse(articleList);
+        return articleList;
     }
 }
