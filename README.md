@@ -137,10 +137,12 @@
 <summary> 테스트 </summary>
 <div markdown="1">
 
-`ArticleControllerTest` : @SpringBootTest, @MockMvc를 활용 인수 테스트  
-`ArticleServiceStubTest` : Mockito를 활용한 Stub 단위 테스트  
-`ArticleServiceTest` : 직접 의존성 주입을 통한 단위 테스트   
-`MemoryUserRepositoryTest` : 직접 의존성 주입을 통한 단순 단위 테스트  
+`ArticleControllerTest` : @WebMvcTest, @MockMvc를 활용한 테스트  
+`ArticleServiceMockTest` : Mockito를 활용한 mock 테스트  
+`ArticleServiceTest` : 구현체 객체 생성을 통한 테스트   
+`MemoryUserRepositoryTest` : 구현체 객체 생성을 통한 테스트
+
+
 
 ![Imgur](https://i.imgur.com/AbvFkwH.jpg)
 
