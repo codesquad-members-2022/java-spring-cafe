@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.users;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.validation.UserValidation;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -117,5 +119,21 @@ class UserControllerTest {
         actions.andExpect(status().isOk())
                 .andExpect(model().attribute("user", user))
                 .andExpect(view().name("/user/updateForm"));
+    }
+
+    @Test
+    public void updateFailTest() throws Exception {
+        // given
+        given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
+
+
+        // then
+        assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
+                .param("userId", "Shine")
+                .param("password", "1234")
+                .param("name", "Shine")
+                .param("email", "shine@naver.com")
+                .accept(MediaType.TEXT_HTML)
+        )).hasCause(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
     }
 }

@@ -20,7 +20,7 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <span th:unless="${user == null}" th:text="|${user?.userId} 입니다|">user id</span>
+                        <span th:unless="${user?.userId == null}" th:text="|${user?.userId} 입니다|">user id</span>
                     </li>
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
@@ -53,10 +53,10 @@
             <div class="collapse navbar-collapse" id="navbar-collapse2">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="../index.html">Posts</a></li>
-                    <li><a href="../user/login.html" th:if="${user == null}" th:href="@{/login}" role="button">로그인</a></li>
-                    <li><a href="#" th:unless="${user == null}" th:onclick="|javascript:postLogout()|" role="button" >로그아웃</a></li>
-                    <li><a href="../user/form.html" th:if="${user == null}" th:href="@{/users/create}" role="button">회원가입</a></li>
-                    <li><a href="#" th:unless="${user == null}" th:href="@{/users/{userId}/form(userId=${user.userId})}" role="button">개인정보수정</a></li>
+                    <li><a href="../user/login.html" th:if="${user?.userId == null}" th:href="@{/login}" role="button">로그인</a></li>
+                    <li><a href="#" th:unless="${user?.userId == null}" th:onclick="|javascript:postLogout()|" role="button" >로그아웃</a></li>
+                    <li><a href="../user/form.html" th:if="${user?.userId == null}" th:href="@{/users/create}" role="button">회원가입</a></li>
+                    <li><a href="#" th:unless="${user?.userId == null}" th:href="@{/users/{userId}/form(userId=${user.userId})}" role="button">개인정보수정</a></li>
                 </ul>
             </div>
         </div>

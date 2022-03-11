@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
@@ -76,8 +77,23 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/update")
-    public String updateProfile(@ModelAttribute User user) {
-        userService.userUpdate(user);
+    public String updateProfile(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletResponse response) {
+
+        if (bindingResult.hasErrors()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            log.info("업데이트 메서드 : 사용자 인자 오류");
+            return "/user/updateForm";
+        }
+
+        boolean isSamePassword = userService.userUpdate(user);
+
+        if (!isSamePassword) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            bindingResult.rejectValue("password", "notmatched", "비밀번호가 일치하지 않습니다.");
+            log.info("업데이트 메서드 : 사용자 업데이트 실패");
+            return "/user/updateForm";
+        }
+
         return "redirect:/users";
     }
 }

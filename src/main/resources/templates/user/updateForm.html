@@ -16,14 +16,17 @@
               <div class="form-group">
                   <label for="password">비밀번호</label>
                   <input type="password" class="form-control" id="password" name="password" th:field="*{password}" placeholder="Password">
+                  <div th:errors="*{password}" style="color: #dc3545">사용자 비밀번호 오류</div>
               </div>
               <div class="form-group">
                   <label for="name">이름</label>
                   <input class="form-control" id="name" name="name" th:field="*{name}" placeholder="Name">
+                  <div th:errors="*{name}" style="color: #dc3545">사용자 이름 오류</div>
               </div>
               <div class="form-group">
                   <label for="email">이메일</label>
                   <input type="email" class="form-control" id="email" name="email" th:field="*{email}" placeholder="Email">
+                  <div th:errors="*{email}" style="color: #dc3545">사용자 이메일 오류</div>
               </div>
               <button type="submit" class="btn btn-success clearfix pull-right">수정 완료</button>
               <div class="clearfix" />

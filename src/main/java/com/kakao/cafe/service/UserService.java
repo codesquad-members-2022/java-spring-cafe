@@ -39,7 +39,13 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
 
-    public boolean userUpdate(User user){
-        return repository.update(user.getUserId(), user);
+    public boolean userUpdate(User user) {
+        User findUser = findUserById(user.getUserId());
+
+        if (findUser.isSamePassword(user.getPassword())) {
+            return repository.update(user.getUserId(), user);
+        }
+
+        return false;
     }
 }
