@@ -20,6 +20,13 @@
   - [x] 비밀번호가 같은 경우에만 수정
   - [ ] 로그인 한 사용자는 자신의 정보만 수정 가능
 
+## Step03 리뷰 내용 수정 사항
+- [ ] JDBC template 로 개선해보기
+- [ ] DBrepository 예외 던지기
+- [x] findByUserId 로 메서드이름 변경
+- [ ] 자원 청소 부분 중복 제거하기
+- [ ] @JdbcTest 적용하기
+
 ## Step03 ToDo-List
 - [x] user form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)
 - [x] article form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)
