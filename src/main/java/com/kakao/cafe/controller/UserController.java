@@ -29,10 +29,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String signUp(NewUserParam newUserParam, HttpServletRequest request) {
+    public String signUp(NewUserParam newUserParam,
+                         HttpServletRequest request) {
+
         logRequestInfo(request);
 
-        userService.add(newUserParam.convertToUser());
+        userService.add(newUserParam);
         return "redirect:/users";
     }
 
@@ -61,8 +63,8 @@ public class UserController {
 
     @GetMapping("/{userId}/form")
     public ModelAndView goUpdateForm(@PathVariable String userId,
-                                       HttpServletRequest request,
-                                       ModelAndView mav) {
+                                     HttpServletRequest request,
+                                     ModelAndView mav) {
 
         logRequestInfo(request);
 
@@ -75,10 +77,9 @@ public class UserController {
     public String modifyProfile(ModifiedUserParam modifiedUserParam,
                                 HttpServletRequest request) {
 
-        modifiedUserParam.isValidRequest();
         logRequestInfo(request);
 
-        userService.update(modifiedUserParam.convertToUser());
+        userService.update(modifiedUserParam);
         return "redirect:/users";
     }
 

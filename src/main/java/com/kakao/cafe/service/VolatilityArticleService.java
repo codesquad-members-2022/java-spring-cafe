@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.repository.Repository;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +22,8 @@ public class VolatilityArticleService implements ArticleService {
     }
 
     @Override
-    public Article add(Article article) {
-        return articleRepository.save(article)
+    public Article add(NewArticleParam newArticleParam) {
+        return articleRepository.save(newArticleParam.convertToArticle())
                 .orElseThrow(() -> new RuntimeException());
     }
 

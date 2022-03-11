@@ -26,7 +26,7 @@ public class HomeController {
 
     @GetMapping
     public ModelAndView getArticles(ModelAndView mav,
-                                       HttpServletRequest request) {
+                                    HttpServletRequest request) {
 
         logRequestInfo(request);
 

@@ -1,6 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ModifiedUserParam;
+import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
@@ -26,7 +28,8 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User add(User user) {
+    public User add(NewUserParam newUserParam) {
+        User user = newUserParam.convertToUser();
         validateDuplicateUser(user);
 
         return userRepository.save(user)
@@ -40,8 +43,9 @@ public class VolatilityUserService implements UserService {
     }
 
     @Override
-    public User update(User user) {
-        return userRepository.save(user)
+    public User update(ModifiedUserParam modifiedUserParam) {
+        modifiedUserParam.isValidRequest();
+        return userRepository.save(modifiedUserParam.convertToUser())
                 .orElseThrow(() -> new SaveUserException(UPDATE_FAIL_MESSAGE));
     }
 

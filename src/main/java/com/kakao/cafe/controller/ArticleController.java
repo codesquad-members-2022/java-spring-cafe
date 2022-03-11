@@ -28,12 +28,12 @@ public class ArticleController {
     }
 
     @PostMapping("/write")
-    public String writeArticle(NewArticleParam NewArticleParam,
+    public String writeArticle(NewArticleParam newArticleParam,
                                HttpServletRequest request) {
 
         logRequestInfo(request);
 
-        articleService.add(NewArticleParam.convertToArticle());
+        articleService.add(newArticleParam);
         return "redirect:/";
     }
 

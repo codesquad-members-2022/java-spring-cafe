@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.repository.Repository;
 import org.junit.jupiter.api.DisplayName;
@@ -32,14 +33,15 @@ class VolatilityUserServiceUnitTest {
     @DisplayName("사용자 목록에 존재하지 않는 ID의 가입 요청이 오면 사용자 등록에 성공한다.")
     void addUserSuccess() {
         // given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        NewUserParam newUserParam = new NewUserParam("user", "1234","name", "user@gmail.com");
+        User user = newUserParam.convertToUser();
         given(repository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
         given(repository.save(user))
                 .willReturn(Optional.of(user));
 
         // when
-        User newUser = userService.add(user);
+        User newUser = userService.add(newUserParam);
 
         // then
         assertThat(newUser).isEqualTo(user);
@@ -50,11 +52,12 @@ class VolatilityUserServiceUnitTest {
     @Test
     @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패한다.")
     void addUserFail() {
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
-        given(repository.findOne(any(String.class)))
-                .willReturn(Optional.ofNullable(user));
+        NewUserParam newUserParam = new NewUserParam("user", "1234","name", "user@gmail.com");
 
-        assertThatThrownBy(() -> userService.add(user))
+        given(repository.findOne(any(String.class)))
+                .willReturn(Optional.ofNullable(newUserParam.convertToUser()));
+
+        assertThatThrownBy(() -> userService.add(newUserParam))
                 .isInstanceOf(DuplicateUserIdException.class)
                 .hasMessage(EXISTENT_ID_MESSAGE);
 

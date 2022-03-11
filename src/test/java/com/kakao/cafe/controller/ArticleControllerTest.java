@@ -66,8 +66,8 @@ public class ArticleControllerTest {
     @DisplayName("모든 사용자가 게시글 작성 요청하면 게시글 추가를 완료한 후 메인 페이지(“redirect:/”)로 이동한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4writeArticle")
-    void signUpSuccess(NewArticleParam NewArticleParam) throws Exception {
-        mvc.perform(post("/articles/write").params(convertToMultiValueMap(NewArticleParam)))
+    void signUpSuccess(NewArticleParam newArticleParam) throws Exception {
+        mvc.perform(post("/articles/write").params(convertToMultiValueMap(newArticleParam)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/")

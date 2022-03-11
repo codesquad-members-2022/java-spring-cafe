@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -65,14 +66,13 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
-        given(service.add(user)).willReturn(user);
+        given(service.add(newUserParam)).willReturn(newUserParam.convertToUser());
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
-        verify(service).add(user);
+        verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
@@ -87,15 +87,14 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
-        given(service.add(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
                 .andDo(print());
 
-        verify(service).add(user);
+        verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(
