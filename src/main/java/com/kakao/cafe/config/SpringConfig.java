@@ -1,8 +1,8 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.JdbcTemplateArticleRepository;
 import com.kakao.cafe.repository.JdbcTemplateUserRepository;
-import com.kakao.cafe.repository.MemoryArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
@@ -36,6 +36,6 @@ public class SpringConfig {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new MemoryArticleRepository();
+        return new JdbcTemplateArticleRepository(dataSource);
     }
 }
