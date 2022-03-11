@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.LoginDto;
 import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
@@ -210,6 +211,58 @@ public class UserServiceTest {
 
         // when
         Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
+    }
+
+    @Test
+    @DisplayName("로그인 시 기존 유저 정보와 일치하면 유저 정보를 반환한다")
+    public void loginTest() {
+        // given
+        LoginDto loginDto = new LoginDto("userId", "userPassword");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        User user = userService.login(loginDto);
+
+        // then
+        then(user.getUserId()).isEqualTo("userId");
+    }
+
+    @Test
+    @DisplayName("로그인 시 존재하지 않는 유저 로그인 정보를 입력하면 예외를 반환한다")
+    public void loginUserNotFoundTest() {
+        // given
+        LoginDto loginDto = new LoginDto("newId", "userPassword");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(() -> userService.login(loginDto));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("로그인 시 일치하지 않는 비밀번호를 입력하면 예외를 반환한다")
+    public void loginIncorrectUserTest() {
+        // given
+        LoginDto loginDto = new LoginDto("userId", "otherPassword");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.of(user));
+
+        // when
+        Throwable throwable = catchThrowable(() -> userService.login(loginDto));
 
         // then
         then(throwable)
