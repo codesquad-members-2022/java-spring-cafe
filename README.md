@@ -9,7 +9,7 @@
 ### 2단계 피드백 반영 + 추가 변경 사항
 
 - [X] String writeTime -> LocalDateTime 타입으로 변경
-- [ ] isYourPassword & isYourId 테스트 추가
+- [X] isYourPassword & checkIfTheIDIsTheSame 테스트 추가
 - [ ] ControllerAdvice 외에 다른 예외처리 방법 구현
 - [X] Repository interface name 변경
 - [X] UserRepository의 Update를 save로 옮김

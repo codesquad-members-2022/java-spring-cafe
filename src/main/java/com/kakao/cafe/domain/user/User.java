@@ -18,6 +18,10 @@ public class User {
         return this.password.equals(password);
     }
 
+    public boolean isYourId(String userId) {
+        return this.userId.equals(userId);
+    }
+
     public boolean checkIfTheIDIsTheSame(User user) {
         return this.userId.equals(user.userId);
     }

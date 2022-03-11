@@ -23,9 +23,9 @@ class UserTest {
         assertThat(user).isInstanceOf(User.class);
     }
 
-    @DisplayName("이름이 일치하면 true를, 아니면 false를 반환한다.")
+    @DisplayName("User 객체를 전달하여, 이름이 일치하면 true를, 아니면 false를 반환한다.")
     @Test
-    void check_if_the_name_is_the_same() {
+    void check_if_the_name_is_the_same_by_user_instance() {
         // given
         User tmpUser1 = new User("lucid", "2345", "lee@naver.com", "lejo");
         User tmpUser2 = new User("tesla", "2345", "lee@naver.com", "lejo");
@@ -33,6 +33,18 @@ class UserTest {
         // when
         boolean result1 = user.checkIfTheIDIsTheSame(tmpUser1);
         boolean result2 = user.checkIfTheIDIsTheSame(tmpUser2);
+
+        // then
+        assertThat(result1).isTrue();
+        assertThat(result2).isFalse();
+    }
+
+    @DisplayName("Userid String을 전달하여, 이름이 일치하면 true를, 아니면 false를 반환한다.")
+    @Test
+    void check_if_the_name_is_the_same_by_userid_string() {
+        // when
+        boolean result1 = user.isYourId("lucid");
+        boolean result2 = user.isYourId("tesla");
 
         // then
         assertThat(result1).isTrue();
