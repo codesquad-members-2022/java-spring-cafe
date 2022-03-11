@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,11 +26,9 @@ public class HomeController {
 
     @GetMapping
     public ModelAndView getArticles(ModelAndView mav,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response) {
+                                       HttpServletRequest request) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("qna/list");
         mav.addObject("articles", articleService.searchAll());
@@ -44,10 +41,5 @@ public class HomeController {
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
-    }
-
-    private void setResponseInfo(HttpServletResponse response) {
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
     }
 }

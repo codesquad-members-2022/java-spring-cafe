@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -39,11 +38,9 @@ public class UserController {
 
     @GetMapping
     public ModelAndView getUsers(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    ModelAndView mav) {
+                                 ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/list");
         mav.addObject("users", userService.searchAll());
@@ -53,11 +50,9 @@ public class UserController {
     @GetMapping("/{userId}")
     public ModelAndView getUserProfile(@PathVariable String userId,
                                        HttpServletRequest request,
-                                       HttpServletResponse response,
                                        ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/profile");
         mav.addObject("user", userService.search(userId));
@@ -67,11 +62,9 @@ public class UserController {
     @GetMapping("/{userId}/form")
     public ModelAndView goUpdateForm(@PathVariable String userId,
                                        HttpServletRequest request,
-                                       HttpServletResponse response,
                                        ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/updateForm");
         mav.addObject("user", userService.search(userId));
@@ -95,11 +88,6 @@ public class UserController {
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
-    }
-
-    private void setResponseInfo(HttpServletResponse response) {
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
     }
 
     @ExceptionHandler({
