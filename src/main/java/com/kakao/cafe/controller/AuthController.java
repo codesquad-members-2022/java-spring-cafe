@@ -12,6 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AuthController {
 
+    private static final String SESSION_USER = "SESSION_USER";
+
     private final UserService userService;
 
     public AuthController(UserService userService) {
@@ -26,7 +28,7 @@ public class AuthController {
     @PostMapping("/login")
     public ModelAndView login(LoginForm loginForm, HttpSession session) {
         User user = userService.login(loginForm);
-        session.setAttribute("loginUser", user);
+        session.setAttribute(SESSION_USER, user);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
         modelAndView.addObject("user", user);
@@ -35,7 +37,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("loginUser");
+        session.removeAttribute(SESSION_USER);
         return "redirect:/users";
     }
 
