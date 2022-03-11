@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleResponseDto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
