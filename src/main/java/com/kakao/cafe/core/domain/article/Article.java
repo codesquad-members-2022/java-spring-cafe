@@ -69,6 +69,10 @@ public class Article {
             this.viewCount = article.viewCount;
         }
 
+        public Builder() {
+
+        }
+
         public Article.Builder id(int id) {
             this.id = id;
             return this;
@@ -107,5 +111,18 @@ public class Article {
         public Article build() {
             return new Article(id, title, content, writer, createAt, lastModifiedAt, viewCount);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", writer='" + writer + '\'' +
+                ", createAt=" + createAt +
+                ", lastModifiedAt=" + lastModifiedAt +
+                ", viewCount=" + viewCount +
+                '}';
     }
 }

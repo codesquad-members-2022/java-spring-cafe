@@ -1,31 +1,31 @@
 package com.kakao.cafe.core.repository.article;
 
 import com.kakao.cafe.core.domain.article.Article;
+import com.kakao.cafe.web.service.member.EntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ArticleRepository {
 
-    private final List<Article> articles;
+    private final EntityManager<Article> entityManager;
 
-    public ArticleRepository() {
-        this.articles = new ArrayList<>();
+    public ArticleRepository(EntityManager<Article> entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public Article insert(Article article) {
-        articles.add(article);
-        return article;
+    public Article save(Article article) {
+        return entityManager.save(article);
     }
 
     public List<Article> findAll() {
-        return new ArrayList<>(articles);
+        return entityManager.getArticles();
     }
 
     public Optional<Article> findById(int id) {
-        return articles.stream()
-                .filter(article->article.getId()==id)
+        return entityManager.getArticles()
+                .stream()
+                .filter(article -> article.getId() == id)
                 .findAny();
     }
 }

@@ -15,6 +15,8 @@ public class DataGenerator {
     private final MemberRepository memberRepository;
     private final ArticleRepository articleRepository;
 
+    private static final int THIS_YEAR = 2022;
+
     public DataGenerator(MemberRepository memberRepository, ArticleRepository articleRepository) {
         this.memberRepository = memberRepository;
         this.articleRepository = articleRepository;
@@ -40,16 +42,45 @@ public class DataGenerator {
     }
 
     private void initArticleData() {
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "여러분 참 쉽죠?", "여러분 구현을 여기서 잘 하는 것은 큰 의미가 없어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "안녕하세요? JK입니다.", "저희 CS미션은 아래와 같이 만들어졌습니다.", "JK", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "여러분, 크롱입니다.", "여러분 안녕하세요! 크롱입니다. 한 번 써봤습니다.", "크롱", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "회고 안 쓰면 다음 달 등록 못합니다.", "여러분 구현을 여기서 잘 하는 것은 큰 의미가 없어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "여러분, 영한님 너~무 사람 좋아요.", "영한님 스프링 입문편 결제해서 꼭 들어보세요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "가끔씩 모각코 해보세요!", "가끔 기분을 환기하는 것은 반드시 필요합니다. 산책 하세요.", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
-        articleRepository.insert(new Article(SequenceGenerator.getArticleSequence(), "JK, Honux, 크롱, 자바지기가 함께 코드스쿼드를 만들었습니다.", "코드스쿼드 너무 좋습니다. 나단 잘생겼어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "여러분 참 쉽죠?", "여러분 구현을 여기서 잘 하는 것은 큰 의미가 없어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "안녕하세요? JK입니다.", "저희 CS미션은 아래와 같이 만들어졌습니다.", "JK", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "여러분, 크롱입니다.", "여러분 안녕하세요! 크롱입니다. 한 번 써봤습니다.", "크롱", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "회고 안 쓰면 다음 달 등록 못합니다.", "여러분 구현을 여기서 잘 하는 것은 큰 의미가 없어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "여러분, 영한님 너~무 사람 좋아요.", "영한님 스프링 입문편 결제해서 꼭 들어보세요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "가끔씩 모각코 해보세요!", "가끔 기분을 환기하는 것은 반드시 필요합니다. 산책 하세요.", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
+        articleRepository.save(new Article(SequenceGenerator.getArticleSequence(), "JK, Honux, 크롱, 자바지기가 함께 코드스쿼드를 만들었습니다.", "코드스쿼드 너무 좋습니다. 나단 잘생겼어요!", "Honux", LocalDateTime.now(), LocalDateTime.now().plusDays(3), getRandomNumber()));
     }
 
-    private int getRandomNumber() {
+    public static int getRandomNumber() {
         return random.nextInt(1500) + 1;
     }
+
+    public static LocalDateTime getRandomLocalDateTime(){
+        int month = getRandomMonth();
+        int day = month == 2 ? getRandomDay() : getRandomDayFeb();
+        return LocalDateTime.of(THIS_YEAR, month, day, getRandomHour(), getRandomMinute());
+    }
+
+    private static int getRandomMonth() {
+        return random.nextInt(12) + 1;
+    }
+
+    private static int getRandomDay() {
+        return random.nextInt(30) + 1;
+    }
+
+    private static int getRandomDayFeb() {
+        return random.nextInt(28) + 1;
+    }
+
+    private static int getRandomHour() {
+        return random.nextInt(24) + 1;
+    }
+
+    private static int getRandomMinute() {
+        return random.nextInt(24) + 1;
+    }
+
+
+
 }

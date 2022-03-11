@@ -27,8 +27,8 @@ public class MemberService {
         return memberRepository.findById(userId).orElseThrow();
     }
 
-    public JoinResponse join(JoinRequest request) {
-        return new JoinResponse(memberRepository.insert(request.toEntity()));
+    public Member join(Member member) {
+        return memberRepository.insert(member);
     }
 
     public Member edit(ProfileChangeRequest request) {

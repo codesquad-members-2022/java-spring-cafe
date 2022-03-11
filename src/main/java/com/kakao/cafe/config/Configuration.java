@@ -16,7 +16,7 @@ public class Configuration {
      */
     @Bean
     public EntityManager entityManager() {
-        return new EntityManager();
+        return new EntityManager(database());
     }
 
     /**
@@ -50,6 +50,11 @@ public class Configuration {
 
     @Bean
     public ArticleRepository articleRepository() {
-        return new ArticleRepository();
+        return new ArticleRepository(entityManager());
+    }
+
+    @Bean
+    public Database database() {
+        return new Database();
     }
 }
