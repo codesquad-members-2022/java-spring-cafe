@@ -11,8 +11,9 @@ CREATE TABLE USERS
 
 CREATE TABLE ARTICLES
 (
-    id      int IDENTITY NOT NULL PRIMARY KEY,
-    writer  varchar(64),
-    title   varchar(64),
-    content text
+    id           int IDENTITY NOT NULL PRIMARY KEY,
+    writer       varchar(64),
+    title        varchar(64),
+    contents     text,
+    created_time varchar(16)
 );
