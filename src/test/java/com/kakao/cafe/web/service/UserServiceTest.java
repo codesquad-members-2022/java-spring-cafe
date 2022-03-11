@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.kakao.cafe.web.domain.user.User;
@@ -26,12 +27,15 @@ class UserServiceTest {
 	@DisplayName("이미 존재하는 아이디로 회원가입을 한다면 IllegalStateException이 발생한다.")
 	void joinDuplicateUserId() {
 	    //given
-		User user1 = new User("jeremy0405", "qwer1234", "장형석", "jeremy0405@naver.com");
+		User user1 = new User("jeremy0405", "qwer1234", "장형석", "abc@naver.com");
 
 	    //when
+		Exception exception = assertThrows(IllegalStateException.class,	() -> userService.join(user1));
+		String actualMessage = exception.getMessage();
+		String expectedMessage = "이미 존재하는 아이디입니다.";
 
-	    //then
-		assertThrows(IllegalStateException.class, () -> userService.join(user1));
+		//then
+		assertThat(actualMessage).isEqualTo(expectedMessage);
 	}
 
 	@Test
@@ -41,10 +45,12 @@ class UserServiceTest {
 		User user1 = new User("jang2316", "qwer1234", "장형석", "jeremy0405@naver.com");
 
 	    //when
+		Exception exception = assertThrows(IllegalStateException.class,	() -> userService.join(user1));
+		String actualMessage = exception.getMessage();
+		String expectedMessage = "이미 존재하는 이메일입니다.";
 
 	    //then
-		assertThrows(IllegalStateException.class, () -> userService.join(user1));
+		assertThat(actualMessage).isEqualTo(expectedMessage);
 	}
-
 
 }
