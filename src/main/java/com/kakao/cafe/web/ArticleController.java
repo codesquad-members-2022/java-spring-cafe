@@ -35,7 +35,7 @@ public class ArticleController {
     @PostMapping("/write-qna")
     public String write(ArticleDto articleDto) {
         logger.info("User writing qna{}", articleDto);
-        articleService.write(articleDto.toEntity());
+        articleService.write(articleDto);
 
         return "redirect:/qna/all";
     }

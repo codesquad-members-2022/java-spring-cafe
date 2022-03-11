@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,12 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public User join(UserDto userDto) {
+        User user = userDto.toEntity();
         checkDuplicateId(user);
         userRepository.save(user);
+
+        return user;
     }
 
     public List<UserResponseDto> findAll() {
@@ -41,10 +45,14 @@ public class UserService {
         userRepository.clear();
     }
 
-    public void updateUserInfo(User user) {
+    public User updateUserInfo(UserDto userDto) {
+        User user = userDto.toEntity();
+
         User target = findOne(user.getUserId());
         checkPassword(user, target);
         userRepository.save(user);
+
+        return user;
     }
 
     private void checkDuplicateId(User user) {
@@ -61,7 +69,7 @@ public class UserService {
     }
 
     private void checkPassword(User user, User target) {
-        if(!target.isSamePassword(user)) {
+        if(!target.equals(user)) {
             throw new ClientException(HttpStatus.CONFLICT, "비밀번호가 일치하지 않습니다.");
         }
     }

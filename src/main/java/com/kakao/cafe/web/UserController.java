@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/user/sign-up")
     public String joinUser(@Valid UserDto userDto) {
         logger.info("{} sign-up", userDto);
-        userService.join(userDto.toEntity());
+        userService.join(userDto);
 
         return "redirect:/users";
     }
@@ -73,7 +73,7 @@ public class UserController {
     @PutMapping("users/{id}/update")
     public String updateInfo(@PathVariable String id, UserDto userDto) {
         logger.info("{} updated info {}", id, userDto);
-        userService.updateUserInfo(userDto.toEntity());
+        userService.updateUserInfo(userDto);
 
         return "redirect:/users";
     }

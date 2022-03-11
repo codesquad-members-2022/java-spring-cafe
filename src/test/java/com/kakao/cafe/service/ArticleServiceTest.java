@@ -1,61 +1,81 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.article.MemoryArticleRepository;
+import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.ArticleDto;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
-
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
+    @InjectMocks
     private ArticleService articleService;
+
+    @Mock
+    private ArticleRepository articleRepository;
+
     private Article article;
 
     @BeforeEach
     void setUp() {
-        articleService = new ArticleService(new MemoryArticleRepository());
-        article = new Article("작성자", "제목", "본문");
+        article = new Article(1, "writer", "title", "contents", LocalDateTime.of(2022,03,11,11,25));
     }
 
     @Test
     @DisplayName("게시글을 작성하면 저장소에 게시물이 저장된다.")
     void writeTest() {
 
-        assertThat(articleService.findAll().size()).isEqualTo(0);
+        given(articleRepository.save(any())).willReturn(article);
 
-        articleService.write(article);
+        Article actual = articleService.write(new ArticleDto("writer", "title", "contents"));
 
-        assertThat(articleService.findAll().size()).isEqualTo(1);
-
+        assertThat(actual).isEqualTo(article);
+        assertThat(article.getTitle()).isEqualTo("title");
+        assertThat(article.getWriter()).isEqualTo("writer");
+        assertThat(article.getContents()).isEqualTo("contents");
     }
 
     @Test
     @DisplayName("게시물을 id로 조회할 수 있다.")
     void findOneTest() {
-        articleService.write(article);
+        int id = 1;
+        given(articleRepository.findById(id)).willReturn(Optional.of(article));
 
-        assertThat(articleService.findOne(1).getWriter()).isEqualTo("작성자");
-        assertThat(articleService.findOne(1).getTitle()).isEqualTo("제목");
-        assertThat(articleService.findOne(1).getContents()).isEqualTo("본문");
-        assertThat(articleService.findOne(1)).isEqualTo(new ArticleResponseDto(article));
+        ArticleResponseDto articleResponseDto = articleService.findOne(id);
+
+        assertThat(articleResponseDto.getId()).isEqualTo(article.getId());
+        assertThat(articleResponseDto.getWriter()).isEqualTo(article.getWriter());
+        assertThat(articleResponseDto.getTitle()).isEqualTo(article.getTitle());
+        assertThat(articleResponseDto.getContents()).isEqualTo(article.getContents());
+        assertThat(articleResponseDto.getWrittenTime()).isEqualTo(article.getWrittenTime());
 
     }
 
     @ParameterizedTest
     @DisplayName("찾는 게시글이 없으면 ClientException을 발생시킨다.")
-    @ValueSource(ints = {-1,0,2})
+    @ValueSource(ints = {-1,0})
     void findOneTest_error(int id) {
-        articleService.write(article);
 
-        assertThatThrownBy(()->articleService.findOne(id))
+        assertThatThrownBy(() -> articleService.findOne(id))
                 .isInstanceOf(ClientException.class)
                 .hasMessage("게시글을 찾을 수 없습니다.");
     }
@@ -63,7 +83,8 @@ class ArticleServiceTest {
     @Test
     @DisplayName("모든 게시글을 조회하면 ArticleDto로 변환해서 반환한다.")
     void findAllTest() {
-        articleService.write(article);
+
+        given(articleRepository.findAll()).willReturn(List.of(article));
 
         assertThat(articleService.findAll()).contains(new ArticleResponseDto(article));
     }
