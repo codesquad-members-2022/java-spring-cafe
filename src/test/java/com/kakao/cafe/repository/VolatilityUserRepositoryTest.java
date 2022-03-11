@@ -16,24 +16,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 class VolatilityUserRepositoryTest {
 
     @Autowired
-    VolatilityUserRepositoryImpl userRepository;
+    Repository<User, String> repository;
 
     @AfterEach
     public void afterEach() {
-        userRepository.clear();
+        repository.clear();
     }
 
     @Test
     void selectAll() {
         //given
-        User user1 = User.builder("user1").build();
-        userRepository.save(user1);
+        User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
+        repository.save(user1);
 
-        User user2 = User.builder("user2").build();
-        userRepository.save(user2);
+        User user2 = new User(-1, "user2", "1234", "name2", "user2@gmail.com");
+        repository.save(user2);
 
         //when
-        List<User> users = userRepository.findAll();
+        List<User> users = repository.findAll();
 
         //then
         assertThat(users.size()).isEqualTo(2);
@@ -42,24 +42,24 @@ class VolatilityUserRepositoryTest {
     @Test
     void insertUser() {
         //given
-        User user = User.builder("user").build();
+        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
 
         //when
-        userRepository.save(user);
+        repository.save(user);
 
         //then
-        User result = userRepository.findOne(user.getUserId()).get();
+        User result = repository.findOne(user.getUserId()).get();
         assertThat(result).isEqualTo(user);
     }
 
     @Test
     void selectUser() {
         //given
-        User user = User.builder("user").build();
-        userRepository.save(user);
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
+        repository.save(user);
 
         //when
-        User result = userRepository.findOne(user.getUserId()).get();
+        User result = repository.findOne(user.getUserId()).get();
 
         //then
         assertThat(result).isEqualTo(user);

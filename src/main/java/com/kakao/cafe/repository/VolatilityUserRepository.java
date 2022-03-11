@@ -10,11 +10,13 @@ public abstract class VolatilityUserRepository implements Repository<User, Strin
 
     protected User persist(User user) {
         user.setIndex(users.size() + 1);
+
         return users.add(user) ? user : null;
     }
 
     protected User merge(int index, User user) {
         users.set(index - 1, user);
+
         return user;
     }
 }

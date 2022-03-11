@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repositoryimpl;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.VolatilityUserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -18,15 +19,16 @@ public class VolatilityUserRepositoryImpl extends VolatilityUserRepository {
     @Override
     public synchronized Optional<User> save(User user) {
         Optional<User> other = findOne(user.getUserId());
-        ENTITY_STATUS status = other.isEmpty() ? TRANSIENT : DETACHED;
+
         User result = null;
-        switch (status) {
+        switch (other.isEmpty() ? TRANSIENT : DETACHED) {
             case TRANSIENT:
                 result = persist(user);
                 break;
             case DETACHED:
                 result = merge(other.get().getIndex(), user);
         }
+
         return Optional.ofNullable(result);
     }
 

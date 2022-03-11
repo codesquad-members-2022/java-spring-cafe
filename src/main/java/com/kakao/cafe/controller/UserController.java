@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifyProfileRequest;
+import com.kakao.cafe.dto.SignUpRequest;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,18 +29,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/join")
-    public String signUp(User user, HttpServletRequest request) {
+    @PostMapping("/register")
+    public String signUp(SignUpRequest SignUpRequest, HttpServletRequest request) {
         logRequestInfo(request);
 
-        userService.add(user);
+        userService.add(SignUpRequest.convertToUser());
         return "redirect:/users";
     }
 
     @GetMapping
-    public ModelAndView getUserList(HttpServletRequest request,
+    public ModelAndView getUsers(HttpServletRequest request,
                                     HttpServletResponse response,
                                     ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -54,6 +55,7 @@ public class UserController {
                                        HttpServletRequest request,
                                        HttpServletResponse response,
                                        ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -67,6 +69,7 @@ public class UserController {
                                        HttpServletRequest request,
                                        HttpServletResponse response,
                                        ModelAndView mav) {
+
         logRequestInfo(request);
         setResponseInfo(response);
 
@@ -87,13 +90,11 @@ public class UserController {
     }
 
     private void logRequestInfo(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        String method = request.getMethod();
         Map<String, Object> params = new HashMap<>();
         request.getParameterNames().asIterator()
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
-        log.debug("{} {} {}", method, requestURI, params);
+        log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
     private void setResponseInfo(HttpServletResponse response) {
@@ -101,7 +102,11 @@ public class UserController {
         response.setCharacterEncoding("UTF-8");
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class, NoSuchElementException.class, IllegalStateException.class })
+    @ExceptionHandler({
+            IllegalArgumentException.class,
+            NoSuchElementException.class,
+            IllegalStateException.class })
+
     private ResponseEntity<String> except(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

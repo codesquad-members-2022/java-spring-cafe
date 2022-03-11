@@ -3,9 +3,10 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.SignUpRequest;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
-import com.kakao.cafe.service.VolatilityUserService;
+import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ public class UserControllerUnitTest {
     MockMvc mvc;
 
     @MockBean
-    VolatilityUserService service;
+    UserService service;
 
     static List<User> users;
 
@@ -52,10 +53,11 @@ public class UserControllerUnitTest {
     static void init() {
         users = new ArrayList<>();
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(User.builder("user" + (i + 1))
-                    .name("name" + (i + 1))
-                    .email("user" + (i + 1) + "@gmail.com")
-                    .build()
+            users.add(
+                    new User(-1,"user" + (i + 1),
+                            "1234",
+                            "name" + (i + 1),
+                            "user" + (i + 1) + "@gmail.com")
             );
         }
     }
@@ -63,9 +65,10 @@ public class UserControllerUnitTest {
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void signUpSuccess(User user) throws Exception {
+    void signUpSuccess(SignUpRequest SignUpRequest) throws Exception {
+        User user = SignUpRequest.convertToUser();
         given(service.add(user)).willReturn(user);
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(SignUpRequest)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -74,19 +77,20 @@ public class UserControllerUnitTest {
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
-                Arguments.of(User.builder("user5").name("name5").email("user5@gmail.com").build()),
-                Arguments.of(User.builder("user6").name("name6").email("user6@gmail.com").build()),
-                Arguments.of(User.builder("user7").name("name7").email("user7@gmail.com").build()),
-                Arguments.of(User.builder("user8").name("name8").email("user8@gmail.com").build())
+                Arguments.of(new SignUpRequest("user5", "1234","name5", "user5@gmail.com")),
+                Arguments.of(new SignUpRequest("user6", "1234","name6", "user6@gmail.com")),
+                Arguments.of(new SignUpRequest("user7", "1234","name7", "user7@gmail.com")),
+                Arguments.of(new SignUpRequest("user8", "1234","name8", "user8@gmail.com"))
         );
     }
 
     @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void signUpFail(User user) throws Exception {
+    void signUpFail(SignUpRequest SignUpRequest) throws Exception {
+        User user = SignUpRequest.convertToUser();
         given(service.add(user)).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
-        mvc.perform(post("/users/join").params(convertToMultiValueMap(user)))
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(SignUpRequest)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest())
@@ -96,10 +100,10 @@ public class UserControllerUnitTest {
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(
-                Arguments.of(User.builder("user1").name("name1").email("user1@gmail.com").build()),
-                Arguments.of(User.builder("user2").name("name2").email("user2@gmail.com").build()),
-                Arguments.of(User.builder("user3").name("name3").email("user3@gmail.com").build()),
-                Arguments.of(User.builder("user4").name("name4").email("user4@gmail.com").build())
+                Arguments.of(new SignUpRequest("user1", "1234","name1", "user1@gmail.com")),
+                Arguments.of(new SignUpRequest("user2", "1234","name2", "user2@gmail.com")),
+                Arguments.of(new SignUpRequest("user3", "1234","name3", "user3@gmail.com")),
+                Arguments.of(new SignUpRequest("user4", "1234","name4", "user4@gmail.com"))
         );
     }
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
@@ -112,7 +116,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
-    void getUserList() throws Exception {
+    void getUsers() throws Exception {
         given(service.searchAll()).willReturn(users);
         mvc.perform(get("/users"))
                 .andExpectAll(
@@ -129,7 +133,8 @@ public class UserControllerUnitTest {
     @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void getUserProfileSuccess(User user) throws Exception {
+    void getUserProfileSuccess(SignUpRequest SignUpRequest) throws Exception {
+        User user = SignUpRequest.convertToUser();
         String userId = user.getUserId();
         given(service.search(userId)).willReturn(user);
         mvc.perform(get("/users/" + userId))
@@ -147,7 +152,8 @@ public class UserControllerUnitTest {
     @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void getUserProfileFail(User user) throws Exception {
+    void getUserProfileFail(SignUpRequest SignUpRequest) throws Exception {
+        User user = SignUpRequest.convertToUser();
         String userId = user.getUserId();
         given(service.search(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
         mvc.perform(get("/users/" + userId))

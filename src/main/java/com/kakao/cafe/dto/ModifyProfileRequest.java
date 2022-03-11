@@ -8,39 +8,27 @@ import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
 public class ModifyProfileRequest {
 
     private int index;
-    private String userId;
-    private String password;
-    private String nowPassword;
-    private String newPassword;
-    private String name;
-    private String email;
+    private final String userId;
+    private final String password;
+    private final String nowPassword;
+    private final String newPassword;
+    private final String name;
+    private final String email;
+
+    public ModifyProfileRequest(int index, String userId, String password, String nowPassword,
+                                String newPassword, String name, String email) {
+
+        this.index = index;
+        this.userId = userId;
+        this.password = password;
+        this.nowPassword = nowPassword;
+        this.newPassword = newPassword;
+        this.name = name;
+        this.email = email;
+    }
 
     public void setIndex(int index) {
         this.index = index;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setNowPassword(String nowPassword) {
-        this.nowPassword = nowPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void isValidRequest() {
@@ -50,6 +38,19 @@ public class ModifyProfileRequest {
     }
 
     public User convertToUser() {
-        return User.builder(userId).password(newPassword).name(name).email(email).index(index).build();
+        return new User(index, userId, newPassword, name, email);
+    }
+
+    @Override
+    public String toString() {
+        return "ModifyProfileRequest{" +
+                "index=" + index +
+                ", userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", nowPassword='" + nowPassword + '\'' +
+                ", newPassword='" + newPassword + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

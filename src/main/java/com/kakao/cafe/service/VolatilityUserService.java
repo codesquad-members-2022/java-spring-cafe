@@ -28,6 +28,7 @@ public class VolatilityUserService implements UserService {
     @Override
     public User add(User user) {
         validateDuplicateUser(user);
+
         return userRepository.save(user)
                 .orElseThrow(() -> new SaveUserException(ADD_FAIL_MESSAGE));
     }
