@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.db;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
@@ -13,96 +14,105 @@ import java.util.Optional;
 
 @Primary
 @Repository
-public class DbUserRepository implements UserRepository {
+public class DbArticleRepository implements ArticleRepository {
     private final DataSource dataSource;
 
-    public DbUserRepository(DataSource dataSource) {
+    public DbArticleRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
-    public Long save(User user) {
-        String SQL = "INSERT INTO user_info (user_id, password, name, email) VALUES (?, ?, ?, ?)";
+    public Long save(Article article) {
+        String SQL = "INSERT INTO article (user_id, title, contents, local_date_time) VALUES (?, ?, ?, ?)";
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
+            pstmt.setString(1, article.getUserId());
+            pstmt.setString(2, article.getTitle());
+            pstmt.setString(3, article.getContents());
+            pstmt.setTimestamp(4, Timestamp.valueOf(article.getLocalDateTime()));
             pstmt.executeUpdate();
 
             rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                user.setId(rs.getLong(1));
-                return user.getId();
+                article.setId(rs.getLong(1));
+                return article.getId();
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, pstmt, rs);
         }
         return -1L;
     }
 
     @Override
-    public Optional<User> findById(String userId) {
-        String SQL = "SELECT id, user_id, password, name, email FROM user_info WHERE user_id = (?)";
+    public Optional<Article> findById(Long id) {
+        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article WHERE id = (?)";
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(SQL);
-            pstmt.setString(1, userId);
+            pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
 
-            while(rs.next()){
-                User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-                user.setId(rs.getLong("id"));
-                return Optional.ofNullable(user);
+            if (rs.next()) {
+                Article article = new Article(
+                        rs.getString("user_id"),
+                        rs.getString("title"),
+                        rs.getString("contents"),
+                        rs.getTimestamp("local_date_time").toLocalDateTime()
+                );
+                return Optional.ofNullable(article);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, pstmt, rs);
         }
         return Optional.empty();
     }
 
     @Override
-    public List<User> findAll() {
-        String SQL = "SELECT id, user_id, password, name, email FROM user_info";
+    public List<Article> findAll() {
+        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article";
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<User> list = new ArrayList<>();
+        List<Article> list = new ArrayList<>();
 
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(SQL);
             rs = pstmt.executeQuery();
 
-            while(rs.next()){
-                User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-                user.setId(rs.getLong("id"));
-                list.add(user);
+            while (rs.next()) {
+                Article article = new Article(
+                        rs.getString("user_id"),
+                        rs.getString("title"),
+                        rs.getString("contents"),
+                        rs.getTimestamp("local_date_time").toLocalDateTime()
+                );
+                article.setId(rs.getLong("id"));
+                list.add(article);
             }
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, pstmt, rs);
         }
         return list;
     }
 
     @Override
-    public boolean delete(String userId) {
-        String SQL = "DELETE FROM user_info WHERE user_id = (?)";
+    public boolean delete(Long id) {
+        String SQL = "DELETE FROM article WHERE id = (?)";
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -110,23 +120,23 @@ public class DbUserRepository implements UserRepository {
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(SQL);
-            pstmt.setString(1, userId);
+            pstmt.setLong(1, id);
             int affectedLine = pstmt.executeUpdate();
 
-            if(affectedLine == 1){
+            if (affectedLine == 1) {
                 return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, pstmt, rs);
         }
         return false;
     }
 
     @Override
-    public boolean update(String userId, User updateParam) {
-        String SQL = "UPDATE user_info SET user_id = (?), password = (?), name = (?), email = (?) WHERE user_id = (?)";
+    public void update(Long id, Article article) {
+        String SQL = "UPDATE article SET user_id = (?), title = (?), contents = (?), local_date_time = (?) WHERE id = (?)";
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -134,22 +144,17 @@ public class DbUserRepository implements UserRepository {
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(SQL);
-            pstmt.setString(1, updateParam.getUserId());
-            pstmt.setString(2, updateParam.getPassword());
-            pstmt.setString(3, updateParam.getName());
-            pstmt.setString(4, updateParam.getEmail());
-            pstmt.setString(5, updateParam.getUserId());
-            int affectedLine = pstmt.executeUpdate();
-
-            if(affectedLine == 1){
-                return true;
-            }
+            pstmt.setString(1, article.getUserId());
+            pstmt.setString(2, article.getTitle());
+            pstmt.setString(3, article.getContents());
+            pstmt.setTimestamp(4, Timestamp.valueOf(article.getLocalDateTime()));
+            pstmt.setLong(5, article.getId());
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             close(connection, pstmt, rs);
         }
-        return false;
     }
 
     private Connection getConnection() {
