@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
 import com.kakao.cafe.domain.user.dto.UserProfileDto;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 
 @Service
 public class UserService {

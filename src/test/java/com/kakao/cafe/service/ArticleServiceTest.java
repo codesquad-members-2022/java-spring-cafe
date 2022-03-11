@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.MemoryArticleRepository;
+import com.kakao.cafe.repository.article.MemoryArticleRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {

@@ -1,12 +1,12 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.repository.article.ArticleRepository;
 
 @Repository
 public class H2ArticleRepository implements ArticleRepository {

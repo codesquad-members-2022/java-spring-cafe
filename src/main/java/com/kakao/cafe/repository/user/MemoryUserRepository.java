@@ -1,4 +1,4 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
 import com.kakao.cafe.domain.user.dto.UserProfileDto;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 
 @ExtendWith(SpringExtension.class)
 class UserServiceTest {

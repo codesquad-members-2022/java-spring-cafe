@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.kakao.cafe.domain.user.User;
+import com.kakao.cafe.repository.user.MemoryUserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 
 class UserRepositoryTest {
 
