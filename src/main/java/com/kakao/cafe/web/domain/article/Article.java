@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Article {
 
+	private static final String DATE_TIME_FORMAT = "yyyy/MM/dd  hh:mm";
+
 	private Long id;
 	private final String writer;
 	private String title;
@@ -15,7 +17,7 @@ public class Article {
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
-		this.localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd  hh:mm"));
+		this.localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
 	}
 
 	public Long getId() {
