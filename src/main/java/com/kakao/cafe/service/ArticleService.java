@@ -30,4 +30,8 @@ public class ArticleService {
         return articleRepository.findById(index)
             .orElseThrow(IllegalArgumentException::new);
     }
+
+    public void clear() {
+        articleRepository.deleteAll();
+    }
 }

@@ -16,6 +16,7 @@ public class UserService {
     private static final String NON_EXISTENT_MEMBER = "[ERROR] 존재하지 않는 멤버입니다.";
     private static final String MISMATCHED_PASSWORDS = "[ERROR] 비밀번호가 틀렸습니다.";
     private static final String DUPLICATED_USER_ID = "[ERROR] 존재하는 ID입니다. 다시 입력하세요.";
+    private static final String NOT_FOUNDED_USER_ID = "[ERROR] 존재하지 않는 ID입니다.";
 
     private final UserRepository userRepository;
 
@@ -67,7 +68,9 @@ public class UserService {
     }
 
     public void update(String userId, User updateUser) {
-        // userRepository.update(userId, updateUser);
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_USER_ID));
+        user.updateInfo(updateUser);
     }
 
     public void clear() {

@@ -12,8 +12,6 @@ import com.kakao.cafe.domain.user.User;
 @Component
 public class MemoryUserRepository implements UserRepository {
 
-    private static final String NOT_FOUNDED_USER_ID = "[ERROR] 존재하지 않는 ID입니다.";
-
     private final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @Override
@@ -36,11 +34,5 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public void deleteAll() {
         users.clear();
-    }
-
-    public void update(String userId, User updateUser) {
-        User user = findById(userId)
-            .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_USER_ID));
-        user.updateInfo(updateUser);
     }
 }
