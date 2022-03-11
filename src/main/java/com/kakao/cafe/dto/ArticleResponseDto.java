@@ -10,8 +10,7 @@ public class ArticleResponseDto {
     private String contents;
     private LocalDateTime createdDate;
 
-    public ArticleResponseDto(int id, String writer, String title, String contents,
-        LocalDateTime createdDate) {
+    public ArticleResponseDto(int id, String writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;

@@ -11,6 +11,10 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
+    private Article() {
+
+    }
+
     public Article(String writer, String title, String contents, LocalDateTime createdDate) {
         this.writer = writer;
         this.title = title;
@@ -20,6 +24,22 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public int getId() {
@@ -36,6 +56,10 @@ public class Article {
 
     public String getContents() {
         return contents;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
     public ArticleResponseDto convertToDto() {

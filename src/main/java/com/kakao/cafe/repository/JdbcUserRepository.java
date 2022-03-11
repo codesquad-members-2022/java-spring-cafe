@@ -2,7 +2,6 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -11,10 +10,8 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -26,7 +23,7 @@ public class JdbcUserRepository implements UserRepository {
 
     private final NamedParameterJdbcTemplate jdbc;
     private final RowMapper<User> userRowMapper = BeanPropertyRowMapper.newInstance(User.class);
-    SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcInsert;
 
     public JdbcUserRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
