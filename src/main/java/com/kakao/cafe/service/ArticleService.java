@@ -1,13 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.dto.ArticleForm;
 import com.kakao.cafe.repository.ArticleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
 

@@ -2,13 +2,19 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
-    MemoryUserRepository repository = new MemoryUserRepository();
+    MemoryUserRepository repository;
+
+    @BeforeEach
+    public void beforeEach() {
+         repository = new MemoryUserRepository();
+    }
 
     @AfterEach
     public void afterEach() {
@@ -23,7 +29,7 @@ class MemoryUserRepositoryTest {
 
         //when
         repository.save(user);
-        User result = repository.findByIndex(user.getIndex())
+        User result = repository.findByIndex(user.getIndex()-1) // index 0부터 저장
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
 
         //then

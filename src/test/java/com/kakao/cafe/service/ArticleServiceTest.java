@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.dto.ArticleForm;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.MemoryArticleRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
