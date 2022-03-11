@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/users")
@@ -50,13 +49,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ModelAndView createUser(UserDto userDto, HttpSession session) {
+    public String createUser(UserDto userDto, HttpSession session) {
         User user = userService.register(userDto);
         session.setAttribute(SESSION_USER, user);
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("user", user);
-        return modelAndView;
+        return "redirect:/users";
     }
 
     @GetMapping("/{userId}/form")
@@ -69,16 +65,13 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ModelAndView updateUser(@PathVariable String userId, UserDto userDto,
+    public String updateUser(@PathVariable String userId, UserDto userDto,
         HttpSession session) {
         confirmSession(session, userId);
 
         userDto.setUserId(userId);
-        User updateUser = userService.updateUser(userDto);
-
-        ModelAndView mav = new ModelAndView("redirect:/users");
-        mav.addObject("user", updateUser);
-        return mav;
+        userService.updateUser(userDto);
+        return "redirect:/users";
     }
 
     private void confirmSession(HttpSession session, String userId) {

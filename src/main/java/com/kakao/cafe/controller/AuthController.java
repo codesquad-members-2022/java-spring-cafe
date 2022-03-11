@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AuthController {
@@ -26,13 +25,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(LoginDto loginDto, HttpSession session) {
+    public String login(LoginDto loginDto, HttpSession session) {
         User user = userService.login(loginDto);
         session.setAttribute(SESSION_USER, user);
-
-        ModelAndView modelAndView = new ModelAndView("redirect:/users");
-        modelAndView.addObject("user", user);
-        return modelAndView;
+        return "redirect:/users";
     }
 
     @GetMapping("/logout")

@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ArticleController {
@@ -26,11 +25,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public ModelAndView createQuestion(ArticleDto articleDto) {
-        Article article = articleService.write(articleDto);
-        ModelAndView mav = new ModelAndView("redirect:/");
-        mav.addObject("article", article);
-        return mav;
+    public String createQuestion(ArticleDto articleDto) {
+        articleService.write(articleDto);
+        return "redirect:/";
     }
 
     @GetMapping("/")
