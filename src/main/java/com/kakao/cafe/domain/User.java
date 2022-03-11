@@ -34,7 +34,7 @@ public class User {
     }
 
     public void setIndex(int index) {
-        this.index = index;
+        this.index = index+1;
     }
 
     public boolean compareById(String userId){

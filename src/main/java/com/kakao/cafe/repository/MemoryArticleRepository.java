@@ -8,37 +8,39 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemoryArticleRepository implements ArticleRepository{
-    private List<Article> articles = Collections.synchronizedList(new ArrayList<>());
+    private List<Article> articleStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public Article save(Article article) {
-        for (int i = 0; i < articles.size(); i++) {
-            if (articles.get(i) == null) {
-                articles.add(i, article);
-                return article;
+        for (int i = 0; i < articleStore.size(); i++) {
+            if (articleStore.get(i) == null) {
+                return store(article, i);
             }
         }
-        articles.add(article);
+        return store(article, articleStore.size());
+    }
+
+    private Article store(Article article, int index) {
+        article.setIndex(index);
+        articleStore.add(article);
         return article;
     }
 
     @Override
     public Optional<Article> findByIndex(int index) {
-        return articles.stream()
-                .filter(article -> article.compareBy(index))
-                .findAny();
+        return Optional.ofNullable(articleStore.get(index));
     }
 
     @Override
     public List<Article> findAll() {
-        return new ArrayList<>(articles);
+        return new ArrayList<>(articleStore);
     }
 
     public int size() {
-        return articles.size();
+        return articleStore.size();
     }
 
     public void clearArticles() {
-        articles.clear();
+        articleStore.clear();
     }
 }

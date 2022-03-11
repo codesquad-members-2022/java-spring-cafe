@@ -3,8 +3,6 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Article {
-    private int id;
-
     private String title;
     private String writer;
     private LocalDateTime dateTime;
@@ -17,14 +15,6 @@ public class Article {
         this.writer = writer;
         this.dateTime = LocalDateTime.now();
         this.contents = contents;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -48,7 +38,7 @@ public class Article {
     }
 
     public void setIndex(int index) {
-        this.index = index;
+        this.index = index+1;
     }
 
     public boolean compareBy(int index) {

@@ -7,45 +7,46 @@ import java.util.*;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final List<User> store = Collections.synchronizedList(new ArrayList<>());
+    private final List<User> userStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public User save(User user) {
-        for (int i = 0; i <= store.size(); i++) {
-            if (store.get(i) == null) {
-                store.add(i, user);
-                return user;
+        for (int i = 0; i < userStore.size(); i++) {
+            if (userStore.get(i) == null) {
+                return store(user, i);
             }
         }
-        store.add(user);
+        return store(user, userStore.size());
+    }
+
+    private User store(User user, int index) {
+        user.setIndex(index);
+        userStore.add(user);
         return user;
     }
 
     @Override
     public Optional<User> findByIndex(int index) {
-        if (store.size() > index) {
-            return Optional.ofNullable(store.get(index));
-        }
-        return Optional.empty();
+        return Optional.ofNullable(userStore.get(index));
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return store.stream()
+        return userStore.stream()
                 .filter(user -> user.compareById(userId))
                 .findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store);
+        return new ArrayList<>(userStore);
     }
 
     public void clearStore() {
-        store.clear();
+        userStore.clear();
     }
 
     public int size() {
-        return store.size();
+        return userStore.size();
     }
 }
