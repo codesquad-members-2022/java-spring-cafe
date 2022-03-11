@@ -22,12 +22,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @ComponentScan
 @AutoConfigureMockMvc
+@Sql("classpath:/schema.sql")
 @DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
 
