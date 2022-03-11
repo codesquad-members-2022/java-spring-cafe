@@ -2,7 +2,6 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.JdbcUserRepository;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class UserService {
     }
 
     public List<User> findAllUser() {
-        return userRepository.getUserList();
+        return userRepository.getUsers();
     }
 
     public User findOne(String userId) {

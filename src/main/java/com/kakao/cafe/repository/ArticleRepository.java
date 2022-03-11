@@ -8,7 +8,7 @@ public interface ArticleRepository {
 
     void save(Article article);
 
-    List<Article> getArticleList();
+    List<Article> getArticles();
 
     Article findById(int articleId);
 

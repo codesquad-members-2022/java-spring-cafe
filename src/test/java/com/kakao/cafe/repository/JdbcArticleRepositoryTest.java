@@ -18,7 +18,7 @@ class JdbcArticleRepositoryTest {
         //given
         Article article = new Article("asdf", "title", "content");
         //when
-        articleRepository.save(article);
+        // articleRepository.save(article);
         //then
     }
 

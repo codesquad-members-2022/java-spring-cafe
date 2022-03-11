@@ -10,6 +10,18 @@ public class Article {
     private String uploadDate;
     private String writer;
 
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public int getArticleId() {
         return articleId;
     }

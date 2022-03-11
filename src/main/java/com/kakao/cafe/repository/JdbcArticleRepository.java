@@ -43,7 +43,7 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public List<Article> getArticleList() {
+    public List<Article> getArticles() {
         List<Article> articleList = new ArrayList<>();
 
         String sql = "select * from article";

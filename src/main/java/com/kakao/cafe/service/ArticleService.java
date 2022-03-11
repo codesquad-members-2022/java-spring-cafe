@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.JdbcArticleRepository;
-import com.kakao.cafe.repository.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class ArticleService {
     }
 
     public List<Article> findAllArticle() {
-        return articleRepository.getArticleList();
+        return articleRepository.getArticles();
     }
 
     public Article findOneArticle(int articleId) {
@@ -37,12 +36,12 @@ public class ArticleService {
 
     private void validUser(String userId) {
         if (userService.findOne(userId)==null) {
-            throw new RuntimeException();
+            throw new NullPointerException();
         }
     }
 
     public synchronized int getRepositorySize() {
-        return articleRepository.getArticleList().size();
+        return articleRepository.getArticles().size();
     }
 
 }

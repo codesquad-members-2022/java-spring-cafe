@@ -24,13 +24,8 @@ public class ArticleController {
     public ArticleController(ArticleService articleService) {this.articleService = articleService;}
 
     @PostMapping("/qna/create")
-    public String createArticle(HttpServletRequest request) {
-        Article article = new Article(request.getParameter("writer"),
-                                      request.getParameter("title"),
-                                      request.getParameter("contents"));
-
+    public String createArticle(Article article) {
         articleService.createArticle(article);
-
         return "redirect:/";
     }
 
@@ -38,13 +33,6 @@ public class ArticleController {
     public String writeArticle(ModelAndView modelAndView) {
         modelAndView.setViewName("qna/form");
         return "qna/form";
-    }
-
-    @GetMapping("/")
-    public String mainPage(Model model) {
-        List<Article> articleList = articleService.findAllArticle();
-        model.addAttribute(articleList);
-        return "index";
     }
 
     @GetMapping("article/{articleId}")

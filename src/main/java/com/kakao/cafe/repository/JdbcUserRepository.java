@@ -46,7 +46,7 @@ public class JdbcUserRepository implements UserRepository{
     }
 
     @Override
-    public List<User> getUserList() {
+    public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
 
         String sql = "select * from users";

@@ -7,34 +7,29 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class MemoryArticleRepository implements ArticleRepository{
+public class MemoryArticleRepository implements ArticleRepository {
 
-    private final List<Article> articleList = new CopyOnWriteArrayList<>();
+    private final List<Article> articles = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(Article article) {
-        articleList.add(article);
+        articles.add(article);
     }
 
     @Override
-    public List<Article> getArticleList() {
+    public List<Article> getArticles() {
         List<Article> tempArticleList = new ArrayList<>();
-        tempArticleList.addAll(articleList);
+        tempArticleList.addAll(articles);
         return tempArticleList;
     }
 
     @Override
     public Article findById(int articleId) {
-        for (Article article : articleList) {
-            if (article.getArticleId() == articleId) {
-                return article;
-            }
-        }
-        return null;
+        return articles.stream().filter(i -> i.getArticleId()==articleId).findAny().get();
     }
 
     @Override
     public void clearStorage() {
-        articleList.clear();
+        articles.clear();
     }
 }

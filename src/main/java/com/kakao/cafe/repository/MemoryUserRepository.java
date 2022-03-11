@@ -9,21 +9,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private List<User> userList = new CopyOnWriteArrayList<>();
+    private List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(User user) {
-        userList.add(user);
+        users.add(user);
     }
 
     @Override
-    public List<User> getUserList() {
-        return userList;
+    public List<User> getUsers() {
+        return users;
     }
 
     @Override
     public User findById(String id) {
-        for (User user : userList) {
+        for (User user : users) {
             if (user.getUserId().equals(id)) {
                 return user;
             }
@@ -33,7 +33,7 @@ public class MemoryUserRepository implements UserRepository{
 
     @Override
     public void clearStorage(){
-        userList.clear();
+        users.clear();
     }
 
 }
