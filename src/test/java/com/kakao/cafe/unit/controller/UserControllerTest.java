@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -37,6 +38,8 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    private MockHttpSession session;
+
     User user;
 
     @BeforeEach
@@ -48,10 +51,20 @@ class UserControllerTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        session = new MockHttpSession();
+        session.setAttribute("SESSION_USER", user);
     }
 
     private ResultActions performGet(String url) throws Exception {
-        return mockMvc.perform(get(url).accept(MediaType.TEXT_HTML));
+        return mockMvc.perform(get(url)
+            .accept(MediaType.TEXT_HTML));
+    }
+
+    private ResultActions performGet(String url, MockHttpSession session) throws Exception {
+        return mockMvc.perform(get(url)
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
     }
 
     @Test
@@ -166,7 +179,7 @@ class UserControllerTest {
             .willReturn(user);
 
         // when
-        ResultActions actions = performGet("/users/userId/form");
+        ResultActions actions = performGet("/users/userId/form", session);
 
         // then
         actions.andExpect(status().isOk())
@@ -190,6 +203,7 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "userPassword")
             .param("name", "otherName")
             .param("email", "other@example.com")
@@ -208,7 +222,8 @@ class UserControllerTest {
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/otherId")
+        ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "userPassword")
             .param("name", "otherName")
             .param("email", "other@example.com")
@@ -231,7 +246,8 @@ class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
-            .param("password", "otherPassword")
+            .session(session)
+            .param("password", "userPassword")
             .param("name", "otherName")
             .param("email", "other@example.com")
             .accept(MediaType.TEXT_HTML));

@@ -1,5 +1,6 @@
 package com.kakao.cafe.integration.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,6 +37,8 @@ public class UserControllerTest {
 
     @Autowired
     private UserSetUp userSetUp;
+
+    private MockHttpSession session;
 
     @Component
     public static class UserSetUp {
@@ -61,6 +65,9 @@ public class UserControllerTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        session = new MockHttpSession();
+        session.setAttribute("SESSION_USER", user);
     }
 
     @AfterEach
@@ -69,9 +76,14 @@ public class UserControllerTest {
     }
 
     private ResultActions performGet(String url) throws Exception {
-        return mockMvc.perform(
-            get(url).accept(MediaType.TEXT_HTML)
-        );
+        return mockMvc.perform(get(url)
+            .accept(MediaType.TEXT_HTML));
+    }
+
+    private ResultActions performGet(String url, MockHttpSession session) throws Exception {
+        return mockMvc.perform(get(url)
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
     }
 
 
@@ -141,9 +153,9 @@ public class UserControllerTest {
         // when
         ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", "userId")
-            .param("password", "otherPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+            .param("password", any(String.class))
+            .param("name", any(String.class))
+            .param("email", any(String.class))
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -174,7 +186,7 @@ public class UserControllerTest {
         userSetUp.saveUser(user);
 
         // when
-        ResultActions actions = performGet("/users/userId/form");
+        ResultActions actions = performGet("/users/userId/form", session);
 
         // then
         actions.andExpect(status().isOk())
@@ -190,9 +202,10 @@ public class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "userPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+            .param("name", any(String.class))
+            .param("email", any(String.class))
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -204,13 +217,21 @@ public class UserControllerTest {
     @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserPasswordTest() throws Exception {
         // given
-        userSetUp.saveUser(user);
+        User other = new User.Builder()
+            .userId("other")
+            .password("otherPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
+
+        userSetUp.saveUser(other);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/otherId")
-            .param("password", "userPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+        ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
+            .param("password", any(String.class))
+            .param("name", any(String.class))
+            .param("email", any(String.class))
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -228,9 +249,10 @@ public class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "otherPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+            .param("name", any(String.class))
+            .param("email", any(String.class))
             .accept(MediaType.TEXT_HTML));
 
         // then
