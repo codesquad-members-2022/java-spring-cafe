@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.dto.LoginDto;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
