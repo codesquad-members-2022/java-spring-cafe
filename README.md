@@ -8,7 +8,10 @@ Springboot를 이용하여 간단한 게시판(카페)를 구현해보는 프로
 최대한 간단한 형태로 제작해보고자 처음에는 DB도 연결하지 않은 채 동작하도록 만들어봅니다.
 이후에는 H2 Database를 통해 게시글을 저장하고 가입한 회원의 정보를 등록하도록 확장해나갑니다.
 DB 접근기술로는 JdbcTemplate를 활용하여 쿼리 작성을 연습해보았습니다. 
-프로젝트는 배포는 Heroku로 배포할 예정입니다.
+프로젝트는 배포는 Heroku로 배포할 예정입니다. 
+
+### 배포 URL
+https://codesquad-spring-cafe.herokuapp.com
 
 ## Step 03
 
