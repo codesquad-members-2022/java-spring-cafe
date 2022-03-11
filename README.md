@@ -25,7 +25,7 @@
 - [ ] DBrepository 예외 던지기
 - [x] findByUserId 로 메서드이름 변경
 - [x] 자원 청소 부분 중복 제거하기
-- [ ] @JdbcTest 적용하기
+- [x] @JdbcTest 적용하기 (ArticleRepository, UserRepository)
 
 ## Step03 ToDo-List
 - [x] user form 검증 로직 작성하기 (BeanValidation 사용하지 말것!)

@@ -68,6 +68,7 @@ public class DbArticleRepository implements ArticleRepository {
                         rs.getString("contents"),
                         rs.getTimestamp("local_date_time").toLocalDateTime()
                 );
+                article.setId(rs.getLong("id"));
                 return Optional.ofNullable(article);
             }
         } catch (SQLException e) {
