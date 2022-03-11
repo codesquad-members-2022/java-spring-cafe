@@ -11,15 +11,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ArticleMemoryRepository implements ArticleRepository{
 
     List<Article> articles = new CopyOnWriteArrayList<>();
-    Long articleSize = 0L;
+    Long articleSequence = 0L;
 
     @Override
     public Long nextSequence() {
-        return this.articleSize;
+        return this.articleSequence;
     }
 
     private void addArticleSize() {
-        articleSize++;
+        articleSequence++;
     }
 
     @Override

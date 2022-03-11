@@ -1,6 +1,9 @@
 package com.kakao.cafe.Controller.dto;
 
+import com.kakao.cafe.domain.Article;
+
 import javax.validation.constraints.NotEmpty;
+import java.nio.charset.StandardCharsets;
 
 public class ArticleForm {
 
@@ -21,7 +24,12 @@ public class ArticleForm {
         this.contents = contents;
     }
 
-
+    public static Article toEntity(Long id, ArticleForm articleForm) {
+        return new Article(id,
+                articleForm.getWriter(),
+                articleForm.getTitle(),
+                articleForm.getContents());
+    }
 
     public String getWriter() {
         return writer;

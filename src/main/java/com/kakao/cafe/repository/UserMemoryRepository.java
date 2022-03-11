@@ -6,16 +6,12 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 public class UserMemoryRepository implements UserRepository{
 
-    private List<User> users = new ArrayList<>();
-    private Long userSize = 0L;
-
-    public Long nextUserSequence() {
-        return this.userSize;
-    }
+    private List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
     public User save(User user) {
@@ -23,7 +19,6 @@ public class UserMemoryRepository implements UserRepository{
             return user;
         }
         users.add(user);
-        addUserSize();
 
         return user;
     }
@@ -31,10 +26,6 @@ public class UserMemoryRepository implements UserRepository{
     private boolean isExistUser(User user) {
         return users.stream()
                 .anyMatch(eachUser -> eachUser.isCorrectUser(user.getUserId()));
-    }
-
-    private void addUserSize() {
-        this.userSize++;
     }
 
     @Override

@@ -41,29 +41,25 @@ class UserServiceTest {
     @DisplayName("회원가입용 데이터가 정상적으로 주어지면 회원가입이 성공한다")
     void joinSuccessTest() {
         // given
-        User user = new User(userService.nextUserSequence(), userRequestDtos.get(0));
 
         // when
-        User resultUser = userService.save(user);
+        User resultUser = userService.save(userRequestDtos.get(0));
 
         // then
-        assertThat(resultUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(resultUser.getUserId()).isEqualTo(userRequestDtos.get(0).getUserId());
     }
 
     @Test
     @DisplayName("이미 가입된 userId로 다시 가입을 시도하면 DuplicateUserIdException이 발생한다")
     void joinDuplicateTest() {
         // given
-        UserRequestDto userCreateDto = new UserRequestDto("test", "1234", "박우진", "abc@naver.com");
-        User user = new User(userService.nextUserSequence(), userCreateDto);
         for (UserRequestDto createDto : userRequestDtos) {
-            userService.save(new User(userService.nextUserSequence(), createDto));
+            userService.save(createDto);
         }
 
         // when
-        userService.save(user);
         DuplicateUserIdException e = assertThrows(DuplicateUserIdException.class,
-                () -> userService.save(user));
+                () -> userService.save(userRequestDtos.get(0)));
 
         // then
         assertThat(e.getMessage()).isEqualTo("이미 가입된 ID입니다. 다른 ID로 가입해주세요.");
@@ -73,14 +69,14 @@ class UserServiceTest {
     @DisplayName("기존에 가입된 userId로 회원검색을 시도하면 해당하는 회원을 리턴한다")
     void findByUserIdTest() {
         // given
-        User user = new User(userService.nextUserSequence(), userRequestDtos.get(0));
-        userService.save(user);
+        userService.save(userRequestDtos.get(0));
 
         // when
-        User findUser = userService.findByUserId(user.getUserId());
+        UserRequestDto userRequestDto = userService.findUserRequestDto(userRequestDtos.get(0).getUserId());
+        User findUser = UserRequestDto.toEntity(userRequestDto);
 
         // then
-        assertThat(findUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(findUser.getUserId()).isEqualTo(userRequestDto.getUserId());
     }
 
     @Test
@@ -90,7 +86,7 @@ class UserServiceTest {
 
         // when
         NoMatchUserException e = assertThrows(NoMatchUserException.class,
-                () -> userService.findByUserId("noUserId"));
+                () -> userService.findUserRequestDto("noUserId"));
 
         // then
         assertThat(e.getMessage()).isEqualTo("일치하는 회원이 없습니다. 확인 후 다시 시도해주세요.");

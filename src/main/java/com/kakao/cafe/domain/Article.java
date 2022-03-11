@@ -20,15 +20,6 @@ public class Article extends BaseModel {
         super.setLastModifiedTime(LocalDateTime.now());
     }
 
-    public Article(Long id, ArticleForm articleDto) {
-        this.id = id;
-        this.writer = articleDto.getWriter();
-        this.title = articleDto.getTitle();
-        this.contents = articleDto.getContents();
-        super.setCreatedTime(LocalDateTime.now());
-        super.setLastModifiedTime(LocalDateTime.now());
-    }
-
     public Long getId() {
         return id;
     }

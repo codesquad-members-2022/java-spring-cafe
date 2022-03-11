@@ -14,10 +14,10 @@ public class UserDto {
         this.email = email;
     }
 
-    public UserDto(User user) {
-        this.userId = user.getUserId();
-        this.name = user.getName();
-        this.email = user.getEmail();
+    public static UserDto from(User user) {
+        return new UserDto(user.getUserId(),
+                user.getName(),
+                user.getEmail());
     }
 
     public String getUserId() {

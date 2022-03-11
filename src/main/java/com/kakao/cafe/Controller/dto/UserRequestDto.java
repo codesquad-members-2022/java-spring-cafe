@@ -1,5 +1,7 @@
 package com.kakao.cafe.Controller.dto;
 
+import com.kakao.cafe.domain.User;
+
 public class UserRequestDto {
 
     private String userId;
@@ -15,6 +17,20 @@ public class UserRequestDto {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public static UserRequestDto from(User user) {
+        return new UserRequestDto(user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail());
+    }
+
+    public static User toEntity(UserRequestDto userRequestDto) {
+        return new User(userRequestDto.getUserId(),
+                userRequestDto.getPassword(),
+                userRequestDto.getName(),
+                userRequestDto.getEmail());
     }
 
     public String getUserId() {
