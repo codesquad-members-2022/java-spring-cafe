@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class VolatilityUserRepositoryTest {
+class UserRepositoryTest {
 
     @Autowired
     Repository<User, String> repository;
@@ -24,6 +25,7 @@ class VolatilityUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("전체 사용자 목록을 반환한다.")
     void selectAll() {
         //given
         User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
@@ -40,6 +42,7 @@ class VolatilityUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
     void insertUser() {
         //given
         User user = new User(-1, "user", "1234", "name", "user@gmail.com");
@@ -53,6 +56,7 @@ class VolatilityUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("인자로 주어진 ID를 가진 사용자를 저장소에서 찾아 반환한다.")
     void selectUser() {
         //given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");

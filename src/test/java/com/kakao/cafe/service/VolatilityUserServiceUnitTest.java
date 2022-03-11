@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.repository.Repository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,7 @@ class VolatilityUserServiceUnitTest {
     Repository<User, String> repository;
 
     @Test
+    @DisplayName("사용자 목록에 존재하지 않는 ID의 가입 요청이 오면 사용자 등록에 성공한다.")
     void addUserSuccess() {
         // given
         User user = new User(-1, "user", "1234", "name", "user@gmail.com");
@@ -46,6 +48,7 @@ class VolatilityUserServiceUnitTest {
     }
 
     @Test
+    @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패한다.")
     void addUserFail() {
         User user = new User(-1, "user", "1234", "name", "user@gmail.com");
         given(repository.findOne(any(String.class)))
