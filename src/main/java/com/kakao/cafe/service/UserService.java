@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -47,5 +49,15 @@ public class UserService {
         }
         User updateUser = user.update(dto.toEntity());
         userRepository.save(updateUser);
+    }
+
+    public User login(UserLoginRequestDto dto) {
+        String userId = dto.getUserId();
+        Optional<User> user = userRepository.findByUserId(userId);
+        if (user.isEmpty()) {
+            return null;
+        }
+        User user1 = user.get();
+        return (user1.isMatchPassword(dto.getPassword())) ? user1 : null;
     }
 }
