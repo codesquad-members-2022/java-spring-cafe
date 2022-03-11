@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.article.ArticleRepository;
 
 @Component
 public class MemoryArticleRepository implements ArticleRepository {

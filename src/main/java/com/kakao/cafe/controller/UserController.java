@@ -19,7 +19,7 @@ import com.kakao.cafe.service.UserService;
 @Controller
 public class UserController {
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
