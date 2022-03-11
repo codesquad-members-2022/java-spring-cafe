@@ -1,12 +1,10 @@
 package com.kakao.cafe.users.repository;
 
-import com.kakao.cafe.exception.repository.RequiredFieldNotFoundException;
 import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
 import com.kakao.cafe.users.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +20,6 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<Long> save(User user) {
-        validateRequiredField(user);
         validateUserIdUnique(user);
 
         user.setId(idGenerator.getAndIncrement());
@@ -33,14 +30,14 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public Optional<User> findById(Long id) {
         return userRegistry.stream()
-                .filter(user -> user.getId().equals(id))
+                .filter(user -> user.equalsId(id))
                 .findFirst();
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
         return userRegistry.stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.equalsUserId(userId))
                 .findFirst();
     }
 
@@ -52,13 +49,6 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public void deleteAll() {
         userRegistry.clear();
-    }
-
-    private void validateRequiredField(User user) {
-        if (user.getUserId() == null || user.getPasswd() == null ||
-                user.getName() == null || user.getEmail() == null ) {
-            throw new RequiredFieldNotFoundException();
-        }
     }
 
     private void validateUserIdUnique(User user) {

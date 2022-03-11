@@ -1,4 +1,4 @@
-package com.kakao.cafe.exception.repository;
+package com.kakao.cafe.exception.domain;
 
 import com.kakao.cafe.exception.CafeRuntimeException;
 import org.springframework.http.HttpStatus;
