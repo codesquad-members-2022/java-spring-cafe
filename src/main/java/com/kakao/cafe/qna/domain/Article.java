@@ -1,7 +1,8 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.common.utils.StringValidator.*;
+
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class Article {
 	private Long id;
@@ -30,8 +31,14 @@ public class Article {
 		this.writingDate = writingDate;
 	}
 
-	public boolean has(Long id) {
+	public boolean hasId(Long id) {
 		return this.id == id;
+	}
+
+	public void changeTitle(String changedTitle) {
+		if (!isNullOrBlank(changedTitle)) {
+			this.title = changedTitle;
+		}
 	}
 
 	public Long getId() {

@@ -1,10 +1,9 @@
 package com.kakao.cafe.qna.infra;
 
+import static com.kakao.cafe.common.utils.sql.JdbcTypeConvertor.*;
 import static java.util.stream.Collectors.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -26,20 +25,25 @@ public class MemoryArticleRepository implements ArticleRepository {
 	@Override
 	public Article save(Article entity) {
 		Long id = entity.getId();
-		if (id != null && data.contains(entity)) {
-			data.set(Math.toIntExact(entity.getId()), entity);
-			logger.info("question db save : {}", entity);
+		if (id != null && this.hasId(id)) {
+			data.set(getDataIdx(entity.getId()), entity);
+			logger.info("question db update : {}", entity.getId());
 			return entity;
 		}
-		id = getNextId();
+		id = getNextId(data.size());  // JdbcTypeConvertor 로 메서드를 분리하고 보니, 해당 데이터를 꺼내서 보내주는게 가독성은 안 좋아 보입니다.
 		entity.setId(id);
 		data.add(entity);
-		logger.info("question db save : {}", entity);
+		logger.info("question db insert : {}", entity.getId());
 		return entity;
 		}
 
-	private Long getNextId() {
-		return data.size()+1L;
+	private boolean hasId(Long id) {
+		Optional<Article> article = getArticleId(id);
+		if (article.isEmpty()) {
+			logger.error("not exist of article id : {}", id);
+			throw new DomainNotFoundException("없는 게시글 정보 요청입니다.");
+		}
+		return article.get().hasId(id);
 	}
 
 	@Override
@@ -50,9 +54,13 @@ public class MemoryArticleRepository implements ArticleRepository {
 		if (data.size() < id) {
 			throw new DomainNotFoundException(ERROR_OF_ARTICLE_ID);
 		}
+		return getArticleId(id);
+	}
+
+	private Optional<Article> getArticleId(Long id) {
 		return data.stream()
 			.parallel()
-			.filter(it -> it.has(id))
+			.filter(it -> it.hasId(id))
 			.findAny();
 	}
 

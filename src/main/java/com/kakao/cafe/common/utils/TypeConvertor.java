@@ -2,6 +2,8 @@ package com.kakao.cafe.common.utils;
 
 import java.util.regex.Pattern;
 
+import com.kakao.cafe.user.domain.User;
+
 public class TypeConvertor {
 	private static final String regex = "\\p{Digit}";
 	public static final String ERROR_OF_TYPE_OF_NOT_NUMERIC = "the type is not numeric";

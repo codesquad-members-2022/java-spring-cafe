@@ -22,7 +22,10 @@ public class User {
 		this.password = password;
 	}
 
-	public boolean hasId(String userId) {
+	public boolean hasId(Long id) {
+		return this.id == id;
+	}
+	public boolean hasUserId(String userId) {
 		return this.userId.equals(userId);
 	}
 
@@ -39,6 +42,10 @@ public class User {
 
 	public boolean isDifferent(String password) {
 		return !this.password.equals(password);
+	}
+
+	public void changeUserName(String name) {
+		this.name = name;
 	}
 
 	public Long getId() {

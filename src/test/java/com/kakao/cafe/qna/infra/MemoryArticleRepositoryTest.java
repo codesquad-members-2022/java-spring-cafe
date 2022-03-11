@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.kakao.cafe.qna.domain.Article;
 
 class MemoryArticleRepositoryTest {
-
 	@Autowired
 	private MemoryArticleRepository memoryArticleRepository;
 
@@ -33,7 +32,7 @@ class MemoryArticleRepositoryTest {
 	@Test
 	@DisplayName("작성된 글의 DB 저장을 확인한다.")
 	void save_article() {
-		Article expected = getArticle(null);
+		Article expected = getArticle();
 		Article article = memoryArticleRepository.save(expected);
 
 		Optional<Article> actual = memoryArticleRepository.findById(article.getId());
@@ -44,19 +43,18 @@ class MemoryArticleRepositoryTest {
 	@Test
 	@DisplayName("수정된 글의 DB 업데이트를 확인한다.")
 	void update_article() {
-		String expected = "제목 변경 테스트";
-		Article testArticle = getArticle(expected);
+		String changedTitle = "제목 변경 테스트";
+		Article testArticle = getArticle();
+		memoryArticleRepository.save(testArticle);
+		testArticle.changeTitle(changedTitle);
 		Article actual = memoryArticleRepository.save(testArticle);
 
 		assertThat(actual.getId()).isNotZero();
-		assertThat(actual.getTitle()).isEqualTo(expected);
+		assertThat(actual.getTitle()).isNotEqualTo(TEST_TITLE);
 	}
 
-	public Article getArticle(String title) {
-		if (StringUtils.isEmpty(title)) {
-			return new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
-		}
-		return new Article(TEST_WRITER, title, TEST_CONTENT);
+	public Article getArticle() {
+		return new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 	}
 
 }

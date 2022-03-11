@@ -28,6 +28,7 @@ import com.kakao.cafe.user.domain.UserService;
 import com.kakao.cafe.user.infra.MemoryUserRepository;
 
 @ExtendWith(MockitoExtension.class)
+public
 class UserServiceTest {
 	public static final String CAFE_USER_ID = "cafe";
 	public static final String CAFE_USER_NAME = "spring";

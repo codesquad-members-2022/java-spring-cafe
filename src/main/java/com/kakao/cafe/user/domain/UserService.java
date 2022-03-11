@@ -29,7 +29,7 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public UserDto.Response find(Long id) {  // TODO 응답 dto 로 변경
+	public UserDto.Response find(Long id) {
 		User user = get(id);
 		return new UserDto.Response(user);
 	}
