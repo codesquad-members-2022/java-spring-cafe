@@ -24,7 +24,6 @@ public class MemoryArticleRepository implements ArticleRepository {
         return new ArrayList<>(articleList);
     }
 
-
     @Override
     public Optional<Article> findById(String articleId) {
         return Optional.ofNullable(articleList.get(Integer.parseInt(articleId) - 1));
