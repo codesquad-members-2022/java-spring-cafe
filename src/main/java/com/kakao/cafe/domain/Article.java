@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -48,6 +50,10 @@ public class Article {
         }
 
         public Article build() {
+            if (writer == null || title == null | contents == null) {
+                throw new NotFoundException(ErrorCode.FIELD_NOT_FOUND);
+            }
+
             this.createdDate = LocalDateTime.now();
             return new Article(this);
         }
