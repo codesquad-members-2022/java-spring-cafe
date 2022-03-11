@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.LoginForm;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import java.util.Objects;
@@ -94,6 +95,13 @@ public class User {
         this.name = user.name;
         this.email = user.email;
 
+        return this;
+    }
+
+    public User authenticate(LoginForm loginForm) {
+        if (!userId.equals(loginForm.getUserId()) || !password.equals(loginForm.getPassword())) {
+            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
+        }
         return this;
     }
 

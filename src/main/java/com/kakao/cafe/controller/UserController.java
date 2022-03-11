@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,8 +44,9 @@ public class UserController {
     }
 
     @PostMapping
-    public ModelAndView createUser(UserForm userForm) {
+    public ModelAndView createUser(UserForm userForm, HttpSession session) {
         User user = userService.register(userForm);
+        session.setAttribute("loginUser", user);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
         modelAndView.addObject("user", user);

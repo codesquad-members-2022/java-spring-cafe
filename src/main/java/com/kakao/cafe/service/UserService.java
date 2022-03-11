@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.LoginForm;
 import com.kakao.cafe.dto.UserForm;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
@@ -47,4 +48,10 @@ public class UserService {
         return userRepository.save(updatedUser);
     }
 
+    public User login(LoginForm loginForm) {
+        User user = userRepository.findByUserId(loginForm.getUserId())
+            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+
+        return user.authenticate(loginForm);
+    }
 }
