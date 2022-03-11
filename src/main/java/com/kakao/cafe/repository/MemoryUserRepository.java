@@ -47,6 +47,7 @@ public class MemoryUserRepository implements UserRepository {
         userStore.clear();
     }
 
+    @Override
     public int size() {
         return userStore.size();
     }
