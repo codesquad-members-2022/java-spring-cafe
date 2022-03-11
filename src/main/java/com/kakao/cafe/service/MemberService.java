@@ -21,7 +21,7 @@ public class MemberService {
     //회원가입
     public int join(Member member) {
         memberRepository.save(member);
-        return member.getId();
+        return member.getIndex();
     }
 
     //전체 회원목록 조회

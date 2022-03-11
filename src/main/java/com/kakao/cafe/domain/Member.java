@@ -1,18 +1,28 @@
 package com.kakao.cafe.domain;
 
-public class Member {
+import java.time.LocalDateTime;
 
-    private int id;
+public class Member {
+    private int index;
     private String name;
     private String email;
     private String password;
+    private LocalDateTime joinTime;
 
-    public int getId() {
-        return id;
+    public LocalDateTime getJoinTime() {
+        return joinTime;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setJoinTime(LocalDateTime joinTime) {
+        this.joinTime = joinTime;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getName() {

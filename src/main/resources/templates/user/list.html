@@ -46,7 +46,6 @@
                     <tr>
                         <th>No</th>
                         <th>닉네임</th>
-                        <th>이메일</th>
                         <th>회원가입일</th>
                         <th></th>
                     </tr>
@@ -55,8 +54,8 @@
                     <tr th:each="user : ${users}">
                         <td th:text="${user.id}"></td>
                         <td th:text="${user.name}"></td>
-                        <td th:text="${user.email}"></td>
-                        <td></td>
+                        <td th:text="${user.joinTime}"></td>
+                        <td><a th:href="@{users/{id}(id=${user.id})}" class="btn btn-success" role="button">프로필 보기</a></td>
                     </tr>
                     </tbody>
                 </table>

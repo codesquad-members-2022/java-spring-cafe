@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Member;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Repository
@@ -12,8 +13,9 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
+        member.setIndex(store.indexOf(member) + CORRECT_INDEX);
+        member.setJoinTime(LocalDateTime.now());
         store.add(member);
-        member.setId(store.indexOf(member) + CORRECT_INDEX);
         return member;
     }
 

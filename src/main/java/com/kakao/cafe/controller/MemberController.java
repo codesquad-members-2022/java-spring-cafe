@@ -31,6 +31,7 @@ public class MemberController {
         member.setEmail(form.getEmail());
         member.setName(form.getName());
         member.setPassword(form.getPassword());
+        member.setJoinTime(form.getJoinTime());
 
         memberService.join(member);
 

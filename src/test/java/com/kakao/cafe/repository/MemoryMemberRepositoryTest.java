@@ -25,7 +25,7 @@ class MemoryMemberRepositoryTest {
         repository.save(member);
 
         //when
-        Member result = repository.findById(member.getId()).get();
+        Member result = repository.findById(member.getIndex()).get();
 
         //then
         assertThat(member).isEqualTo(result);
