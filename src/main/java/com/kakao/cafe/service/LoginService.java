@@ -17,7 +17,7 @@ public class LoginService {
     }
 
     public User login(String userId, String password) {
-        return userRepository.findById(userId)
+        return userRepository.findByUserId(userId)
                 .filter(m -> m.isSamePassword(password))
                 .orElse(null);
     }

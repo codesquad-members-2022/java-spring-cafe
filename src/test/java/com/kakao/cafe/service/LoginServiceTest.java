@@ -36,7 +36,7 @@ class LoginServiceTest {
     @Test
     void loginSuccessTest() {
         // given
-        given(userRepository.findById("Shine")).willReturn(Optional.ofNullable(user));
+        given(userRepository.findByUserId("Shine")).willReturn(Optional.ofNullable(user));
 
         // when
         User loginUser = loginService.login(user.getUserId(), user.getPassword());
@@ -48,7 +48,7 @@ class LoginServiceTest {
     @Test
     void loginFailedTest() {
         // given
-        given(userRepository.findById("NoMember")).willReturn(Optional.empty());
+        given(userRepository.findByUserId("NoMember")).willReturn(Optional.empty());
 
         // when
         User loginUser = loginService.login("NoMember", "NoPassword");

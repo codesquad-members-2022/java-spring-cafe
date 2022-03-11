@@ -27,7 +27,7 @@ public class UserService {
     }
 
     private boolean isDuplicateUserId(String userId) {
-        return repository.findById(userId).isPresent();
+        return repository.findByUserId(userId).isPresent();
     }
 
     public List<User> findUsers() {
@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public User findUserById(String userId) {
-        return repository.findById(userId)
+        return repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
 

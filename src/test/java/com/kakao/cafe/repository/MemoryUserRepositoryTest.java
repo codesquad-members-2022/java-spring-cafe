@@ -28,13 +28,13 @@ class MemoryUserRepositoryTest {
         Long saveId = repository.save(user1);
 
         // then
-        User findUser = repository.findById("testA").get();
+        User findUser = repository.findByUserId("testA").get();
         assertThat(user1).isEqualTo(findUser);
     }
 
     @Test
     void InvalidFindTest() {
-        assertThat(repository.findById("noUser").isEmpty()).isTrue();
+        assertThat(repository.findByUserId("noUser").isEmpty()).isTrue();
     }
 
     @Test
@@ -57,7 +57,7 @@ class MemoryUserRepositoryTest {
 
         // then
         assertThat(isDeleted).isTrue();
-        assertThat(repository.findById("testA").isEmpty()).isTrue();
+        assertThat(repository.findByUserId("testA").isEmpty()).isTrue();
     }
 
     @Test
@@ -69,7 +69,7 @@ class MemoryUserRepositoryTest {
         repository.update("testA", updateUserInfo);
 
         // then
-        User findUser = repository.findById("testA").get();
+        User findUser = repository.findByUserId("testA").get();
         assertThat(findUser.getUserId()).isEqualTo("testB");
     }
 

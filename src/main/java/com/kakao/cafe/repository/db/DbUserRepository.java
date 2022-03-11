@@ -50,7 +50,7 @@ public class DbUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String userId) {
+    public Optional<User> findByUserId(String userId) {
         String SQL = "SELECT id, user_id, password, name, email FROM user_info WHERE user_id = (?)";
         Connection connection = null;
         PreparedStatement pstmt = null;
