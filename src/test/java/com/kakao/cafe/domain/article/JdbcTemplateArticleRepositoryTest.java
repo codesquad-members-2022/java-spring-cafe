@@ -33,18 +33,28 @@ class JdbcTemplateArticleRepositoryTest {
     }
 
     @Test
+    @DisplayName("게시글을 저장하면 id가 생성된다.")
+    void saveTest() {
+        int expectedId = 1;
+
+        Article actual = jdbcTemplateArticleRepository.save(article);
+
+        assertThat(actual.getId()).isEqualTo(expectedId);
+        assertThat(actual.getWriter()).isEqualTo("writer");
+        assertThat(actual.getTitle()).isEqualTo("title");
+        assertThat(actual.getContents()).isEqualTo("contents");
+
+    }
+
+    @Test
     @DisplayName("id로 게시글을 찾을 수 있다.")
     void findByIdTest() {
 
-        jdbcTemplateArticleRepository.save(article);
-        int targetId = 1;
+        Article actual = jdbcTemplateArticleRepository.save(article);
 
-        Article target = jdbcTemplateArticleRepository.findById(targetId).orElseThrow();
+        Article target = jdbcTemplateArticleRepository.findById(actual.getId()).orElseThrow();
 
-        assertThat(target.getId()).isEqualTo(targetId);
-        assertThat(target.getWriter()).isEqualTo("writer");
-        assertThat(target.getTitle()).isEqualTo("title");
-        assertThat(target.getContents()).isEqualTo("contents");
+        assertThat(target).isEqualTo(actual);
 
     }
 
@@ -63,15 +73,12 @@ class JdbcTemplateArticleRepositoryTest {
     @DisplayName("저장된 모든 게시글을 찾을 수 있다.")
     void findAllTest() {
 
-        jdbcTemplateArticleRepository.save(article);
+        Article actual = jdbcTemplateArticleRepository.save(article);
 
         List<Article> all = jdbcTemplateArticleRepository.findAll();
 
         assertThat(all.size()).isEqualTo(1);
-        Article target = all.get(0);
-        assertThat(target.getWriter()).isEqualTo("writer");
-        assertThat(target.getTitle()).isEqualTo("title");
-        assertThat(target.getContents()).isEqualTo("contents");
+        assertThat(all).contains(actual);
 
     }
 

@@ -55,7 +55,7 @@ class UserServiceTest {
     void join_duplicateId() {
 
         UserDto duplicatedUserDto = new UserDto("ron2", "1111", "니로", "2ron@naver.com");
-        given(userRepository.save(any())).willThrow(new ClientException(HttpStatus.CONFLICT, "아이디가 이미 존재합니다."));
+        given(userRepository.findById(any())).willReturn(Optional.ofNullable(user));
 
         assertThatThrownBy(() -> userService.join(duplicatedUserDto))
                 .isInstanceOf(ClientException.class)
@@ -93,7 +93,7 @@ class UserServiceTest {
     @DisplayName("회원가입되지않은 아이디를 찾으면 ClientException이 발생한다.")
     void findUserThrowTest() {
 
-        given(userRepository.findById(any())).willThrow(new ClientException(HttpStatus.NOT_FOUND, "찾으시는 유저가 없습니다."));
+        given(userRepository.findById(any())).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.findUser("notJoinedId"))
                 .isInstanceOf(ClientException.class)

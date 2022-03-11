@@ -29,17 +29,48 @@ class JdbctemplateUserRepositoryTest {
     }
 
     @Test
+    @DisplayName("유저를 저장할 수 있다.")
+    void saveTest() {
+
+        User actual = userRepository.save(user);
+
+        assertThat(actual).isEqualTo(user);
+        assertThat(actual.getPassword()).isEqualTo("1234");
+        assertThat(actual.getName()).isEqualTo("로니");
+        assertThat(actual.getEmail()).isEqualTo("email@email.com");
+
+    }
+
+    @Test
     @DisplayName("유저 아이디로 해당 유저를 조회할 수 있다.")
     void findByIdTest() {
 
-        userRepository.save(user);
+        User actual = userRepository.save(user);
 
-        User target = userRepository.findById("ron2").orElseThrow();
+        User target = userRepository.findById(actual.getUserId()).orElseThrow();
 
-        assertThat(target.getUserId()).isEqualTo("ron2");
+        assertThat(target).isEqualTo(actual).isEqualTo(user);
         assertThat(target.getPassword()).isEqualTo("1234");
         assertThat(target.getName()).isEqualTo("로니");
         assertThat(target.getEmail()).isEqualTo("email@email.com");
+
+    }
+
+    @Test
+    @DisplayName("유저 정보를 업데이트 할 수 있다.")
+    void updateUserTest() {
+
+        User actual = userRepository.save(user);
+        User updateUser = new User("ron2", "1234", "differentName", "different@email.com");
+
+        User target = userRepository.save(updateUser);
+
+        assertThat(target).isEqualTo(actual).isEqualTo(updateUser);
+
+        assertThat(target.getPassword()).isEqualTo("1234");
+        assertThat(target.getName()).isEqualTo("differentName");
+        assertThat(target.getEmail()).isEqualTo("different@email.com");
+        assertThat(userRepository.findAll().size()).isEqualTo(1);
 
     }
 

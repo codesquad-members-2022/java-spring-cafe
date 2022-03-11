@@ -49,9 +49,10 @@ class ArticleServiceTest {
         Article actual = articleService.write(new ArticleDto("writer", "title", "contents"));
 
         assertThat(actual).isEqualTo(article);
-        assertThat(article.getTitle()).isEqualTo("title");
-        assertThat(article.getWriter()).isEqualTo("writer");
-        assertThat(article.getContents()).isEqualTo("contents");
+        assertThat(actual.getTitle()).isEqualTo("title");
+        assertThat(actual.getWriter()).isEqualTo("writer");
+        assertThat(actual.getContents()).isEqualTo("contents");
+        assertThat(actual.getWrittenTime()).isEqualTo(LocalDateTime.of(2022,03,11,11,25));
     }
 
     @Test
@@ -74,6 +75,8 @@ class ArticleServiceTest {
     @DisplayName("찾는 게시글이 없으면 ClientException을 발생시킨다.")
     @ValueSource(ints = {-1,0})
     void findOneTest_error(int id) {
+
+        given(articleRepository.findById(id)).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> articleService.findOne(id))
                 .isInstanceOf(ClientException.class)
