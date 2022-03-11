@@ -17,6 +17,7 @@ import com.kakao.cafe.user.domain.UserRepository;
 
 @Controller
 public class MainController {
+	public static final String SESSIONED_ID = "sessionedUser";
 	private final ArticleService articleService;
 	private final UserRepository userRepository;
 
@@ -27,7 +28,7 @@ public class MainController {
 		this.userRepository = userRepository;
 	}
 
-	@GetMapping()
+	@GetMapping("/")
 	public String firstView(Model model) {
 		model.addAttribute("articles", articleService.getAllArticles());
 		return "index";
@@ -35,6 +36,7 @@ public class MainController {
 
 	@PostMapping("/do_login")
 	public String login(String userId, String password, HttpSession httpSession) {
+		logger.info("login user : {}", userId);
 		Optional<User> user = userRepository.findByUserId(userId);
 		if (user.isEmpty()) {
 			return "redirect:/login";
@@ -42,7 +44,13 @@ public class MainController {
 		if (user.get().isDifferent(password)) {
 			return "redirect:/login";
 		}
-		httpSession.setAttribute("user", user.get().getUserId());  // todo 암호화 -_-
+		httpSession.setAttribute(SESSIONED_ID, user.get().getUserId());  // todo 암호화 -_-
+		return "redirect:/";
+	}
+
+	@GetMapping("/logout")
+	public String logout(HttpSession httpSession) {
+		httpSession.removeAttribute(SESSIONED_ID);
 		return "redirect:/";
 	}
 }
