@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -112,20 +113,41 @@ class UserControllerTest {
         given(userService.findUserById(any())).willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+        ResultActions requestThenResult = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
                 .accept(MediaType.TEXT_HTML_VALUE));
 
         // then
-        actions.andExpect(status().isOk())
+        requestThenResult.andExpect(status().isOk())
                 .andExpect(model().attribute("user", user))
                 .andExpect(view().name("/user/updateForm"));
+    }
+
+    @Test
+    public void updateSucessTest() throws Exception {
+        // given
+        User updateUser = new User("Shine", "1234", "ShineUpdate", "update@naver.com");
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("SESSIONED_USER", user);
+        given(userService.userUpdate(any())).willReturn(true);
+
+        // when
+        ResultActions requestThenResult = mockMvc.perform(post("/users/" + user.getUserId() + "/update")
+                .session(mockSession)
+                .param("userId", "Shine")
+                .param("password", "1234")
+                .param("name", "updateShine")
+                .param("email", "update@naver.com")
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        requestThenResult.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/users"));
     }
 
     @Test
     public void updateFailTest() throws Exception {
         // given
         given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
-
 
         // then
         assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
