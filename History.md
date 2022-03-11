@@ -104,10 +104,13 @@ HomeController 및 테스트 코드를 추가했다.
 - `create(...)` : Post 메서드로 `/users/new`가 맵핑되면, 회원을 가입시키고 `"redirect:/users` 반환
 - 테스트코드도 추가했다.
 
----
-
 ## 10. createUserForm.css -> userForm.css 파일명 변경
 
 - 프로필 페이지에서 사용하기 위해 공유할 목적으로, css파일명을 변경했다.
+
+## 11. userProfile.html 추가
+
+- 사용자 프로필을 표시하는 userProfile.html을 추가했다.
+- 사용자 프로필을 동적으로 표시하기 위한 html파일이다.
 
 ---
