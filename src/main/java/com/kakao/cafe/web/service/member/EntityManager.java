@@ -20,8 +20,7 @@ public class EntityManager<T> {
 
     public T save(T entity) {
         String type = getClazz(entity);
-        String id = "Id";
-        if (!database.getIdDatabase(type+id).contains(getId(entity).get())) {
+        if (!database.getIdDatabase(type).contains(getId(entity).get())) {
             return database.save(type, entity);
         }
         return entity;
@@ -57,7 +56,6 @@ public class EntityManager<T> {
         }
         return true;
     }
-
 
     private <T> List<Field> getAllFields(T t) {
         Objects.requireNonNull(t);

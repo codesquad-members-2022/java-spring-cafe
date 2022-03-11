@@ -30,11 +30,9 @@
     <div class="description">
         <div class="desc-container">
             <p th:text="|${findArticle.writer} 님의|" class="desc-small">안녕하세요</p>
-            <p class="desc-big">회원정보 상세보기</p>
+            <p class="desc-big">게시글 상세보기</p>
         </div>
     </div>
-
-    <p class="total_num" th:text="|${findArticle.createAt} 님의 최근 접속 정보|">최근 접속 정보</p>
 
     <form th:object="${findArticle}" method="post">
         <div class="container" id="main">
@@ -44,17 +42,19 @@
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>닉네임</th>
-                            <th>이메일</th>
-                            <th>가입일</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>작성자</th>
+                            <th>작성일</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td th:text="*{id}">No</td>
-                            <td th:text="*{title}"></td>
-                            <td th:text="*{content}"></td>
-                            <td th:text="*{createAt}">가입 날짜</td>
+                            <td th:text="*{title}">제목</td>
+                            <td th:text="*{content}">내용</td>
+                            <td th:text="*{writer}">작성자</td>
+                            <td th:text="*{createAt}">작성일</td>
                         </tr>
                         </tbody>
                     </table>

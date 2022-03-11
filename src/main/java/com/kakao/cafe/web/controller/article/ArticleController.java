@@ -34,7 +34,7 @@ public class ArticleController {
             return "article/list";
         }
         articleService.write(request.toEntity());
-        return "article/write";
+        return "redirect:/articles";
     }
 
     @GetMapping("")

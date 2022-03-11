@@ -59,16 +59,6 @@ public class Article {
         private LocalDateTime lastModifiedAt;
         private int viewCount;
 
-        public Builder(Article article) {
-            this.id = article.id;
-            this.title = article.title;
-            this.content = article.content;
-            this.writer = article.writer;
-            this.createAt = article.createAt;
-            this.lastModifiedAt = article.lastModifiedAt;
-            this.viewCount = article.viewCount;
-        }
-
         public Builder() {
 
         }

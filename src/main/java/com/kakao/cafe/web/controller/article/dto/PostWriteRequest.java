@@ -9,12 +9,19 @@ import static com.kakao.cafe.config.DataGenerator.getRandomLocalDateTime;
 
 public class PostWriteRequest {
 
+    private static final int ZERO = 0;
     private String title;
     private String content;
     private String writer;
     private LocalDateTime createAt;
     private LocalDateTime lastModifiedAt;
     private int viewCount;
+
+    public PostWriteRequest(String title, String content, String writer) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+    }
 
     public String getTitle() {
         return title;
@@ -41,6 +48,7 @@ public class PostWriteRequest {
                 .writer(writer)
                 .createAt(createAt)
                 .lastModifiedAt(null)
+                .viewCount(ZERO)
                 .build();
     }
 }

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SequenceGenerator {
 
-    private static final int MEMBER_SEQUENCE_START_NUMBER = 1;
+    private static final int MEMBER_SEQUENCE_START_NUMBER = 0;
     private static final int ARTICLE_SEQUENCE_START_NUMBER = 0;
 
     private static final AtomicInteger memberSequence = new AtomicInteger(MEMBER_SEQUENCE_START_NUMBER);
