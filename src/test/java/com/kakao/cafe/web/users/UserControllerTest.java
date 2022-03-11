@@ -147,10 +147,13 @@ class UserControllerTest {
     @Test
     public void updateFailTest() throws Exception {
         // given
+        MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("SESSIONED_USER", user);
         given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
 
         // then
         assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
+                .session(mockSession)
                 .param("userId", "Shine")
                 .param("password", "1234")
                 .param("name", "Shine")
