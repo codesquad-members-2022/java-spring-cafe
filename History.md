@@ -113,4 +113,11 @@ HomeController 및 테스트 코드를 추가했다.
 - 사용자 프로필을 표시하는 userProfile.html을 추가했다.
 - 사용자 프로필을 동적으로 표시하기 위한 html파일이다.
 
+## 12. UserController - profile 메서드 추가
+
+사용자 프로필 요청을 처리하는 profile 메서드를 추가했다.
+
+- GET 요청을 통해 "/users/{userName}"가 맵핑되면, userName을 통해 사용자를 조회하여 모델에 담고 "/users/userProfile"을 반환
+- 테스트 코드는 현재 역량으로는 매번 독립적인 mvc 테스트를 할 수 없어서 작성하지 못 했다.
+
 ---

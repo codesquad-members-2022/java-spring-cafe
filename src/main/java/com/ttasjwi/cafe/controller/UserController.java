@@ -6,11 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @Controller
@@ -34,6 +32,14 @@ public class UserController {
         userRepository.save(user);
         log.info("new user={}", user);
         return "redirect:/users";
+    }
+
+    @GetMapping("/{userName}")
+    public String profile(@PathVariable String userName, Model model) {
+        User user = userRepository.findByUserName(userName)
+                .orElseThrow(()->new IllegalStateException("그런 회원은 존재하지 않습니다."));
+        model.addAttribute("user", user);
+        return "/users/userProfile";
     }
 
     @GetMapping
