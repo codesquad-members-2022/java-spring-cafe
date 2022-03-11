@@ -130,3 +130,20 @@ HomeController 및 테스트 코드를 추가했다.
 - 비즈니스 로직을 수행하는 UserService를 분리했고 컨트롤러는 UserService를 의존하도록 했다. UserService는 UserRepository를 의존한다.
 
 ---
+
+# Step2
+
+- [ ] 게시글 작성
+- [ ] 게시글 목록
+- [ ] 게시글 상세 내용
+- [ ] (선택) 사용자 정보 수정
+
+---
+
+## 2.1 createArticleForm.html 및 의존 정적 리소스 추가
+
+게시글 작성 페이지를 담당하는 createArticleForm.html 및 의존 정적 리소스를 추가했다.
+
+- 의존 정적 리소스 : createArticleForm.css 추가
+
+---
