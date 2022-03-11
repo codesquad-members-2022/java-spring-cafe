@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.kakao.cafe.dto.UserResponseDto;
+
 public class User {
 
     private String userId;
@@ -12,11 +14,6 @@ public class User {
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public void updateUserInformation(User user) {
-        name = user.getName();
-        email = user.getEmail();
     }
 
     public String getUserId() {
@@ -35,21 +32,20 @@ public class User {
         return email;
     }
 
+    public UserResponseDto convertToDto() {
+        return new UserResponseDto(userId, name, email);
+    }
+
+    public void updateUserInformation(User user) {
+        name = user.getName();
+        email = user.getEmail();
+    }
+
     public boolean hasSameUserId(String userId) {
         return this.userId.equals(userId);
     }
 
     public boolean hasSamePassword(String password) {
         return this.password.equals(password);
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-            "userId='" + userId + '\'' +
-            ", password='" + password + '\'' +
-            ", name='" + name + '\'' +
-            ", email='" + email + '\'' +
-            '}';
     }
 }

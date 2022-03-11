@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
 
-    private UserRepository userRepository = new MemoryUserRepository();
+    private final UserRepository userRepository = new MemoryUserRepository();
 
     private User user;
 
@@ -33,7 +34,7 @@ class MemoryUserRepositoryTest {
         userRepository.save(user);
 
         // then
-        User result = userRepository.findByUserId(user.getUserId());
+        User result = userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NoSuchElementException("해당되는 ID가 없습니다."));
         assertThat(result).isEqualTo(user);
     }
 
@@ -44,7 +45,7 @@ class MemoryUserRepositoryTest {
         userRepository.save(user);
 
         // when
-        User result = userRepository.findByUserId(user.getUserId());
+        User result = userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NoSuchElementException("해당되는 ID가 없습니다."));
 
         // then
         assertThat(result).isEqualTo(user);
@@ -69,15 +70,12 @@ class MemoryUserRepositoryTest {
     void 사용자_정보_수정() {
         // given
         userRepository.save(user);
-
-        // when
         userRepository.save(new User("ikjo", "1234", "익조", "auddlr100@naver.com"));
 
-        // then
-        User result = userRepository.findByUserId(user.getUserId());
-        List<User> users = userRepository.findAll();
+        // when
+        User result = userRepository.findByUserId(user.getUserId()).orElseThrow(() -> new NoSuchElementException("해당되는 ID가 없습니다."));
 
+        // then
         assertThat(result.getName()).isEqualTo("익조");
-        assertThat(users.size()).isEqualTo(1);
     }
 }

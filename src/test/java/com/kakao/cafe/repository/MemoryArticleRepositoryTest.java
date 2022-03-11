@@ -3,7 +3,9 @@ package com.kakao.cafe.repository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kakao.cafe.domain.Article;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +19,7 @@ public class MemoryArticleRepositoryTest {
 
     @BeforeEach
     void setup() {
-        article = new Article("ikjo", "java", "java is fun");
+        article = new Article("ikjo", "java", "java is fun", LocalDateTime.now());
     }
 
     @AfterEach
@@ -32,7 +34,7 @@ public class MemoryArticleRepositoryTest {
         articleRepository.save(article);
 
         // then
-        Article result = articleRepository.findById(1);
+        Article result = articleRepository.findById(1).orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다."));
         assertThat(result).isEqualTo(article);
     }
 
@@ -43,7 +45,7 @@ public class MemoryArticleRepositoryTest {
         articleRepository.save(article);
 
         // when
-        Article result = articleRepository.findById(1);
+        Article result = articleRepository.findById(1).orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다."));
 
         // then
         assertThat(result).isEqualTo(article);
@@ -54,12 +56,12 @@ public class MemoryArticleRepositoryTest {
     void 모든_사용자_정보_조회() {
         // given
         articleRepository.save(article);
-        articleRepository.save(new Article("ikjo", "python", "python is fun"));
+        articleRepository.save(new Article("ikjo", "python", "python is fun", LocalDateTime.now()));
 
         // when
-        List<Article> articles = articleRepository.findAll();
+        List<Article> result = articleRepository.findAll();
 
         // then
-        assertThat(articles.size()).isEqualTo(2);
+        assertThat(result.size()).isEqualTo(2);
     }
 }

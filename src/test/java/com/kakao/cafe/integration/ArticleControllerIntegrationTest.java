@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleRequestDto;
 import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -51,19 +52,18 @@ public class ArticleControllerIntegrationTest {
         resultActions.andExpect(redirectedUrl("/"));
     }
 
-    @DisplayName("사용자가 특정 게시글 정보를 요청하면 model과 /qna/show view를 반환한다.")
+    @DisplayName("사용자가 특정 게시글 정보를 요청하면 /qna/show view를 반환한다.")
     @Test
     void 특정_게시글_조회() throws Exception {
         // given
-        Article article = new Article("ikjo", "java", "java is fun");
-        articleService.upload(article);
+        ArticleRequestDto articleRequestDto = new ArticleRequestDto("ikjo", "java", "java is fun");
+        articleService.upload(articleRequestDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/articles/1"));
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(view().name("/qna/show"))
-            .andExpect(model().attribute("article", article));
+            .andExpect(view().name("/qna/show"));
     }
 }

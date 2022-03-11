@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,17 +47,17 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String createUser(User user) {
-        logger.info("POST /users {}", user);
-        userService.join(user);
+    public String createUser(UserRequestDto userRequestDto) {
+        logger.info("POST /users {}", userRequestDto);
+        userService.join(userRequestDto);
 
         return "redirect:/users";
     }
 
     @PutMapping("/users/{id}/update")
-    public String updateUser(@PathVariable String id, User userDataUpdatedByUser) {
-        logger.info("PUT /users {}", userDataUpdatedByUser);
-        userService.update(id, userDataUpdatedByUser);
+    public String updateUser(@PathVariable String id, UserRequestDto userRequestDto) {
+        logger.info("PUT /users {}", userRequestDto);
+        userService.update(id, userRequestDto);
 
         return "redirect:/users";
     }

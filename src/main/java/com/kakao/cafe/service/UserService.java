@@ -1,9 +1,13 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserRepository;
 
+import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,25 +19,23 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User join(User users) {
-        validateDuplicateUser(users.getUserId());
-
-        return userRepository.save(users);
+    public User join(UserRequestDto userRequestDto) {
+        validateDuplicateUser(userRequestDto.getUserId());
+        return userRepository.save(userRequestDto.convertToDomain());
     }
 
-    public User update(String userId, User userUpdatedByUser) {
-        User users = userRepository.findByUserId(userId);
-        validatePassword(users, userUpdatedByUser.getPassword());
-
-        return userRepository.save(userUpdatedByUser);
+    public User update(String userId, UserRequestDto userRequestDto) {
+        validatePassword(userId, userRequestDto.getPassword());
+        return userRepository.save(userRequestDto.convertToDomain());
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserResponseDto> findAll() {
+        return userRepository.findAll().stream().map(user -> user.convertToDto()).collect(Collectors.toList());
     }
 
-    public User findOne(String userId) {
-        return userRepository.findByUserId(userId);
+    public UserResponseDto findOne(String userId) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> new NoSuchElementException("해당되는 ID가 없습니다."));
+        return user.convertToDto();
     }
 
     public void deleteAll() {
@@ -41,13 +43,17 @@ public class UserService {
     }
 
     private void validateDuplicateUser(String userId) {
-        if (userRepository.findByUserId(userId) != null) {
+        userRepository.findByUserId(userId).ifPresent(m -> {
             throw new IllegalStateException("이미 존재하는 사용자입니다.");
-        }
+        });
     }
 
-    private void validatePassword(User users, String password) {
-        if (!users.hasSamePassword(password)) {
+    private void validatePassword(String userId, String password) {
+        User user = userRepository.findByUserId(userId).orElseThrow(() -> {
+            throw new IllegalStateException("해당되는 ID가 없습니다.");
+        });
+
+        if (!user.hasSamePassword(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }

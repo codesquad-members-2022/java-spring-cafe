@@ -1,15 +1,17 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleResponseDto;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private List<Article> articles = Collections.synchronizedList(new ArrayList<>());
+    private final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public synchronized Article save(Article article) {
@@ -19,8 +21,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(int id) {
-        return articles.get(id - 1);
+    public Optional<Article> findById(int id) {
+        return Optional.ofNullable(articles.get(id - 1));
     }
 
     @Override

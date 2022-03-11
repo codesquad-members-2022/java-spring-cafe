@@ -10,7 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleRequestDto;
+import com.kakao.cafe.dto.ArticleResponseDto;
 import com.kakao.cafe.service.ArticleService;
+import java.time.LocalDateTime;
 import java.util.Date;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,18 +35,6 @@ public class ArticleControllerTest {
     @MockBean
     private ArticleService articleService;
 
-    private Article article;
-
-    @BeforeEach
-    void setup() {
-        article = new Article("ikjo", "java", "java is fun");
-    }
-
-    @AfterEach
-    void close() {
-        articleService.deleteAll();
-    }
-
     @DisplayName("사용자가 게시글 저장을 요청하면 게시글 정보를 저장하고 /로 리다이렉트한다.")
     @Test
     void 게시글_저장() throws Exception {
@@ -53,7 +44,8 @@ public class ArticleControllerTest {
         articleParams.add("title", "java");
         articleParams.add("contents", "java is fun");
 
-        given(articleService.upload(any(Article.class))).willReturn(article);
+        Article article = new Article("ikjo", "java", "java is fun", LocalDateTime.now());
+        given(articleService.upload(any(ArticleRequestDto.class))).willReturn(article);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/questions").params(articleParams));
@@ -66,7 +58,8 @@ public class ArticleControllerTest {
     @Test
     void 특정_게시글_조회() throws Exception {
         // given
-        given(articleService.findOne(1)).willReturn(article);
+        ArticleResponseDto articleResponseDto = new ArticleResponseDto( 1, "ikjo", "java", "java is fun", LocalDateTime.now());
+        given(articleService.findOne(1)).willReturn(articleResponseDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/articles/1"));
@@ -74,6 +67,6 @@ public class ArticleControllerTest {
         // then
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("/qna/show"))
-            .andExpect(model().attribute("article", article));
+            .andExpect(model().attribute("article", articleResponseDto));
     }
 }

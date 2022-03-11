@@ -6,8 +6,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleResponseDto;
 import com.kakao.cafe.service.ArticleService;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,9 @@ public class MainControllerTest {
     @Test
     void 모든_게시글_정보_조회() throws Exception {
         // given
-        Article article1 = new Article("ikjo", "java", "java is fun");
-        article1.setId(1);
-        Article article2 = new Article("ikjo", "python", "python is fun");
-        article2.setId(2);
-        given(articleService.findAll()).willReturn(List.of(article1, article2));
+        ArticleResponseDto articleResponseDto1 = new ArticleResponseDto(1, "ikjo", "java", "java is fun", LocalDateTime.now());
+        ArticleResponseDto articleResponseDto2 = new ArticleResponseDto(2, "ikjo", "python", "python is fun", LocalDateTime.now());
+        given(articleService.findAll()).willReturn(List.of(articleResponseDto1, articleResponseDto2));
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/"));
@@ -42,6 +41,6 @@ public class MainControllerTest {
         // then
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("/index"))
-            .andExpect(model().attribute("articles", List.of(article1, article2)));
+            .andExpect(model().attribute("articles", List.of(articleResponseDto1, articleResponseDto2)));
     }
 }

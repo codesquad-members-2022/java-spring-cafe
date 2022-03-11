@@ -1,9 +1,8 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
-import com.kakao.cafe.dto.ArticleResponseDto;
 import java.time.LocalDateTime;
 
-public class Article {
+public class ArticleResponseDto {
 
     private int id;
     private String writer;
@@ -11,15 +10,13 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
-    public Article(String writer, String title, String contents, LocalDateTime createdDate) {
+    public ArticleResponseDto(int id, String writer, String title, String contents,
+        LocalDateTime createdDate) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public int getId() {
@@ -36,9 +33,5 @@ public class Article {
 
     public String getContents() {
         return contents;
-    }
-
-    public ArticleResponseDto convertToDto() {
-        return new ArticleResponseDto(id, writer, title, contents, createdDate);
     }
 }

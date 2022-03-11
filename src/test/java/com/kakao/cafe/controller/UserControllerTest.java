@@ -1,6 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +52,7 @@ public class UserControllerTest {
         userParams.add("name", "조명익");
         userParams.add("email", "auddlr100@naver.com");
 
-        given(userService.join(any(User.class))).willReturn(user);
+        given(userService.join(any(UserRequestDto.class))).willReturn(user);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/users").params(userParams));
@@ -63,7 +65,8 @@ public class UserControllerTest {
     @Test
     void 회원_목록_보기() throws Exception {
         // given
-        given(userService.findAll()).willReturn(List.of(user));
+        UserResponseDto userResponseDto = user.convertToDto();
+        given(userService.findAll()).willReturn(List.of(userResponseDto));
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users"));
@@ -71,14 +74,15 @@ public class UserControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                      .andExpect(view().name("/user/list"))
-                     .andExpect(model().attribute("users", List.of(user)));
+                     .andExpect(model().attribute("users", List.of(userResponseDto)));
     }
 
     @DisplayName("사용자가 특정 회원 프로필을 요청을 했을 때 model과 /user/profile view를 반환한다.")
     @Test
     void 회원_프로필_보기() throws Exception {
         // given
-        given(userService.findOne("ikjo")).willReturn(user);
+        UserResponseDto userResponseDto = user.convertToDto();
+        given(userService.findOne("ikjo")).willReturn(userResponseDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo"));
@@ -86,14 +90,15 @@ public class UserControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                      .andExpect(view().name("/user/profile"))
-                     .andExpect(model().attribute("user", user));
+                     .andExpect(model().attribute("user", userResponseDto));
     }
 
     @DisplayName("사용자가 회원 정보 수정 화면을 요청 했을 때 model과 /user/updateForm view를 반환한다.")
     @Test
     void 회원_정보_수정_화면_보기() throws Exception {
         // given
-        given(userService.findOne("ikjo")).willReturn(user);
+        UserResponseDto userResponseDto = user.convertToDto();
+        given(userService.findOne("ikjo")).willReturn(userResponseDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form"));
@@ -101,16 +106,14 @@ public class UserControllerTest {
         // then
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("/user/updateForm"))
-            .andExpect(model().attribute("user", user));
+            .andExpect(model().attribute("user", userResponseDto));
     }
 
     @DisplayName("사용자가 사용자 정보 수정을 요청하면 사용자 정보를 정상 처리 시 /users로 리다이렉트한다.")
     @Test
     void 사용자_정보_수정() throws Exception {
         // given
-        User updatedUser = new User("ikjo", "1234", "ikjo93", "auddlr100@naver.com");
-
-        given(userService.update(eq("ikjo"), any(User.class))).willReturn(updatedUser);
+        given(userService.update(eq("ikjo"), any(UserRequestDto.class))).willReturn(user);
 
         MultiValueMap<String, String> userParam = new LinkedMultiValueMap<>();
         userParam.add("userId", "ikjo");
