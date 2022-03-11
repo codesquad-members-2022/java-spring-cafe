@@ -8,9 +8,10 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(CustomException.class)
+    @ExceptionHandler(value = {InvalidRequestException.class, DuplicateException.class,
+        NotFoundException.class, InternalOperationException.class})
     public ModelAndView handleCustomException(HttpServletRequest request,
-        CustomException exception) {
+        CommonException exception) {
         ErrorCode errorCode = exception.getErrorCode();
 
         ModelAndView mav = new ModelAndView("error/index");

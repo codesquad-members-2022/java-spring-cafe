@@ -1,15 +1,15 @@
 package com.kakao.cafe.exception;
 
-public class CustomException extends RuntimeException {
+class CommonException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public CustomException(ErrorCode errorCode) {
+    protected CommonException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }
 
-    public ErrorCode getErrorCode() {
+    protected ErrorCode getErrorCode() {
         return errorCode;
     }
 }

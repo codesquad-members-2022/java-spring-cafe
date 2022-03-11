@@ -1,53 +1,43 @@
 package com.kakao.cafe.unit.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.repository.UserCollectionRepository;
+import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.repository.collections.UserCollectionRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+@DisplayName("UserCollectionRepository 단위 테스트")
 class UserCollectionRepositoryTest {
 
-    private static final String USER_ID = "userId";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_NAME = "user";
-    private static final String USER_EMAIL = "user@example.com";
-
-    private static final String OTHER_ID = "otherId";
-    private static final String OTHER_PASSWORD = "secret";
-    private static final String OTHER_NAME = "other";
-    private static final String OTHER_EMAIL = "other@example.com";
-
-    @InjectMocks
-    private UserCollectionRepository userRepository;
+    private final UserCollectionRepository userRepository = new UserCollectionRepository();
 
     User user;
 
     @BeforeEach
     public void setUp() {
-        user = userRepository.save(
-            new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL));
+        user = userRepository.save(new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build());
     }
 
     @Test
     @DisplayName("유저 객체를 저장한다")
     public void savePersistTest() {
         // then
-        assertThat(user.getUserId()).isEqualTo(USER_ID);
-        assertThat(user.getPassword()).isEqualTo(USER_PASSWORD);
-        assertThat(user.getName()).isEqualTo(USER_NAME);
-        assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
+        then(user.getUserId()).isEqualTo("userId");
+        then(user.getPassword()).isEqualTo("userPassword");
+        then(user.getName()).isEqualTo("userName");
+        then(user.getEmail()).isEqualTo("user@example.com");
     }
 
     @Test
@@ -57,7 +47,7 @@ class UserCollectionRepositoryTest {
         List<User> users = userRepository.findAll();
 
         // then
-        assertThat(users).containsExactly(user);
+        then(users).containsExactly(user);
     }
 
     @Test
@@ -67,42 +57,50 @@ class UserCollectionRepositoryTest {
         Optional<User> findUser = userRepository.findByUserId(user.getUserId());
 
         // then
-        assertThat(findUser).hasValue(user);
+        then(findUser).hasValue(user);
     }
 
     @Test
     @DisplayName("유저 번호를 가지고 변경된 유저 객체를 저장한다")
     public void saveMergeTest() {
         // given
-        User other = new User(user);
-        other.setName(OTHER_NAME);
-        other.setEmail(OTHER_EMAIL);
-
-        user.update(other);
+        User changedUser = new User.Builder()
+            .userNum(1)
+            .userId("userId")
+            .password("userPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         // when
-        User updatedUser = userRepository.save(user);
+        User updatedUser = userRepository.save(changedUser);
 
         // then
-        assertThat(updatedUser.getUserNum()).isEqualTo(user.getUserNum());
-        assertThat(updatedUser.getUserId()).isEqualTo(user.getUserId());
-        assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
-        assertThat(updatedUser.getName()).isEqualTo(other.getName());
-        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
+        then(updatedUser.getUserNum()).isEqualTo(1);
+        then(updatedUser.getUserId()).isEqualTo("userId");
+        then(updatedUser.getPassword()).isEqualTo("userPassword");
+        then(updatedUser.getName()).isEqualTo("otherName");
+        then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
     @Test
     @DisplayName("등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
     public void updateTest() {
         // given
-        User other = new User(user);
-        other.setUserId(OTHER_ID);
+        User changedUser = new User.Builder()
+            .userNum(1)
+            .userId("otherId")
+            .password("userPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         // when
-        CustomException exception = assertThrows(CustomException.class,
-            () -> userRepository.save(other));
+        Throwable throwable = catchThrowable(() -> userRepository.save(changedUser));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.USER_NOT_FOUND.getMessage());
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
 }

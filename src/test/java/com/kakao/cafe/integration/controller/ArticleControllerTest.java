@@ -1,4 +1,4 @@
-package com.kakao.cafe.integration;
+package com.kakao.cafe.integration.controller;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasProperty;
@@ -10,6 +10,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,17 +22,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
+@ComponentScan
 @AutoConfigureMockMvc
+@DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
-
-    private static final String WRITER = "writer";
-    private static final String TITLE = "title";
-    private static final String CONTENTS = "contents";
 
     @Autowired
     MockMvc mockMvc;
@@ -38,9 +42,37 @@ public class ArticleControllerTest {
 
     Article article;
 
+    @Component
+    public static class ArticleSetUp {
+
+        private final ArticleRepository articleRepository;
+        private final UserRepository userRepository;
+
+        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository) {
+            this.articleRepository = articleRepository;
+            this.userRepository = userRepository;
+        }
+
+        public User saveUser(User user) {
+            return userRepository.save(user);
+        }
+
+        public Article saveArticle(Article article) {
+            return articleRepository.save(article);
+        }
+
+        public void rollback() {
+            articleRepository.deleteAll();
+        }
+    }
+
     @BeforeEach
     public void setUp() {
-        article = new Article(WRITER, TITLE, CONTENTS);
+        article = new Article.Builder()
+            .writer("writer")
+            .title("title")
+            .contents("contents")
+            .build();
     }
 
     @AfterEach
@@ -48,12 +80,17 @@ public class ArticleControllerTest {
         articleSetUp.rollback();
     }
 
+    private ResultActions performGet(String url) throws Exception {
+        return mockMvc.perform(
+            get(url).accept(MediaType.TEXT_HTML)
+        );
+    }
+
     @Test
     @DisplayName("글을 작성하는 화면을 보여준다")
     public void createQuestionTest() throws Exception {
         // when
-        ResultActions actions = mockMvc.perform(get("/questions")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/questions");
 
         // then
         actions.andExpect(status().isOk())
@@ -63,18 +100,28 @@ public class ArticleControllerTest {
     @Test
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
+        // given
+        articleSetUp.saveUser(
+            new User.Builder()
+                .userId("writer")
+                .password("userPassword")
+                .name("userName")
+                .email("user@example.com")
+                .build()
+        );
+
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
-            .param("writer", WRITER)
-            .param("title", TITLE)
-            .param("contents", CONTENTS)
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+            .param("writer", "writer")
+            .param("title", "title")
+            .param("contents", "contents")
+            .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().is3xxRedirection())
             .andExpect(model().attribute("article", allOf(
-                hasProperty("writer", is(WRITER)),
-                hasProperty("title", is(TITLE))
+                hasProperty("writer", is("writer")),
+                hasProperty("title", is("title"))
             )))
             .andExpect(view().name("redirect:/"));
     }
@@ -86,8 +133,7 @@ public class ArticleControllerTest {
         Article savedArticle = articleSetUp.saveArticle(article);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/")
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/");
 
         // then
         actions.andExpect(status().isOk())
@@ -102,13 +148,25 @@ public class ArticleControllerTest {
         Article savedArticle = articleSetUp.saveArticle(article);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/articles/" + savedArticle.getArticleId())
-            .accept(MediaType.parseMediaType("application/html;charset=UTF-8")));
+        ResultActions actions = performGet("/articles/" + savedArticle.getArticleId());
 
         // then
         actions.andExpect(status().isOk())
             .andExpect(model().attribute("article", savedArticle))
             .andExpect(view().name("qna/show"));
+    }
+
+    @Test
+    @DisplayName("존재하지 않은 질문 id 로 질문을 조회하면 예외 페이지로 이동한다")
+    public void showArticleValidateTest() throws Exception {
+        // when
+        ResultActions actions = performGet("/articles/0");
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.ARTICLE_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
     }
 
 }

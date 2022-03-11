@@ -1,42 +1,38 @@
 package com.kakao.cafe.unit.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.ArticleCollectionRepository;
+import com.kakao.cafe.repository.collections.ArticleCollectionRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
 
-@ExtendWith(MockitoExtension.class)
+@DisplayName("ArticleCollectionRepository 단위 테스트")
 public class ArticleCollectionRepositoryTest {
 
-    private static final String WRITER = "writer";
-    private static final String TITLE = "title";
-    private static final String CONTENTS = "contents";
-
-    @InjectMocks
-    private ArticleCollectionRepository articleRepository;
+    private final ArticleCollectionRepository articleRepository = new ArticleCollectionRepository();
 
     Article article;
 
     @BeforeEach
     public void setUp() {
-        article = articleRepository.save(new Article(WRITER, TITLE, CONTENTS));
+        article = articleRepository.save(new Article.Builder()
+            .writer("writer")
+            .title("title")
+            .contents("contents")
+            .build());
     }
 
     @Test
     @DisplayName("질문 객체를 저장소에 저장한다")
     public void saveTest() {
         // then
-        assertThat(article.getWriter()).isEqualTo(WRITER);
-        assertThat(article.getTitle()).isEqualTo(TITLE);
-        assertThat(article.getContent()).isEqualTo(CONTENTS);
+        then(article.getWriter()).isEqualTo("writer");
+        then(article.getTitle()).isEqualTo("title");
+        then(article.getContents()).isEqualTo("contents");
     }
 
     @Test
@@ -46,7 +42,7 @@ public class ArticleCollectionRepositoryTest {
         List<Article> articles = articleRepository.findAll();
 
         // then
-        assertThat(articles).containsExactly(article);
+        then(articles).containsExactly(article);
     }
 
     @Test
@@ -56,7 +52,7 @@ public class ArticleCollectionRepositoryTest {
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then
-        assertThat(findArticle).hasValue(article);
+        then(findArticle).hasValue(article);
     }
 
 }

@@ -2,6 +2,28 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
+
+<br/>
+<details>
+<summary> 단위/통합 테스트 결과</summary>
+<div markdown="1">
+<br/>
+
+![image](https://user-images.githubusercontent.com/50660684/157399780-080f719d-d030-456e-a991-f119cd529d39.png)
+![image](https://user-images.githubusercontent.com/50660684/157399988-678e26bc-d0a7-460a-b72d-48270d20a037.png)
+
+    
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary>☝ 1단계 요구사항</summary>
+<div markdown="1">
+<br/>
+
 ## 스프링 카페 1단계 - 회원 가입 및 목록 기능
 
 ### 회원가입 기능 구현
@@ -43,6 +65,15 @@
 - [X] ArrayList에 저장되어 있는 사용자 중 사용자 아이디와 일치하는 User 데이터를 Model에 저장한다.
 - [X] user/profile.html 에서는 Controller에서 전달한 User 데이터를 활용해 사용자 정보를 출력한다.
 
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary>✌ 2단계 요구사항</summary>
+<div markdown="1">
+<br/>
 
 ## 스프링 카페 2단계 - 글 쓰기 기능 구현
 
@@ -85,3 +116,35 @@
 - [X] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
 - [X] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
 - [X] UserRepository의 save() 메소드를 사용해 업데이트한다.
+
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary>🤘 3단계 요구사항</summary>
+<div markdown="1">
+<br/>
+
+## 스프링 카페 3단계 - DB에 저장하기
+
+- [X] H2 데이터베이스 의존성을 추가하고 연동한다. 
+  - ORM은 사용하지 않는다. 
+  - Spring JDBC를 사용한다. 
+  - DB 저장 및 조회에 필요한 SQL은 직접 작성한다.
+- [X] 게시글 데이터 저장하기 
+  - Article 클래스를 DB 테이블에 저장할 수 있게 구현한다. 
+  - Article 테이블이 적절한 PK를 가지도록 구현한다.
+- [X] 게시글 목록 구현하기 
+  - 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+- [X] 게시글 상세보기 구현하기 
+  - 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
+- [X] 사용자 정보 DB에 저장 
+  - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
+- [X] 배포하기
+  - heroku를 사용해서 배포를 진행한다.
+
+<br/>
+</div>
+</details>

@@ -1,67 +1,95 @@
 package com.kakao.cafe.unit.domain;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.BDDAssertions.catchThrowable;
+import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("User 도메인 단위 테스트")
 public class UserTest {
 
-    private static final String USER_ID = "userId";
-    private static final String USER_PASSWORD = "password";
-    private static final String USER_NAME = "user";
-    private static final String USER_EMAIL = "user@example.com";
-
-    private static final String OTHER_ID = "otherId";
-    private static final String OTHER_PASSWORD = "secret";
-    private static final String OTHER_NAME = "other";
-    private static final String OTHER_EMAIL = "other@example.com";
-
     @Test
-    @DisplayName("유저 아이디와 비밀번호가 일치하면 엔티티를 변경한다")
+    @DisplayName("유저 아이디와 비밀번호가 일치하면 유저 객체의 속성을 변경한다")
     public void updateUserTest() {
         // given
-        User user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
-        User other = new User(USER_ID, USER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
+        User user = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
+
+        User other = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         // when
         User updatedUser = user.update(other);
 
         // then
-        assertThat(updatedUser.getName()).isEqualTo(other.getName());
-        assertThat(updatedUser.getEmail()).isEqualTo(other.getEmail());
+        then(updatedUser.getName()).isEqualTo(other.getName());
+        then(updatedUser.getEmail()).isEqualTo(other.getEmail());
     }
 
     @Test
     @DisplayName("업데이트 시 변경할 유저의 유저 아이디가 일치하지 않으면 예외를 반환한다")
     public void updateUserIdIncorrectTest() {
         // given
-        User user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
-        User other = new User(OTHER_ID, USER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
+        User user = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
+
+        User other = new User.Builder()
+            .userId("otherId")
+            .password("userPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         // when
-        CustomException exception = assertThrows(CustomException.class, () -> user.update(other));
+        Throwable throwable = catchThrowable(() -> user.update(other));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
     @Test
     @DisplayName("업데이트 시 변경할 유저의 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserPasswordIncorrectTest() {
         // given
-        User user = new User(USER_ID, USER_PASSWORD, USER_NAME, USER_EMAIL);
-        User other = new User(USER_ID, OTHER_PASSWORD, OTHER_NAME, OTHER_EMAIL);
+        User user = new User.Builder()
+            .userId("userId")
+            .password("userPassword")
+            .name("userName")
+            .email("user@example.com")
+            .build();
+
+        User other = new User.Builder()
+            .userId("userId")
+            .password("otherPassword")
+            .name("otherName")
+            .email("other@example.com")
+            .build();
 
         // when
-        CustomException exception = assertThrows(CustomException.class, () -> user.update(other));
+        Throwable throwable = catchThrowable(() -> user.update(other));
 
         // then
-        assertThat(exception.getMessage()).isEqualTo(ErrorCode.INCORRECT_USER.getMessage());
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
 }

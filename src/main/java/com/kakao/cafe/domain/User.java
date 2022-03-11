@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.exception.CustomException;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
 import java.util.Objects;
 
 public class User {
@@ -12,19 +12,54 @@ public class User {
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        this.userId = userId;
-        this.password = password;
-        this.name = name;
-        this.email = email;
+    private User() {
     }
 
-    public User(User other) {
-        this.userNum = other.userNum;
-        this.userId = other.userId;
-        this.password = other.password;
-        this.name = other.name;
-        this.email = other.email;
+    public static class Builder {
+
+        private Integer userNum;
+        private String userId;
+        private String password;
+        private String name;
+        private String email;
+
+        public Builder userNum(int userNum) {
+            this.userNum = userNum;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+
+    }
+
+    private User(Builder builder) {
+        userNum = builder.userNum;
+        userId = builder.userId;
+        password = builder.password;
+        name = builder.name;
+        email = builder.email;
     }
 
     public Integer getUserNum() {
@@ -51,25 +86,9 @@ public class User {
         this.userNum = userNum;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public User update(User user) {
         if (!userId.equals(user.userId) || !password.equals(user.password)) {
-            throw new CustomException(ErrorCode.INCORRECT_USER);
+            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
 
         this.name = user.name;
