@@ -7,31 +7,31 @@ import java.util.*;
 
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
-    private static Map<Long, Member> store = new HashMap<>();
-    private static long sequence = 0L;
+    private final List<Member> store = new ArrayList<>();
+    private static final int CORRECT_INDEX = 1;
 
     @Override
     public Member save(Member member) {
-        member.setId(++sequence);
-        store.put(member.getId(), member);
+        store.add(member);
+        member.setId(store.indexOf(member) + CORRECT_INDEX);
         return member;
     }
 
     @Override
-    public Optional<Member> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
+    public Optional<Member> findById(int id) {
+        return Optional.ofNullable(store.get(id - CORRECT_INDEX));
     }
 
     @Override
     public Optional<Member> findByName(String name) {
-        return store.values().stream()
+        return store.stream()
                 .filter(member -> member.getName().equals(name))
                 .findAny();
     }
 
     @Override
     public List<Member> findAll() {
-        return new ArrayList<>(store.values());
+        return store;
     }
 
     public void clearStore() {

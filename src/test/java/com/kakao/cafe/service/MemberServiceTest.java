@@ -33,7 +33,7 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         member.setName("Vans1");
-        Long saveId = memberService.join(member);
+        int saveId = memberService.join(member);
 
         //when
         Member findMember = memberService.findOne(saveId).get();
@@ -71,7 +71,7 @@ class MemberServiceTest {
 
         //when
         memberService.join(member1);
-        Long result = memberService.join(member2);
+        int result = memberService.join(member2);
 
         //then
         assertThat(result).isEqualTo(2);
