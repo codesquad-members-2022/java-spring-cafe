@@ -49,9 +49,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
             String password = rs.getString("password");
             String name = rs.getString("name");
             String email = rs.getString("email");
-            User user = new User(userId, password, name, email);
-            user.setId(id);
-            return user;
+            return new User(id, userId, password, name, email);
         };
     }
 }
