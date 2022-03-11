@@ -3,7 +3,6 @@ package com.kakao.cafe.repository;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -14,18 +13,18 @@ import com.kakao.cafe.domain.article.Article;
 
 class ArticleRepositoryTest {
 
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
 
     @BeforeEach
     void init() {
-        articleRepository = new ArticleRepository();
+        articleRepository = new MemoryArticleRepository();
     }
 
     @DisplayName("정상 저장되는지 확인한다.")
     @Test
     void save() {
         // given
-        Article article1 = new Article("lee", "title1", "contents", LocalDateTime.now());
+        Article article1 = new Article("lee", "title1", "contents");
 
         // when
         articleRepository.save(article1);

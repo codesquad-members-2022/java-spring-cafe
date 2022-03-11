@@ -9,10 +9,13 @@ public class Article {
     private String contents;
     private LocalDateTime writeTime;
 
-    public Article(String writer, String title, String contents, LocalDateTime writeTime) {
+    public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public void writeWhenCreated(LocalDateTime writeTime) {
         this.writeTime = writeTime;
     }
 

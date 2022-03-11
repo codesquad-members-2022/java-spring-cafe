@@ -1,22 +1,24 @@
 package com.kakao.cafe.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.MemoryArticleRepository;
 
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
+    private final MemoryArticleRepository articleRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(MemoryArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
     public void save(Article article) {
+        article.writeWhenCreated(LocalDateTime.now());
         articleRepository.save(article);
     }
 

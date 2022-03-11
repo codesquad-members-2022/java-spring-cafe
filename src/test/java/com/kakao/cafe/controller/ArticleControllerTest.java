@@ -47,12 +47,18 @@ class ArticleControllerTest {
     void get_article() throws Exception {
         // given && when
         given(articleService.showArticle(1))
-            .willReturn(new Article("writer1", "title1", "contents1", LocalDateTime.now()));
+            .willReturn(makeArticle());
 
         // then
         mvc.perform(get("/articles/1"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("article"))
             .andExpect(view().name("qna/showQna"));
+    }
+
+    private Article makeArticle() {
+        Article article = new Article("writer1", "title1", "contents1");
+        article.writeWhenCreated(LocalDateTime.now());
+        return article;
     }
 }

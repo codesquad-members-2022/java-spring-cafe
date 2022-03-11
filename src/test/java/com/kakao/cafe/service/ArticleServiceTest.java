@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.MemoryArticleRepository;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
@@ -26,15 +26,15 @@ class ArticleServiceTest {
     ArticleService articleService;
 
     @Mock
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
 
     Article article1;
     Article article2;
 
     @BeforeEach
     void init() {
-        article1 = new Article("lucid", "title1", "blabla", LocalDateTime.now());
-        article2 = new Article("elon", "title2", "blabla~~", LocalDateTime.now());
+        article1 = new Article("lucid", "title1", "blabla");
+        article2 = new Article("elon", "title2", "blabla~~");
     }
 
     @DisplayName("findAll을 통해 저장된 모든 article List를 가져온다")
