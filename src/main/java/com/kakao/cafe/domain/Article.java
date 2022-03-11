@@ -2,10 +2,13 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.controller.ArticleForm;
 
+import java.time.LocalDateTime;
+
 public class Article {
     private int id;
     private String title;
     private String contents;
+    private LocalDateTime writtenTime;
 
     public Article(ArticleForm form) {
         this.title = form.getTitle();
@@ -27,4 +30,10 @@ public class Article {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setWrittenTime() {
+        this.writtenTime = LocalDateTime.now();
+    }
+
+
 }
