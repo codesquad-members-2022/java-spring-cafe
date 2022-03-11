@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository.article;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.domain.article.Article;
@@ -29,18 +32,28 @@ public class H2ArticleRepository implements ArticleRepository {
     public void save(Article article) {
         String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
-        logger.info(sql);
-        logger.info("id : {}", article.getId());
     }
 
     @Override
     public List<Article> findAll() {
+        // TODO : save, select 테스트 후 구현
         return null;
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        return Optional.empty();
+        String sql = "SELECT * FROM article WHERE id = :article_id";
+        SqlParameterSource namedParameter = new MapSqlParameterSource("article_id", id);
+        Article article = jdbcTemplate.queryForObject(sql, namedParameter, (resultSet, rowNum) -> {
+                Article articleTmp = new Article(
+                    resultSet.getString("writer"),
+                    resultSet.getString("title"),
+                    resultSet.getString("contents"));
+                articleTmp.setId(resultSet.getLong("id"));
+                articleTmp.writeWhenCreated(resultSet.getObject("writeTime", LocalDateTime.class));
+                return articleTmp;
+            });
+        return Optional.ofNullable(article);
     }
 
     @Override

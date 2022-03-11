@@ -42,7 +42,7 @@
 #### 2.2 게시글 데이터 저장
 
 - Article 클래스를 DB 테이블에 저장할 수 있도록 구현 
-  - [ ] CRUD 구현 & test
+  - [ ] Insert 구현 & TEST 
 
 - Article 테이블이 적절한 PK를 가지도록 구현
   - [ ] PK로 기존에 작성된 ``Long id`` 사용 

@@ -38,4 +38,8 @@ public class Article {
     public LocalDateTime getWriteTime() {
         return writeTime;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
