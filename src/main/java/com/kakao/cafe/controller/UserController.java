@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,10 +16,8 @@ import java.util.Optional;
 
 @Controller
 public class UserController {
-
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -53,7 +52,4 @@ public class UserController {
         }
         return null; // 잘못된 접근 페이지 리다이렉트
     }
-
-
-
 }
