@@ -1,0 +1,20 @@
+create TABLE IF NOT EXISTS user (
+    userId VARCHAR(255) NOT NULL PRIMARY KEY,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL
+);
+
+create TABLE IF NOT EXISTS article (
+    id BIGINT(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    writer VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    contents VARCHAR(255) NOT NULL,
+    writeTime TIMESTAMP
+);
+
+
+
+
+
+

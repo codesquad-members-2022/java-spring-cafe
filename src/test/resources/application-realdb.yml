@@ -1,0 +1,22 @@
+spring:
+  mustache:
+    cache: false
+    suffix: .html
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/h2test-realDb;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+logging:
+  level:
+    com: debug
+
+server:
+  port: 8080

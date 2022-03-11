@@ -6,14 +6,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.article.MemoryArticleRepository;
+import com.kakao.cafe.repository.article.ArticleRepository;
 
 @Service
 public class ArticleService {
 
-    private final MemoryArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
 
-    public ArticleService(MemoryArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 
