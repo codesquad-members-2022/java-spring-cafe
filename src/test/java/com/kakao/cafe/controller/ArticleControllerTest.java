@@ -81,8 +81,6 @@ public class ArticleControllerTest {
 
         ResultActions actions = mockMvc.perform(get("/articles/" + article.getId())
                 .accept(MediaType.TEXT_HTML));
-        System.out.println(article.getId());
-        System.out.println("/articles/" + article.getId());
 
         actions.andExpect(status().isOk())
                 .andExpect(model().attribute("article", article))
