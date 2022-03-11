@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
@@ -50,8 +50,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ModelAndView createUser(UserForm userForm, HttpSession session) {
-        User user = userService.register(userForm);
+    public ModelAndView createUser(UserDto userDto, HttpSession session) {
+        User user = userService.register(userDto);
         session.setAttribute(SESSION_USER, user);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");
@@ -69,12 +69,12 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ModelAndView updateUser(@PathVariable String userId, UserForm userForm,
+    public ModelAndView updateUser(@PathVariable String userId, UserDto userDto,
         HttpSession session) {
         confirmSession(session, userId);
 
-        userForm.setUserId(userId);
-        User updateUser = userService.updateUser(userForm);
+        userDto.setUserId(userId);
+        User updateUser = userService.updateUser(userDto);
 
         ModelAndView mav = new ModelAndView("redirect:/users");
         mav.addObject("user", updateUser);

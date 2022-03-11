@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User.Builder;
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -52,7 +52,7 @@ public class ArticleServiceTest {
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
         // given
-        ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
+        ArticleDto articleDto = new ArticleDto("writer", "title", "contents");
 
         given(userRepository.findByUserId(any(String.class)))
             .willReturn(Optional.of(new Builder()
@@ -66,7 +66,7 @@ public class ArticleServiceTest {
             .willReturn(article);
 
         // when
-        Article savedArticle = articleService.write(articleForm);
+        Article savedArticle = articleService.write(articleDto);
 
         // then
         then(savedArticle).isEqualTo(article);
@@ -76,13 +76,13 @@ public class ArticleServiceTest {
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
         // given
-        ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
+        ArticleDto articleDto = new ArticleDto("writer", "title", "contents");
 
         given(userRepository.findByUserId(any(String.class)))
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(articleForm));
+        Throwable throwable = catchThrowable(() -> articleService.write(articleDto));
 
         // when
         then(throwable)

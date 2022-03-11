@@ -1,8 +1,8 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginForm;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.LoginDto;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
@@ -20,9 +20,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User register(UserForm userForm) {
-        validateUserId(userForm.getUserId());
-        return userRepository.save(Mapper.map(userForm, User.class));
+    public User register(UserDto userDto) {
+        validateUserId(userDto.getUserId());
+        return userRepository.save(Mapper.map(userDto, User.class));
     }
 
     public List<User> findUsers() {
@@ -41,17 +41,17 @@ public class UserService {
             });
     }
 
-    public User updateUser(UserForm userForm) {
-        User findUser = findUser(userForm.getUserId());
-        User updatedUser = findUser.update(Mapper.map(userForm, User.class));
+    public User updateUser(UserDto userDto) {
+        User findUser = findUser(userDto.getUserId());
+        User updatedUser = findUser.update(Mapper.map(userDto, User.class));
 
         return userRepository.save(updatedUser);
     }
 
-    public User login(LoginForm loginForm) {
-        User user = userRepository.findByUserId(loginForm.getUserId())
+    public User login(LoginDto loginDto) {
+        User user = userRepository.findByUserId(loginDto.getUserId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        return user.authenticate(loginForm);
+        return user.authenticate(loginDto);
     }
 }

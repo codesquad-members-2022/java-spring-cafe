@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -26,8 +26,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public ModelAndView createQuestion(ArticleForm articleForm) throws Exception {
-        Article article = articleService.write(articleForm);
+    public ModelAndView createQuestion(ArticleDto articleDto) {
+        Article article = articleService.write(articleDto);
         ModelAndView mav = new ModelAndView("redirect:/");
         mav.addObject("article", article);
         return mav;

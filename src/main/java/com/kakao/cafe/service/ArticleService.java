@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.dto.ArticleDto;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -21,12 +21,12 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public Article write(ArticleForm articleForm) {
+    public Article write(ArticleDto articleDto) {
         // 회원가입하지 않은 유저 이름으로 글을 작성 시 예외 처리
-        userRepository.findByUserId(articleForm.getWriter())
+        userRepository.findByUserId(articleDto.getWriter())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        return articleRepository.save(Mapper.map(articleForm, Article.class));
+        return articleRepository.save(Mapper.map(articleDto, Article.class));
     }
 
     public List<Article> findArticles() {

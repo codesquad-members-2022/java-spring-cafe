@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginForm;
+import com.kakao.cafe.dto.LoginDto;
 import com.kakao.cafe.service.UserService;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -26,8 +26,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ModelAndView login(LoginForm loginForm, HttpSession session) {
-        User user = userService.login(loginForm);
+    public ModelAndView login(LoginDto loginDto, HttpSession session) {
+        User user = userService.login(loginDto);
         session.setAttribute(SESSION_USER, user);
 
         ModelAndView modelAndView = new ModelAndView("redirect:/users");

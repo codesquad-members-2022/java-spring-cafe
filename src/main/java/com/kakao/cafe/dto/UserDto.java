@@ -1,13 +1,13 @@
 package com.kakao.cafe.dto;
 
-public class UserForm {
+public class UserDto {
 
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public UserForm(String userId, String password, String name, String email) {
+    public UserDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;

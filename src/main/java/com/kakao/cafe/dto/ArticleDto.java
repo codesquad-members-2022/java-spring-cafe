@@ -1,6 +1,6 @@
 package com.kakao.cafe.dto;
 
-public class ArticleForm {
+public class ArticleDto {
 
     private String writer;
     private String title;
@@ -18,7 +18,7 @@ public class ArticleForm {
         return contents;
     }
 
-    public ArticleForm(String writer, String title, String contents) {
+    public ArticleDto(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

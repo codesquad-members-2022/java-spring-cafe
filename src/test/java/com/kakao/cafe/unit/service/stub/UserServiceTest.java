@@ -4,7 +4,7 @@ import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.UserDto;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
@@ -75,11 +75,11 @@ public class UserServiceTest {
     @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
-        UserForm userForm = new UserForm("newId", "otherPassword", "otherName",
+        UserDto userDto = new UserDto("newId", "otherPassword", "otherName",
             "other@example.com");
 
         // when
-        User savedUser = userService.register(userForm);
+        User savedUser = userService.register(userDto);
 
         // then
         then(savedUser.getUserId()).isEqualTo("userId");
@@ -92,10 +92,10 @@ public class UserServiceTest {
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        UserForm userForm = new UserForm("dupId", "userPassword", "userName", "user@example.com");
+        UserDto userDto = new UserDto("dupId", "userPassword", "userName", "user@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.register(userForm));
+        Throwable throwable = catchThrowable(() -> userService.register(userDto));
 
         // when, then
         then(throwable)
@@ -139,11 +139,11 @@ public class UserServiceTest {
     @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
     public void updateUserTest() {
         // given
-        UserForm userForm = new UserForm("userId", "userPassword", "otherName",
+        UserDto userDto = new UserDto("userId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        User updatedUser = userService.updateUser(userForm);
+        User updatedUser = userService.updateUser(userDto);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -155,11 +155,11 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        UserForm userForm = new UserForm("newId", "userPassword", "otherName",
+        UserDto userDto = new UserDto("newId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
 
         // then
         then(throwable)
@@ -171,11 +171,11 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectUserIdTest() {
         // given
-        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
+        UserDto userDto = new UserDto("otherId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
 
         // then
         then(throwable)
@@ -187,11 +187,11 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectPasswordTest() {
         // given
-        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
+        UserDto userDto = new UserDto("userId", "otherPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
 
         // then
         then(throwable)

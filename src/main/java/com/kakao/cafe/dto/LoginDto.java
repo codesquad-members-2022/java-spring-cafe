@@ -1,11 +1,11 @@
 package com.kakao.cafe.dto;
 
-public class LoginForm {
+public class LoginDto {
 
     private String userId;
     private String password;
 
-    public LoginForm(String userId, String password) {
+    public LoginDto(String userId, String password) {
         this.userId = userId;
         this.password = password;
     }
