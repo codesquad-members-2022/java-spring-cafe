@@ -13,7 +13,7 @@
         </header>
         {{#user}}
         <form action="/user/{{nickname}}" class="info-container" method="post" name="question">
-            <!--            <input name="_method" type="hidden" value="put"> 차이를 모르겠다-->
+            <input name="_method" type="hidden" value="put"/>
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input class="form-control" id="email" name="email" required="required" type="email"

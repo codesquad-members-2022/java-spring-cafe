@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
@@ -53,7 +54,7 @@ public class UserController {
         return "/user/updateForm";
     }
 
-    @PostMapping("/user/{nickname}")
+    @PutMapping("/user/{nickname}")
     public String updateProfileForm(@PathVariable String nickname, User updatedUser) {
         User user = userService.findByNickname(nickname);
         userService.update(user, updatedUser);
