@@ -1,6 +1,6 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.repository.UserRepository;
+import com.ttasjwi.cafe.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Test
     @DisplayName("\"/users/new\"로 GET 요청하면 \"/users/createUserForm\" 이 반환된다.")

@@ -124,4 +124,9 @@ HomeController 및 테스트 코드를 추가했다.
 
 - 사용자 이름 클릭 시 "/users/{userName}"으로 GET요청을 하도록 html 문서 수정
 
+## 14. UserService 분리, UserService 테스트코드 작성
+
+- UserController에서 파라미터 맵핑/뷰 반환, 비즈니스 로직(+검증)을 모두 하는 상황에서 역할 분리가 필요하다고 느꼈다.
+- 비즈니스 로직을 수행하는 UserService를 분리했고 컨트롤러는 UserService를 의존하도록 했다. UserService는 UserRepository를 의존한다.
+
 ---
