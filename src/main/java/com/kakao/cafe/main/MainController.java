@@ -37,14 +37,16 @@ public class MainController {
 	@PostMapping("/do_login")
 	public String login(String userId, String password, HttpSession httpSession) {
 		logger.info("login user : {}", userId);
-		Optional<User> user = userRepository.findByUserId(userId);
-		if (user.isEmpty()) {
+		Optional<User> getUser = userRepository.findByUserId(userId);
+		if (getUser.isEmpty()) {
 			return "redirect:/login";
 		}
-		if (user.get().isDifferent(password)) {
+		User user = getUser.get();
+		if (user.isDifferent(password)) {
 			return "redirect:/login";
 		}
-		httpSession.setAttribute(SESSIONED_ID, user.get().getUserId());  // todo 암호화 -_-
+		SessionUser sessionUser = new SessionUser(String.valueOf(user.getId()), userId);
+		httpSession.setAttribute(SESSIONED_ID, sessionUser);
 		return "redirect:/";
 	}
 

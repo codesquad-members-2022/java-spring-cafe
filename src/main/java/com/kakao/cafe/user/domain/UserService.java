@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,13 @@ public class UserService {
 		User user = get(userDto.getIdByLong());
 		user.update(userDto);
 		userRepository.save(user);
+	}
+
+	public UserDto.Response findUserId(String userId) {
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(() -> {
+				throw new DomainNotFoundException("user");
+			});
+		return new UserDto.Response(user);
 	}
 }

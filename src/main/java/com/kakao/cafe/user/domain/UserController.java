@@ -48,18 +48,18 @@ public class UserController {
 		return "/user/profile";
 	}
 
-	@GetMapping("/{id}/form")
-	public String updateView(@PathVariable Long id, Model model) {
-		logger.info("view profile: {}", id);
-		UserDto.Response user = userService.find(id);
+	@GetMapping("/{user-id}/form")
+	public String updateView(@PathVariable(value = "user-id") String userId, Model model) {
+		logger.info("view profile: {}", userId);
+		UserDto.Response user = userService.findUserId(userId);
 		model.addAttribute("user", user);
 		return "/user/updateForm";
 	}
 
-	@PostMapping("/{id}/update")
-	public String update(@PathVariable Long id, UserUpdateDto.Request userDto) {
+	@PostMapping("/{user-id}/update")
+	public String update(@PathVariable(value = "user-id") String userId, UserUpdateDto.Request userDto) {
 		userDto.isValid(logger);
-		logger.info("update profile: {}", id);
+		logger.info("update profile: {}", userId);
 		userService.changeProfile(userDto);
 		return "redirect:/users/";
 	}
