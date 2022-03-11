@@ -3,7 +3,7 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class Member {
-    private int index;
+    private int userIndex;
     private String name;
     private String email;
     private String password;
@@ -17,12 +17,12 @@ public class Member {
         this.joinTime = joinTime;
     }
 
-    public int getIndex() {
-        return index;
+    public int getUserIndex() {
+        return userIndex;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setUserIndex(int userIndex) {
+        this.userIndex = userIndex;
     }
 
     public String getName() {

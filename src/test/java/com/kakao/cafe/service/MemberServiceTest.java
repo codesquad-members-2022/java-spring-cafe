@@ -33,10 +33,10 @@ class MemberServiceTest {
         //given
         Member member = new Member();
         member.setName("Vans1");
-        int saveId = memberService.join(member);
+        int saveIndex = memberService.join(member);
 
         //when
-        Member findMember = memberService.findOne(saveId).get();
+        Member findMember = memberService.findOne(saveIndex).get();
 
         //then
         assertThat(member.getName()).isEqualTo(findMember.getName());

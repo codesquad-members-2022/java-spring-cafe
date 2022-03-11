@@ -21,7 +21,7 @@ public class MemberService {
     //회원가입
     public int join(Member member) {
         memberRepository.save(member);
-        return member.getIndex();
+        return member.getUserIndex();
     }
 
     //전체 회원목록 조회
@@ -31,6 +31,6 @@ public class MemberService {
 
     //회원 id에 해당하는 회원 name을 찾기
     public Optional<Member> findOne(int memberId) {
-        return memberRepository.findById(memberId);
+        return memberRepository.findByIndex(memberId);
     }
 }

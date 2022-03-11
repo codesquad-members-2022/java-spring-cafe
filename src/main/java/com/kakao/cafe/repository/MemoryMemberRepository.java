@@ -13,15 +13,15 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        member.setIndex(store.indexOf(member) + CORRECT_INDEX);
-        member.setJoinTime(LocalDateTime.now());
         store.add(member);
+        member.setUserIndex(store.indexOf(member) + CORRECT_INDEX);
+        member.setJoinTime(LocalDateTime.now());
         return member;
     }
 
     @Override
-    public Optional<Member> findById(int id) {
-        return Optional.ofNullable(store.get(id - CORRECT_INDEX));
+    public Optional<Member> findByIndex(int userIndex) {
+        return Optional.ofNullable(store.get(userIndex - CORRECT_INDEX));
     }
 
     @Override
