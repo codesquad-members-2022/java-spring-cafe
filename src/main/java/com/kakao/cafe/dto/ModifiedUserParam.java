@@ -5,7 +5,7 @@ import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 
 import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
 
-public class ModifyProfileRequest {
+public class ModifiedUserParam {
 
     private int index;
     private final String userId;
@@ -15,7 +15,7 @@ public class ModifyProfileRequest {
     private final String name;
     private final String email;
 
-    public ModifyProfileRequest(int index, String userId, String password, String nowPassword,
+    public ModifiedUserParam(int index, String userId, String password, String nowPassword,
                                 String newPassword, String name, String email) {
 
         this.index = index;
@@ -43,7 +43,7 @@ public class ModifyProfileRequest {
 
     @Override
     public String toString() {
-        return "ModifyProfileRequest{" +
+        return "ModifiedUserParam{" +
                 "index=" + index +
                 ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +

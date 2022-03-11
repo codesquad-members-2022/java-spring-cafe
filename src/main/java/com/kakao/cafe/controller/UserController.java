@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ModifyProfileRequest;
-import com.kakao.cafe.dto.SignUpRequest;
+import com.kakao.cafe.dto.ModifiedUserParam;
+import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +29,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String signUp(SignUpRequest SignUpRequest, HttpServletRequest request) {
+    public String signUp(NewUserParam newUserParam, HttpServletRequest request) {
         logRequestInfo(request);
 
-        userService.add(SignUpRequest.convertToUser());
+        userService.add(newUserParam.convertToUser());
         return "redirect:/users";
     }
 
@@ -72,13 +72,13 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String modifyProfile(ModifyProfileRequest modifyProfileRequest,
+    public String modifyProfile(ModifiedUserParam modifiedUserParam,
                                 HttpServletRequest request) {
 
-        modifyProfileRequest.isValidRequest();
+        modifiedUserParam.isValidRequest();
         logRequestInfo(request);
 
-        userService.update(modifyProfileRequest.convertToUser());
+        userService.update(modifiedUserParam.convertToUser());
         return "redirect:/users";
     }
 

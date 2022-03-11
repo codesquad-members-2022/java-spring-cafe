@@ -2,13 +2,13 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Article;
 
-public class WriteArticleRequest {
+public class NewArticleParam {
 
     private final String writer;
     private final String title;
     private final String contents;
 
-    public WriteArticleRequest(String writer, String title, String contents) {
+    public NewArticleParam(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -32,7 +32,7 @@ public class WriteArticleRequest {
 
     @Override
     public String toString() {
-        return "WriteArticleRequest{" +
+        return "NewArticleParam{" +
                 "writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +

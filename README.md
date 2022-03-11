@@ -139,10 +139,10 @@
   
     >![SmartSelectImage_2022-03-09-20-35-22](https://user-images.githubusercontent.com/47964708/157434303-7dcf4eb1-dc76-4d40-9d45-940152134c93.png)  
 
-    - 해당 값들을 ArticleController로 전달하는 ModifyProfileRequest 객체를 만들어 사용하고 있습니다.
+    - 해당 값들을 ArticleController로 전달하는 ModifiedUserParam 객체를 만들어 사용하고 있습니다.
 
     ```java
-    public class ModifyProfileRequest {
+    public class ModifiedUserParam {
   
         ...
   
@@ -158,10 +158,10 @@
 
     ```java
     @PutMapping("/{userId}/update")
-    public String modifyProfile(ModifyProfileRequest modifyProfileRequest,
+    public String modifyProfile(ModifiedUserParam modifiedUserParam,
                                 HttpServletRequest request) {
 
-        modifyProfileRequest.isValidRequest();
+        modifiedUserParam.isValidRequest();
   
         ...
     }
