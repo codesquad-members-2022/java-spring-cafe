@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @WebMvcTest(AuthController.class)
+@DisplayName("AuthController 단위 테스트")
 public class AuthControllerTest {
 
     @Autowired
