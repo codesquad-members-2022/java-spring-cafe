@@ -6,6 +6,18 @@
 
 ---
 
+### 2단계 피드백 반영 + 추가 변경 사항
+
+- [X] String writeTime -> LocalDateTime 타입으로 변경
+- [ ] isYourPassword 테스트 추가
+- [ ] ControllerAdvice 외에 다른 예외처리 방법 구현
+- [X] Repository interface name 변경
+- [ ] UserRepository의 Update를 save로 옮김
+- [ ] 테스트 name 변경
+- [X] UserRepository 내의 private method로 중복 id 검증을 Service Layer로 옮기기
+- [ ] ListService 내에서 View에 쓰일 numbering을 제거하고 템플릿 엔진에서 처리해보기
+
+
 ### 전체 요구사항
 
 - [X] H2 데이터베이스 연동

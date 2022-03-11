@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,7 +68,7 @@ class ArticleServiceTest {
     @Test
     void show_articles_throw_exception() {
         // given
-        lenient().when(articleRepository.findByIndex(0))
+        lenient().when(articleRepository.findById(0L))
             .thenReturn(Optional.ofNullable(article1));
 
         // when & then

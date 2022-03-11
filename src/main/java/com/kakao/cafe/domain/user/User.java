@@ -18,6 +18,10 @@ public class User {
         return this.password.equals(password);
     }
 
+    public boolean checkIfTheIDIsTheSame(User user) {
+        return this.userId.equals(user.userId);
+    }
+
     public void updateInfo(User updateUser) {
         this.password = updateUser.password;
         this.name = updateUser.name;

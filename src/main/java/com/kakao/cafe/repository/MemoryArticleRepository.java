@@ -36,10 +36,4 @@ public class MemoryArticleRepository implements ArticleRepository {
     public void deleteAll() {
         articles.clear();
     }
-
-    public Optional<Article> findByIndex(int index) {
-        return articles.stream()
-            .filter(article -> article.getId() == index)
-            .findFirst();
-    }
 }

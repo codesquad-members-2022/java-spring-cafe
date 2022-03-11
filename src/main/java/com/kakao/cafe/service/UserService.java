@@ -15,6 +15,7 @@ public class UserService {
 
     private static final String NON_EXISTENT_MEMBER = "[ERROR] 존재하지 않는 멤버입니다.";
     private static final String MISMATCHED_PASSWORDS = "[ERROR] 비밀번호가 틀렸습니다.";
+    private static final String DUPLICATED_USER_ID = "[ERROR] 존재하는 ID입니다. 다시 입력하세요.";
 
     private final UserRepository userRepository;
 
@@ -23,7 +24,19 @@ public class UserService {
     }
 
     public void save(User user) {
+        duplicateUserIdCheck(user);
         userRepository.save(user);
+    }
+
+    private void duplicateUserIdCheck(User inputUser) {
+        List<User> users = userRepository.findAll();
+        users.forEach(user -> checkIfTheNameIsSame(inputUser, user));
+    }
+
+    private void checkIfTheNameIsSame(User inputUser, User user) {
+        if (user.checkIfTheIDIsTheSame(inputUser)) {
+            throw new IllegalArgumentException(DUPLICATED_USER_ID);
+        }
     }
 
     public List<UserDto> findAllUser() {
