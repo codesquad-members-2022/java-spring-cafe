@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private static List<User> store = new ArrayList<>();
+    private static List<User> store = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(User user) {
