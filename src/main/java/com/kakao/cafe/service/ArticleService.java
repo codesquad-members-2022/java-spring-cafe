@@ -7,8 +7,6 @@ import java.util.List;
 public interface ArticleService {
 
     List<Article> searchAll();
-
     Article add(Article article);
-
     Article search(int id);
 }
