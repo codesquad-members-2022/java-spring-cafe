@@ -13,13 +13,11 @@ public class ExceptionControllerAdvice {
     private final Logger logger = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
 
     @ExceptionHandler(ClientException.class)
-    public ModelAndView handleException(ModelAndView modelAndView, ClientException exception) {
-
+    public ModelAndView handleException(ClientException exception) {
         HttpStatus httpStatus = exception.getHttpStatus();
         String message = exception.getMessage();
         logger.info("ClientException handling [STATUS] : {}, [MESSAGE] : {}", httpStatus.toString(), message);
-
-        modelAndView.setViewName("/error-page/400");
+        ModelAndView modelAndView = new ModelAndView("error-page/4xx");
         modelAndView.setStatus(httpStatus);
         modelAndView.addObject("status", httpStatus.toString());
         modelAndView.addObject("message", message);
