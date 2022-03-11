@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="~{/fragment/header :: headerFragment}"></div>
+    <link href="/css/user/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="background">
+    <nav class="navbar navbar-fixed-top header" th:replace="~{/fragment/navigation :: navigationFragment}">
+    </nav>
+
+    <div class="container" id="main">
+        <header class="post-header">
+            <p class="title">회원 정보</p>
+        </header>
+        <div class="info-container">
+            <div class="form-group">
+                <label>닉네임</label>
+                <p class="form-control" th:text="${user.getNickname()}"></p>
+            </div>
+            <div class="form-group">
+                <label>이메일</label>
+                <p class="form-control"  th:text="${user.getEmail()}"></p>
+            </div>
+            <div class="form-group">
+                <label>회원가입일</label>
+                <p class="form-control"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<!-- script references -->
+<script src="../js/jquery-2.2.0.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/scripts.js"></script>
+	</body>
+</html>
