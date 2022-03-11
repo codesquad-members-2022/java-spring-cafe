@@ -83,7 +83,7 @@ public class UserController {
 
     private void confirmSession(HttpSession session, String userId) {
         User sessionUser = (User) Optional.ofNullable(session.getAttribute(SESSION_USER))
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
 
         if (!sessionUser.getUserId().equals(userId)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
