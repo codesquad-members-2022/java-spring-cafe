@@ -15,15 +15,14 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public int post(ArticleForm articleForm) {
+    public String post(ArticleForm articleForm) {
         Article article = articleForm.createArticle();
         articleRepository.save(article);
-        return article.getIndex();
+        return article.getTitle();
     }
 
     public List<Article> findArticles() {
         return articleRepository.findAll();
-
     }
 
     public ArticleForm findOneArticle(int index) {

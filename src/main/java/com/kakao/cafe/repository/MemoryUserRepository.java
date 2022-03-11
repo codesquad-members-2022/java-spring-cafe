@@ -26,7 +26,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByIndex(int index) {
+    public Optional<User> findByIndex(int index) throws IndexOutOfBoundsException{
         return Optional.ofNullable(userStore.get(index));
     }
 
@@ -42,6 +42,7 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userStore);
     }
 
+    @Override
     public void clearStore() {
         userStore.clear();
     }

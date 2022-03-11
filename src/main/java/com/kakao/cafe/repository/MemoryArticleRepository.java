@@ -27,7 +27,7 @@ public class MemoryArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Optional<Article> findByIndex(int index) {
+    public Optional<Article> findByIndex(int index) throws IndexOutOfBoundsException{
         return Optional.ofNullable(articleStore.get(index));
     }
 
@@ -36,11 +36,12 @@ public class MemoryArticleRepository implements ArticleRepository{
         return new ArrayList<>(articleStore);
     }
 
-    public int size() {
-        return articleStore.size();
+    @Override
+    public void clearStore() {
+        articleStore.clear();
     }
 
-    public void clearArticles() {
-        articleStore.clear();
+    public int size() {
+        return articleStore.size();
     }
 }
