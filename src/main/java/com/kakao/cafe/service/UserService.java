@@ -52,6 +52,6 @@ public class UserService {
         User user = userRepository.findByUserId(loginDto.getUserId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
-        return user.authenticate(loginDto);
+        return user.authenticate(loginDto.getUserId(), loginDto.getPassword());
     }
 }

@@ -103,8 +103,8 @@ public class User {
         return this;
     }
 
-    public User authenticate(LoginDto loginDto) {
-        if (!userId.equals(loginDto.getUserId()) || !password.equals(loginDto.getPassword())) {
+    public User authenticate(String userId, String password) {
+        if (!this.userId.equals(userId) || !this.password.equals(password)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
         return this;
