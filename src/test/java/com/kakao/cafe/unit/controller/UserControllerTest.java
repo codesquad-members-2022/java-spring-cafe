@@ -142,9 +142,6 @@ class UserControllerTest {
         // when
         ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", "userId")
-            .param("password", "userPassword")
-            .param("name", "userName")
-            .param("email", "user@example.com")
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -224,9 +221,6 @@ class UserControllerTest {
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
             .session(session)
-            .param("password", "userPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -247,9 +241,70 @@ class UserControllerTest {
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
             .session(session)
-            .param("password", "userPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
+    public void formUpdateUserSessionNotFoundTest() throws Exception {
+        session.removeAttribute("SESSION_USER");
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/otherId/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.SESSION_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.SESSION_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션과 유저 정보가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void formUpdateUserSessionIncorrectTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/otherId/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
+    public void updateUserSessionNotFoundTest() throws Exception {
+        session.removeAttribute("SESSION_USER");
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/otherId")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.SESSION_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.SESSION_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 요청 시 세션과 유저 정보가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserSessionTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/otherId")
+            .session(session)
             .accept(MediaType.TEXT_HTML));
 
         // then
