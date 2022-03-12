@@ -13,6 +13,14 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(Long id, String writer, String title, String contents, String createdDate) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
+    }
+
     public boolean isTheSameId(Long id) {
         return this.id.equals(id);
     }
@@ -29,12 +37,12 @@ public class Article {
         return id;
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
     public String getTitle() {
         return title;
+    }
+
+    public String getWriter() {
+        return writer;
     }
 
     public String getContents() {

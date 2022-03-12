@@ -19,7 +19,7 @@ public class ArticleController {
     }
 
     @GetMapping("/qna")
-    public String articleList() {
+    public String articlePage() {
         return "qna/form";
     }
 

@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.UserJoinRequestDto;
 import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
+import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -23,7 +26,8 @@ public class UserController {
 
     @GetMapping("/users")
     public String userList(Model model) {
-        model.addAttribute("users", userService.findUsers());
+        List<User> users = userService.findUsers();
+        model.addAttribute("users", users);
         return "user/list";
     }
 
@@ -41,13 +45,15 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.findByUserId(userId));
+        User user = userService.findByUserId(userId);
+        model.addAttribute("user", user);
         return "user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
     public String updatePage(@PathVariable String userId, Model model) {
-        model.addAttribute("user", userService.findByUserId(userId));
+        User user = userService.findByUserId(userId);
+        model.addAttribute("user", user);
         return "user/updateForm";
     }
 
