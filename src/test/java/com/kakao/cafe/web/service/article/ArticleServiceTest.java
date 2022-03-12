@@ -72,15 +72,4 @@ class ArticleServiceTest {
         List<Article> articles = articleService.findAll();
         assertThat(articles.size()).isEqualTo(2);
     }
-
-    @Test
-    @DisplayName("findAll 메서드를 호출하면 List<Article>이 반환된다.")
-    void f() {
-        ArticleWriteRequest requestA = new ArticleWriteRequest("반갑습니다.", "반갑습니다.", "jun");
-        ArticleWriteRequest requestB = new ArticleWriteRequest("반갑습니다.", "반갑습니다.", "kim");
-        given(articleRepository.findAll()).willReturn(List.of(requestA.toEntity(), requestB.toEntity()));
-
-        List<Article> articles = articleService.findAll();
-        assertThat(articles.size()).isEqualTo(2);
-    }
 }
