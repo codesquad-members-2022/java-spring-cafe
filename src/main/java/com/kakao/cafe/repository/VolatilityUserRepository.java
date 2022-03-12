@@ -23,16 +23,16 @@ public class VolatilityUserRepository implements Repository<User, String> {
 
         User result = other.isEmpty()
                 ? persist(user)
-                : merge(other.get().getIndex(), user);
+                : merge(other.get().getId(), user);
 
         return Optional.ofNullable(result);
     }
     private User persist(User user) {
-        user.setIndex(users.size() + 1);
+        user.setId(users.size() + 1);
         return users.add(user) ? user : null;
     }
-    private User merge(int index, User user) {
-        users.set(index - 1, user);
+    private User merge(long index, User user) {
+        users.set((int)index - 1, user);
         return user;
     }
 
