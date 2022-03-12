@@ -4,19 +4,28 @@ import com.kakao.cafe.domain.Article;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.test.context.jdbc.Sql;
 
+import javax.sql.DataSource;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VolatilityArticleRepositoryTest {
+@JdbcTest
+@Sql(scripts = { "classpath:h2_ddl" })
+class JdbcArticleRepositoryTest {
 
-    VolatilityArticleRepository repository;
+    @Autowired
+    DataSource dataSource;
+
+    JdbcArticleRepository repository;
 
     @BeforeEach
-    public void beforeEach() {
-        repository = new VolatilityArticleRepository();
+    void beforeEach() {
+        repository = new JdbcArticleRepository(dataSource);
     }
 
     @Test
