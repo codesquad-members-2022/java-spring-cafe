@@ -1,9 +1,13 @@
-create TABLE IF NOT EXISTS user (
+DROP TABLE IF EXISTS user;
+
+create TABLE user (
     userId VARCHAR(255) NOT NULL PRIMARY KEY,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL
 );
+
+DROP TABLE IF EXISTS article;
 
 create TABLE IF NOT EXISTS article (
     id BIGINT(8) NOT NULL AUTO_INCREMENT PRIMARY KEY,
