@@ -245,9 +245,9 @@ HomeController 및 테스트 코드를 추가했다.
 # Step3 DB에 저장하기
 
 - [x] H2 데이터베이스 의존성 추가 및 연동
-- [ ] 게시글 데이터 저장(DB 연동)
-- [ ] 게시글 목록 구현(DB 연동)
-- [ ] 게시글 상세보기 구현(DB 연동)
+- [x] 게시글 데이터 저장(DB 연동)
+- [x] 게시글 목록 구현(DB 연동)
+- [x] 게시글 상세보기 구현(DB 연동)
 - [x] 사용자 정보 DB 저장
 - [ ] 배포
 
@@ -297,5 +297,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 순수 Jdbc 방식의 JdbcArticleRepository를 생성
 - ArticleRepository 구현체 변경 : MemoryArticleRepository -> JdbcArticleRepository
 - article 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
+
+## 3.09 ArticleService 분리
+
+- Article 등록, 검증 등에 대한 로직을 ArticleService 계층에 분리했다.
+- ArticleeController는 파라미터의 해석 및 뷰테 무엇을 넘길 것인지에 대해서만 초점을 두게 하고, ArticleService는 검증 비즈니스 로직을 수행하도록 한다.
 
 ---

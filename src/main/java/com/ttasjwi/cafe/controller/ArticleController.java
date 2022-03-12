@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.controller;
 
 import com.ttasjwi.cafe.domain.Article;
-import com.ttasjwi.cafe.repository.ArticleRepository;
+import com.ttasjwi.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -9,17 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
     @GetMapping("/new")
@@ -32,7 +31,7 @@ public class ArticleController {
         article.setWriter("anonymous User");
         article.setRegDateTime(LocalDateTime.now());
 
-        articleRepository.save(article);
+        articleService.saveArticle(article);
 
         log.info("New Article Created: {}", article);
         return "redirect:/";
@@ -40,10 +39,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String showArticle(@PathVariable Long articleId, Model model) {
-        Article findArticle =
-                articleRepository.findByArticleId(articleId)
-                        .orElseThrow(()-> new NoSuchElementException("유효하지 않은 게시글 번호입니다."));
-
+        Article findArticle = articleService.findOne(articleId);
         model.addAttribute("article", findArticle);
         return "/articles/articleShow";
     }
