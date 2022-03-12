@@ -40,7 +40,7 @@ public class User {
 		this.email = userDto.getEmail();
 	}
 
-	public boolean isDifferent(String password) {
+	public boolean isDifferentPassword(String password) {
 		return !this.password.equals(password);
 	}
 

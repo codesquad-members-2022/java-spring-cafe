@@ -90,7 +90,7 @@ public class UserController {
 	}
 
 	private void isCompareLoginsWithUser(String userId, HttpSession httpSession) {
-		SessionUser sessionUser = (SessionUser)httpSession.getAttribute(SESSIONED_ID);
+		SessionUser sessionUser = (SessionUser)getHttpSessionAttribute(httpSession);
 		if (sessionUser.isDifferentFrom(userId)) {
 			logger.error("invalid access by different identity : {}", sessionUser.getUserName());
 			throw new IllegalArgumentException("로그인 정보를 입력 하세요.");
@@ -98,10 +98,14 @@ public class UserController {
 	}
 
 	private void isNotEmptyAccessor(HttpSession httpSession) {
-		Object accessor = httpSession.getAttribute(SESSIONED_ID);
+		Object accessor = getHttpSessionAttribute(httpSession);
 		if (Objects.isNull(accessor)) {
 			logger.error("invalid access to personal information modification");
 			throw new IllegalArgumentException("로그인 하세요");
 		}
+	}
+
+	private Object getHttpSessionAttribute(HttpSession httpSession) {
+		return httpSession.getAttribute(SESSIONED_ID);
 	}
 }

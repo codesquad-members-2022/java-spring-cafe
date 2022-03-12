@@ -38,15 +38,15 @@ public class MainController {
 
 	@PostMapping("/do_login")
 	public String login(String userId, String password, HttpSession httpSession) {
-		logger.info("login user : {}", userId);
 		Optional<User> getUser = userRepository.findByUserId(userId);
 		if (getUser.isEmpty()) {
 			return "redirect:/login";
 		}
 		User user = getUser.get();
-		if (user.isDifferent(password)) {
+		if (user.isDifferentPassword(password)) {
 			return "redirect:/login";
 		}
+		logger.info("login : {}", userId);
 		httpSession.setAttribute(SESSIONED_ID, from(userId));
 		httpSession.setMaxInactiveInterval(600);  // 10분
 		return "redirect:/";
