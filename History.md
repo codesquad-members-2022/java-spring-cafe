@@ -223,4 +223,11 @@ HomeController 및 테스트 코드를 추가했다.
 
 - "/articles" 요청시 "/"로 리다이렉트 되도록 함
 
+## 2.10 "/articles/{articleId}" 요청시 게시글 보이도록 함
+
+- "/articles/{articleId}" 접근에 대한 맵핑메서드 showArticle 추가
+- 요청시 articleId에 대한 Article을 찾아서 Model에 담음
+- "/articles/articleShow" 반환
+- 동적으로 게시글을 보이는 `/articles/articleShow.html` 작성
+
 ---

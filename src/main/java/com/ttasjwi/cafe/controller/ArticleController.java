@@ -5,10 +5,8 @@ import com.ttasjwi.cafe.repository.ArticleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -37,6 +35,13 @@ public class ArticleController {
 
         log.info("New Article Created: articleId={}, {}", articleId , article);
         return "redirect:/";
+    }
+
+    @GetMapping("/{articleId}")
+    public String showArticle(@PathVariable int articleId, Model model) {
+        Article findArticle = articleRepository.findByArticleId(articleId);
+        model.addAttribute("article", findArticle);
+        return "/articles/articleShow";
     }
 
     @GetMapping
