@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Repository;
 public class JdbcArticleRepository implements ArticleRepository {
 
     private final NamedParameterJdbcTemplate jdbc;
-    private final RowMapper<Article> articleRowMapper = BeanPropertyRowMapper.newInstance(Article.class);
 
     public JdbcArticleRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
@@ -36,6 +34,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         parameters.put("createdDate", article.getCreatedDate());
 
         jdbc.update(INSERT_ARTICLE, parameters);
+
         return article;
     }
 
@@ -43,7 +42,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Optional<Article> findById(int id) {
         try {
             Map<String, Integer> parameters = Collections.singletonMap("id", id);
-            return Optional.ofNullable(jdbc.queryForObject(SELECT_ARTICLE, parameters, articleRowMapper));
+            return Optional.of(jdbc.queryForObject(SELECT_ARTICLE, parameters, articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -51,11 +50,23 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbc.query(SELECT_ALL_ARTICLES, articleRowMapper);
+        return jdbc.query(SELECT_ALL_ARTICLES, articleRowMapper());
     }
 
     @Override
     public void clear() {
         jdbc.update(DELETE_ALL_ARTICLES, Collections.emptyMap());
+        jdbc.update(INITIAL_COLUMN_NUMBER, Collections.emptyMap());
+    }
+
+    private RowMapper<Article> articleRowMapper() {
+        return (rs, rowNum) -> {
+            Article article = new Article(rs.getInt("id"),
+                                          rs.getString("writer"),
+                                          rs.getString("title"),
+                                          rs.getString("contents"),
+                                          rs.getTimestamp("created_date").toLocalDateTime());
+            return article;
+        };
     }
 }

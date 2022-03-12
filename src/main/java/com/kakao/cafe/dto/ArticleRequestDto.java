@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 
 public class ArticleRequestDto {
 
-    private String writer;
-    private String title;
-    private String contents;
+    private final String writer;
+    private final String title;
+    private final String contents;
 
     public ArticleRequestDto(String writer, String title, String contents) {
         this.writer = writer;
@@ -16,7 +16,7 @@ public class ArticleRequestDto {
     }
 
     public Article convertToDomain() {
-        return new Article(writer, title, contents, LocalDateTime.now());
+        return new Article(0, writer, title, contents, LocalDateTime.now());
     }
 
     @Override

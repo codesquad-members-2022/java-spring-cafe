@@ -27,8 +27,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+@DisplayName("ArticleController 단위 테스트")
 @WebMvcTest(ArticleController.class)
 public class ArticleControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -44,7 +46,7 @@ public class ArticleControllerTest {
         articleParams.add("title", "java");
         articleParams.add("contents", "java is fun");
 
-        Article article = new Article("ikjo", "java", "java is fun", LocalDateTime.now());
+        Article article = new Article(1, "ikjo", "java", "java is fun", LocalDateTime.now());
         given(articleService.upload(any(ArticleRequestDto.class))).willReturn(article);
 
         // when

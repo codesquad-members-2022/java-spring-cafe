@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleRequestDto;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;

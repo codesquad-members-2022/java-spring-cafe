@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("MemoryArticleRepository 단위 테스트")
 public class MemoryArticleRepositoryTest {
 
     private ArticleRepository articleRepository = new MemoryArticleRepository();
@@ -19,7 +20,7 @@ public class MemoryArticleRepositoryTest {
 
     @BeforeEach
     void setup() {
-        article = new Article("ikjo", "java", "java is fun", LocalDateTime.now());
+        article = new Article(1, "ikjo", "java", "java is fun", LocalDateTime.now());
     }
 
     @AfterEach
@@ -56,7 +57,7 @@ public class MemoryArticleRepositoryTest {
     void 모든_사용자_정보_조회() {
         // given
         articleRepository.save(article);
-        articleRepository.save(new Article("ikjo", "python", "python is fun", LocalDateTime.now()));
+        articleRepository.save(new Article(2, "ikjo", "python", "python is fun", LocalDateTime.now()));
 
         // when
         List<Article> result = articleRepository.findAll();

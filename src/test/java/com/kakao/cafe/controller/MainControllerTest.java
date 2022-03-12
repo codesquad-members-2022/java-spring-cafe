@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+@DisplayName("MainController 단위 테스트")
 @WebMvcTest(MainController.class)
 public class MainControllerTest {
 

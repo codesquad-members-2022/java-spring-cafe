@@ -20,22 +20,6 @@ public class User {
         this.email = email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -56,7 +40,7 @@ public class User {
         return new UserResponseDto(userId, name, email);
     }
 
-    public void updateUserInformation(User user) {
+    public void update(User user) {
         name = user.getName();
         email = user.getEmail();
     }

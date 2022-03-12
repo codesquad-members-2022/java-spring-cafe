@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+@DisplayName("User 도메인 단위 테스트")
 public class UserTest {
 
     private User user;
@@ -22,7 +23,7 @@ public class UserTest {
         User updatedUser = new User("ikjo", "1234", "ikjo", "auddlr100@gmail.com");
 
         // when
-        user.updateUserInformation(updatedUser);
+        user.update(updatedUser);
 
         // then
         assertThat(user.getName()).isEqualTo("ikjo");

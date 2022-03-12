@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -24,7 +23,6 @@ import org.springframework.stereotype.Repository;
 public class JdbcUserRepository implements UserRepository {
 
     private final NamedParameterJdbcTemplate jdbc;
-    private final RowMapper<User> userRowMapper = BeanPropertyRowMapper.newInstance(User.class);
     private final SimpleJdbcInsert jdbcInsert;
 
     public JdbcUserRepository(DataSource dataSource) {
@@ -44,7 +42,7 @@ public class JdbcUserRepository implements UserRepository {
             return user;
         }
 
-        userInformation.updateUserInformation(user);
+        userInformation.update(user);
 
         SqlParameterSource parameters = new BeanPropertySqlParameterSource(userInformation);
         jdbc.update(UPDATE_USER, parameters);
@@ -56,7 +54,7 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUserId(String userId) {
         try {
             Map<String, String> parameters = Collections.singletonMap("userId", userId);
-            return Optional.of(jdbc.queryForObject(SELECT_USER, parameters, userRowMapper));
+            return Optional.of(jdbc.queryForObject(SELECT_USER, parameters, userRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -64,11 +62,21 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return jdbc.query(SELECT_ALL_USERS, userRowMapper);
+        return jdbc.query(SELECT_ALL_USERS, userRowMapper());
     }
 
     @Override
     public void clear() {
         jdbc.update(DELETE_ALL_USERS, Collections.emptyMap());
+    }
+
+    private RowMapper<User> userRowMapper() {
+        return (rs, rowNum) -> {
+            User user = new User(rs.getString("user_id"),
+                                 rs.getString("password"),
+                                 rs.getString("name"),
+                                 rs.getString("email"));
+            return user;
+        };
     }
 }

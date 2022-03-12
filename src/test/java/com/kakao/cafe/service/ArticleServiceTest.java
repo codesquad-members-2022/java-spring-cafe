@@ -5,9 +5,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleRequestDto;
 import com.kakao.cafe.dto.ArticleResponseDto;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,13 +20,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+@DisplayName("ArticleService 단위 테스트")
 @ExtendWith(MockitoExtension.class)
 public class ArticleServiceTest {
+
     @InjectMocks
     private ArticleService articleService;
 
     @Mock
     private ArticleRepository articleRepository;
+
+    @Mock
+    private UserRepository userRepository;
 
     private ArticleRequestDto articleRequestDto;
 
@@ -38,6 +45,7 @@ public class ArticleServiceTest {
     void 게시글_저장() {
         // given
         given(articleRepository.save(any(Article.class))).willReturn(articleRequestDto.convertToDomain());
+        given(userRepository.findByUserId("ikjo")).willReturn(Optional.of(new User("ikjo", "1234", "조명익", "auddlr100@naver.com")));
 
         // when
         Article result = articleService.upload(articleRequestDto);

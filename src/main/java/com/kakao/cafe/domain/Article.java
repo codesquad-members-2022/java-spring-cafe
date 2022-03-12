@@ -15,7 +15,8 @@ public class Article {
 
     }
 
-    public Article(String writer, String title, String contents, LocalDateTime createdDate) {
+    public Article(int id, String writer, String title, String contents, LocalDateTime createdDate) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -24,22 +25,6 @@ public class Article {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContents(String contents) {
-        this.contents = contents;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
     }
 
     public int getId() {

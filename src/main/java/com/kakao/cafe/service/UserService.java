@@ -20,13 +20,15 @@ public class UserService {
     }
 
     public User join(UserRequestDto userRequestDto) {
-        validateDuplicateUser(userRequestDto.getUserId());
-        return userRepository.save(userRequestDto.convertToDomain());
+        User user = userRequestDto.convertToDomain();
+        validateDuplicateUser(user.getUserId());
+        return userRepository.save(user);
     }
 
     public User update(String userId, UserRequestDto userRequestDto) {
-        validatePassword(userId, userRequestDto.getPassword());
-        return userRepository.save(userRequestDto.convertToDomain());
+        User user = userRequestDto.convertToDomain();
+        validatePassword(userId, user.getPassword());
+        return userRepository.save(user);
     }
 
     public List<UserResponseDto> findAll() {

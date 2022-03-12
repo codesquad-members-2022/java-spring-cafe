@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 public class ArticleResponseDto {
 
-    private int id;
-    private String writer;
-    private String title;
-    private String contents;
-    private LocalDateTime createdDate;
+    private final int id;
+    private final String writer;
+    private final String title;
+    private final String contents;
+    private final LocalDateTime createdDate;
 
     public ArticleResponseDto(int id, String writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
@@ -16,10 +16,6 @@ public class ArticleResponseDto {
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getWriter() {

@@ -11,6 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@DisplayName("MemoryUserRepository 단위 테스트")
 class MemoryUserRepositoryTest {
 
     private final UserRepository userRepository = new MemoryUserRepository();

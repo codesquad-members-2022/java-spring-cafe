@@ -24,7 +24,7 @@ public class MemoryUserRepository implements UserRepository {
             return user;
         }
 
-        userInformation.updateUserInformation(user);
+        userInformation.update(user);
 
         return user;
     }
