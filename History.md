@@ -153,3 +153,26 @@ HomeController 및 테스트 코드를 추가했다.
 - createForm : `/articles/new`로 GET 요청 -> `/articles/createArticleForm`이 반환됨
 
 ---
+
+## 2.2 게시글을 정의한 Article 정의
+
+게시글 도메인을 정의했다.
+
+1. 도메인 프로퍼티
+   - title : 게시글 제목
+   - content : 게시글 내용
+   - writer : 작성자
+   - regDate : 게시글 등록일 (LocalDate)
+
+2. 생성자
+   - 기본생성자
+   - title, writer
+
+3. 메서드
+   - getter, setter : 모든 프로퍼티에 대한 getter, setter
+   - toString : 디버그용으로 toString 오버라이드
+   
+4. 고민했던 부분
+   - 복수의 게시글 군에서 게시글을 식별할 무언가가 필요한데 현재로서는 요구사항에 ArrayList로 구현하라는 말이 있어서, 게시글 접근은 저장 인덱스로 하기로 하고 id와 같은 기본키는 별도로 지정하지 않았다.
+
+---
