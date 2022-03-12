@@ -1,5 +1,7 @@
 package com.kakao.cafe.repository;
 
+import static com.kakao.cafe.repository.JdbcUserRepositorySqls.*;
+
 import com.kakao.cafe.domain.User;
 import java.util.Collections;
 import java.util.List;
@@ -45,7 +47,7 @@ public class JdbcUserRepository implements UserRepository {
         userInformation.updateUserInformation(user);
 
         SqlParameterSource parameters = new BeanPropertySqlParameterSource(userInformation);
-        jdbc.update("UPDATE user SET name = :name, email = :email WHERE user_id = :userId", parameters);
+        jdbc.update(UPDATE_USER, parameters);
 
         return user;
     }
@@ -54,8 +56,7 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUserId(String userId) {
         try {
             Map<String, String> parameters = Collections.singletonMap("userId", userId);
-            return Optional.ofNullable(jdbc.queryForObject(
-                "SELECT * FROM user WHERE user_id = :userId", parameters, userRowMapper));
+            return Optional.of(jdbc.queryForObject(SELECT_USER, parameters, userRowMapper));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -63,11 +64,11 @@ public class JdbcUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return jdbc.query("SELECT * FROM user", userRowMapper);
+        return jdbc.query(SELECT_ALL_USERS, userRowMapper);
     }
 
     @Override
     public void clear() {
-        jdbc.update("DELETE * FROM user", Collections.emptyMap());
+        jdbc.update(DELETE_ALL_USERS, Collections.emptyMap());
     }
 }

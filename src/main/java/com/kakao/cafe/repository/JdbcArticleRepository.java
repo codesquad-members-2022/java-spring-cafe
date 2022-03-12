@@ -1,5 +1,7 @@
 package com.kakao.cafe.repository;
 
+import static com.kakao.cafe.repository.JdbcArticleRepositorySqls.*;
+
 import com.kakao.cafe.domain.Article;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +35,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         parameters.put("contents", article.getContents());
         parameters.put("createdDate", article.getCreatedDate());
 
-        jdbc.update("INSERT INTO article(writer, title, contents, created_date) VALUES(:writer, :title, :contents, :createdDate)", parameters);
+        jdbc.update(INSERT_ARTICLE, parameters);
         return article;
     }
 
@@ -41,8 +43,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Optional<Article> findById(int id) {
         try {
             Map<String, Integer> parameters = Collections.singletonMap("id", id);
-            return Optional.ofNullable(jdbc.queryForObject(
-                "SELECT * FROM article WHERE id = :id", parameters, articleRowMapper));
+            return Optional.ofNullable(jdbc.queryForObject(SELECT_ARTICLE, parameters, articleRowMapper));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -50,11 +51,11 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbc.query("SELECT * FROM article", articleRowMapper);
+        return jdbc.query(SELECT_ALL_ARTICLES, articleRowMapper);
     }
 
     @Override
     public void clear() {
-        jdbc.update("DELETE * FROM article", Collections.emptyMap());
+        jdbc.update(DELETE_ALL_ARTICLES, Collections.emptyMap());
     }
 }

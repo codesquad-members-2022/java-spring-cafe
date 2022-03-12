@@ -38,10 +38,6 @@ public class UserService {
         return user.convertToDto();
     }
 
-    public void deleteAll() {
-        userRepository.clear();
-    }
-
     private void validateDuplicateUser(String userId) {
         userRepository.findByUserId(userId).ifPresent(m -> {
             throw new IllegalStateException("이미 존재하는 사용자입니다.");
