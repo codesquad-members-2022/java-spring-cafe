@@ -29,7 +29,8 @@ public class VolatilityUserRepository implements Repository<User, String> {
     }
     private User persist(User user) {
         user.setId(users.size() + 1);
-        return users.add(user) ? user : null;
+        users.add(user);
+        return user;
     }
     private User merge(long index, User user) {
         users.set((int)index - 1, user);
@@ -37,8 +38,8 @@ public class VolatilityUserRepository implements Repository<User, String> {
     }
 
     @Override
-    public Optional<User> findOne(String id) {
-        return users.stream().filter(user -> user.ownerOf(id)).findAny();
+    public Optional<User> findOne(String userId) {
+        return users.stream().filter(user -> user.ownerOf(userId)).findAny();
     }
 
     @Override

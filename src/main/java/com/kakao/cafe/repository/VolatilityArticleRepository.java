@@ -19,11 +19,9 @@ public class VolatilityArticleRepository implements Repository<Article, Long> {
 
     @Override
     public synchronized Optional<Article> save(Article article) {
-        return Optional.ofNullable(persist(article));
-    }
-    private Article persist(Article article) {
         article.setId(articles.size() + 1);
-        return articles.add(article) ? article : null;
+        articles.add(article);
+        return Optional.ofNullable(article);
     }
 
     @Override

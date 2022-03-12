@@ -37,20 +37,21 @@ public class JdbcUserRepository implements Repository<User, String> {
 
     @Override
     public Optional<User> save(User user) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
         Optional<User> other = findOne(user.getUserId());
 
         User result = other.isEmpty()
-                ? persist(user, params)
-                : merge(user, params);
+                ? persist(user)
+                : merge(user);
 
         return Optional.ofNullable(result);
     }
-    private User persist(User user, SqlParameterSource params) {
+    private User persist(User user) {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
         user.setId(insertJdbc.executeAndReturnKey(params).longValue());
         return user;
     }
-    private User merge(User user, SqlParameterSource params) {
+    private User merge(User user) {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
         jdbc.update("update member set password = :password, name = :name, email = :email where user_id = :userId", params);
         return user;
     }

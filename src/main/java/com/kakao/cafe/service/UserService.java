@@ -46,8 +46,8 @@ public class UserService {
                 .orElseThrow(() -> new SaveUserException(UPDATE_FAIL_MESSAGE));
     }
 
-    public User search(String id) {
-        return userRepository.findOne(id)
+    public User search(String userId) {
+        return userRepository.findOne(userId)
                 .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
     }
 }
