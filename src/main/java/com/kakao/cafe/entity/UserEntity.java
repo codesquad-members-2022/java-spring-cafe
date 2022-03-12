@@ -1,6 +1,5 @@
 package com.kakao.cafe.entity;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 
 public class UserEntity {

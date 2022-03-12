@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
 
 @Primary
 @org.springframework.stereotype.Repository
-public class H2ArticleRepository implements Repository<Article, Long> {
+public class JdbcArticleRepository implements Repository<Article, Long> {
 
     private SimpleJdbcInsert insertJdbc;
     private NamedParameterJdbcTemplate jdbc;
     private RowMapper<ArticleEntity> rowMapper = BeanPropertyRowMapper.newInstance(ArticleEntity.class);
 
-    public H2ArticleRepository(DataSource dataSource) {
+    public JdbcArticleRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
         insertJdbc = new SimpleJdbcInsert(dataSource).withTableName("article").usingGeneratedKeyColumns("id");
     }
@@ -58,6 +58,6 @@ public class H2ArticleRepository implements Repository<Article, Long> {
 
     @Override
     public void clear() {
-
+        /* no action */
     }
 }
