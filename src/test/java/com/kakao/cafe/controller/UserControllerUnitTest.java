@@ -53,12 +53,8 @@ public class UserControllerUnitTest {
     @BeforeAll
     static void init() {
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(
-                    new User(-1,"user" + (i + 1),
-                            "1234",
-                            "name" + (i + 1),
-                            "user" + (i + 1) + "@gmail.com")
-            );
+            users.add(new User(-1,"user" + (i + 1), "1234", "name" + (i + 1),
+                            "user" + (i + 1) + "@gmail.com"));
         }
     }
 

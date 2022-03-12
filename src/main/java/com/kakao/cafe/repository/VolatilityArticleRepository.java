@@ -1,15 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
 
-@Service
-public class VolatilityArticleRepository implements Repository<Article, Integer> {
+@org.springframework.stereotype.Repository
+public class VolatilityArticleRepository implements Repository<Article, Long> {
 
     private final Vector<Article> articles = new Vector<>();
 
@@ -28,8 +27,8 @@ public class VolatilityArticleRepository implements Repository<Article, Integer>
     }
 
     @Override
-    public Optional<Article> findOne(Integer index) {
-        return Optional.ofNullable(articles.get(index - 1));
+    public Optional<Article> findOne(Long index) {
+        return Optional.ofNullable(articles.get(index.intValue() - 1));
     }
 
     @Override

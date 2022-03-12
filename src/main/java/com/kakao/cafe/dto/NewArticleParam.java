@@ -2,6 +2,8 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Article;
 
+import java.time.LocalDate;
+
 public class NewArticleParam {
 
     private final String writer;
@@ -27,7 +29,7 @@ public class NewArticleParam {
     }
 
     public Article convertToArticle() {
-        return new Article(writer, title, contents);
+        return new Article(0, writer, title, contents, LocalDate.now());
     }
 
     @Override

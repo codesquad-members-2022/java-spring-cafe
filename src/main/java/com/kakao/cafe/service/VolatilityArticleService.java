@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class VolatilityArticleService implements ArticleService {
 
-    private final Repository<Article, Integer> articleRepository;
+    private final Repository<Article, Long> articleRepository;
 
-    public VolatilityArticleService(Repository<Article, Integer> articleRepository) {
+    public VolatilityArticleService(Repository<Article, Long> articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -28,7 +28,7 @@ public class VolatilityArticleService implements ArticleService {
     }
 
     @Override
-    public Article search(int id) {
+    public Article search(long id) {
         return articleRepository.findOne(id)
                 .orElseThrow(() -> new RuntimeException());
     }

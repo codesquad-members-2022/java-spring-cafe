@@ -23,7 +23,7 @@ public class VolatilityArticleServiceTest {
     VolatilityArticleService articleService;
 
     @Mock
-    Repository<Article, Integer> repository;
+    Repository<Article, Long> repository;
 
     @Test
     @DisplayName("요청 받은 질문 글을 repository 에 저장한다.")

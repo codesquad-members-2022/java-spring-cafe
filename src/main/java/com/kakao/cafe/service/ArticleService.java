@@ -9,5 +9,5 @@ public interface ArticleService {
 
     List<Article> searchAll();
     Article add(NewArticleParam newArticleParam);
-    Article search(int id);
+    Article search(long id);
 }
