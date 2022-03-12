@@ -1,13 +1,14 @@
 package com.ttasjwi.cafe.repository;
 
 import com.ttasjwi.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final Map<Long, Article> storage = new ConcurrentHashMap<>();

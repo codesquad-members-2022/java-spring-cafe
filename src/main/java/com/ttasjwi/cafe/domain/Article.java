@@ -11,6 +11,8 @@ public class Article {
     private String writer;
     private LocalDateTime regDateTime;
 
+    public Article() {}
+
     public Article(String title, String content) {
         this.title = title;
         this.content = content;

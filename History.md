@@ -292,4 +292,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 유효한 게시글인지 여부의 검증은 ArticleController 단에서 하도록 함
 - 고로, ArticleRepository의 검증 로직이 제대로 수행되는지에 대한 테스트는 제거했다.
 
+## 3.08 JdbcArticleRepository 추가 및 의존 관계 변경
+
+- 순수 Jdbc 방식의 JdbcArticleRepository를 생성
+- ArticleRepository 구현체 변경 : MemoryArticleRepository -> JdbcArticleRepository
+- article 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
+
 ---
