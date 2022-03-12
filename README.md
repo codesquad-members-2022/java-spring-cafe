@@ -289,7 +289,7 @@
   - build.gradle 설정 파일에서 H2 데이터베이스, spring-jdbc 의존성 추가
   - application.properties 파일에서 org.h2.Driver 에 접속하기 위한 값 설정
   - 모든 기능을 데이터베이스와 연동하여 구현한다.
-  - Heroku 배포 URL: <https://naneun-spring-cafe.herokuapp.com/>
+  - Heroku 배포 URL: <https://naneun-spring-cafe.herokuapp.com>
 
 - # 특이사항
   - 로컬환경에서는 H2 데이터베이스를, Heroku 배포 시에는 postgreSQL과 연동하도록 구현했습니다.
