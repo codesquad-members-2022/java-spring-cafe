@@ -210,4 +210,9 @@ HomeController 및 테스트 코드를 추가했다.
 - create 메서드로 ArticleRepository에 실제로 게시글을 저장하도록 함.
 - 저장후 홈으로 리다이렉트 된다.
 
+## 2.7 HomeController - ArticleRepository 연동
+
+- HomeController가 ArticleRepository를 알고 있음
+- GET 방식에 의해 home 메서드 호출 시 Model에 Article 목록을 모델에 담음.
+
 ---
