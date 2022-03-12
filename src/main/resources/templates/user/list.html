@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -68,6 +68,10 @@
                 </tr>
                 <tr>
                     <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>
+                </tr>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.email}"></td>
                 </tr>
                 </tbody>
             </table>
