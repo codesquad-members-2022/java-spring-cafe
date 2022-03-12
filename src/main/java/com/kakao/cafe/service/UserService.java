@@ -5,6 +5,8 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -17,5 +19,9 @@ public class UserService {
 
     public void join(User user) {
         userRepository.save(user);
+    }
+
+    public List<User> findUsers() {
+        return userRepository.findAll();
     }
 }
