@@ -185,3 +185,24 @@ HomeController 및 테스트 코드를 추가했다.
 - 게시글을 실제로 저장계층에 등록하는 로직은 수행하지 않았다.
 
 ---
+
+## 2.5 게시글 저장계층 ArticleRepository 생성
+
+게시글 저장 계층 ArticleRepository 정의, 테스트코드 작성
+
+1. 설계
+   - 일단 사양 변경은 고려하지 않고 바로 구현체로 생성
+   - 동시성을 고려하여 `Collections.synchronizedList`로 저장.
+   - 요구사항이 ArrayList로 구현이므로 인덱스를 기준으로 게시글을 식별한다.
+   - 조회할 때는 인덱스+1을 게시글 id로 하여 식별한다.
+
+2. 메서드
+   - `save(Article article)` : 게시글 저장
+   - `findByArticleId(Article articleId)` : articleId로 게시글을 조회한다. 실제 리스트에서 조회시는 id-1을 인덱스로 하여 조회
+     - 만약 1 이하 또는 size를 벗어나는 범위의 게시글을 조회시 `NoSuchElementException`을 throw한다.
+   - `findAll()` : 게시글 전체를 새로 리스트를 생성하여 반환함.
+
+3. 테스트 코드
+   - 위에서 정의한 예외상황을 고려하여 테스트를 작성했다.
+
+---
