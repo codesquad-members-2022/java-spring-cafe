@@ -215,4 +215,8 @@ HomeController 및 테스트 코드를 추가했다.
 - HomeController가 ArticleRepository를 알고 있음
 - GET 방식에 의해 home 메서드 호출 시 Model에 Article 목록을 모델에 담음.
 
+## 2.8 home.html - 게시글 목록 렌더링 추가
+
+- home.html에서, model에 담긴 articles를 동적으로 렌더링하도록 함
+
 ---
