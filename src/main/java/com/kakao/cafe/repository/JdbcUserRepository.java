@@ -68,6 +68,7 @@ public class JdbcUserRepository implements Repository<User, String> {
         }
     }
 
+    @Override
     public void clear() {
         /* no action */
     }
