@@ -42,7 +42,7 @@ public class EntityManager<T> {
         return clazz.getSimpleName();
     }
 
-    private <T, R> boolean isChanged(T originalEntity, R checkObject) {
+    public  <T, R> boolean isChanged(T originalEntity, R checkObject) {
         List<Field> fields = getAllFields(checkObject);
         for (Field field : fields) {
             Field originalEntityFieldName = getFieldByName(originalEntity, field.getName());
