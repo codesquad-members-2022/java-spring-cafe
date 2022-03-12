@@ -6,14 +6,48 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
 <br/>
 <details>
-<summary> 단위/통합 테스트 결과</summary>
+<summary> API 명세</summary>
 <div markdown="1">
 <br/>
 
-![image](https://user-images.githubusercontent.com/50660684/157399780-080f719d-d030-456e-a991-f119cd529d39.png)
-![image](https://user-images.githubusercontent.com/50660684/157399988-678e26bc-d0a7-460a-b72d-48270d20a037.png)
+### User
 
-    
+| user            | URL                 | Method | URL Params       | Data Params                                                     | Success Response                  | Error Response      |
+|:----------------|---------------------|--------|------------------|-----------------------------------------------------------------|-----------------------------------|---------------------|
+| listUsers       | /users              | GET    |                  |                                                                 | code: 200, view: user/list        |                     |
+| showUser        | /users/:userId      | GET    | `userId: string` |                                                                 | code: 200, view: user/profile     | code: 404           |
+| formCreateUser  | /users/form         | GET    |                  |                                                                 | code: 200, view: user/form        |                     |
+| createUser      | /users              | POST   |                  | `userId: string, password: string, name: string, email: string` | code: 200, redirect: /users       | code: 409 code: 500 |
+| formUpdateUser  | /users/:userId/form | GET    | `userId: string` |                                                                 | code: 200, view: user/update_form | code: 404           |
+| updateUser      | /users/:userId      | PUT    | `userId: string` | `password: string, name: string, email: string`                 | code: 200, redirect: /users       | code: 404           |
+
+### Article
+
+| article            | URL           | Method | URL Params | Data Params                                       | Success Response         | Error Response      |
+|--------------------|---------------|--------|------------|---------------------------------------------------|--------------------------|---------------------|
+| formCreateQuestion | /questions    | GET    |            |                                                   | code: 200 view: qna/form |                     |
+| createQuestion     | /questions    | POST   |            | `writer: string, title: string, contents: string` | code: 200 redirect: /    | code: 404 code: 500 |
+| listQuestions      | /             | GET    |            |                                                   | code: 200 view: qna/list |                     |
+| showQuestion       | /articles/:id | GET    | `id: int`  |                                                   | code: 200 view: qna/show | code: 404           |
+
+### Auth
+
+| auth      | URL         | Method | URL Params | Data Params                        | Success Response           | Error Response      |
+|-----------|-------------|--------|------------|------------------------------------|----------------------------|---------------------|
+| formLogin | /login/form | GET    |            |                                    | code: 200 view: form/login |                     |
+| login     | /login      | POST   |            | `userId: string, password: string` | code: 200 redirect: /users | code: 404 code: 409 |
+| logout    | /logout     | GET    |            |                                    | code: 200 redirect: /users |                     |
+
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary> jacoco 리포트</summary>
+<div markdown="1">
+<br/>
+
 <br/>
 </div>
 </details>
