@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
 
-class MemoryUserRepositoryTest {
+public class MemoryUserRepositoryTest {
 	private UserRepository userRepository;
 
 	@BeforeEach
@@ -49,7 +49,7 @@ class MemoryUserRepositoryTest {
 		assertThat(actual.getId()).isEqualTo(expected.getId());
 	}
 
-	private User getUser() {
+	public static User getUser() {
 		return new User(CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
 	}
 }

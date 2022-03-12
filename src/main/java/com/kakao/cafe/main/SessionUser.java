@@ -2,6 +2,7 @@ package com.kakao.cafe.main;
 
 
 public class SessionUser {
+	public static final String SESSION_KEY = "sessionedUser";
 	private String userName;
 
 	public static SessionUser from(String userName) {

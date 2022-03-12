@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.domain;
 
-import static com.kakao.cafe.main.MainController.*;
+import static com.kakao.cafe.main.SessionUser.*;
+import static com.kakao.cafe.user.domain.UserUpdateDto.*;
 
 import java.util.Objects;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.main.SessionUser;
 
@@ -60,17 +62,45 @@ public class UserController {
 		isValidAccess(userId, httpSession);
 
 		logger.info("view for profile updating : {}", userId);
-		UserDto.Response user = userService.findUserId(userId);
-		model.addAttribute("user", user);
+		UserUpdateDto.Response response = userService.findUserForUpdateFrom(userId);
+		/*
+			비밀번호 입력 제한시 수정 요청시에는 수정요청이 불가하다는 별도의 안내 메시지를 전달한다.
+			비밀번호 입력 제한 10분이 지난 후에는 변경 요청이 가능하다.
+		 */
+		if (response.hasMessage()) {
+			model.addAttribute("notAllow", response.getMessage());
+		}
+		model.addAttribute("user", response);
 		return "/user/updateForm";
 	}
 
 	@PostMapping("/{user-id}/update")
-	public String update(@PathVariable(value = "user-id") String userId, UserUpdateDto.Request userDto) {
+	public String update(@PathVariable(value = "user-id") String userId, UserUpdateDto.Request userDto, RedirectAttributes redirectAttributes) {
 		userDto.isValid(logger);
+		/*
+			비밀번호가 일치해야 이름, 이메일을 변경할 수 있다.
+			비밀번호는 3회 이상 오류시 10분 동안 변경 요청 할 수 없다.
+		 */
+		if (!userService.isValidPassword(userDto)) {
+			UserUpdateDto.WrongPasswordResponse invalidResponse = UserUpdateDto.WrongPasswordResponse.from(userDto);
+			setTimeLimit(userId, redirectAttributes, invalidResponse);
+			invalidResponse.addCount();
+			redirectAttributes.addFlashAttribute("checks", invalidResponse);
+			String redirectUrl = String.format("/users/%s/form", userId);
+			return "redirect:" + redirectUrl;
+		}
+
 		logger.info("update profile: {}", userId);
 		userService.changeProfile(userDto);
 		return "redirect:/users/";
+	}
+
+	private void setTimeLimit(String userId, RedirectAttributes redirectAttributes,
+		WrongPasswordResponse passwordResponse) {
+		if (!passwordResponse.isValidChangingPassword()) {
+			userService.restrictPasswordChange(userId);
+			redirectAttributes.addFlashAttribute("notAllow", USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);
+		}
 	}
 
 	/*
@@ -85,11 +115,11 @@ public class UserController {
 	}
 
 	private void isValidAccess(String userId, HttpSession httpSession) {
-		isNotEmptyAccessor(httpSession);
-		isCompareLoginsWithUser(userId, httpSession);
+		isEmptyAccessor(httpSession);
+		isTheSameLoginUserAsAccount(userId, httpSession);
 	}
 
-	private void isCompareLoginsWithUser(String userId, HttpSession httpSession) {
+	private void isTheSameLoginUserAsAccount(String userId, HttpSession httpSession) {
 		SessionUser sessionUser = (SessionUser)getHttpSessionAttribute(httpSession);
 		if (sessionUser.isDifferentFrom(userId)) {
 			logger.error("invalid access by different identity : {}", sessionUser.getUserName());
@@ -97,7 +127,7 @@ public class UserController {
 		}
 	}
 
-	private void isNotEmptyAccessor(HttpSession httpSession) {
+	private void isEmptyAccessor(HttpSession httpSession) {
 		Object accessor = getHttpSessionAttribute(httpSession);
 		if (Objects.isNull(accessor)) {
 			logger.error("invalid access to personal information modification");
@@ -106,6 +136,6 @@ public class UserController {
 	}
 
 	private Object getHttpSessionAttribute(HttpSession httpSession) {
-		return httpSession.getAttribute(SESSIONED_ID);
+		return httpSession.getAttribute(SESSION_KEY);
 	}
 }

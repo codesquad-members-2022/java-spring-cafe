@@ -19,7 +19,13 @@
                   <label for="password">비밀번호</label>
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password">
               </div>
+              {{^notAllow}}
               <button type="submit" class="btn btn-success clearfix pull-right">로그인</button>
+              {{/notAllow}}
+              {{#notAllow}}
+                  <p>{{notAllow}}</p>
+                  <button type="submit" class="btn btn-success clearfix pull-right" disabled='disabled'>로그인</button>
+              {{/notAllow}}
               <div class="clearfix" />
           </form>
         </div>

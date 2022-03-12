@@ -7,7 +7,7 @@
 | URL                 | 기능        |
 |---------------------|-----------|
 | GET /login          | 로그인 화면    |
-| POST /do_login      | 로그인 버튼 실행 |
+| POST /do_login      | 로그인       |
 | GET /logout         | 로그아웃      |
 | GET /users          | 회원 목록 조회  |
 | POST /users         | 회원 가입     |

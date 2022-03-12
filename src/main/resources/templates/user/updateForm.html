@@ -13,9 +13,12 @@
           {{#user}}
           <form name="question" action="/users/{{& userId}}/update" method="post">
               <input type="hidden" name="id" value="{{id}}" />
+              {{#checks}}
+                <input type="hidden" name="numberOfChangingPassword" value="{{numberOfChangingPassword}}" />
+              {{/checks}}
               <div class="form-group">
                   <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID" value="{{userId}}">
+                  <input class="form-control" id="userId" name="userId" placeholder="User ID" value="{{userId}}" readonly>
               </div>
               <div class="form-group">
                   <label for="name">이름</label>
@@ -25,7 +28,30 @@
                   <label for="email">이메일</label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{email}}">
               </div>
-              <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>
+              <div class="form-group">
+                  <label for="password">비밀번호</label>
+                  {{#checks}}
+                    <p>{{checks.message}}</p>
+                  {{/checks}}
+                  {{^notAllow}}
+                      {{^checks}}
+                        <p>비밀번호가 일치해야 수정 할 수 있습니다.(총 3회 가능)</p>
+                      {{/checks}}
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                  {{/notAllow}}
+                  {{#notAllow}}
+                      {{^checks}}
+                        <p>{{notAllow}}</p>
+                      {{/checks}}
+                    <input type="password" class="form-control" name="password" placeholder="입력 불가 합니다." readonly>
+                  {{/notAllow}}
+              </div>
+              {{^notAllow}}
+                <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>
+              {{/notAllow}}
+              {{#notAllow}}
+                <button type="submit" class="btn btn-success clearfix pull-right" disabled='disabled'>수정하기</button>
+              {{/notAllow}}
               <div class="clearfix" />
           </form>
           {{/user}}

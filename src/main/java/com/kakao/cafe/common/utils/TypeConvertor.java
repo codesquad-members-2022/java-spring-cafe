@@ -12,6 +12,10 @@ public class TypeConvertor {
 		return String.valueOf(longNumber);
 	}
 
+	public static String toTextFromInt(int intNumber) {
+		return String.valueOf(intNumber);
+	}
+
 	public static Long toLongFromText(String numberText) {
 		if (!isNumeric(numberText)) {
 			throw new IllegalArgumentException(ERROR_OF_TYPE_OF_NOT_NUMERIC);

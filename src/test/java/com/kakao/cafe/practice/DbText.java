@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 
 import javax.sql.DataSource;
 
@@ -39,12 +40,15 @@ public class DbText {
 	@Test
 	void for_setting_db_data() throws SQLException {
 		User user = new User("tester", "testName", "test@email.com", "1234asdf");
-		String sql = "insert into cafe_users (user_id, name, email, password) values (?,?,?,?)";
+		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_change) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, user.getUserId());
 		pstmt.setString(2, user.getName());
 		pstmt.setString(3, user.getEmail());
 		pstmt.setString(4, user.getPassword());
+		pstmt.setObject(5, user.getCreatedDate());
+		pstmt.setObject(6, user.getLastUpdatedDate());
+		pstmt.setBoolean(7, user.isRestrictedEnterPassword());
 
 		pstmt.executeUpdate();
 		ResultSet rs = pstmt.getGeneratedKeys();
@@ -72,7 +76,7 @@ public class DbText {
 		while (rs.next()) {
 			long id = rs.getLong("id");
 			String name = rs.getString("name");
-			User user = new User(1L, "tester", "testName", "test@email.com", "1234asdf");
+			User user = new User(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
 
 			soft.assertThat(user.getId()).isNotZero();
 			soft.assertThat(user.getName().length()).isGreaterThan(2);
@@ -97,7 +101,10 @@ public class DbText {
 				rs.getString("user_id"),
 				rs.getString("name"),
 				rs.getString("email"),
-				rs.getString("password"));
+				rs.getString("password"),
+				rs.getObject("created_date", LocalDateTime.class),
+				rs.getObject("last_updated_date", LocalDateTime.class),
+				rs.getBoolean("restricted_change"));
 
 			assertThat(user.getId()).isEqualTo(id);
 			logger.info("User : {}", user);

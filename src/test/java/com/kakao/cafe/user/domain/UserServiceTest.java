@@ -45,7 +45,8 @@ class UserServiceTest {
 	@Test
 	@DisplayName("가입요청한 사용자 정보를 받으면 db에 저장하여 확인할 수 있다.")
 	void register_test() {
-		User expected = new User(1L, CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
+		User expected = new User(CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
+		expected.setId(1L);
 		when(userRepository.save(any()))
 			.thenReturn(expected);
 
