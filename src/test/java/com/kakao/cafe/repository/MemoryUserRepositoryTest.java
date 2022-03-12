@@ -70,4 +70,22 @@ class MemoryUserRepositoryTest {
         assertThat(repository.findAll()).contains(user1, user2, user3);
         assertThat(repository.size()).isEqualTo(3);
     }
+
+    @Test
+    @DisplayName("유저 수정이 잘 이루어지는가")
+    void update() {
+        //given
+        User user = new User("honux", "호눅스", "1234a", "honux77@gmail.com");
+        repository.save(user);
+
+        //when
+        User updateUser = new User("honux", "김나단", "호눅스짱짱!", "honux77@lucas.com");
+        repository.update(updateUser, 0);
+
+        //then
+        User poppedUser = repository.findByUserId("honux").orElseThrow();
+        assertThat("김나단").isEqualTo(poppedUser.getName());
+        assertThat("호눅스짱짱!").isEqualTo(poppedUser.getPassword());
+        assertThat("honux77@lucas.com").isEqualTo(poppedUser.getEmail());
+    }
 }

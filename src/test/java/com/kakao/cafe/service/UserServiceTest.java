@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.UpdateUserForm;
 import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -72,5 +73,53 @@ class UserServiceTest {
         assertThat(userService.findUsers().size()).isEqualTo(3);
         assertThat(userService.findUsers()).extracting(User::getUserId)
                 .contains("honux", "crong", "ivy");
+    }
+
+    @Test
+    @DisplayName("유저 수정이 잘 이루어지는가")
+    void update() {
+        //given
+        UserForm userForm = new UserForm("nathan29849", "김나단", "code777", "nathan29849@naver.com");
+        userService.join(userForm);
+
+        //when
+        UpdateUserForm updateUserForm = new UpdateUserForm("nathan29849", "호눅스의제자", "code777", "nathan29849@lucas.com", "honux777");
+        userService.update(updateUserForm, 0);
+
+        //then
+        UserForm updatedUser = userService.findOneUser(0);
+        assertThat("호눅스의제자").isEqualTo(updatedUser.getName());
+        assertThat("nathan29849@lucas.com").isEqualTo(updatedUser.getEmail());
+        assertThat("honux777").isEqualTo(updatedUser.getPassword());
+    }
+
+    @Test
+    @DisplayName("유저 수정 시 index 값이 잘못 넘어갔을 때(index 범위가 초과한 경우)")
+    void updateWithWrongIndex() {
+        //given
+        UserForm userForm = new UserForm("nathan29849", "김나단", "code777", "nathan29849@naver.com");
+        userService.join(userForm);
+
+        //when
+        UpdateUserForm updateUserForm = new UpdateUserForm("nathan29849", "호눅스의제자", "code777", "nathan29849@lucas.com", "honux777");
+
+        //then
+        assertThatThrownBy(() -> userService.update(updateUserForm, 2))
+                .isInstanceOf(IndexOutOfBoundsException.class);
+    }
+
+    @Test
+    @DisplayName("유저 수정 시 잘못된 비밀번호가 입력된 경")
+    void updateWithWrongPassword() {
+        //given
+        UserForm userForm = new UserForm("nathan29849", "김나단", "code777", "nathan29849@naver.com");
+        userService.join(userForm);
+
+        //when
+        UpdateUserForm updateUserForm = new UpdateUserForm("nathan29849", "호눅스의제자", "123123a", "nathan29849@lucas.com", "honux777");
+
+        //then
+        assertThatThrownBy(() -> userService.update(updateUserForm, 0))
+                .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 }
