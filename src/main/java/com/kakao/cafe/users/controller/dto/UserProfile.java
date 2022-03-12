@@ -2,31 +2,26 @@ package com.kakao.cafe.users.controller.dto;
 
 import com.kakao.cafe.users.domain.User;
 
-import java.time.LocalDate;
-
-public class UserResponse {
+public class UserProfile {
 
     private final Long id;
     private final String userId;
     private final String name;
     private final String email;
-    private final LocalDate createdDate;
 
-    public UserResponse(Long id, String userId, String name, String email, LocalDate createdDate) {
+    public UserProfile(Long id, String userId, String name, String email) {
         this.id = id;
         this.userId = userId;
         this.name = name;
         this.email = email;
-        this.createdDate = createdDate;
     }
 
-    public static UserResponse of(User user) {
-        return new UserResponse(
+    public static UserProfile of(User user) {
+        return new UserProfile(
                 user.getId(),
                 user.getUserId(),
                 user.getName(),
-                user.getEmail(),
-                user.getCreatedDate().toLocalDate()
+                user.getEmail()
         );
     }
 
@@ -44,9 +39,5 @@ public class UserResponse {
 
     public String getEmail() {
         return email;
-    }
-
-    public LocalDate getCreatedDate() {
-        return createdDate;
     }
 }

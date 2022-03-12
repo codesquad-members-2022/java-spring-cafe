@@ -1,6 +1,7 @@
 package com.kakao.cafe.users.controller;
 
 import com.kakao.cafe.users.controller.dto.UserJoinRequest;
+import com.kakao.cafe.users.controller.dto.UserProfile;
 import com.kakao.cafe.users.service.UserService;
 import com.kakao.cafe.users.controller.dto.UserResponse;
 import com.kakao.cafe.users.domain.User;
@@ -47,7 +48,7 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView userList(ModelAndView modelAndView) {
         List<User> users = userService.findUsers();
-        modelAndView.addObject("users", toUserResponseDtoList(users));
+        modelAndView.addObject("users", toUserResponseList(users));
         modelAndView.addObject("usersCount", users.size());
         modelAndView.setViewName("user/list");
         return modelAndView;
@@ -56,16 +57,16 @@ public class UserController {
     @GetMapping("/users/{id}")
     public ModelAndView findProfile(@PathVariable("id") Long id, ModelAndView modelAndView) {
         User user = userService.findOne(id);
-        modelAndView.addObject("user", UserResponse.of(user));
+        modelAndView.addObject("user", UserProfile.of(user));
         modelAndView.setViewName("user/profile");
 
         return modelAndView;
     }
 
-    private List<UserResponse> toUserResponseDtoList(List<User> users) {
+    private List<UserResponse> toUserResponseList(List<User> users) {
         return users.stream()
                 .map(UserResponse::of)
-                .collect(Collectors.toUnmodifiableList());
+                .collect(Collectors.toList());
     }
 
 }
