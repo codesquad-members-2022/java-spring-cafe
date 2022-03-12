@@ -55,9 +55,4 @@ public class JdbcArticleRepository implements Repository<Article, Long> {
             return Optional.empty();
         }
     }
-
-    @Override
-    public void clear() {
-        /* no action */
-    }
 }

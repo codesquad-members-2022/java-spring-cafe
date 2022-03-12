@@ -68,9 +68,4 @@ public class JdbcUserRepository implements Repository<User, String> {
             return Optional.empty();
         }
     }
-
-    @Override
-    public void clear() {
-        /* no action */
-    }
 }

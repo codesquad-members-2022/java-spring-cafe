@@ -41,9 +41,4 @@ public class VolatilityUserRepository implements Repository<User, String> {
     public Optional<User> findOne(String userId) {
         return users.stream().filter(user -> user.ownerOf(userId)).findAny();
     }
-
-    @Override
-    public void clear() {
-        users.clear();
-    }
 }

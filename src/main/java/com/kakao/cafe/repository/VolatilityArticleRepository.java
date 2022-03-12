@@ -28,9 +28,4 @@ public class VolatilityArticleRepository implements Repository<Article, Long> {
     public Optional<Article> findOne(Long index) {
         return Optional.ofNullable(articles.get(index.intValue() - 1));
     }
-
-    @Override
-    public void clear() {
-        articles.clear();
-    }
 }

@@ -8,5 +8,4 @@ public interface Repository<T, V> {
     List<T> findAll();
     Optional<T> save(T obj);
     Optional<T> findOne(V primaryKey);
-    void clear();
 }
