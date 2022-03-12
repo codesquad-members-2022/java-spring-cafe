@@ -244,11 +244,11 @@ HomeController 및 테스트 코드를 추가했다.
 
 # Step3 DB에 저장하기
 
-- [ ] H2 데이터베이스 의존성 추가 및 연동
+- [x] H2 데이터베이스 의존성 추가 및 연동
 - [ ] 게시글 데이터 저장(DB 연동)
 - [ ] 게시글 목록 구현(DB 연동)
 - [ ] 게시글 상세보기 구현(DB 연동)
-- [ ] 사용자 정보 DB 저장
+- [x] 사용자 정보 DB 저장
 - [ ] 배포
 
 ---
@@ -274,5 +274,11 @@ HomeController 및 테스트 코드를 추가했다.
 - UserRepository 구현체를 다른 구현체로 바꾸기엔, 기존의 UserRepository에서 수행해야 했던 중복 검증 로직을 또 다시 구현해야한다.
 - 이 책임을 UserService에게 위임하고, 데이터 접근계층인 UserRepository는 순수하게 값을 보관하도록 한다.
 - 이런 검증에 대한 테스트 코드는 이미 UserService에서 별도로 작성해두기도 했고, MemoryUserRepository에서 별도로 작성할 필요가 없으니 제거했다.
+
+## 3.05 JdbcUserRepository 추가 및 의존 관계 변경
+
+- 순수 Jdbc 방식의 JdbcUserRepository를 생성
+- UserRepository 구현체 변경 : MemoryUserRepository -> JdbcUserRepository
+- User 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
 
 ---

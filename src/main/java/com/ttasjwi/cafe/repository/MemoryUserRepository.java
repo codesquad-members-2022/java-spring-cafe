@@ -1,7 +1,6 @@
 package com.ttasjwi.cafe.repository;
 
 import com.ttasjwi.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private final Map<String, User> storage = new ConcurrentHashMap<>();
