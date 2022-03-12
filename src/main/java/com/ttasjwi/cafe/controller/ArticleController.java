@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/articles")
@@ -29,7 +29,7 @@ public class ArticleController {
     @PostMapping("/new")
     public String createArticle(@ModelAttribute Article article) {
         article.setWriter("anonymous User");
-        article.setRegDate(LocalDate.now());
+        article.setRegDateTime(LocalDateTime.now());
 
         int articleId = articleRepository.save(article);
 
