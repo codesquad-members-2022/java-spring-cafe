@@ -48,6 +48,22 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 <div markdown="1">
 <br/>
 
+### Bundle
+    
+![image](https://user-images.githubusercontent.com/50660684/158010241-efdcfe5b-989d-405e-9b42-bea4ee6c3362.png)
+
+### Controller
+    
+![image](https://user-images.githubusercontent.com/50660684/158010292-4e4cbde2-7851-4735-9f7a-abcbfe2d26ee.png)
+
+### Service
+    
+![image](https://user-images.githubusercontent.com/50660684/158010308-80312217-894f-47f1-839e-d3fd101c903b.png)
+
+### Repository
+    
+![image](https://user-images.githubusercontent.com/50660684/158010331-f5e1650e-519d-46e6-b0ec-655913fc38d9.png)    
+    
 <br/>
 </div>
 </details>
