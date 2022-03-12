@@ -6,12 +6,14 @@ import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("members")
+@Controller
 public class MemberController {
 
     private final MemberService memberService;
@@ -30,11 +32,6 @@ public class MemberController {
     public String join(JoinRequest request) {
         memberService.join(request.toEntity());
         return "redirect:/";
-    }
-
-    @GetMapping("login")
-    public String login() {
-        return "user/login";
     }
 
     @GetMapping("{id}")

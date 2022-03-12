@@ -2,10 +2,10 @@ package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
 import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
+import com.kakao.cafe.web.service.article.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -29,9 +29,6 @@ class ArticleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Mock
-    ArticleController articleController;
 
     BindingResult bindingResult;
 
@@ -109,18 +106,6 @@ class ArticleControllerTest {
                 .andExpect(model().attributeExists("articles"))
                 .andExpect(model().attribute("articles", articles))
                 .andExpect(view().name("article/list"));
-    }
-
-    @Test
-    @DisplayName("등록된 모든 글을 화면에 출력한다")
-    public void listArticlesTest() throws Exception {
-    }
-
-    @Test
-    @DisplayName("글을 작성하는 화면을 보여준다")
-    public void createQuestionTest() throws Exception {
-        when(articleController.write(articleWriteRequest, bindingResult));
-
     }
 
     private String getTitle() {

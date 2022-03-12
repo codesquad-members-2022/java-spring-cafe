@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
 import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
+import com.kakao.cafe.web.service.article.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

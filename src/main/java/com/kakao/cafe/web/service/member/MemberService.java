@@ -2,8 +2,6 @@ package com.kakao.cafe.web.service.member;
 
 import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.core.repository.member.MemberRepository;
-import com.kakao.cafe.web.controller.member.dto.JoinRequest;
-import com.kakao.cafe.web.controller.member.dto.JoinResponse;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
 

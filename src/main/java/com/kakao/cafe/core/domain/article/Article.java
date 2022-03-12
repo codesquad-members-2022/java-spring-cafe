@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Article {
 
-    private int id;
+    private Integer id;
     private String title;
     private String content;
 
@@ -26,7 +26,7 @@ public class Article {
         this.viewCount = viewCount;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

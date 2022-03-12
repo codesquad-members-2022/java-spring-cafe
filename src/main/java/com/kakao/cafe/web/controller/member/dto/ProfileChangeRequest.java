@@ -11,11 +11,11 @@ public class ProfileChangeRequest {
     private String email;
     private LocalDateTime createAt;
 
-    public ProfileChangeRequest(int id, String nickName, String email, LocalDateTime createAt) {
+    public ProfileChangeRequest(int id, String nickName, String email) {
         this.id = id;
         this.nickName = nickName;
         this.email = email;
-        this.createAt = createAt;
+        this.createAt = getCreateAt();
     }
 
     public String getNickName() {

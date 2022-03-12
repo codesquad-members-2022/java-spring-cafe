@@ -30,3 +30,4 @@ public class ExceptionControllerAdvice {
         return "error-pages/500";
     }
 }
+
