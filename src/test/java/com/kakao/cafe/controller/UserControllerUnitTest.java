@@ -28,8 +28,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.EXISTENT_ID_MESSAGE;
-import static com.kakao.cafe.message.UserMessage.NON_EXISTENT_ID_MESSAGE;
+import static com.kakao.cafe.message.UserMessage.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

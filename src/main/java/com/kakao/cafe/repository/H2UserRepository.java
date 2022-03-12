@@ -38,8 +38,21 @@ public class H2UserRepository implements Repository<User, String> {
     @Override
     public Optional<User> save(User user) {
         SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
+        Optional<User> other = findOne(user.getUserId());
+
+        User result = other.isEmpty()
+                ? persist(user, params)
+                : merge(user, params);
+
+        return Optional.ofNullable(result);
+    }
+    private User persist(User user, SqlParameterSource params) {
         user.setId(insertJdbc.executeAndReturnKey(params).longValue());
-        return Optional.ofNullable(user);
+        return user;
+    }
+    private User merge(User user, SqlParameterSource params) {
+        jdbc.update("update member set password = :password, name = :name, email = :email where user_id = :userId", params);
+        return user;
     }
 
     @Override
@@ -55,7 +68,6 @@ public class H2UserRepository implements Repository<User, String> {
         }
     }
 
-    @Override
     public void clear() {
 
     }

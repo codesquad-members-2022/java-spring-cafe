@@ -7,7 +7,7 @@ import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
 
 public class ModifiedUserParam {
 
-    private int index;
+    private long id;
     private final String userId;
     private final String password;
     private final String nowPassword;
@@ -15,10 +15,10 @@ public class ModifiedUserParam {
     private final String name;
     private final String email;
 
-    public ModifiedUserParam(int index, String userId, String password, String nowPassword,
+    public ModifiedUserParam(long id, String userId, String password, String nowPassword,
                                 String newPassword, String name, String email) {
 
-        this.index = index;
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.nowPassword = nowPassword;
@@ -27,8 +27,8 @@ public class ModifiedUserParam {
         this.email = email;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setIndex(long id) {
+        this.id = id;
     }
 
     public void isValidRequest() {
@@ -38,13 +38,13 @@ public class ModifiedUserParam {
     }
 
     public User convertToUser() {
-        return new User(index, userId, newPassword, name, email);
+        return new User(id, userId, newPassword, name, email);
     }
 
     @Override
     public String toString() {
         return "ModifiedUserParam{" +
-                "index=" + index +
+                "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", nowPassword='" + nowPassword + '\'' +
