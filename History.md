@@ -219,4 +219,8 @@ HomeController 및 테스트 코드를 추가했다.
 
 - home.html에서, model에 담긴 articles를 동적으로 렌더링하도록 함
 
+## 2.9 "/articles" 요청에 대한 맵핑 추가
+
+- "/articles" 요청시 "/"로 리다이렉트 되도록 함
+
 ---

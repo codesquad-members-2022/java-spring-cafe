@@ -39,4 +39,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @GetMapping
+    public String list() {
+        return "redirect:/";
+    }
+
 }
