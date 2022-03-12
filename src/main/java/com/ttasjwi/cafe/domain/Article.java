@@ -1,13 +1,14 @@
 package com.ttasjwi.cafe.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Article {
 
     private String title;
     private String content;
     private String writer;
-    private LocalDate regDate;
+    private LocalDateTime regDateTime;
 
     public Article(String title, String content) {
         this.title = title;
@@ -38,12 +39,12 @@ public class Article {
         this.writer = writer;
     }
 
-    public LocalDate getRegDate() {
-        return regDate;
+    public LocalDateTime getRegDateTime() {
+        return regDateTime;
     }
 
-    public void setRegDate(LocalDate regDate) {
-        this.regDate = regDate;
+    public void setRegDateTime(LocalDateTime regDateTime) {
+        this.regDateTime = regDateTime;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Article {
         return "{" +
                 "title='" + title + '\'' +
                 ", writer='" + writer + '\'' +
-                ", regDate=" + regDate +
+                ", regDateTime=" + regDateTime +
                 '}';
     }
 }

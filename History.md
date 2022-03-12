@@ -235,4 +235,9 @@ HomeController 및 테스트 코드를 추가했다.
 - home.html에서, 게시글에 대한 a태그의 주솟값을 동적으로 생성하도록 했다.
 - 현재는 게시글이 스스로의 Id를 가지고 있지 않기 때문에 list의 반복 순서 기준으로 맵핑하도록 했다.
 
+## 2.12 Article의 LocalDate -> LocalDateTime
+
+- 게시글 작성일자 부분에서 현재 시각에 대한 요구사항까지 추가됨
+- 기존의 LocalDate 필드를 LocalDateTime으로 변경함
+
 ---
