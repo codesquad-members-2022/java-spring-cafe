@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.service;
 
 import com.ttasjwi.cafe.domain.User;
-import com.ttasjwi.cafe.repository.UserRepository;
+import com.ttasjwi.cafe.repository.MemoryUserRepository;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.userService = new UserService(new UserRepository());
+        this.userService = new UserService(new MemoryUserRepository());
     }
 
     @Test

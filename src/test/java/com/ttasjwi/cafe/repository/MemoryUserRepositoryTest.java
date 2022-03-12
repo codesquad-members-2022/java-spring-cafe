@@ -9,13 +9,13 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-class UserRepositoryTest {
+class MemoryUserRepositoryTest {
 
-    private UserRepository userRepository;
+    private MemoryUserRepository memoryUserRepository;
 
     @BeforeEach
     void beforeEach() {
-        this.userRepository = new UserRepository();
+        this.memoryUserRepository = new MemoryUserRepository();
     }
 
     @Test
@@ -29,8 +29,8 @@ class UserRepositoryTest {
         User saveUser = new User(userName, userEmail, password);
 
         // when (실행)
-        userRepository.save(saveUser);
-        User findUser = userRepository.findByUserName(userName).get();
+        memoryUserRepository.save(saveUser);
+        User findUser = memoryUserRepository.findByUserName(userName).get();
 
         // then (검증)
         assertThat(findUser).isEqualTo(saveUser);
@@ -47,8 +47,8 @@ class UserRepositoryTest {
         User saveUser = new User(userName, userEmail, password);
 
         // when (실행)
-        userRepository.save(saveUser);
-        User findUser = userRepository.findByUserEmail(userEmail).get();
+        memoryUserRepository.save(saveUser);
+        User findUser = memoryUserRepository.findByUserEmail(userEmail).get();
 
         // then (검증)
         assertThat(findUser).isEqualTo(saveUser);
@@ -60,13 +60,13 @@ class UserRepositoryTest {
         // given (준비)
         User user1 = new User();
         user1.setUserName("ttasjwi");
-        userRepository.save(user1);
+        memoryUserRepository.save(user1);
 
         User user2 = new User();
         user2.setUserName(user1.getUserName());
 
         // when, then(실행, 검증)
-        assertThatThrownBy(() -> userRepository.save(user2)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> memoryUserRepository.save(user2)).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -77,14 +77,14 @@ class UserRepositoryTest {
         user1.setUserName("user1");
         user1.setUserEmail("ttasjwi@gmail.com");
 
-        userRepository.save(user1);
+        memoryUserRepository.save(user1);
 
         User user2 = new User();
         user2.setUserName("user2");
         user2.setUserEmail(user1.getUserEmail());
 
         // when, then(실행, 검증)
-        assertThatThrownBy(() -> userRepository.save(user2)).isInstanceOf(IllegalStateException.class);
+        assertThatThrownBy(() -> memoryUserRepository.save(user2)).isInstanceOf(IllegalStateException.class);
     }
 
     @Test
@@ -94,11 +94,11 @@ class UserRepositoryTest {
         User user1 = new User("user1", "user1@gmail.com", "1234");
         User user2 = new User("user2", "user2@gmail.com", "5678");
 
-        userRepository.save(user1);
-        userRepository.save(user2);
+        memoryUserRepository.save(user1);
+        memoryUserRepository.save(user2);
 
         // when
-        List<User> list = userRepository.findAll();
+        List<User> list = memoryUserRepository.findAll();
         int size = list.size();
 
         // then
