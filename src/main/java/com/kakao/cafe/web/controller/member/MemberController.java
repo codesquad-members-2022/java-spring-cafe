@@ -3,15 +3,11 @@ package com.kakao.cafe.web.controller.member;
 import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
-import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,16 +44,9 @@ public class MemberController {
         return "user/profile";
     }
 
-    @GetMapping("{id}/edit")
-    public String edit(Model model, @PathVariable int id, ProfileChangeRequest request) {
-        ProfileChangeResponse response = memberService.getMemberDetails(id, request);
-        model.addAttribute("response", response);
-        return "user/profileedit";
-    }
-
-    @PostMapping("{id}/edit")
+    @PutMapping("{id}")
     public String edit(ProfileChangeRequest request) {
-        memberService.edit(request);
+        memberService.editProfile(request);
         return "redirect:/members";
     }
 

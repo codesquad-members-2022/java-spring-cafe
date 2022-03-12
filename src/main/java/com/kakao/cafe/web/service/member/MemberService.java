@@ -31,7 +31,7 @@ public class MemberService {
         return memberRepository.insert(member);
     }
 
-    public Member edit(ProfileChangeRequest request) {
+    public Member editProfile(ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(request.getId()).orElseThrow();
         findMember.changeNickName(request.getNickName());
         findMember.changeEmail(request.getEmail());
