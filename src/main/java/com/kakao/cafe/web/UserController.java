@@ -1,12 +1,11 @@
 package com.kakao.cafe.web;
 
+import com.kakao.cafe.CustomLogger;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
 
 import com.kakao.cafe.web.dto.UserUpdateFormDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+    private static final CustomLogger log = new CustomLogger(UserController.class);
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -28,21 +27,21 @@ public class UserController {
 
     @PostMapping
     public String create(@ModelAttribute UserRegisterFormDto userRegisterFormDto) {
-        log.info("---------[LOG] user request to sign up : {}", userRegisterFormDto);
+        log.info("sign up : {}", userRegisterFormDto);
         userService.register(userRegisterFormDto);
         return "redirect:users";
     }
 
     @GetMapping
     public String list(Model model) {
-        log.info("---------[LOG] request to show user list");
+        log.info("show user list");
         model.addAttribute("users", userService.showAll());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String show(@PathVariable String userId, Model model) {
-        log.info("---------[LOG] request to show {}'s profile", userId);
+        log.info("show {}'s profile", userId);
         UserProfileDto userProfileDto = userService.showOne(userId);
         model.addAttribute("userId", userProfileDto.getUserId());
         model.addAttribute("email", userProfileDto.getEmail());
@@ -51,14 +50,14 @@ public class UserController {
 
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
-        log.info("---------[LOG] request to show {}'s update form", userId);
+        log.info("show {}'s update form", userId);
         model.addAttribute("userId", userId);
         return "user/updateForm";
     }
 
     @PostMapping("/{userId}/update")
     public String  update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto) {
-        log.info("---------[LOG] request to update {}'s profile : {}", userId, userUpdateFormDto);
+        log.info("update {}'s profile : {}", userId, userUpdateFormDto);
         userService.modify(userUpdateFormDto);
         return "redirect:/users";
     }

@@ -9,13 +9,10 @@ public class ArticleListDto {
     private final String title;
     private final String createdTime;
 
-    public ArticleListDto(Article article) {
+    public ArticleListDto(Article article, int articleId) {
         this.writer = article.getWriter();
         this.title = article.getTitle();
         this.createdTime = article.getCreatedTime();
-    }
-
-    public void setArticleId(int articleId) {
         this.articleId = articleId;
     }
 }

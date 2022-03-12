@@ -63,7 +63,7 @@ class UserControllerTest {
             .setName("testName")
             .setEmail("test@test.com")
             .build();
-        UserListDto userListDto1 = new UserListDto(user1);
+        UserListDto userListDto1 = new UserListDto(user1, 1);
 
         given(userService.showAll())
             .willReturn(List.of(userListDto1));

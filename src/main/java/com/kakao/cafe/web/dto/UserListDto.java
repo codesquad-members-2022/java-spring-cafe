@@ -10,15 +10,16 @@ public class UserListDto {
     private final String name;
     private final String email;
 
-    public UserListDto(User user) {
-        this.userId = user.getUserId();
-        this.password = user.getPassword();
-        this.name = user.getName();
-        this.email = user.getEmail();
+    public UserListDto(User user, int userNum) {
+        userId = user.getUserId();
+        password = user.getPassword();
+        name = user.getName();
+        email = user.getEmail();
+        this.userNum = userNum;
     }
 
-    public void setUserNum(int userNum) {
-        this.userNum = userNum;
+    public static UserListDto from(User user, int userNum) {
+        return new UserListDto(user, userNum);
     }
 
     public String getUserId() {

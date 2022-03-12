@@ -34,9 +34,8 @@ public class UserService {
         List<User> userList = userRepository.findAll();
         return userList.stream()
             .map(user -> {
-                UserListDto userListDto = new UserListDto(user);
-                userListDto.setUserNum(userList.indexOf(user));
-                return userListDto;
+                int userNum = userList.indexOf(user);
+                return UserListDto.from(user, userNum);
             })
             .collect(Collectors.toList());
     }
@@ -54,12 +53,12 @@ public class UserService {
 
     public void modify(UserUpdateFormDto userUpdateFormDto) {
         User previousUser = getExistenceValidatedUser(userUpdateFormDto.getUserId());
-        validateUserPassword(previousUser, userUpdateFormDto.getOldPassword());
+        isMatchWithPreviousPassword(previousUser, userUpdateFormDto.getPreviousPassword());
         User newUser = userUpdateFormDto.toEntity();
         userRepository.update(previousUser, newUser);
     }
 
-    private void validateUserPassword(User user, String password) {
+    private void isMatchWithPreviousPassword(User user, String password) {
         if (!user.getPassword().equals(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
