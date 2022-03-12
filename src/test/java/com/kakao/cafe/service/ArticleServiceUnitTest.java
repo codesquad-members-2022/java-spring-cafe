@@ -17,10 +17,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class VolatilityArticleServiceTest {
+public class ArticleServiceUnitTest {
 
     @InjectMocks
-    VolatilityArticleService articleService;
+    ArticleService articleService;
 
     @Mock
     Repository<Article, Long> repository;

@@ -21,10 +21,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class VolatilityUserServiceTest {
+class UserServiceUnitTest {
 
     @InjectMocks
-    VolatilityUserService userService;
+    UserService userService;
 
     @Mock
     Repository<User, String> repository;
