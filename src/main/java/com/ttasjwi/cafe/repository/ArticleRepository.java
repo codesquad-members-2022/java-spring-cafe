@@ -3,43 +3,41 @@ package com.ttasjwi.cafe.repository;
 import com.ttasjwi.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class ArticleRepository {
 
-    private final List<Article> storage = Collections.synchronizedList(new ArrayList<>());
-
+    private final Map<Long, Article> storage = new ConcurrentHashMap<>();
+    private final AtomicLong sequence = new AtomicLong();
     /**
      * @param article : 게시글 객체
-     * @return storage.indexOf(article) + 1 : 게시글의 저장인덱스 + 1 을 아이디로 삼음
+     * @return article의 생성된 아이디
      */
-    public int save(Article article) {
-        storage.add(article);
-        return storage.indexOf(article) + 1;
+    public Long save(Article article) {
+        article.setArticleId(sequence.incrementAndGet());
+        Long articleId = article.getArticleId();
+        storage.put(articleId, article);
+        return articleId;
     }
 
-    public Article findByArticleId(int articleId) {
+    public Article findByArticleId(Long articleId) {
         validateArticleId(articleId);
-        return storage.get(articleId-1);
+        Article article = storage.get(articleId);
+        return article;
     }
 
-    private void validateArticleId(int articleId) {
-        if (isValidArticleId(articleId)) {
+    private void validateArticleId(Long articleId) {
+        if (storage.containsKey(articleId)) {
             return;
         }
-        throw new NoSuchElementException("유효하지 않은 게시글 인덱스입니다.");
-    }
-
-    private boolean isValidArticleId(int articleId) {
-        return 1 <= articleId && articleId <= storage.size();
+        throw new NoSuchElementException("유효하지 않은 게시글 번호입니다.");
     }
 
     public List<Article> findAll() {
-        return Collections.unmodifiableList(storage);
+        return new ArrayList<>(storage.values());
     }
 
 }

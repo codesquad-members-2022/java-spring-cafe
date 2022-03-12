@@ -25,7 +25,8 @@ class ArticleRepositoryTest {
     void saveTest() {
         // given
         Article article = new Article("자바 두명 타요", "활활 잘 탄다~");
-        int articleId = articleRepository.save(article);
+        articleRepository.save(article);
+        Long articleId = article.getArticleId();
 
         // when
         Article findArticle = articleRepository.findByArticleId(articleId);
@@ -38,12 +39,12 @@ class ArticleRepositoryTest {
     @DisplayName("0이하의 아이디의 게시글 조회 -> NoSuchElementException 발생")
     void findByArticleIndex_FailureTest_When_less_Than_zero_index() {
         // then
-        assertThatThrownBy(()->articleRepository.findByArticleId(0))
+        assertThatThrownBy(()->articleRepository.findByArticleId(0L))
                 .isInstanceOf(NoSuchElementException.class);
     }
 
     @Test
-    @DisplayName("size보다 큰 인덱스의 게시글 조회 -> NoSuchElementException 발생")
+    @DisplayName("size보다 더 높은 번호의 게시글 조회 -> NoSuchElementException 발생")
     void findByArticleIndex_FailureTest_When_greater_Than_size() {
         // given
         Article article1 = new Article("우리는 노예가 되지 않는다", "세상의 주인이 될 것이다");
@@ -53,7 +54,7 @@ class ArticleRepositoryTest {
         articleRepository.save(article2);
 
         // when & then
-        assertThatThrownBy(()->articleRepository.findByArticleId(3))
+        assertThatThrownBy(()->articleRepository.findByArticleId(3L))
                 .isInstanceOf(NoSuchElementException.class);
     }
 

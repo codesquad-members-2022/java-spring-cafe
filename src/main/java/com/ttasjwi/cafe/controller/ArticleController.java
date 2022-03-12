@@ -31,14 +31,14 @@ public class ArticleController {
         article.setWriter("anonymous User");
         article.setRegDateTime(LocalDateTime.now());
 
-        int articleId = articleRepository.save(article);
+        articleRepository.save(article);
 
-        log.info("New Article Created: articleId={}, {}", articleId , article);
+        log.info("New Article Created: {}", article);
         return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
-    public String showArticle(@PathVariable int articleId, Model model) {
+    public String showArticle(@PathVariable Long articleId, Model model) {
         Article findArticle = articleRepository.findByArticleId(articleId);
         model.addAttribute("article", findArticle);
         return "/articles/articleShow";

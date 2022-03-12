@@ -281,4 +281,9 @@ HomeController 및 테스트 코드를 추가했다.
 - UserRepository 구현체 변경 : MemoryUserRepository -> JdbcUserRepository
 - User 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
 
+## 3.06 Article에 id 부여, ArticleRepository 내부 구조 변경
+
+- 데이터베이스에 연동하기 위해서는 게시글이 스스로 글 번호를 가지고 있어야한다.
+- 게시글에게 id를 부여하고, 스스로 가진 id를 기준으로 접근할 수 있도록 ArticleRepository 내부적으로는 ConcurrentHashMap으로 구조 변경
+
 ---
