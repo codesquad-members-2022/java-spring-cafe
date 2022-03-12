@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequestMapping("/articles")
@@ -39,7 +40,10 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String showArticle(@PathVariable Long articleId, Model model) {
-        Article findArticle = articleRepository.findByArticleId(articleId);
+        Article findArticle =
+                articleRepository.findByArticleId(articleId)
+                        .orElseThrow(()-> new NoSuchElementException("유효하지 않은 게시글 번호입니다."));
+
         model.addAttribute("article", findArticle);
         return "/articles/articleShow";
     }

@@ -286,4 +286,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 데이터베이스에 연동하기 위해서는 게시글이 스스로 글 번호를 가지고 있어야한다.
 - 게시글에게 id를 부여하고, 스스로 가진 id를 기준으로 접근할 수 있도록 ArticleRepository 내부적으로는 ConcurrentHashMap으로 구조 변경
 
+## 3.07 역할 : ArticleRepository / 구현 : MemoryArticleRepository 분리
+
+- 데이터베이스 연동의 확장성을 위해 ArticleRepository 인터페이스를 따로 분리함
+- 유효한 게시글인지 여부의 검증은 ArticleController 단에서 하도록 함
+- 고로, ArticleRepository의 검증 로직이 제대로 수행되는지에 대한 테스트는 제거했다.
+
 ---
