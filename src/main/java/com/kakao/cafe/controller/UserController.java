@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(@Validated UserDto userDto, BindingResult bindingResult) {
+    public String create(@Valid UserDto userDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.error("errors={}", bindingResult);
             return "user/form";
@@ -46,21 +46,21 @@ public class UserController {
     }
 
     @GetMapping
-    public String userList(Model model) {
+    public String showUsers(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String userProfile(@PathVariable String userId, Model model) {
+    public String showUserProfile(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ModelAndView exception(HttpServletRequest request, HttpServletResponse response, IllegalArgumentException exception) throws IOException {
+    public ModelAndView returnFormAndSendExceptionMessage(HttpServletRequest request, HttpServletResponse response, IllegalArgumentException exception) throws IOException {
         logger.error("IllegalArgumentException={}", exception.getMessage());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("exception", exception.getMessage());
