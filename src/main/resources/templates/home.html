@@ -51,9 +51,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="article : ${articles}">
+                    <tr th:each="article, articleStat : ${articles}">
                         <td>
-                            <a href="/articles/articleShow.html" th:text="${article.title}">title</a>
+                            <a th:href="@{/articles/{articleId}(articleId=${articleStat.count})}"
+                               th:text="${article.title}">
+                                title
+                            </a>
                         </td>
                         <td th:text="${article.writer}">작성자</td>
                         <td th:text="${#temporals.format(article.regDate, 'yyyy-MM-dd')}">yyyy-MM-dd</td>
