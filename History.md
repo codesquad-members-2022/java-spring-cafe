@@ -205,4 +205,9 @@ HomeController 및 테스트 코드를 추가했다.
 3. 테스트 코드
    - 위에서 정의한 예외상황을 고려하여 테스트를 작성했다.
 
+## 2.6 ArticleController - ArticleRepository 연동
+
+- create 메서드로 ArticleRepository에 실제로 게시글을 저장하도록 함.
+- 저장후 홈으로 리다이렉트 된다.
+
 ---
