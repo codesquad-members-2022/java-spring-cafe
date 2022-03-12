@@ -1,5 +1,7 @@
 package com.kakao.cafe.main;
 
+import static com.kakao.cafe.main.SessionUser.*;
+
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -45,8 +47,8 @@ public class MainController {
 		if (user.isDifferent(password)) {
 			return "redirect:/login";
 		}
-		SessionUser sessionUser = new SessionUser(String.valueOf(user.getId()), userId);
-		httpSession.setAttribute(SESSIONED_ID, sessionUser);
+		httpSession.setAttribute(SESSIONED_ID, from(userId));
+		httpSession.setMaxInactiveInterval(600);  // 10분
 		return "redirect:/";
 	}
 

@@ -1,0 +1,19 @@
+DROP TABLE IF EXISTS CAFE_USER;
+
+create table cafe_users
+(
+    id bigint primary key auto_increment,
+    user_id  varchar(40) not null,
+    password  varchar(50) not null,
+    name  varchar(40) not null,
+    email  varchar(60) not null
+);
+
+create table cafe_articles
+(
+    article_id bigint primary key auto_increment,
+    writer varchar(40) not null,
+    title varchar(200) not null,
+    content varchar(255) not null,
+    writing_date DATE not null
+);
