@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -43,7 +42,7 @@ public class UserController {
 
     @GetMapping("/users/{name}")
     public String profile(@PathVariable String name, Model model) {
-        Optional<User> user = userService.findUser(name);
+        User user = userService.findUser(name);
         model.addAttribute("user", user);
         return "/user/profile";
     }

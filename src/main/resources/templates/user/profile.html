@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -13,28 +13,25 @@
 </head>
 <body>
 <div class="background">
-    {{> navigation}}
 
     <div class="container" id="main">
         <header class="post-header">
             <p class="title">회원 정보</p>
         </header>
-        {{#user}}
         <div class="info-container">
             <div class="form-group">
-                <label>닉네임</label>
-                <p class="form-control">{{nickname}}</p>
+                <label>이름</label>
+                <p class="form-control" th:text="${user.name}">name</p>
             </div>
             <div class="form-group">
                 <label>이메일</label>
-                <p class="form-control">{{email}}</p>
+                <p class="form-control" th:text="${user.email}">email</p>
             </div>
             <div class="form-group">
                 <label>회원가입일</label>
-                <p class="form-control">{{createdAt}}</p>
+                <p class="form-control"></p>
             </div>
         </div>
-        {{/user}}
     </div>
 </div>
 </body>

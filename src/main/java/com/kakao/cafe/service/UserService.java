@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -26,7 +26,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> findUser(String name) {
-        return userRepository.findByName(name);
+    public User findUser(String name) {
+        return userRepository.findByName(name).orElseThrow(
+                () -> new NoSuchElementException("존재하지 않는 회원입니다.")
+        );
     }
 }

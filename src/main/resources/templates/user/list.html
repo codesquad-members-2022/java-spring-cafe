@@ -70,8 +70,11 @@
                     <td>테스터 7</td> <td>test7@gmail.com</td><td>2021-12-14</td>
                 </tr>
                 <tr th:each="user : ${users}">
-                    <td th:text="${user.name}"></td>
-                    <td th:text="${user.email}"></td>
+                    <td><a th:href="@{/users/{name}(name=${user.name})}"
+                       th:text="${user.name}">
+                    </a>
+                    </td>
+                    <td th:text="${user.email}">email</td>
                 </tr>
                 </tbody>
             </table>

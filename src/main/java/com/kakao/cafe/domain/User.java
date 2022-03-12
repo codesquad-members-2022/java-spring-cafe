@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 public class User {
 
     private String name;
