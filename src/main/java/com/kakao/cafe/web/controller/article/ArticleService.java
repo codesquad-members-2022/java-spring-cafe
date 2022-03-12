@@ -2,7 +2,6 @@ package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
 import com.kakao.cafe.core.repository.article.ArticleRepository;
-import com.kakao.cafe.web.controller.article.dto.PostWriteRequest;
 
 import java.util.List;
 
@@ -24,10 +23,5 @@ public class ArticleService {
 
     public void write(Article article) {
         articleRepository.save(article);
-    }
-
-    public ProfileEditResponse edit(PostEditRequest request) {
-//        articleRepository.save()
-        return null;
     }
 }

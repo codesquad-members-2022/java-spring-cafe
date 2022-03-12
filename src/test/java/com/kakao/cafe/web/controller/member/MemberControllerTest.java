@@ -1,19 +1,14 @@
 package com.kakao.cafe.web.controller.member;
 
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
-import com.kakao.cafe.web.controller.member.dto.JoinResponse;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
-import com.kakao.cafe.web.service.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.validation.support.BindingAwareModelMap;
 
 import java.time.LocalDateTime;
@@ -94,7 +89,7 @@ class MemberControllerTest {
     @Test
     @DisplayName("ProfileChangeRequest를 넣으면 정보 수정이 발생하고 적절한 페이지로 이동한다.")
     void 인자테스트_edit() {
-        String page = memberController.edit(new ProfileChangeRequest(1, "Kim", "abc@naver.com", LocalDateTime.now()));
+        String page = memberController.editProfile(new ProfileChangeRequest(1, "Kim", "abc@naver.com", LocalDateTime.now()));
 
         String expected = "redirect:/";
 

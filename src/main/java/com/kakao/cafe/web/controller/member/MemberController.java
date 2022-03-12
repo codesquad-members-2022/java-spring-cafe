@@ -21,12 +21,12 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("join")
+    @GetMapping("signup")
     public String join() {
         return "user/form";
     }
 
-    @PostMapping("join")
+    @PostMapping("signup")
     public String join(JoinRequest request) {
         memberService.join(request.toEntity());
         return "redirect:/";
@@ -45,7 +45,7 @@ public class MemberController {
     }
 
     @PutMapping("{id}")
-    public String edit(ProfileChangeRequest request) {
+    public String editProfile(ProfileChangeRequest request) {
         memberService.editProfile(request);
         return "redirect:/members";
     }

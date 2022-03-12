@@ -7,6 +7,10 @@ public class Article {
     private int id;
     private String title;
     private String content;
+
+    /**
+     * 회원과의 연관 관계는 추후 미션에서
+     */
     private String writer;
     private LocalDateTime createAt;
     private LocalDateTime lastModifiedAt;

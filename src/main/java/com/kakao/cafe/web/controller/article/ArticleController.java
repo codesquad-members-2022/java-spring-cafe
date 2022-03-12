@@ -1,10 +1,14 @@
 package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.web.controller.article.dto.PostWriteRequest;
+import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -24,7 +28,10 @@ public class ArticleController {
     }
 
     @PostMapping("write")
-    public String write(PostWriteRequest request) {
+    public String write(ArticleWriteRequest request, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return "list";
+        }
         articleService.write(request.toEntity());
         return "redirect:/articles";
     }
@@ -41,11 +48,5 @@ public class ArticleController {
         Article findArticle = articleService.findById(id);
         model.addAttribute("findArticle", findArticle);
         return "article/detail";
-    }
-
-    @PutMapping("{id}/edit")
-    public String edit(PostEditRequest request) {
-        articleService.edit(request);
-        return "redirect:/members";
     }
 }
