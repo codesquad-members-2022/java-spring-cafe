@@ -51,4 +51,9 @@ public class MemoryUserRepository implements UserRepository {
     public int size() {
         return userStore.size();
     }
+
+    @Override
+    public void update(User user, int index) {
+        userStore.set(index, user);
+    }
 }

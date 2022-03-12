@@ -17,4 +17,6 @@ public interface UserRepository {
     void clearStore();
 
     int size();
+
+    void update(User user, int index);
 }

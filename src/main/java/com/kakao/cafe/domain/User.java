@@ -40,4 +40,8 @@ public class User {
     public boolean compareById(String userId){
         return this.userId.equals(userId);
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

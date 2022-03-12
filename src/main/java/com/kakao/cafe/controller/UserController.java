@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.UpdateUserForm;
 import com.kakao.cafe.domain.dto.UserForm;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -25,13 +26,13 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public String create(@Valid UserForm userForm){
+    public String create(@Valid UserForm userForm) {
         userService.join(userForm);
         return "redirect:/users";
     }
 
     @GetMapping
-    public String getUsers(Model model){
+    public String getUsers(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
@@ -39,8 +40,22 @@ public class UserController {
 
     @GetMapping("/{index}")
     public String profile(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index-1);
+        UserForm userForm = userService.findOneUser(index - 1);
         model.addAttribute("user", userForm);
         return "user/profile";
+    }
+
+    @GetMapping("/{index}/update")
+    public String createUpdateForm(@PathVariable("index") int index, Model model) {
+        UserForm userForm = userService.findOneUser(index - 1);
+        model.addAttribute("user", userForm);
+        model.addAttribute("index", index);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{index}/update")
+    public String updateUser(@PathVariable("index") int index, @Valid UpdateUserForm updateUserForm) {
+        userService.update(updateUserForm, index - 1);
+        return "redirect:/users";
     }
 }
