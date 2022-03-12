@@ -55,39 +55,6 @@ class MemoryUserRepositoryTest {
     }
 
     @Test
-    @DisplayName("중복된 이름의 사용자 저장 -> IllegalStateException 발생")
-    void saveFail1() {
-        // given (준비)
-        User user1 = new User();
-        user1.setUserName("ttasjwi");
-        memoryUserRepository.save(user1);
-
-        User user2 = new User();
-        user2.setUserName(user1.getUserName());
-
-        // when, then(실행, 검증)
-        assertThatThrownBy(() -> memoryUserRepository.save(user2)).isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
-    @DisplayName("중복된 이메일의 사용자 저장 -> IllegalStateException 발생")
-    void saveFail2() {
-        // given (준비)
-        User user1 = new User();
-        user1.setUserName("user1");
-        user1.setUserEmail("ttasjwi@gmail.com");
-
-        memoryUserRepository.save(user1);
-
-        User user2 = new User();
-        user2.setUserName("user2");
-        user2.setUserEmail(user1.getUserEmail());
-
-        // when, then(실행, 검증)
-        assertThatThrownBy(() -> memoryUserRepository.save(user2)).isInstanceOf(IllegalStateException.class);
-    }
-
-    @Test
     @DisplayName("findAll 메서드 호출 -> 모든 사용자 List 반환")
     void findAllTest() {
         // given

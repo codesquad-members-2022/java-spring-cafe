@@ -269,4 +269,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 의존 계층에서 역할을 의존하도록 했다.
 - 이제부터 외부에서는 데이터 저장계층의 역할인 userRepository를 의존한다. 구현체의 상태가 바뀌어도 외부의 코드를 변경할 필요가 없다.
 
+## 3.04 회원 등록시 중복 검증책임을 UserService에게 넘김
+
+- UserRepository 구현체를 다른 구현체로 바꾸기엔, 기존의 UserRepository에서 수행해야 했던 중복 검증 로직을 또 다시 구현해야한다.
+- 이 책임을 UserService에게 위임하고, 데이터 접근계층인 UserRepository는 순수하게 값을 보관하도록 한다.
+- 이런 검증에 대한 테스트 코드는 이미 UserService에서 별도로 작성해두기도 했고, MemoryUserRepository에서 별도로 작성할 필요가 없으니 제거했다.
+
 ---
