@@ -20,10 +20,8 @@ public class EntityManager<T> {
 
     public T persist(T entity) {
         String type = getClazz(entity);
-        if (!database.getIdDatabase(type).contains(getId(entity).get())) {
-            return database.save(type, entity);
-        }
-        return entity;
+        T t = database.save(type, entity);
+        return t;
     }
 
     public Optional<Object> getId(T entity) {

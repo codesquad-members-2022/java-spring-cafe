@@ -97,11 +97,11 @@ public class Member {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return Objects.equals(id, member.id);
+        return id == member.id && Objects.equals(email, member.email) && Objects.equals(password, member.password) && Objects.equals(nickName, member.nickName) && Objects.equals(createAt, member.createAt);
     }
 
     @Override
     public int hashCode() {
-        return 3;
+        return Objects.hash(id, email, password, nickName, createAt);
     }
 }
