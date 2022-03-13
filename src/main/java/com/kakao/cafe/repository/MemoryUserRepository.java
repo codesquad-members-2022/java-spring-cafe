@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +13,14 @@ import com.kakao.cafe.domain.User;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private List<User> users = new ArrayList<>();
-    private int sequence = 0;
+    private final List<User> users = new CopyOnWriteArrayList<>();
+    private final AtomicInteger sequence = new AtomicInteger();
 
     @Override
     public void save(User user) {
-        sequence++;
-        user.setId(sequence);
+        sequence.compareAndSet(users.size(), users.size() + 1);
+        int id = sequence.get();
+        user.setId(id);
         user.setDate(LocalDate.now());
         users.add(user);
     }
