@@ -16,7 +16,7 @@ public class LoginService {
         this.userRepository = userRepository;
     }
 
-    public User login(String userId, String password) {
+    private User login(String userId, String password) {
         return userRepository.findByUserId(userId)
                 .filter(m -> m.isSamePassword(password))
                 .orElse(null);

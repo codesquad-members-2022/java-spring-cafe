@@ -43,7 +43,7 @@ public class LoginController {
             return "/user/login";
         }
 
-        User findUser = loginService.login(form.getUserId(), form.getPassword());
+        User findUser = loginService.login(form);
 
         if (findUser == null) {
             log.info("doLogin login error: {}", findUser);

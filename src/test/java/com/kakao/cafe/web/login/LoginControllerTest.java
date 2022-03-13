@@ -57,7 +57,7 @@ class LoginControllerTest {
     @DisplayName("정상 로그인 테스트")
     void loginSuccessTest() throws Exception {
         // given
-        given(loginService.login(any(), any())).willReturn(user);
+        given(loginService.login(any())).willReturn(user);
 
         // when
         ResultActions requestThenResult = mockMvc.perform(post("/login")
@@ -68,7 +68,7 @@ class LoginControllerTest {
         );
 
         // then
-        then(loginService).should(only()).login(any(), any());
+        then(loginService).should(only()).login(any());
         requestThenResult.andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/"))
                 .andExpect(request().sessionAttribute("SESSIONED_USER", user));
@@ -80,7 +80,7 @@ class LoginControllerTest {
     @DisplayName("비정상 로그인 테스트")
     void loginFailedTest() throws Exception {
         // given
-        given(loginService.login(any(), any())).willReturn(null);
+        given(loginService.login(any())).willReturn(null);
 
         // when
         ResultActions requestThenResult = mockMvc.perform(post("/login")
@@ -91,7 +91,7 @@ class LoginControllerTest {
         );
 
         // then
-        then(loginService).should(only()).login(any(), any());
+        then(loginService).should(only()).login(any());
         requestThenResult.andExpect(status().is4xxClientError())
                 .andExpect(view().name("/user/login"))
                 .andExpect(request().sessionAttributeDoesNotExist("SESSIONED_USER"));

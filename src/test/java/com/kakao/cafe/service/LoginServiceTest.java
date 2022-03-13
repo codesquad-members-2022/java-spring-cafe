@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.web.login.dto.LoginDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,9 +38,10 @@ class LoginServiceTest {
     void loginSuccessTest() {
         // given
         given(userRepository.findByUserId("Shine")).willReturn(Optional.ofNullable(user));
+        LoginDto loginDto = new LoginDto(user.getUserId(), user.getPassword());
 
         // when
-        User loginUser = loginService.login(user.getUserId(), user.getPassword());
+        User loginUser = loginService.login(loginDto);
 
         // then
         assertThat(loginUser).isEqualTo(user);
@@ -49,9 +51,11 @@ class LoginServiceTest {
     void loginFailedTest() {
         // given
         given(userRepository.findByUserId("NoMember")).willReturn(Optional.empty());
+        LoginDto loginDto = new LoginDto("NoMember", "NoPassword");
+
 
         // when
-        User loginUser = loginService.login("NoMember", "NoPassword");
+        User loginUser = loginService.login(loginDto);
 
         // then
         assertThat(loginUser).isNull();
