@@ -20,8 +20,8 @@ public class UserService {
         return user.getUserId();
     }
 
-    public Optional<User> findById(String id) {
-        return userRepository.findById(id);
+    public User findById(String id) throws IllegalStateException {
+        return userRepository.findById(id).orElseThrow(()-> new IllegalStateException("유저를 찾을 수 없습니다."));
     }
 
 

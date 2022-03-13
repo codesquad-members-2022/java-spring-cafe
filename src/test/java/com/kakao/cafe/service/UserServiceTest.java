@@ -34,7 +34,7 @@ class UserServiceTest {
         userService.join(user);
 
         //then
-        assertThat(userService.findById(user.getUserId())).isPresent();
+        assertThat(userService.findById(user.getUserId())).isEqualTo(user);
 
 
     }
@@ -44,7 +44,7 @@ class UserServiceTest {
         User user = new User(new UserForm("sampleId", "sampleName", "sample@email.com"));
         userService.join(user);
 
-        assertThat(userService.findById(user.getUserId()).get()).isEqualTo(user);
+        assertThat(userService.findById(user.getUserId())).isEqualTo(user);
     }
 
     @Test

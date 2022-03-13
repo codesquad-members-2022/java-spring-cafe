@@ -44,13 +44,13 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String viewUserInfo(@PathVariable("userId") String userId, Model model) {
-        User selectedUser;
-        Optional<User> foundUser = userService.findById(userId);
-        if (foundUser.isPresent()) {
-            selectedUser = foundUser.get();
-            model.addAttribute("user", selectedUser);
-            return "../templates/profile";
+        User foundUser;
+        try {
+            foundUser = userService.findById(userId);
+        } catch (IllegalStateException e) {
+            return "redirect:/users";
         }
-        return null; // 잘못된 접근 페이지 리다이렉트
+        model.addAttribute("user", foundUser);
+        return "../templates/profile";
     }
 }
