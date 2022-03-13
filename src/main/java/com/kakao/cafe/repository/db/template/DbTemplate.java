@@ -56,13 +56,12 @@ public class DbTemplate {
             rs = pstmt.executeQuery();
 
             T value = mapper.rowMapper(rs);
-            if (value != null) return value;
+            return value;
         } catch (SQLException e) {
             return null;
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
         }
-        return null;
     }
 
     public <T> T executeQuery(String sql, RowMapper<T> mapper, Object... parameters) {

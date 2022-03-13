@@ -4,7 +4,7 @@
 
 ## Step04 리뷰 내용 수정 사항
 
-- [ ] DbTemplate null 검증부분 고치기
+- [x] DbTemplate null 검증부분 고치기
 - [x] login메서드 하나만 public으로 만들기 -> Dto받는 메서드만 public으로
 - [x] UserController에 에러코드 400으로 수정
 - [ ] @DisplayName 에 예상 결과도 함축시켜 보기
