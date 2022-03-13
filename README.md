@@ -2,7 +2,16 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+## Step04 리뷰 내용 수정 사항
+
+- [ ] DbTemplate null 검증부분 고치기
+- [ ] login메서드 하나만 public으로 만들기
+- [ ] UserController에 에러코드 400으로 수정
+- [ ] @DisplayName 에 예상 결과도 함축시켜 보기
+- [ ] UserControllerTest given절 다시 생각해보기
+
 ## Step04 ToDo-List
+
 - [x] LoginServce 만들기
   - [x] 아이디로 찾아온 User의 password가 사용자가 넘긴 password와 동일하다면 user 반환
   - [x] 동일하지 않다면 null 반환하기
