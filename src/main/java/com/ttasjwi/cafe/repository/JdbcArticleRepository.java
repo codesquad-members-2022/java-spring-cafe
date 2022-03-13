@@ -12,7 +12,6 @@ import java.util.Optional;
 
 import static java.sql.Timestamp.valueOf;
 
-@Repository
 public class JdbcArticleRepository implements ArticleRepository{
 
     private final DataSource dataSource;

@@ -312,4 +312,9 @@ HomeController 및 테스트 코드를 추가했다.
 
 - JdbcArticleRepository에서 save시 id를 db상에선 등록하였으나 등록 객체에 set하지 않았던 문제를 확인, 수정
 
+## 3.12 JdbcTemplateArticleRepository 추가 및 의존관계 변경
+
+- JdbcTemplate 방식의 JdbcTemplateArticleRepository를 생성
+- ArticleRepository 구현체 변경 : JdbcArticleRepository -> JdbcTemplateArticleRepository
+
 ---
