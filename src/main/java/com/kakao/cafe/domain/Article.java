@@ -33,7 +33,7 @@ public class Article {
 
     public void checkBlankInput() {
         if (this.title.isBlank() || this.content.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.get());
+            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.message);
         }
     }
 }

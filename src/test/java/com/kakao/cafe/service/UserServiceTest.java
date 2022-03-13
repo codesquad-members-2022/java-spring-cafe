@@ -42,11 +42,11 @@ class UserServiceTest {
 
         assertThatThrownBy(() -> userService.join(user2))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(ErrorMessage.EXISTING_NICKNAME.get());
+            .hasMessage(ErrorMessage.EXISTING_NICKNAME.message);
 
         assertThatThrownBy(() -> userService.join(user3))
             .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(ErrorMessage.EXISTING_EMAIL.get());
+            .hasMessage(ErrorMessage.EXISTING_EMAIL.message);
     }
 
     @Test

@@ -57,7 +57,7 @@ public class User {
 
     public void checkBlankInput() {
         if (this.nickname.isBlank() || this.email.isBlank() || this.password.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.get());
+            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.message);
         }
     }
 }

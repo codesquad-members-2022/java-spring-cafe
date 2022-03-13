@@ -8,13 +8,9 @@ public enum ErrorMessage {
     WRONG_PASSWORD("비밀번호가 틀렸습니다."),
     BLANK_INPUT("공백만 입력할 수 없습니다.");
 
-    private final String message;
+    public final String message;
 
     ErrorMessage(String message) {
         this.message = message;
-    }
-
-    public String get() {
-        return message;
     }
 }

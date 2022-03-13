@@ -28,6 +28,6 @@ public class ArticleService {
 
     public Article findById(int index) {
         return articleRepository.findById(index).orElseThrow(() ->
-            new IllegalArgumentException(ErrorMessage.NO_MATCH_ARTICLE.get()));
+            new IllegalArgumentException(ErrorMessage.NO_MATCH_ARTICLE.message));
     }
 }

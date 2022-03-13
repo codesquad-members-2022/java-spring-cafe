@@ -33,19 +33,19 @@ public class UserService {
 
     private void validateUniqueNickname(User user) {
         userRepository.findByNickname(user.getNickname()).ifPresent(m -> {
-            throw new IllegalArgumentException(ErrorMessage.EXISTING_NICKNAME.get());
+            throw new IllegalArgumentException(ErrorMessage.EXISTING_NICKNAME.message);
         });
     }
 
     private void validateUniqueEmail(User user) {
         userRepository.findByEmail(user.getEmail()).ifPresent(m -> {
-            throw new IllegalArgumentException(ErrorMessage.EXISTING_EMAIL.get());
+            throw new IllegalArgumentException(ErrorMessage.EXISTING_EMAIL.message);
         });
     }
 
     private void validateUpdatedInput(User user, User updatedUser) {
         if (!user.getPassword().equals(updatedUser.getPassword())) {
-            throw new IllegalArgumentException(ErrorMessage.WRONG_PASSWORD.get());
+            throw new IllegalArgumentException(ErrorMessage.WRONG_PASSWORD.message);
         }
         if (!user.matchesNickname(updatedUser.getNickname())) { // 기존 닉네임과 같을 경우 validation 패스
             validateUniqueNickname(updatedUser);
@@ -57,7 +57,7 @@ public class UserService {
 
     public User findByNickname(String nickname) {
         return userRepository.findByNickname(nickname)
-            .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.get()));
+            .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.NO_MATCH_USER.message));
     }
 
     public List<User> findUsers() {
