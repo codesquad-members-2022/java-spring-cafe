@@ -139,10 +139,10 @@
   
     >![SmartSelectImage_2022-03-09-20-35-22](https://user-images.githubusercontent.com/47964708/157434303-7dcf4eb1-dc76-4d40-9d45-940152134c93.png)  
 
-    - 해당 값들을 ArticleController로 전달하는 ModifyProfileRequest 객체를 만들어 사용하고 있습니다.
+    - 해당 값들을 ArticleController로 전달하는 ModifiedUserParam 객체를 만들어 사용하고 있습니다.
 
     ```java
-    public class ModifyProfileRequest {
+    public class ModifiedUserParam {
   
         ...
   
@@ -158,10 +158,10 @@
 
     ```java
     @PutMapping("/{userId}/update")
-    public String modifyProfile(ModifyProfileRequest modifyProfileRequest,
+    public String modifyProfile(ModifiedUserParam modifiedUserParam,
                                 HttpServletRequest request) {
 
-        modifyProfileRequest.isValidRequest();
+        modifiedUserParam.isValidRequest();
   
         ...
     }
@@ -282,3 +282,23 @@
   ![SmartSelectImage_2022-03-09-20-56-07](https://user-images.githubusercontent.com/47964708/157437427-bc8316f0-b093-40df-a240-f5195eebe9ed.png)  
   ![SmartSelectImage_2022-03-09-20-56-40](https://user-images.githubusercontent.com/47964708/157437428-db18f446-dad2-47c2-8ca1-ea8ab45bc55d.png)  
   ![SmartSelectImage_2022-03-09-20-56-47](https://user-images.githubusercontent.com/47964708/157437429-c0d80e1a-4002-4e65-9376-15379c3eb0df.png)  
+
+# 스프링 카페 3단계 - DB에 저장하기
+
+- # 프로그래밍 요구사항
+  - build.gradle 설정 파일에서 H2 데이터베이스, spring-jdbc 의존성 추가
+  - application.properties 파일에서 org.h2.Driver 에 접속하기 위한 값 설정
+  - 모든 기능을 데이터베이스와 연동하여 구현한다.
+  - Heroku 배포 URL: <https://naneun-spring-cafe.herokuapp.com>
+
+- # 특이사항
+  - 로컬환경에서는 H2 데이터베이스를, Heroku 배포 시에는 postgreSQL과 연동하도록 구현했습니다.
+  - 도메인 클래스와는 별도로 데이터베이스 테이블과 1:1로 매핑되는 Entity 클래스들을 추가했습니다.
+    - 무분별한 setter 메서드의 사용을 방지하고자 위와 같이 클래스들의 역할을 나눠봤습니다.
+
+- # 변경사항
+  - Service 패키지에서 불필요한 인터페이스를 제거했습니다.
+    - Repository 레이어에서 이미 인터페이스를 사용하여 다형성을 구현했기 때문에 Service 레이어에서는 인터페이스가 필요하지 않다 판단했습니다.
+    - Controller 와 Service 레이어는 세트로 '어떠한 특정 도메인을 담당하고 있다' 정도로 표현했습니다.
+  - Repository 패키지에서 불필요한 추상화 클래스를 제거했습니다.
+    - 추상화 클래스에서 해당 Repository가 사용하고 있는 저장소를 필드로 가지고 있는 용도로 사용했었지만 jdbc를 사용하는 레포지토리와의 통일성을 위해 삭제했습니다.

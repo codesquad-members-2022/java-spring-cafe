@@ -4,18 +4,27 @@ import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.test.context.jdbc.Sql;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VolatilityUserRepositoryTest {
+@JdbcTest
+@Sql(scripts = { "classpath:h2_ddl.sql "})
+class JdbcUserRepositoryTest {
 
-    VolatilityUserRepository repository;
+    @Autowired
+    DataSource dataSource;
+
+    JdbcUserRepository repository;
 
     @BeforeEach
-    public void afterEach() {
-        repository = new VolatilityUserRepository();
+    void beforeEach() {
+        repository = new JdbcUserRepository(dataSource);
     }
 
     @Test

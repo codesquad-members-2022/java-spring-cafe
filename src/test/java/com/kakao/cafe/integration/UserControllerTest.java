@@ -1,9 +1,9 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.integration;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.SignUpRequest;
+import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.repository.Repository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,18 +21,17 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.EXISTENT_ID_MESSAGE;
-import static com.kakao.cafe.message.UserMessage.NON_EXISTENT_ID_MESSAGE;
+import static com.kakao.cafe.message.UserMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Deprecated
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -50,26 +49,22 @@ class UserControllerTest {
     @BeforeAll
     static void init() {
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(
-                    new User((i + 1),"user" + (i + 1),
-                            "1234",
-                            "name" + (i + 1),
-                            "user" + (i + 1) + "@gmail.com")
-            );
+            users.add(new User((i + 1),"user" + (i + 1), "1234", "name" + (i + 1),
+                            "user" + (i + 1) + "@gmail.com"));
         }
     }
 
     @BeforeEach
     void setUp() {
-        repository.clear();
+//        repository.clear();
         users.forEach(repository::save);
     }
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void signUpSuccess(SignUpRequest SignUpRequest) throws Exception {
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(SignUpRequest)))
+    void signUpSuccess(NewUserParam newUserParam) throws Exception {
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -77,28 +72,28 @@ class UserControllerTest {
     }
     static Stream<Arguments> params4SignUpSuccess() {
         return Stream.of(
-                Arguments.of(new SignUpRequest("user5", "1234","name5", "user5@gmail.com")),
-                Arguments.of(new SignUpRequest("user6", "1234","name6", "user6@gmail.com")),
-                Arguments.of(new SignUpRequest("user7", "1234","name7", "user7@gmail.com")),
-                Arguments.of(new SignUpRequest("user8", "1234","name8", "user8@gmail.com"))
+                Arguments.of(new NewUserParam("user5", "1234","name5", "user5@gmail.com")),
+                Arguments.of(new NewUserParam("user6", "1234","name6", "user6@gmail.com")),
+                Arguments.of(new NewUserParam("user7", "1234","name7", "user7@gmail.com")),
+                Arguments.of(new NewUserParam("user8", "1234","name8", "user8@gmail.com"))
         );
     }
 
     @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void signUpFail(SignUpRequest SignUpRequest) throws Exception {
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(SignUpRequest)))
+    void signUpFail(NewUserParam newUserParam) throws Exception {
+        mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
                         content().string(EXISTENT_ID_MESSAGE),
                         status().isBadRequest());
     }
     static Stream<Arguments> params4SignUpFail() {
         return Stream.of(
-                Arguments.of(new SignUpRequest("user1", "1234","name1", "user1@gmail.com")),
-                Arguments.of(new SignUpRequest("user2", "1234","name2", "user2@gmail.com")),
-                Arguments.of(new SignUpRequest("user3", "1234","name3", "user3@gmail.com")),
-                Arguments.of(new SignUpRequest("user4", "1234","name4", "user4@gmail.com"))
+                Arguments.of(new NewUserParam("user1", "1234","name1", "user1@gmail.com")),
+                Arguments.of(new NewUserParam("user2", "1234","name2", "user2@gmail.com")),
+                Arguments.of(new NewUserParam("user3", "1234","name3", "user3@gmail.com")),
+                Arguments.of(new NewUserParam("user4", "1234","name4", "user4@gmail.com"))
         );
     }
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
@@ -125,8 +120,8 @@ class UserControllerTest {
     @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
-    void getUserProfileSuccess(SignUpRequest SignUpRequest) throws Exception {
-        User user = SignUpRequest.convertToUser();
+    void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
+        User user = newUserParam.convertToUser();
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
@@ -141,8 +136,8 @@ class UserControllerTest {
     @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
-    void getUserProfileFail(SignUpRequest SignUpRequest) throws Exception {
-        User user = SignUpRequest.convertToUser();
+    void getUserProfileFail(NewUserParam newUserParam) throws Exception {
+        User user = newUserParam.convertToUser();
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(

@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.ModifyProfileRequest;
-import com.kakao.cafe.dto.SignUpRequest;
+import com.kakao.cafe.dto.ModifiedUserParam;
+import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -30,20 +29,20 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String signUp(SignUpRequest SignUpRequest, HttpServletRequest request) {
+    public String signUp(NewUserParam newUserParam,
+                         HttpServletRequest request) {
+
         logRequestInfo(request);
 
-        userService.add(SignUpRequest.convertToUser());
+        userService.add(newUserParam);
         return "redirect:/users";
     }
 
     @GetMapping
     public ModelAndView getUsers(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    ModelAndView mav) {
+                                 ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/list");
         mav.addObject("users", userService.searchAll());
@@ -53,11 +52,9 @@ public class UserController {
     @GetMapping("/{userId}")
     public ModelAndView getUserProfile(@PathVariable String userId,
                                        HttpServletRequest request,
-                                       HttpServletResponse response,
                                        ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/profile");
         mav.addObject("user", userService.search(userId));
@@ -66,12 +63,10 @@ public class UserController {
 
     @GetMapping("/{userId}/form")
     public ModelAndView goUpdateForm(@PathVariable String userId,
-                                       HttpServletRequest request,
-                                       HttpServletResponse response,
-                                       ModelAndView mav) {
+                                     HttpServletRequest request,
+                                     ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("user/updateForm");
         mav.addObject("user", userService.search(userId));
@@ -79,13 +74,12 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String modifyProfile(ModifyProfileRequest modifyProfileRequest,
+    public String modifyProfile(ModifiedUserParam modifiedUserParam,
                                 HttpServletRequest request) {
 
-        modifyProfileRequest.isValidRequest();
         logRequestInfo(request);
 
-        userService.update(modifyProfileRequest.convertToUser());
+        userService.update(modifiedUserParam);
         return "redirect:/users";
     }
 
@@ -95,11 +89,6 @@ public class UserController {
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
-    }
-
-    private void setResponseInfo(HttpServletResponse response) {
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
     }
 
     @ExceptionHandler({

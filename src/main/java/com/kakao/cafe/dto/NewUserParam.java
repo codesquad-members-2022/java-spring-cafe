@@ -2,14 +2,14 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.User;
 
-public class SignUpRequest {
+public class NewUserParam {
 
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public SignUpRequest(String userId, String password, String name, String email) {
+    public NewUserParam(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -38,7 +38,7 @@ public class SignUpRequest {
 
     @Override
     public String toString() {
-        return "SignUpRequest{" +
+        return "NewUserParam{" +
                 "userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +

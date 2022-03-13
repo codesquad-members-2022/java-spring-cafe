@@ -5,9 +5,9 @@ import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 
 import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
 
-public class ModifyProfileRequest {
+public class ModifiedUserParam {
 
-    private int index;
+    private long id;
     private final String userId;
     private final String password;
     private final String nowPassword;
@@ -15,10 +15,10 @@ public class ModifyProfileRequest {
     private final String name;
     private final String email;
 
-    public ModifyProfileRequest(int index, String userId, String password, String nowPassword,
+    public ModifiedUserParam(long id, String userId, String password, String nowPassword,
                                 String newPassword, String name, String email) {
 
-        this.index = index;
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.nowPassword = nowPassword;
@@ -27,8 +27,36 @@ public class ModifyProfileRequest {
         this.email = email;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setIndex(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNowPassword() {
+        return nowPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void isValidRequest() {
@@ -38,13 +66,13 @@ public class ModifyProfileRequest {
     }
 
     public User convertToUser() {
-        return new User(index, userId, newPassword, name, email);
+        return new User(id, userId, newPassword, name, email);
     }
 
     @Override
     public String toString() {
-        return "ModifyProfileRequest{" +
-                "index=" + index +
+        return "ModifiedUserParam{" +
+                "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", password='" + password + '\'' +
                 ", nowPassword='" + nowPassword + '\'' +

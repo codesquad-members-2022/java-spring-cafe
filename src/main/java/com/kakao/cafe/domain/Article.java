@@ -5,21 +5,42 @@ import java.util.Objects;
 
 public class Article {
 
-    private int id;
+    private long id;
     private final String writer;
     private final String title;
     private final String contents;
     private final LocalDate createDate;
 
-    public Article(String writer, String title, String contents) {
+    public Article(long id, String writer, String title, String contents, LocalDate createDate) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.createDate = LocalDate.now();
+        this.createDate = createDate;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDate getCreateDate() {
+        return createDate;
     }
 
     @Override

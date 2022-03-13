@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.dto.WriteArticleRequest;
+import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,23 +28,21 @@ public class ArticleController {
     }
 
     @PostMapping("/write")
-    public String writeArticle(WriteArticleRequest writeArticleRequest,
+    public String writeArticle(NewArticleParam newArticleParam,
                                HttpServletRequest request) {
 
         logRequestInfo(request);
 
-        articleService.add(writeArticleRequest.convertToArticle());
+        articleService.add(newArticleParam);
         return "redirect:/";
     }
 
     @GetMapping("/{id}")
     public ModelAndView getDetail(@PathVariable int id,
                                   HttpServletRequest request,
-                                  HttpServletResponse response,
                                   ModelAndView mav) {
 
         logRequestInfo(request);
-        setResponseInfo(response);
 
         mav.setViewName("qna/show");
         mav.addObject("article", articleService.search(id));
@@ -58,11 +55,6 @@ public class ArticleController {
                 .forEachRemaining(name -> params.put(name, request.getParameter(name)));
 
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
-    }
-
-    private void setResponseInfo(HttpServletResponse response) {
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
     }
 
     @ExceptionHandler({ RuntimeException.class })
