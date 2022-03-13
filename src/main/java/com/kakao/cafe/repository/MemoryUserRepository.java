@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
@@ -15,11 +14,9 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        User userInformation;
-        try {
-            userInformation = findByUserId(user.getUserId())
-                .orElseThrow(() -> new NoSuchElementException("해당되는 ID가 없습니다."));
-        } catch (NoSuchElementException e) {
+        User userInformation = findByUserId(user.getUserId()).orElse(null);
+
+        if (userInformation == null) {
             users.add(user);
             return user;
         }

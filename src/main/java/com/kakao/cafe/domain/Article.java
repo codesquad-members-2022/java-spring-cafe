@@ -5,17 +5,15 @@ import java.time.LocalDateTime;
 
 public class Article {
 
-    private int id;
+    private Integer id;
     private String writer;
     private String title;
     private String contents;
     private LocalDateTime createdDate;
 
-    private Article() {
+    private Article() { }
 
-    }
-
-    public Article(int id, String writer, String title, String contents, LocalDateTime createdDate) {
+    public Article(Integer id, String writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -23,11 +21,11 @@ public class Article {
         this.createdDate = createdDate;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

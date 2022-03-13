@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArticleService {
 
-    private ArticleRepository articleRepository;
-    private UserRepository userRepository;
+    private final ArticleRepository articleRepository;
+    private final UserRepository userRepository;
 
     public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
         this.articleRepository = articleRepository;

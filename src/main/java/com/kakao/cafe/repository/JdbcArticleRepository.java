@@ -1,7 +1,5 @@
 package com.kakao.cafe.repository;
 
-import static com.kakao.cafe.repository.JdbcArticleRepositorySqls.*;
-
 import com.kakao.cafe.domain.Article;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +31,7 @@ public class JdbcArticleRepository implements ArticleRepository {
         parameters.put("contents", article.getContents());
         parameters.put("createdDate", article.getCreatedDate());
 
-        jdbc.update(INSERT_ARTICLE, parameters);
+        jdbc.update("INSERT INTO article(writer, title, contents, created_date) VALUES(:writer, :title, :contents, :createdDate)", parameters);
 
         return article;
     }
@@ -42,7 +40,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     public Optional<Article> findById(int id) {
         try {
             Map<String, Integer> parameters = Collections.singletonMap("id", id);
-            return Optional.of(jdbc.queryForObject(SELECT_ARTICLE, parameters, articleRowMapper()));
+            return Optional.ofNullable(jdbc.queryForObject("SELECT * FROM article WHERE id = :id", parameters, articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -50,18 +48,18 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return jdbc.query(SELECT_ALL_ARTICLES, articleRowMapper());
+        return jdbc.query("SELECT * FROM article", articleRowMapper());
     }
 
     @Override
     public void clear() {
-        jdbc.update(DELETE_ALL_ARTICLES, Collections.emptyMap());
-        jdbc.update(INITIAL_COLUMN_NUMBER, Collections.emptyMap());
+        jdbc.update("DELETE FROM article", Collections.emptyMap());
+        jdbc.update("ALTER TABLE article ALTER COLUMN id RESTART WITH 1", Collections.emptyMap());
     }
 
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
-            Article article = new Article(rs.getInt("id"),
+            Article article = new Article(rs.getObject("id", Integer.class),
                                           rs.getString("writer"),
                                           rs.getString("title"),
                                           rs.getString("contents"),
