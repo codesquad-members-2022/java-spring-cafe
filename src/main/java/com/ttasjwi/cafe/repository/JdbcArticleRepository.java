@@ -45,6 +45,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
             if (rs.next()) {
                 Long articleId = rs.getLong("article_id");
+                article.setArticleId(articleId);
                 return articleId;
             }
             throw new SQLException("article Id 조회 실패");
