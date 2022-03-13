@@ -15,7 +15,6 @@ import java.util.Optional;
 
 import static java.sql.Date.*;
 
-@Repository
 public class JdbcUserRepository implements UserRepository {
 
     private final DataSource dataSource;

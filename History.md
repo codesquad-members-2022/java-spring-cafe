@@ -303,4 +303,9 @@ HomeController 및 테스트 코드를 추가했다.
 - Article 등록, 검증 등에 대한 로직을 ArticleService 계층에 분리했다.
 - ArticleeController는 파라미터의 해석 및 뷰테 무엇을 넘길 것인지에 대해서만 초점을 두게 하고, ArticleService는 검증 비즈니스 로직을 수행하도록 한다.
 
+## 3.10  JdbcTemplateUserRepository 추가 및 의존관계 변경
+
+- JdbcTemplate 방식의 JdbcTemplateUserRepository를 생성
+- UserRepository 구현체 변경 : JdbcUserRepository -> JdbcTemplateUserRepository
+
 ---
