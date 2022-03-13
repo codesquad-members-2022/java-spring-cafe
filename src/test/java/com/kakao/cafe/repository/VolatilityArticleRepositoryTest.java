@@ -23,10 +23,10 @@ class VolatilityArticleRepositoryTest {
     @DisplayName("전체 게시글 목록을 반환한다.")
     void findAll() {
         //given
-        Article article1 = new Article(1,"wrtier","title","contents", LocalDate.now());
+        Article article1 = new Article(1, "wrtier", "title", "contents", LocalDate.now());
         repository.save(article1);
 
-        Article article2 = new Article(2,"wrtier","title","contents", LocalDate.now());
+        Article article2 = new Article(2, "wrtier", "title", "contents", LocalDate.now());
         repository.save(article2);
 
         //when
@@ -40,7 +40,7 @@ class VolatilityArticleRepositoryTest {
     @DisplayName("인자로 주어진 게시글을 저장소에 저장한다.")
     void persist() {
         //given
-        Article article = new Article(1,"wrtier","title","contents", LocalDate.now());
+        Article article = new Article(1, "wrtier", "title", "contents", LocalDate.now());
 
         //when
         repository.save(article);
@@ -54,7 +54,7 @@ class VolatilityArticleRepositoryTest {
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
     void findOne() {
         //given
-        Article article = new Article(1,"wrtier","title","contents", LocalDate.now());
+        Article article = new Article(1, "wrtier", "title", "contents", LocalDate.now());
         repository.save(article);
 
         //when
