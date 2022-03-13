@@ -34,7 +34,7 @@ public class DbTemplate {
                 return rs.getLong(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return -1L;
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
         }
@@ -58,7 +58,7 @@ public class DbTemplate {
             T value = mapper.rowMapper(rs);
             if (value != null) return value;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
         }
@@ -98,11 +98,10 @@ public class DbTemplate {
 
             return list;
         } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
         }
-        return null;
     }
 
     public <T> List<T> list(String sql, RowMapper<T> mapper, Object... parameters) {

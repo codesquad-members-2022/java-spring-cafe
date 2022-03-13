@@ -21,7 +21,7 @@
   - [x] 로그인 한 사용자는 자신의 정보만 수정 가능
 
 ## Step03 리뷰 내용 수정 사항
-- [ ] JDBC template 로 개선해보기
+- [x] JDBC template 로 개선해보기
 - [ ] DBrepository 예외 던지기
 - [x] findByUserId 로 메서드이름 변경
 - [x] 자원 청소 부분 중복 제거하기

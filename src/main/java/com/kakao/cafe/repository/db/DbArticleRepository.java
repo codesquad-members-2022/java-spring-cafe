@@ -2,13 +2,15 @@ package com.kakao.cafe.repository.db;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.db.template.DbTemplate;
+import com.kakao.cafe.repository.db.template.RowMapper;
 import org.springframework.context.annotation.Primary;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,142 +25,66 @@ public class DbArticleRepository implements ArticleRepository {
 
     @Override
     public Long save(Article article) {
+        DbTemplate template = new DbTemplate(dataSource);
         String SQL = "INSERT INTO article (user_id, title, contents, local_date_time) VALUES (?, ?, ?, ?)";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, article.getUserId());
-            pstmt.setString(2, article.getTitle());
-            pstmt.setString(3, article.getContents());
-            pstmt.setTimestamp(4, Timestamp.valueOf(article.getLocalDateTime()));
-            pstmt.executeUpdate();
-
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                article.setId(rs.getLong(1));
-                return article.getId();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbCleaner.close(connection, pstmt, rs, dataSource);
-        }
-        return -1L;
+        Long saveId = template.executeUpdate(SQL, article.getUserId(), article.getTitle(), article.getContents(), article.getLocalDateTime());
+        article.setId(saveId);
+        return saveId;
     }
 
     @Override
     public Optional<Article> findById(Long id) {
-        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article WHERE id = (?)";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(SQL);
-            pstmt.setLong(1, id);
-            rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                Article article = new Article(
-                        rs.getString("user_id"),
-                        rs.getString("title"),
-                        rs.getString("contents"),
-                        rs.getTimestamp("local_date_time").toLocalDateTime()
-                );
-                article.setId(rs.getLong("id"));
-                return Optional.ofNullable(article);
+        RowMapper<Article> mapper = new RowMapper<Article>() {
+            @Override
+            public Article rowMapper(ResultSet rs) throws SQLException {
+                while (rs.next()) {
+                    Article article = new Article(rs.getString("user_id"), rs.getString("title"), rs.getString("contents"), rs.getTimestamp("local_date_time").toLocalDateTime());
+                    article.setId(rs.getLong("id"));
+                    return article;
+                }
+                return null;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbCleaner.close(connection, pstmt, rs, dataSource);
-        }
-        return Optional.empty();
+        };
+
+        DbTemplate template = new DbTemplate(dataSource);
+
+        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article WHERE id = (?)";
+        return Optional.ofNullable(template.executeQuery(SQL, mapper, id));
     }
 
     @Override
     public List<Article> findAll() {
-        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        List<Article> list = new ArrayList<>();
-
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(SQL);
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                Article article = new Article(
-                        rs.getString("user_id"),
-                        rs.getString("title"),
-                        rs.getString("contents"),
-                        rs.getTimestamp("local_date_time").toLocalDateTime()
-                );
+        RowMapper<Article> mapper = new RowMapper<>() {
+            @Override
+            public Article rowMapper(ResultSet rs) throws SQLException {
+                Article article = new Article(rs.getString("user_id"), rs.getString("title"), rs.getString("contents"), rs.getTimestamp("local_date_time").toLocalDateTime());
                 article.setId(rs.getLong("id"));
-                list.add(article);
+                return article;
             }
-            return list;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbCleaner.close(connection, pstmt, rs, dataSource);
-        }
-        return list;
+        };
+
+        DbTemplate template = new DbTemplate(dataSource);
+
+        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article";
+        return template.list(SQL, mapper);
     }
 
     @Override
     public boolean delete(Long id) {
+        DbTemplate template = new DbTemplate(dataSource);
         String SQL = "DELETE FROM article WHERE id = (?)";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        Long resultId = template.executeUpdate(SQL, id);
 
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(SQL);
-            pstmt.setLong(1, id);
-            int affectedLine = pstmt.executeUpdate();
-
-            if (affectedLine == 1) {
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbCleaner.close(connection, pstmt, rs, dataSource);
+        if (resultId != -1) {
+            return true;
         }
         return false;
     }
 
     @Override
     public void update(Long id, Article article) {
+        DbTemplate template = new DbTemplate(dataSource);
         String SQL = "UPDATE article SET user_id = (?), title = (?), contents = (?), local_date_time = (?) WHERE id = (?)";
-        Connection connection = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            connection = getConnection();
-            pstmt = connection.prepareStatement(SQL);
-            pstmt.setString(1, article.getUserId());
-            pstmt.setString(2, article.getTitle());
-            pstmt.setString(3, article.getContents());
-            pstmt.setTimestamp(4, Timestamp.valueOf(article.getLocalDateTime()));
-            pstmt.setLong(5, article.getId());
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DbCleaner.close(connection, pstmt, rs, dataSource);
-        }
-    }
-
-    private Connection getConnection() {
-        return DataSourceUtils.getConnection(dataSource);
+        Long resultId = template.executeUpdate(SQL, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(article.getLocalDateTime()), article.getId());
     }
 }
