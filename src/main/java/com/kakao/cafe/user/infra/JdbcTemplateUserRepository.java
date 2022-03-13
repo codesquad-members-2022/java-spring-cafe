@@ -4,6 +4,7 @@ import static com.kakao.cafe.common.utils.sql.SqlFormatter.*;
 import static com.kakao.cafe.user.infra.JdbcTemplateUserRepository.UserColumns.*;
 import static com.kakao.cafe.user.infra.MemoryUserRepository.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -42,6 +44,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		NAME("name", ":name", ":name"),
 		EMAIL("email", ":email", ":email"),
 		PASSWORD("password", ":password", ":password"),
+		CREATED_DATE("created_date", ":created_date", ":createdDate"),
+		LAST_UPDATED_DATE("last_updated_date", ":last_updated_date", ":lastUpdatedDate"),
+		RESTRICTED_ENTER_PASSWORD("restricted_enter_password", ":restricted_enter_password", ":restrictedEnterPassword"),
 		COUNT_ALL("COUNT(*)", null, null),
 		NONE(null, null, null);
 
@@ -79,13 +84,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
 	}
 
 	@Override
-	public long save(User entity) {
+	public User save(User entity) {
 		if (!Objects.isNull(entity.getId())) {
 			updateUser(entity);
-			return entity.getId();
+			return entity;
 		}
 		insert(entity);
-		return entity.getId();
+		return entity;
 	}
 
 	private void updateUser(User entity) {
@@ -110,14 +115,17 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		parameters.put(NAME.getColumnName(), entity.getName());
 		parameters.put(EMAIL.getColumnName(), entity.getEmail());
 		parameters.put(PASSWORD.getColumnName(), entity.getPassword());
+		parameters.put(RESTRICTED_ENTER_PASSWORD.getColumnName(), entity.isRestrictedEnterPassword());
+		parameters.put(CREATED_DATE.getColumnName(), entity.getCreatedDate());
+		parameters.put(LAST_UPDATED_DATE.getColumnName(), entity.getLastUpdatedDate());
 		return parameters;
 	}
 
 	private void update(User entity) {
-		String sql = getSqlOfUpdate(TABLE_NAME_OF_USER, List.of(USER_ID, NAME, EMAIL), ID);
+		String sql = getSqlOfUpdate(TABLE_NAME_OF_USER, List.of(NAME, EMAIL, RESTRICTED_ENTER_PASSWORD, LAST_UPDATED_DATE), ID);
 		SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
 		int update = namedParameterJdbcTemplate.update(sql, params);
-		logger.info("update user : {}", update);
+		logger.info("update user (1:ok): {}", update);
 	}
 
 	@Override
@@ -139,9 +147,12 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		return (rs, rowNum) -> {
 			User user = new User(rs.getLong(ID.getColumnName()),
 				rs.getString(USER_ID.getColumnName()),
+				rs.getString(PASSWORD.getColumnName()),
 				rs.getString(NAME.getColumnName()),
 				rs.getString(EMAIL.getColumnName()),
-				rs.getString(PASSWORD.getColumnName()));
+				rs.getObject(CREATED_DATE.getColumnName(), LocalDateTime.class),
+				rs.getObject(LAST_UPDATED_DATE.getColumnName(), LocalDateTime.class),
+				rs.getBoolean(RESTRICTED_ENTER_PASSWORD.getColumnName()));
 			return user;
 		};
 	}
@@ -172,6 +183,20 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(NAME.getColumnName(), name);
 		String sql = getSqlOfSelect(TABLE_NAME_OF_USER, List.of(COUNT_ALL), NAME);
 		return getNumberOfExistUserId(sql, namedParameters) != 0;
+	}
+
+	@Override
+	public Optional<User> findByUserId(String userId) {
+		User user = null;
+		String sql = "SELECT * FROM cafe_users WHERE user_id = :user_id";
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(USER_ID.getColumnName(), userId);
+		try {
+			user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
+		} catch (EmptyResultDataAccessException exception) {
+			logger.error("no exist of user, in user db : {}", exception);
+			return Optional.ofNullable(user);
+		}
+		return Optional.of(user);
 	}
 
 	private Integer getNumberOfExistUserId(String sql, SqlParameterSource namedParameters) {

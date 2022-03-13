@@ -15,32 +15,26 @@ public class ArticleDto {
 	public static final String DISTINGUISHER_COMMA = ",";
 
 	public static class WriteRequest {
-		private String writer;
-		private String title;
-		private String contents;
+		private final String writer;
+		private final String title;
+		private final String contents;
+
+		public WriteRequest(String writer, String title, String contents) {
+			this.writer = writer;
+			this.title = title;
+			this.contents = StringEscapeUtils.escapeHtml4(contents);
+		}
 
 		public String getWriter() {
 			return writer;
-		}
-
-		public void setWriter(String writer) {
-			this.writer = writer;
 		}
 
 		public String getTitle() {
 			return title;
 		}
 
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
 		public String getContents() {
 			return contents;
-		}
-
-		public void setContents(String contents) {
-			this.contents = StringEscapeUtils.escapeHtml4(contents);
 		}
 
 		public void isValid(Logger logger) {
@@ -98,11 +92,11 @@ public class ArticleDto {
 	}
 
 	public static class WriteResponse {
-		private String id;
-		private String writer;
-		private String title;
-		private String contents;
-		private LocalDate writingDate;
+		private final String id;
+		private final String writer;
+		private final String title;
+		private final String contents;
+		private final LocalDate writingDate;
 
 		public WriteResponse(Article article) {
 			this.id = toTextFromLong(article.getId());

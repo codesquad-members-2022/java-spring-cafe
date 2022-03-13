@@ -80,13 +80,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	}
 
 	@Override
-	public long save(Article entity) {
+	public Article save(Article entity) {
 		if (!Objects.isNull(entity.getId())) {
 			updateArticle(entity);
-			return entity.getId();
+			return entity;
 		}
 		insert(entity);
-		return entity.getId();
+		return entity;
 	}
 
 	private void updateArticle(Article entity) {
@@ -117,15 +117,20 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		parameters.put(WRITER.getColumnName(), entity.getWriter());
 		parameters.put(TITLE.getColumnName(), entity.getTitle());
 		parameters.put(CONTENT.getColumnName(), entity.getContent());
-		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());  //  todo
+		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());
 		return parameters;
 	}
 
 	@Override
 	public Optional<Article> findById(Long id) {
-		if (id < 1) {
-			throw new IllegalArgumentException(ERROR_OF_USER_ID);
+		try {
+			if (id < 1) {
+				throw new IllegalArgumentException(ERROR_OF_USER_ID);
+			}
+		} catch (IllegalArgumentException exception) {
+			logger.error("error of article db : {}", exception);
 		}
+
 		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(ARTICLE_ID.getColumnName(), id);
 		String sql = getSqlOfSelect(TABLE_NAME_OF_ARTICLE, List.of(ALL), ARTICLE_ID);
 		List<Article> articles = namedParameterJdbcTemplate.query(sql, namedParameters, articleRowMapper());

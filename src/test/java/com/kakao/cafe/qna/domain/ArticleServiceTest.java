@@ -14,9 +14,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.kakao.cafe.qna.infra.MemoryArticleRepository;
-
 @ExtendWith(MockitoExtension.class)
+public
 class ArticleServiceTest {
 	public static final String TEST_WRITER = "작성자";
 	public static final String TEST_TITLE = "제목";
@@ -31,14 +30,14 @@ class ArticleServiceTest {
 	@Test
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
-		long expected = 1L;
+		Article expected = new Article(1L, TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 		when(articleRepository.save(any()))
 			.thenReturn(expected);
 
 		long actual = this.articleService.write(articleDto);
 
-		assertThat(actual).isEqualTo(expected);
+		assertThat(actual).isEqualTo(expected.getId());
 	}
 
 /*
@@ -63,10 +62,6 @@ class ArticleServiceTest {
 	}*/
 
 	private ArticleDto.WriteRequest getArticleDto(String writer, String title, String content) {
-		ArticleDto.WriteRequest articleDto = new ArticleDto.WriteRequest();
-		articleDto.setWriter(writer);
-		articleDto.setTitle(title);
-		articleDto.setContents(content);
-		return articleDto;
+		return new ArticleDto.WriteRequest(writer, title, content);
 	}
 }

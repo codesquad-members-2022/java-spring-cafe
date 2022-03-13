@@ -6,6 +6,9 @@
 
 | URL                 | 기능        |
 |---------------------|-----------|
+| GET /login          | 로그인 화면    |
+| POST /do_login      | 로그인       |
+| GET /logout         | 로그아웃      |
 | GET /users          | 회원 목록 조회  |
 | POST /users         | 회원 가입     |
 | GET /users/:id      | 회원 프로필 조회 |
