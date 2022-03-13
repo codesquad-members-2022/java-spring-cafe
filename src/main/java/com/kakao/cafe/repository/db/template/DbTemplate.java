@@ -5,6 +5,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DbTemplate {
@@ -36,12 +37,15 @@ public class DbTemplate {
             e.printStackTrace();
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
-            ;
         }
         return -1L;
     }
 
-    public Object executeQuery(String sql, PreparedStatementSetter pss, RowMapper mapper) {
+    public Long executeUpdate(String sql, Object... parameters) {
+        return executeUpdate(sql, getPreparedStatementSetter(parameters));
+    }
+
+    public <T> T executeQuery(String sql, RowMapper<T> mapper, PreparedStatementSetter pss) {
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -51,7 +55,7 @@ public class DbTemplate {
             pss.setParameters(pstmt);
             rs = pstmt.executeQuery();
 
-            Object value = mapper.rowMapper(rs);
+            T value = mapper.rowMapper(rs);
             if (value != null) return value;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,24 +65,47 @@ public class DbTemplate {
         return null;
     }
 
-    public List<Object> executeQuery(String sql, RowsMapper mapper) {
+    public <T> T executeQuery(String sql, RowMapper<T> mapper, Object... parameters) {
+        return executeQuery(sql, mapper, getPreparedStatementSetter(parameters));
+    }
+
+    private PreparedStatementSetter getPreparedStatementSetter(Object[] parameters) {
+        return new PreparedStatementSetter() {
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                for (int i = 0; i < parameters.length; i++) {
+                    pstmt.setObject(i + 1, parameters[i]);
+                }
+            }
+        };
+    }
+
+    public <T> List<T> list(String sql, RowMapper<T> mapper, PreparedStatementSetter pss) {
         Connection connection = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<Object> list = null;
+        List<T> list = new ArrayList<>();
 
         try {
             connection = getConnection();
             pstmt = connection.prepareStatement(sql);
+            pss.setParameters(pstmt);
             rs = pstmt.executeQuery();
 
-            list = mapper.rowsMapper(rs);
+            while (rs.next()) {
+                list.add(mapper.rowMapper(rs));
+            }
+
             return list;
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             DbCleaner.close(connection, pstmt, rs, dataSource);
         }
-        return list;
+        return null;
+    }
+
+    public <T> List<T> list(String sql, RowMapper<T> mapper, Object... parameters) {
+        return list(sql, mapper, getPreparedStatementSetter(parameters));
     }
 }

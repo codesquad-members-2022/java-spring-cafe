@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.db.DbUserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,5 +82,6 @@ public class JdbcUserRepositoryTest {
 
         // then
         then(users).containsExactly(user, user2);
+        Assertions.assertThat(users.size()).isEqualTo(2);
     }
 }

@@ -2,18 +2,16 @@ package com.kakao.cafe.repository.db;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.repository.db.template.*;
+import com.kakao.cafe.repository.db.template.DbTemplate;
+import com.kakao.cafe.repository.db.template.RowMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Primary
 @Repository
@@ -26,36 +24,18 @@ public class DbUserRepository implements UserRepository {
 
     @Override
     public Long save(User user) {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getUserId());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getName());
-                pstmt.setString(4, user.getEmail());
-            }
-        };
-
         DbTemplate template = new DbTemplate(dataSource);
-
         String SQL = "INSERT INTO user_info (user_id, password, name, email) VALUES (?, ?, ?, ?)";
-        Long saveId = template.executeUpdate(SQL, pss);
+        Long saveId = template.executeUpdate(SQL, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
         user.setId(saveId);
         return saveId;
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
+        RowMapper<User> mapper = new RowMapper<User>() {
             @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-            }
-        };
-
-        RowMapper mapper = new RowMapper() {
-            @Override
-            public Object rowMapper(ResultSet rs) throws SQLException {
+            public User rowMapper(ResultSet rs) throws SQLException {
                 while (rs.next()) {
                     User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
                     user.setId(rs.getLong("id"));
@@ -68,45 +48,53 @@ public class DbUserRepository implements UserRepository {
         DbTemplate template = new DbTemplate(dataSource);
 
         String SQL = "SELECT id, user_id, password, name, email FROM user_info WHERE user_id = (?)";
-        return Optional.ofNullable((User) template.executeQuery(SQL, pss, mapper));
+        return Optional.ofNullable(template.executeQuery(SQL, mapper, userId));
     }
+
+//    @Override
+//    public List<User> findAll() {
+//        RowsMapper mapper = new RowsMapper<User>() {
+//            @Override
+//            public List<User> rowsMapper(ResultSet rs) throws SQLException {
+//                List<User> list = new ArrayList<>();
+//                while (rs.next()) {
+//                    User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
+//                    user.setId(rs.getLong("id"));
+//                    list.add(user);
+//                }
+//                return list;
+//            }
+//        };
+//
+//        DbTemplate template = new DbTemplate(dataSource);
+//
+//        String SQL = "SELECT id, user_id, password, name, email FROM user_info";
+//        return template.findAllQuery(SQL, mapper);
+//    }
 
     @Override
     public List<User> findAll() {
-        RowsMapper mapper = new RowsMapper() {
+        RowMapper<User> mapper = new RowMapper<User>() {
             @Override
-            public List<Object> rowsMapper(ResultSet rs) throws SQLException {
-                List<Object> list = new ArrayList<>();
-                while (rs.next()) {
-                    User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-                    user.setId(rs.getLong("id"));
-                    list.add(user);
-                }
-                return list;
+            public User rowMapper(ResultSet rs) throws SQLException {
+                User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
+                user.setId(rs.getLong("id"));
+                return user;
             }
         };
 
         DbTemplate template = new DbTemplate(dataSource);
 
         String SQL = "SELECT id, user_id, password, name, email FROM user_info";
-        return template.executeQuery(SQL, mapper).stream()
-                .map(o -> (User) o)
-                .collect(Collectors.toList());
+        return template.list(SQL, mapper);
     }
 
     @Override
     public boolean delete(String userId) {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-            }
-        };
-
         DbTemplate template = new DbTemplate(dataSource);
 
         String SQL = "DELETE FROM user_info WHERE user_id = (?)";
-        Long resultId = template.executeUpdate(SQL, pss);
+        Long resultId = template.executeUpdate(SQL, userId);
 
         if (resultId != -1) {
             return true;
@@ -116,21 +104,10 @@ public class DbUserRepository implements UserRepository {
 
     @Override
     public boolean update(String userId, User updateParam) {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, updateParam.getUserId());
-                pstmt.setString(2, updateParam.getPassword());
-                pstmt.setString(3, updateParam.getName());
-                pstmt.setString(4, updateParam.getEmail());
-                pstmt.setString(5, updateParam.getUserId());
-            }
-        };
-
         DbTemplate template = new DbTemplate(dataSource);
 
         String SQL = "UPDATE user_info SET user_id = (?), password = (?), name = (?), email = (?) WHERE user_id = (?)";
-        Long resultId = template.executeUpdate(SQL, pss);
+        Long resultId = template.executeUpdate(SQL, updateParam.getUserId(), updateParam.getPassword(), updateParam.getName(), updateParam.getEmail(), updateParam.getUserId());
 
         if (resultId != -1) {
             return true;
