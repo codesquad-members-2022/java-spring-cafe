@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class User {
 
@@ -8,16 +9,19 @@ public class User {
     private String password;
     private String name;
     private String email;
-    private LocalDateTime created_date;
-    private LocalDateTime updated_date;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 
-    public User(String userId, String password, String name, String email) {
+    private User() {
+    }
+
+    public User(String userId, String password, String name, String email, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.created_date = LocalDateTime.now();
-        this.updated_date = LocalDateTime.now();
+        this.createdTime = Optional.ofNullable(createdTime).orElse(LocalDateTime.now());
+        this.updatedTime = Optional.ofNullable(updatedTime).orElse(LocalDateTime.now());
     }
 
     public String getUserId() {
@@ -36,12 +40,12 @@ public class User {
         return email;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
     }
 
-    public LocalDateTime getUpdated_date() {
-        return updated_date;
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
     }
 
     public void update(String newPassword, String newName, String newEmail) {
@@ -56,5 +60,16 @@ public class User {
 
     public boolean isCorrectPassword(String password) {
         return this.password.equals(password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                '}';
     }
 }

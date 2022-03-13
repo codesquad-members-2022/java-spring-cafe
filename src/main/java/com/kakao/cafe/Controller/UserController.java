@@ -10,13 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -25,7 +23,7 @@ public class UserController {
 
     @GetMapping("/user/signup")
     public String signUpForm(Model model) {
-        logger.info("signup Start");
+        logger.info("[signUpForm] - START");
         model.addAttribute("userRequestDto", new UserRequestDto());
 
         return "user/form";
@@ -33,7 +31,7 @@ public class UserController {
 
     @PostMapping("/users")
     public String createUser(UserRequestDto userRequestDto) {
-        logger.info("createUser : {}", userRequestDto);
+        logger.info("[createUser] : {}", userRequestDto);
         userService.save(userRequestDto);
 
         return "redirect:/users";
@@ -42,6 +40,7 @@ public class UserController {
     @GetMapping("/users")
     public String showUsers(Model model) {
         List<UserDto> allUsers = userService.findUsers();
+
         model.addAttribute("allUsers", allUsers);
 
         return "/user/list";
@@ -50,6 +49,8 @@ public class UserController {
     @GetMapping("/users/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
         UserDto findUser = userService.findUserDto(userId);
+        logger.info("[showUser] : {}", findUser);
+
         model.addAttribute("findUser", findUser);
 
         return "/user/profile";
@@ -59,13 +60,15 @@ public class UserController {
     public String updateForm(@PathVariable String userId, Model model) {
         UserRequestDto userRequestDto = userService.findUserRequestDto(userId);
         model.addAttribute("userRequestDto", userRequestDto);
+        logger.info("[updateForm] : Update {}", userRequestDto.toString());
 
         return "user/updateForm";
     }
 
-    @PutMapping("/users/{userId}")
-    public String updateUser(@PathVariable String userId, UserRequestDto userRequestDto) {
+    @PutMapping("/users/{userId}/update")
+    public String updateUser(UserRequestDto userRequestDto) {
         userService.update(userRequestDto);
+        logger.info("[updateUser] : END");
 
         return "redirect:/users";
     }

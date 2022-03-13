@@ -30,7 +30,8 @@ public class UserRequestDto {
         return new User(userRequestDto.getUserId(),
                 userRequestDto.getPassword(),
                 userRequestDto.getName(),
-                userRequestDto.getEmail());
+                userRequestDto.getEmail(),
+                null, null);
     }
 
     public String getUserId() {
@@ -63,5 +64,14 @@ public class UserRequestDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRequestDto{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
