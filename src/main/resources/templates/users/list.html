@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> /partial/head}}
+    <title>회원목록</title>
+    <meta id="activeButton" content="">
+</head>
+<style>
+    tbody {
+        counter-reset: rowNumber;
+    }
+
+    tbody tr {
+        counter-increment: rowNumber;
+    }
+
+    tbody tr th:first-child::before {
+        content: counter(rowNumber);
+    }
+</style>
+<body>
+{{> /partial/navbar-top}}
+{{> /partial/navbar-subnav}}
+
+<div class="container" id="main">
+   <div class="col-md-10 col-md-offset-1">
+      <div class="panel panel-default">
+          <table class="table table-hover a">
+              <thead>
+                <tr>
+                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#users}}
+                <tr>
+                    <th scope="row"></th><td>{{userId}}</td> <td>{{name}}</td> <td>{{email}}</td>
+                    <td><a href="/users/{{userId}}" class="btn btn-success" role="button">프로필 보기</a></td>
+                </tr>
+              {{/users}}
+              </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+{{> /partial/script-references}}
+	</body>
+</html>
