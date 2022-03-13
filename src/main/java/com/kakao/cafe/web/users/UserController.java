@@ -81,7 +81,7 @@ public class UserController {
     @PostMapping("/{userId}/update")
     public String updateUserProfileForm(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletResponse response, HttpSession session) throws AuthenticationException {
         if (bindingResult.hasErrors()) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             log.info("업데이트 메서드 : 사용자 인자 오류");
             return "/user/updateForm";
         }

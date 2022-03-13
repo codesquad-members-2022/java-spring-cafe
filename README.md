@@ -6,7 +6,7 @@
 
 - [ ] DbTemplate null 검증부분 고치기
 - [ ] login메서드 하나만 public으로 만들기
-- [ ] UserController에 에러코드 400으로 수정
+- [x] UserController에 에러코드 400으로 수정
 - [ ] @DisplayName 에 예상 결과도 함축시켜 보기
 - [x] UserControllerTest given절 다시 생각해보기
 
