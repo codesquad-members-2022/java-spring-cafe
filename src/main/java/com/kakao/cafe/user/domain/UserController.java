@@ -37,7 +37,7 @@ public class UserController {
 	@PostMapping()
 	public String signUp(UserDto.Request userDto) {
 		userDto.isValid(logger);
-		logger.info("user sign up {}",userDto);
+		logger.info("user sign up : {}",userDto.getUserId());
 		userService.register(userDto);
 		return "redirect:/users";
 	}
@@ -116,14 +116,18 @@ public class UserController {
 	}
 
 	private void isValidAccess(String userId, HttpSession httpSession) {
-		isEmptyAccessor(httpSession);
-		isTheSameLoginUserAsAccount(userId, httpSession);
+		try {
+			isEmptyAccessor(httpSession);
+			isTheSameLoginUserAsAccount(userId, httpSession);
+		} catch (IllegalArgumentException exception) {
+			logger.error("invalid access : {}", exception);
+		}
+
 	}
 
 	private void isTheSameLoginUserAsAccount(String userId, HttpSession httpSession) {
 		SessionUser sessionUser = (SessionUser)getHttpSessionAttribute(httpSession);
 		if (sessionUser.isDifferentFrom(userId)) {
-			logger.error("invalid access by different identity : {}", sessionUser.getUserName());
 			throw new IllegalArgumentException("로그인 정보를 입력 하세요.");
 		}
 	}
@@ -131,7 +135,6 @@ public class UserController {
 	private void isEmptyAccessor(HttpSession httpSession) {
 		Object accessor = getHttpSessionAttribute(httpSession);
 		if (Objects.isNull(accessor)) {
-			logger.error("invalid access to personal information modification");
 			throw new IllegalArgumentException("로그인 하세요");
 		}
 	}

@@ -32,11 +32,16 @@ public class MemoryUserRepository implements UserRepository {
 	@Override
 	public User save(User entity) {
 		Long id = entity.getId();
-		if (this.hasId(id)) {
-			data.set(getDataIdx(entity), entity);
-			logger.info("update user : {}", entity.getUserId());
-			return entity;
+		try {
+			if (this.hasId(id)) {
+				data.set(getDataIdx(entity), entity);
+				logger.info("update user : {}", entity.getUserId());
+				return entity;
+			}
+		} catch (DomainNotFoundException exception) {
+			logger.error("not exist of user id: {}, because of: {}", id, exception);
 		}
+
 		id = getNextId(data.size());
 		entity.setId(id);
 		data.add(entity);
@@ -59,20 +64,27 @@ public class MemoryUserRepository implements UserRepository {
 			return false;
 		}
 		Optional<User> user = getUserById(id);
-		if (user.isEmpty()) {
-			logger.error("not exist of user id : {}", id);
-			throw new DomainNotFoundException("없는 사용자 정보 요청입니다.");
+		try {
+			if (user.isEmpty()) {
+				throw new DomainNotFoundException("없는 사용자 정보 요청입니다.");
+			}
+		} catch (DomainNotFoundException exception) {
+			logger.error("error of save, the cause of no data : {}", exception);
 		}
 		return user.get().hasId(id);
 	}
 
 	@Override
 	public Optional<User> findById(Long id) {
-		if (id < 1) {
-			throw new IllegalArgumentException(ERROR_OF_USER_ID);
-		}
-		if (data.size() < id) {
-			throw new DomainNotFoundException(ERROR_OF_USER_ID);
+		try {
+			if (id < 1) {
+				throw new IllegalArgumentException(ERROR_OF_USER_ID);
+			}
+			if (data.size() < id) {
+				throw new DomainNotFoundException(ERROR_OF_USER_ID);
+			}
+		} catch (IllegalArgumentException | DomainNotFoundException exception) {
+			logger.error("error of user db : {}", exception);
 		}
 		return getUserById(id);
 	}

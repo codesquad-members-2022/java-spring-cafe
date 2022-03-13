@@ -123,9 +123,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	@Override
 	public Optional<Article> findById(Long id) {
-		if (id < 1) {
-			throw new IllegalArgumentException(ERROR_OF_USER_ID);
+		try {
+			if (id < 1) {
+				throw new IllegalArgumentException(ERROR_OF_USER_ID);
+			}
+		} catch (IllegalArgumentException exception) {
+			logger.error("error of article db : {}", exception);
 		}
+
 		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(ARTICLE_ID.getColumnName(), id);
 		String sql = getSqlOfSelect(TABLE_NAME_OF_ARTICLE, List.of(ALL), ARTICLE_ID);
 		List<Article> articles = namedParameterJdbcTemplate.query(sql, namedParameters, articleRowMapper());

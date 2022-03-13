@@ -193,7 +193,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 		try {
 			user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
 		} catch (EmptyResultDataAccessException exception) {
-			logger.error("no exist of user, in user repository : {}", exception.getMessage());
+			logger.error("no exist of user, in user db : {}", exception);
 			return Optional.ofNullable(user);
 		}
 		return Optional.of(user);
