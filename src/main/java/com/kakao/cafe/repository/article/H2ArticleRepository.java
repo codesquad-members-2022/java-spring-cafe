@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -18,8 +19,6 @@ import com.kakao.cafe.domain.article.Article;
 @Primary
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
-
-    private final Logger logger = LoggerFactory.getLogger(H2ArticleRepository.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -36,28 +35,33 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        // TODO : save, select 테스트 후 구현
-        return null;
+        String sql = "SELECT * FROM article";
+        return jdbcTemplate.query(sql, makeArticle());
     }
 
     @Override
     public Optional<Article> findById(Long id) {
         String sql = "SELECT * FROM article WHERE id = :article_id";
         SqlParameterSource namedParameter = new MapSqlParameterSource("article_id", id);
-        Article article = jdbcTemplate.queryForObject(sql, namedParameter, (resultSet, rowNum) -> {
-                Article articleTmp = new Article(
-                    resultSet.getString("writer"),
-                    resultSet.getString("title"),
-                    resultSet.getString("contents"));
-                articleTmp.setId(resultSet.getLong("id"));
-                articleTmp.writeWhenCreated(resultSet.getObject("writeTime", LocalDateTime.class));
-                return articleTmp;
-            });
+        Article article = jdbcTemplate.queryForObject(sql, namedParameter, makeArticle());
         return Optional.ofNullable(article);
     }
 
     @Override
     public void deleteAll() {
+        String sql = "DELET FROM article";
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
+    }
 
+    private RowMapper<Article> makeArticle() {
+        return (resultSet, rowNum) -> {
+            Article articleTmp = new Article(
+                resultSet.getString("writer"),
+                resultSet.getString("title"),
+                resultSet.getString("contents"));
+            articleTmp.setId(resultSet.getLong("id"));
+            articleTmp.writeWhenCreated(resultSet.getObject("writeTime", LocalDateTime.class));
+            return articleTmp;
+        };
     }
 }
