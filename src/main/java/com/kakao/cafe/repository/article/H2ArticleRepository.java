@@ -2,6 +2,7 @@ package com.kakao.cafe.repository.article;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.domain.article.Article;
@@ -19,6 +22,8 @@ import com.kakao.cafe.domain.article.Article;
 @Primary
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
+
+    private Logger log = LoggerFactory.getLogger(H2ArticleRepository.class);
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
@@ -28,9 +33,13 @@ public class H2ArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public Long save(Article article) {
         String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[]{"id"});
+        long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
+        log.info("key is = {}", id);
+        return id;
     }
 
     @Override

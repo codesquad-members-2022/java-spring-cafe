@@ -10,7 +10,7 @@ public interface ArticleRepository {
 
     Optional<Article> findById(Long id);
 
-    void save(Article article);
+    Long save(Article article);
 
     void deleteAll();
 }

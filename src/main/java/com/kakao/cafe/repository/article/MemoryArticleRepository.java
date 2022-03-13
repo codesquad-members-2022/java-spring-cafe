@@ -20,9 +20,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void save(Article article) {
+    public Long save(Article article) {
         article.setId((long)articles.size() + 1);
         articles.add(article);
+        return article.getId();
     }
 
     @Override
