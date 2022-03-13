@@ -62,10 +62,6 @@ class ArticleServiceTest {
 	}*/
 
 	private ArticleDto.WriteRequest getArticleDto(String writer, String title, String content) {
-		ArticleDto.WriteRequest articleDto = new ArticleDto.WriteRequest();
-		articleDto.setWriter(writer);
-		articleDto.setTitle(title);
-		articleDto.setContents(content);
-		return articleDto;
+		return new ArticleDto.WriteRequest(writer, title, content);
 	}
 }

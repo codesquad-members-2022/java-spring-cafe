@@ -25,7 +25,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 	@Override
 	public Article save(Article entity) {
 		Long id = entity.getId();
-		if (id != null && this.hasId(id)) {
+		if (this.hasId(id)) {
 			data.set(getDataIdx(entity.getId()), entity);
 			logger.info("question db update : {}", entity.getId());
 			return entity;
@@ -37,13 +37,20 @@ public class MemoryArticleRepository implements ArticleRepository {
 		return entity;
 		}
 
+		/*
+			처음 도메인 객체 생성시 id 를 null 로 받아 생성되게 했습니다.
+			id 가 null 일 경우, insert() 가 진행됩니다.
+		 */
 	private boolean hasId(Long id) {
+		if (id == null) {
+			return false;
+		}
 		Optional<Article> article = getArticleId(id);
 		if (article.isEmpty()) {
 			logger.error("not exist of article id : {}", id);
 			throw new DomainNotFoundException("없는 게시글 정보 요청입니다.");
 		}
-		return article.get().hasId(id);
+		return article.get().isEquals(id);
 	}
 
 	@Override
@@ -60,7 +67,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 	private Optional<Article> getArticleId(Long id) {
 		return data.stream()
 			.parallel()
-			.filter(it -> it.hasId(id))
+			.filter(it -> it.isEquals(id))
 			.findAny();
 	}
 

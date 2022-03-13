@@ -18,17 +18,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kakao.cafe.qna.domain.ArticleService;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserRepository;
+import com.kakao.cafe.user.domain.UserService;
 
 @Controller
 public class MainController {
 	private final ArticleService articleService;
-	private final UserRepository userRepository;
+	private final UserService userService;
 
 	private Logger logger = LoggerFactory.getLogger(MainController.class);
 
-	public MainController(ArticleService articleService, UserRepository userRepository) {
+	public MainController(ArticleService articleService, UserService userService) {
 		this.articleService = articleService;
-		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	@GetMapping("/")
@@ -38,24 +39,15 @@ public class MainController {
 	}
 
 	@PostMapping("/do_login")
-	public String login(String userId, String password, HttpSession httpSession, RedirectAttributes redirectAttributes) {
-		Optional<User> getUser = userRepository.findByUserId(userId);
-		if (getUser.isEmpty()) {
-			logger.info("login empty");
+	public String login(LoginDto loginDto, HttpSession httpSession, RedirectAttributes redirectAttributes) {
+		boolean isValidated = userService.validateLogin(loginDto, redirectAttributes);
+		if (!isValidated) {
 			return "redirect:/login";
 		}
-		User user = getUser.get();
-		if (!user.isAllowedStatusOfPasswordEntry()) {
-			redirectAttributes.addFlashAttribute("notAllow", USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);
-			return "redirect:/login";
-		}
-		if (user.isDifferentPassword(password)) {
-			logger.info("login different password : {}", password);
-			return "redirect:/login";
-		}
-		logger.info("login : {}", userId);
-		httpSession.setAttribute(SESSION_KEY, from(userId));
-		httpSession.setMaxInactiveInterval(600);  // 10분
+
+		logger.info("login : {}", loginDto.getUserId());
+		httpSession.setAttribute(SESSION_KEY, from(loginDto.getUserId()));
+		httpSession.setMaxInactiveInterval(1200);  // 20분
 		return "redirect:/";
 	}
 

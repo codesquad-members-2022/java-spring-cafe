@@ -32,7 +32,7 @@ public class MemoryUserRepository implements UserRepository {
 	@Override
 	public User save(User entity) {
 		Long id = entity.getId();
-		if (id != null && this.hasId(id)) {
+		if (this.hasId(id)) {
 			data.set(getDataIdx(entity), entity);
 			logger.info("update user : {}", entity.getUserId());
 			return entity;
@@ -55,6 +55,9 @@ public class MemoryUserRepository implements UserRepository {
 	 * @return
 	 */
 	private boolean hasId(Long id) {
+		if (id == null) {
+			return false;
+		}
 		Optional<User> user = getUserById(id);
 		if (user.isEmpty()) {
 			logger.error("not exist of user id : {}", id);

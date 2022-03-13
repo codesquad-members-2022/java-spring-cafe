@@ -3,11 +3,14 @@ package com.kakao.cafe.user.domain;
 import static com.kakao.cafe.user.domain.UserUpdateDto.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.main.LoginDto;
 
 @Service
 public class UserService {
@@ -49,17 +52,20 @@ public class UserService {
 		userRepository.save(user);
 	}
 
+	/*
+		수정 요청시 비밀번호 시도 제한 횟수 초과 상태인지 확인 후 응답 메시지 반환 합니다.
+	 */
 	public UserUpdateDto.Response findUserForUpdateFrom(String userId) {
 		User user = getUserByUserId(userId);
 		UserUpdateDto.Response response = new UserUpdateDto.Response(user);
-		if (isValidPasswordEntry(user)) {
+		if (checkStatusOfPasswordEntry(user)) {
 			return response;
 		}
 		response.setMessage(USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);
 		return response;
 	}
 
-	private boolean isValidPasswordEntry(User user) {
+	private boolean checkStatusOfPasswordEntry(User user) {
 		if (user.isAllowedStatusOfPasswordEntry()) {
 			userRepository.save(user);
 			return true;
@@ -83,5 +89,21 @@ public class UserService {
 		User user = getUserByUserId(userId);
 		user.restrictTheAttemptOfInputPassword();
 		userRepository.save(user);
+	}
+
+	public boolean validateLogin(LoginDto loginDto, RedirectAttributes redirectAttributes) {
+		Optional<User> getUser = userRepository.findByUserId(loginDto.getUserId());
+		if (getUser.isEmpty()) {
+			return false;
+		}
+		User user = getUser.get();
+		if (!user.isAllowedStatusOfPasswordEntry()) {
+			redirectAttributes.addFlashAttribute("notAllow", USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);  // 낯섦
+			return false;
+		}
+		if (user.isDifferentPassword(loginDto.getPassword())) {
+			return false;
+		}
+		return true;
 	}
 }

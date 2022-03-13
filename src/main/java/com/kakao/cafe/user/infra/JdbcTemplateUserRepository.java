@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -186,9 +187,15 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
 	@Override
 	public Optional<User> findByUserId(String userId) {
+		User user = null;
 		String sql = "SELECT * FROM cafe_users WHERE user_id = :user_id";
 		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(USER_ID.getColumnName(), userId);
-		User user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
+		try {
+			user = namedParameterJdbcTemplate.queryForObject(sql, namedParameters, userRowMapper());
+		} catch (EmptyResultDataAccessException exception) {
+			logger.error("no exist of user, in user repository : {}", exception.getMessage());
+			return Optional.ofNullable(user);
+		}
 		return Optional.of(user);
 	}
 

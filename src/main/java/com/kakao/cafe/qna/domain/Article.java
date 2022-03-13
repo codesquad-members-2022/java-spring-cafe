@@ -31,7 +31,7 @@ public class Article {
 		this.writingDate = writingDate;
 	}
 
-	public boolean hasId(Long id) {
+	public boolean isEquals(Long id) {
 		return this.id == id;
 	}
 

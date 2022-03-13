@@ -73,11 +73,7 @@ class UserServiceTest {
 	}
 
 	private UserDto.Request getUserDto() {
-		UserDto.Request dto = new UserDto.Request();
-		dto.setUserId(CAFE_USER_ID);
-		dto.setName(CAFE_USER_NAME);
-		dto.setEmail(CAFE_USER_EMAIL);
-		dto.setPassword(CAFE_USER_PASSWORD);
+		UserDto.Request dto = new UserDto.Request(CAFE_USER_ID, CAFE_USER_PASSWORD, CAFE_USER_NAME, CAFE_USER_EMAIL);
 		return dto;
 	}
 }

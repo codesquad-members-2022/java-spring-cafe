@@ -9,44 +9,32 @@ public class UserDto {
 	public static final String ERROR_OF_WHITE_SPACE = "공백이나 null 없이 입력하세요.";
 
 	public static class Request {
-		private String userId;
-		private String password;
-		private String name;
-		private String email;
+		private final String userId;
+		private final String password;
+		private final String name;
+		private final String email;
 
-		public Long getIdNull() {
-			return null;
+		public Request(String userId, String password, String name, String email) {
+			this.userId = userId;
+			this.password = password;
+			this.name = name;
+			this.email = email;
 		}
+
 		public String getUserId() {
 			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
 		}
 
 		public String getPassword() {
 			return password;
 		}
 
-		public void setPassword(String password) {
-			this.password = password;
-		}
-
 		public String getName() {
 			return name;
 		}
 
-		public void setName(String name) {
-			this.name = name;
-		}
-
 		public String getEmail() {
 			return email;
-		}
-
-		public void setEmail(String email) {
-			this.email = email;
 		}
 
 		public void isValid(Logger logger) {
@@ -75,10 +63,10 @@ public class UserDto {
 	}
 
 	public static class Response {
-		private String id;
-		private String userId;
-		private String name;
-		private String email;
+		private final String id;
+		private final String userId;
+		private final String name;
+		private final String email;
 
 		public Response(User user) {
 			this.id = toTextFromLong(user.getId());
@@ -91,32 +79,16 @@ public class UserDto {
 			return id;
 		}
 
-		public void setId(String id) {
-			this.id = id;
-		}
-
 		public String getUserId() {
 			return userId;
-		}
-
-		public void setUserId(String userId) {
-			this.userId = userId;
 		}
 
 		public String getName() {
 			return name;
 		}
 
-		public void setName(String name) {
-			this.name = name;
-		}
-
 		public String getEmail() {
 			return email;
-		}
-
-		public void setEmail(String email) {
-			this.email = email;
 		}
 	}
 }
