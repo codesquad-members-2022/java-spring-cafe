@@ -56,7 +56,7 @@ class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        repository.clear();
+//        repository.clear();
         users.forEach(repository::save);
     }
 

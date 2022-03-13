@@ -57,14 +57,14 @@ public class ArticleControllerTest {
 
 //    @BeforeEach
     void setUp() {
-        repository.clear();
+//        repository.clear();
         articles.forEach(repository::save);
     }
 
     @DisplayName("모든 사용자가 게시글 작성 요청하면 게시글 추가를 완료한 후 메인 페이지(“redirect:/”)로 이동한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4writeArticle")
-    void signUpSuccess(NewArticleParam newArticleParam) throws Exception {
+    void writeArticle(NewArticleParam newArticleParam) throws Exception {
         mvc.perform(post("/articles/write").params(convertToMultiValueMap(newArticleParam)))
                 .andExpectAll(
                         status().is3xxRedirection(),
@@ -103,7 +103,7 @@ public class ArticleControllerTest {
     @DisplayName("게시글 목록의 제목을 클릭하면 게시글 상세 페이지에 접속한다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @ValueSource(ints = { 1, 2, 3, 4 })
-    void getUserProfileSuccess(int id) throws Exception {
+    void getDetail(int id) throws Exception {
         mvc.perform(get("/articles/" + id))
                 .andExpectAll(
                         model().attributeExists("article"),

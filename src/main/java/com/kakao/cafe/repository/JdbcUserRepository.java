@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @org.springframework.stereotype.Repository
 public class JdbcUserRepository implements Repository<User, String> {
 
-    private SimpleJdbcInsert insertJdbc;
-    private NamedParameterJdbcTemplate jdbc;
-    private RowMapper<UserEntity> rowMapper = BeanPropertyRowMapper.newInstance(UserEntity.class);
+    private final SimpleJdbcInsert insertJdbc;
+    private final NamedParameterJdbcTemplate jdbc;
+    private final RowMapper<UserEntity> rowMapper = BeanPropertyRowMapper.newInstance(UserEntity.class);
 
     public JdbcUserRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);

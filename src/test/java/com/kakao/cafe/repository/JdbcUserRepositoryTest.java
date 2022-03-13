@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql(scripts = { "classpath:h2_ddl" })
+@Sql(scripts = {"classpath:h2_ddl.sql"})
 class JdbcUserRepositoryTest {
 
     @Autowired

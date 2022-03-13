@@ -20,21 +20,19 @@ public class VolatilityUserRepository implements Repository<User, String> {
     @Override
     public synchronized Optional<User> save(User user) {
         Optional<User> other = findOne(user.getUserId());
-
-        User result = other.isEmpty()
-                ? persist(user)
-                : merge(other.get().getId(), user);
-
-        return Optional.ofNullable(result);
+        if (other.isPresent()) {
+            return merge(other.get().getId(), user);
+        }
+        return persist(user);
     }
-    private User persist(User user) {
+    private Optional<User> persist(User user) {
         user.setId(users.size() + 1);
         users.add(user);
-        return user;
+        return Optional.ofNullable(user);
     }
-    private User merge(long index, User user) {
+    private Optional<User> merge(long index, User user) {
         users.set((int)index - 1, user);
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override

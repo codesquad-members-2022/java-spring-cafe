@@ -31,6 +31,34 @@ public class ModifiedUserParam {
         this.id = id;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getNowPassword() {
+        return nowPassword;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void isValidRequest() {
         if (!nowPassword.equals(password)) {
             throw new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE);

@@ -3,9 +3,11 @@ package com.kakao.cafe.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
+import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -31,8 +33,7 @@ import java.util.stream.Stream;
 import static com.kakao.cafe.message.UserMessage.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -99,13 +100,6 @@ public class UserControllerUnitTest {
                 Arguments.of(new NewUserParam("user4", "1234","name4", "user4@gmail.com"))
         );
     }
-    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.setAll(map);
-
-        return params;
-    }
 
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
@@ -156,5 +150,69 @@ public class UserControllerUnitTest {
                 );
 
         verify(service).search(userId);
+    }
+
+    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하면 반영하고 사용자 목록을 출력한다.")
+    @ParameterizedTest(name ="{index} {displayName} user={0}")
+    @MethodSource("params4modifiedProfileSuccess")
+    void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
+        User user = modifiedUserParam.convertToUser();
+        String userId = user.getUserId();
+        given(service.update(modifiedUserParam)).willReturn(user);
+        mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
+                .andExpectAll(
+                        status().is3xxRedirection(),
+                        redirectedUrl("/users")
+                );
+
+        verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
+    }
+    static Stream<Arguments> params4modifiedProfileSuccess() {
+        return Stream.of(
+                Arguments.of(new ModifiedUserParam(1, "user1", "1234", "1234",
+                        "4321", "name1", "user1@gmail.com")),
+                Arguments.of(new ModifiedUserParam(2, "user2", "1234", "1234",
+                        "4321", "name2", "user2@gmail.com")),
+                Arguments.of(new ModifiedUserParam(3, "user3", "1234", "1234",
+                        "4321", "name3", "user3@gmail.com")),
+                Arguments.of(new ModifiedUserParam(4, "user4", "1234", "1234",
+                        "4321", "name4", "user4@gmail.com"))
+                );
+    }
+
+    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 예외를 발생시킨다.")
+    @ParameterizedTest(name ="{index} {displayName} user={0}")
+    @MethodSource("params4modifiedProfileFail")
+    void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
+        User user = modifiedUserParam.convertToUser();
+        String userId = user.getUserId();
+        given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE));
+        mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
+                .andExpectAll(
+                        content().string(UNMATCHED_PASSWORD_MESSAGE),
+                        status().isBadRequest()
+                );
+
+        verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
+    }
+    static Stream<Arguments> params4modifiedProfileFail() {
+        return Stream.of(
+                Arguments.of(new ModifiedUserParam(1, "user1", "1234", "4321",
+                        "4321", "name1", "user1@gmail.com")),
+                Arguments.of(new ModifiedUserParam(2, "user2", "1234", "4321",
+                        "4321", "name2", "user2@gmail.com")),
+                Arguments.of(new ModifiedUserParam(3, "user3", "1234", "4321",
+                        "4321", "name3", "user3@gmail.com")),
+                Arguments.of(new ModifiedUserParam(4, "user4", "1234", "4321",
+                        "4321", "name4", "user4@gmail.com"))
+        );
+    }
+
+    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
+        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.setAll(map);
+
+        return params;
     }
 }
