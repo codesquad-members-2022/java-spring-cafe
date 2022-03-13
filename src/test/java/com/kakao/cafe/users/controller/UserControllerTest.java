@@ -2,7 +2,6 @@ package com.kakao.cafe.users.controller;
 
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
-import com.kakao.cafe.users.exception.UserNotFountException;
 import com.kakao.cafe.users.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -187,25 +186,6 @@ class UserControllerTest {
             assertThat(modelAndView.getViewName()).isEqualTo("user/profile");
             assertThat(modelAndView.getModel().containsKey("user")).isTrue();
             assertThat(modelAndView.getModel().get("user")).isNotNull();
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 회원의 userId 가 path 로 들어오면 에러 메세지와 함께, 회원 목록 페이지로 이동한다.")
-        void findProfile_failed() throws Exception {
-            // arrange
-            when(userService.findOne(any())).thenThrow(UserNotFountException.class);
-
-            // act
-            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
-
-            // assert
-            MvcResult mvcResult = actions.andExpect(status().is4xxClientError()).andReturn();
-
-            ModelAndView modelAndView = mvcResult.getModelAndView();
-            Map<String, Object> model = modelAndView.getModel();
-
-            assertThat(modelAndView.getViewName()).isEqualTo("user/list");
-            assertThat(model.containsKey("errorMessage")).isTrue();
         }
 
         private User getUser() {
