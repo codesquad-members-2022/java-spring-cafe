@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -22,26 +23,26 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/create")
-    public String createForm() {
-        return "/user/form";
-    }
-
-    @PostMapping("/user/create")
-    public String create(UserForm form) {
-        User user = new User(form);
-        userService.join(user);
-        return "redirect:/users";
-    }
-
-    @GetMapping("/users")
+    @GetMapping
     public String viewList(Model model) {
         List<User> userList = this.userService.getAllUsers();
         model.addAttribute("userList", userList);
         return "../templates/list";
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/create")
+    public String createForm() {
+        return "/user/form";
+    }
+
+    @PostMapping("/create")
+    public String create(UserForm form) {
+        User user = new User(form);
+        userService.join(user);
+        return "redirect:/users";
+    }
+
+    @GetMapping("/{userId}")
     public String viewUserInfo(@PathVariable("userId") String userId, Model model) {
         User selectedUser;
         Optional<User> foundUser = userService.findById(userId);
