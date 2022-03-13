@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.config.QueryLoader;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.db.DbArticleRepository;
 import org.assertj.core.api.Assertions;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
@@ -17,13 +19,14 @@ import java.util.Optional;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
+@Import(QueryLoader.class)
 @Sql("classpath:/schema.sql")
 public class JdbcArticleRepositoryTest {
     private final DbArticleRepository repository;
 
     @Autowired
-    public JdbcArticleRepositoryTest(DataSource dataSource) {
-        this.repository = new DbArticleRepository(dataSource);
+    public JdbcArticleRepositoryTest(DataSource dataSource, QueryLoader loader) {
+        this.repository = new DbArticleRepository(dataSource, loader);
     }
 
     Article article;
@@ -31,7 +34,6 @@ public class JdbcArticleRepositoryTest {
     @BeforeEach
     public void setUp() {
         article = new Article("Shine", "title", "something...", LocalDateTime.now());
-
     }
 
     @Test

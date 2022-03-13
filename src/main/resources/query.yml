@@ -1,0 +1,42 @@
+# user
+SAVE_USER: >
+  INSERT INTO user_info (user_id, password, name, email) 
+  VALUES (?, ?, ?, ?)
+
+SELECT_USER: >
+  SELECT id, user_id, password, name, email 
+  FROM user_info 
+  WHERE user_id = (?)
+
+SELECT_USERS: >
+  SELECT id, user_id, password, name, email 
+  FROM user_info
+
+UPDATE_USER: >
+  UPDATE user_info SET user_id = (?), password = (?), name = (?), email = (?) 
+  WHERE user_id = (?)
+
+DELETE_USER: >
+  DELETE FROM user_info
+  WHERE user_id = (?)
+
+# article
+SAVE_ARTICLE: >
+  INSERT INTO article (user_id, title, contents, local_date_time) 
+  VALUES (?, ?, ?, ?)
+SELECT_ARTICLE: >
+  SELECT id, user_id, title, contents, local_date_time 
+  FROM article 
+  WHERE id = (?)
+
+SELECT_ARTICLES: >
+  SELECT id, user_id, title, contents, local_date_time 
+  FROM article
+
+UPDATE_ARTICLES: >
+  UPDATE article SET user_id = (?), title = (?), contents = (?), local_date_time = (?) 
+  WHERE id = (?)
+
+DELETE_ARTICLE: >
+  DELETE FROM article 
+  WHERE id = (?)

@@ -1,6 +1,8 @@
 package com.kakao.cafe.repository.db;
 
+import com.kakao.cafe.config.QueryLoader;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.Query;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.repository.db.template.DbTemplate;
 import com.kakao.cafe.repository.db.template.RowMapper;
@@ -17,15 +19,17 @@ import java.util.Optional;
 @Repository
 public class DbUserRepository implements UserRepository {
     private final DataSource dataSource;
+    private final QueryLoader queryLoader;
 
-    public DbUserRepository(DataSource dataSource) {
+    public DbUserRepository(DataSource dataSource, QueryLoader queryLoader) {
         this.dataSource = dataSource;
+        this.queryLoader = queryLoader;
     }
 
     @Override
     public Long save(User user) {
         DbTemplate template = new DbTemplate(dataSource);
-        String SQL = "INSERT INTO user_info (user_id, password, name, email) VALUES (?, ?, ?, ?)";
+        String SQL = queryLoader.get(Query.SAVE_USER);
         Long saveId = template.executeUpdate(SQL, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
         user.setId(saveId);
         return saveId;
@@ -46,31 +50,9 @@ public class DbUserRepository implements UserRepository {
         };
 
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "SELECT id, user_id, password, name, email FROM user_info WHERE user_id = (?)";
+        String SQL = queryLoader.get(Query.SELECT_USER);
         return Optional.ofNullable(template.executeQuery(SQL, mapper, userId));
     }
-
-//    @Override
-//    public List<User> findAll() {
-//        RowsMapper mapper = new RowsMapper<User>() {
-//            @Override
-//            public List<User> rowsMapper(ResultSet rs) throws SQLException {
-//                List<User> list = new ArrayList<>();
-//                while (rs.next()) {
-//                    User user = new User(rs.getString("user_id"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
-//                    user.setId(rs.getLong("id"));
-//                    list.add(user);
-//                }
-//                return list;
-//            }
-//        };
-//
-//        DbTemplate template = new DbTemplate(dataSource);
-//
-//        String SQL = "SELECT id, user_id, password, name, email FROM user_info";
-//        return template.findAllQuery(SQL, mapper);
-//    }
 
     @Override
     public List<User> findAll() {
@@ -84,16 +66,14 @@ public class DbUserRepository implements UserRepository {
         };
 
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "SELECT id, user_id, password, name, email FROM user_info";
+        String SQL = queryLoader.get(Query.SELECT_USERS);
         return template.list(SQL, mapper);
     }
 
     @Override
     public boolean delete(String userId) {
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "DELETE FROM user_info WHERE user_id = (?)";
+        String SQL = queryLoader.get(Query.DELETE_USER);
         Long resultId = template.executeUpdate(SQL, userId);
 
         if (resultId != -1) {
@@ -105,8 +85,7 @@ public class DbUserRepository implements UserRepository {
     @Override
     public boolean update(String userId, User updateParam) {
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "UPDATE user_info SET user_id = (?), password = (?), name = (?), email = (?) WHERE user_id = (?)";
+        String SQL = queryLoader.get(Query.UPDATE_USER);
         Long resultId = template.executeUpdate(SQL, updateParam.getUserId(), updateParam.getPassword(), updateParam.getName(), updateParam.getEmail(), updateParam.getUserId());
 
         if (resultId != -1) {

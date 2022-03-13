@@ -1,5 +1,6 @@
 package com.kakao.cafe.repository;
 
+import com.kakao.cafe.config.QueryLoader;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.db.DbUserRepository;
 import org.assertj.core.api.Assertions;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
@@ -16,14 +18,15 @@ import java.util.Optional;
 import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
+@Import(QueryLoader.class)
 @Sql("classpath:/schema.sql")
 public class JdbcUserRepositoryTest {
 
     private final DbUserRepository repository;
 
     @Autowired
-    public JdbcUserRepositoryTest(DataSource dataSource) {
-        this.repository = new DbUserRepository(dataSource);
+    public JdbcUserRepositoryTest(DataSource dataSource, QueryLoader queryLoader) {
+        this.repository = new DbUserRepository(dataSource, queryLoader);
     }
 
     User user;

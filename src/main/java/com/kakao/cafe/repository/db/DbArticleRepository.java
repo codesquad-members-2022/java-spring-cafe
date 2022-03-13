@@ -1,7 +1,9 @@
 package com.kakao.cafe.repository.db;
 
+import com.kakao.cafe.config.QueryLoader;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.Query;
 import com.kakao.cafe.repository.db.template.DbTemplate;
 import com.kakao.cafe.repository.db.template.RowMapper;
 import org.springframework.context.annotation.Primary;
@@ -18,15 +20,17 @@ import java.util.Optional;
 @Repository
 public class DbArticleRepository implements ArticleRepository {
     private final DataSource dataSource;
+    private final QueryLoader queryLoader;
 
-    public DbArticleRepository(DataSource dataSource) {
+    public DbArticleRepository(DataSource dataSource, QueryLoader queryLoader) {
         this.dataSource = dataSource;
+        this.queryLoader = queryLoader;
     }
 
     @Override
     public Long save(Article article) {
         DbTemplate template = new DbTemplate(dataSource);
-        String SQL = "INSERT INTO article (user_id, title, contents, local_date_time) VALUES (?, ?, ?, ?)";
+        String SQL = queryLoader.get(Query.SAVE_ARTICLE);
         Long saveId = template.executeUpdate(SQL, article.getUserId(), article.getTitle(), article.getContents(), article.getLocalDateTime());
         article.setId(saveId);
         return saveId;
@@ -47,8 +51,7 @@ public class DbArticleRepository implements ArticleRepository {
         };
 
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article WHERE id = (?)";
+        String SQL = queryLoader.get(Query.SELECT_ARTICLE);
         return Optional.ofNullable(template.executeQuery(SQL, mapper, id));
     }
 
@@ -64,15 +67,14 @@ public class DbArticleRepository implements ArticleRepository {
         };
 
         DbTemplate template = new DbTemplate(dataSource);
-
-        String SQL = "SELECT id, user_id, title, contents, local_date_time FROM article";
+        String SQL = queryLoader.get(Query.SELECT_ARTICLES);
         return template.list(SQL, mapper);
     }
 
     @Override
     public boolean delete(Long id) {
         DbTemplate template = new DbTemplate(dataSource);
-        String SQL = "DELETE FROM article WHERE id = (?)";
+        String SQL = queryLoader.get(Query.DELETE_ARTICLE);
         Long resultId = template.executeUpdate(SQL, id);
 
         if (resultId != -1) {
@@ -84,7 +86,7 @@ public class DbArticleRepository implements ArticleRepository {
     @Override
     public void update(Long id, Article article) {
         DbTemplate template = new DbTemplate(dataSource);
-        String SQL = "UPDATE article SET user_id = (?), title = (?), contents = (?), local_date_time = (?) WHERE id = (?)";
+        String SQL = queryLoader.get(Query.UPDATE_ARTICLES);
         Long resultId = template.executeUpdate(SQL, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(article.getLocalDateTime()), article.getId());
     }
 }
