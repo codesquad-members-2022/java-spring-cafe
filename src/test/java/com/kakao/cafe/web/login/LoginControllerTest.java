@@ -54,7 +54,7 @@ class LoginControllerTest {
     }
 
     @Test
-    @DisplayName("정상 로그인 테스트")
+    @DisplayName("정상 로그인시 세션에 회원이 저장되어야 한다.")
     void loginSuccessTest() throws Exception {
         // given
         given(loginService.login(any())).willReturn(user);
@@ -77,7 +77,7 @@ class LoginControllerTest {
     }
 
     @Test
-    @DisplayName("비정상 로그인 테스트")
+    @DisplayName("비정상 로그인시 세션에 데이터가 생기면 안된다")
     void loginFailedTest() throws Exception {
         // given
         given(loginService.login(any())).willReturn(null);
@@ -98,7 +98,7 @@ class LoginControllerTest {
     }
 
     @Test
-    @DisplayName("정상 로그아웃 테스트")
+    @DisplayName("정상 로그아웃시 세션에 데이터 삭제되어야 함")
     void logoutSuccessTest() throws Exception {
         // given
         mySession.setAttribute("SESSIONED_USER", user);
