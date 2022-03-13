@@ -30,10 +30,10 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(this.userList);
+        return new ArrayList<>(userList);
     }
 
     public void clearUserList() {
-        this.userList.clear();
+        userList.clear();
     }
 }
