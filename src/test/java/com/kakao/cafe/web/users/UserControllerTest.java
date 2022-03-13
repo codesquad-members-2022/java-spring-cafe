@@ -127,10 +127,10 @@ class UserControllerTest {
         // given
         User updateUser = new User("Shine", "1234", "ShineUpdate", "update@naver.com");
         MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setAttribute("SESSIONED_USER", user);
         given(userService.userUpdate(any())).willReturn(true);
 
         // when
+        mockSession.setAttribute("SESSIONED_USER", user);
         ResultActions requestThenResult = mockMvc.perform(post("/users/" + user.getUserId() + "/update")
                 .session(mockSession)
                 .param("userId", "Shine")
@@ -148,8 +148,10 @@ class UserControllerTest {
     public void updateFailTest() throws Exception {
         // given
         MockHttpSession mockSession = new MockHttpSession();
-        mockSession.setAttribute("SESSIONED_USER", user);
         given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
+
+        // when
+        mockSession.setAttribute("SESSIONED_USER", user);
 
         // then
         assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
