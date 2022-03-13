@@ -14,8 +14,9 @@ public class MemoryUserRepository implements UserRepository{
     private final Map<String, User> users = new HashMap<>();
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         users.put(user.getUserId(), user);
+        return user;
     }
 
     @Override

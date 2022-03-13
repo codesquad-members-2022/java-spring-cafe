@@ -18,6 +18,14 @@ public class Article {
         this.writtenTime = LocalDateTime.now();
     }
 
+    public Article(int id, String writer, String title, String contents, LocalDateTime writtenTime) {
+        this.id = id;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.writtenTime = writtenTime;
+    }
+
     public int getId() {
         return id;
     }

@@ -22,14 +22,6 @@ public class User {
         return new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
     }
 
-    public boolean isSameId(String id) {
-        return this.userId.equals(id);
-    }
-
-    public boolean isSamePassword(User user) {
-        return this.password.equals(user.password);
-    }
-
     public String getUserId() {
         return userId;
     }

@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.ArticleDto;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void write(Article article) {
-        articleRepository.save(article);
+    public Article write(ArticleDto articleDto) {
+        return articleRepository.save(articleDto.toEntity());
     }
 
     public ArticleResponseDto findOne(int id) {

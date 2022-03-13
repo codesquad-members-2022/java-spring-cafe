@@ -2,35 +2,30 @@ package com.kakao.cafe.domain.article;
 
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static final int STORAGE_KEY = 1;
 
-    private final List<Article> articles = new ArrayList<>();
+    private final Map<Integer, Article> articles = new HashMap<>();
 
     @Override
-    public void save(Article article) {
+    public Article save(Article article) {
         article.setId(generateId());
-        articles.add(article);
+        articles.put(article.getId(), article);
+        return article;
     }
 
     @Override
     public Optional<Article> findById(int id) {
-        int index = id - STORAGE_KEY;
-        if(hasIndexInArticlesBound(index)) {
-            return Optional.ofNullable(articles.get(index));
-        }
-        return Optional.empty();
+        return Optional.ofNullable(articles.get(id));
     }
 
     @Override
     public List<Article> findAll() {
-        return articles;
+        return new ArrayList<>(articles.values());
     }
 
     @Override
@@ -42,7 +37,4 @@ public class MemoryArticleRepository implements ArticleRepository {
         return articles.size() + STORAGE_KEY;
     }
 
-    private boolean hasIndexInArticlesBound(int index) {
-        return index < articles.size() && index >= 0;
-    }
 }
