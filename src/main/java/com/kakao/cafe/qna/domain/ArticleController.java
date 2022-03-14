@@ -57,7 +57,7 @@ public class ArticleController {
 			return REDIRECT_LOGIN_VIEW;
 		}
 		logger.info("request details of question: {}", id);
-		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
+		ArticleDto.WriteResponse question = articleService.read(id);
 		model.addAttribute("question", question);
 		return "qna/show";
 	}
@@ -69,23 +69,27 @@ public class ArticleController {
 			return REDIRECT_LOGIN_VIEW;
 		}
 		logger.info("request fixing question: {}", id);
-		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
+		ArticleDto.WriteResponse question = articleService.getArticle(id, getHttpSessionAttribute(httpSession));
 		model.addAttribute("question", question);
 		return "qna/updateForm";
 	}
 
 	@PutMapping("/{id}")
-	public String isAskedEditQuestion(@PathVariable Long id, ArticleDto.EditRequest updateDto) {
+	public String isAskedEditQuestion(@PathVariable Long id, ArticleDto.EditRequest updateDto, HttpSession httpSession) {
 		logger.info("request edit question: {}", id);
-		articleService.edit(updateDto);
+		articleService.edit(updateDto, getHttpSessionAttribute(httpSession));
 		String url = String.format("%squestions/%d", REDIRECT_ROOT, id);
 		return url;
 	}
 
 	@DeleteMapping("/{id}")
-	public String isAskedRemoveQuestion(@PathVariable Long id) {
+	public String isAskedRemoveQuestion(@PathVariable Long id, HttpSession httpSession) {
+		boolean isValid = isValidLogin(httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
 		logger.info("request delete article: {}", id);
-		articleService.remove(id);
+		articleService.remove(id, getHttpSessionAttribute(httpSession));
 		return REDIRECT_ROOT;
 	}
 

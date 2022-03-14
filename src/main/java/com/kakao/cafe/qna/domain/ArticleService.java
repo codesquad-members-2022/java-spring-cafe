@@ -39,17 +39,26 @@ public class ArticleService {
 			.collect(toUnmodifiableList());
 	}
 
-	public ArticleDto.WriteResponse read(Long id, SessionUser sessionUser) {
-		User user = getUserByUserId(sessionUser.getUserId());
+	public ArticleDto.WriteResponse read(Long id) {
+		return new ArticleDto.WriteResponse(get(id));
+	}
+
+	public ArticleDto.WriteResponse getArticle(Long id, Object sessionUser) {
 		Article article = get(id);
-		if (!user.isWriter(article)) {
-			throw new IllegalArgumentException("invalid access to article board");
-		}
+		isValidWriter(article, (SessionUser)sessionUser);
 		return new ArticleDto.WriteResponse(article);
 	}
 
-	public void edit(ArticleDto.EditRequest updateDto) {
+	private void isValidWriter(Article article, SessionUser sessionUser) {
+		User user = getUserByUserId(sessionUser.getUserId());
+		if (!user.isWriter(article)) {
+			throw new IllegalArgumentException("invalid access to article board");
+		}
+	}
+
+	public void edit(ArticleDto.EditRequest updateDto, Object sessionUser) {
 		Article article = get(updateDto.getIdByLong());
+		isValidWriter(article, (SessionUser)sessionUser);
 		if (!userService.isExistByUserId(updateDto.getUserId())) {
 			String errorMessage = String.format("no exist user: {}, invalid access to article", updateDto.getUserId());
 			throw new IllegalArgumentException(errorMessage);
@@ -64,7 +73,9 @@ public class ArticleService {
 			.orElseThrow(() -> new DomainNotFoundException(errorMessage));
 	}
 
-	public void remove(Long id) {
+	public void remove(Long id, Object sessionUser) {
+		Article article = get(id);
+		isValidWriter(article, (SessionUser)sessionUser);
 		articleRepository.delete(id);
 	}
 }
