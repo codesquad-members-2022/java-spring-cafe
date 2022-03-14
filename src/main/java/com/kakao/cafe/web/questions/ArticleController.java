@@ -57,12 +57,7 @@ public class ArticleController {
 
     @PostMapping("/{index}/delete")
     public String deleteArticle(@PathVariable Long index, HttpServletRequest request) {
-        Article findArticle = articleService.findArticleById(index);
-        HttpSession session = request.getSession(false);
-
-        User sessionedUser = (User) session.getAttribute("SESSIONED_USER");
-
-        if (!sessionedUser.isOwnArticle(findArticle)) {
+        if (!isOwnArticle(index, request)) {
             log.info("delete article error : 자신의 글만 삭제 가능");
             return "redirect:/questions/" + index;
         }
@@ -70,5 +65,36 @@ public class ArticleController {
         log.info("delete article id = {}", index);
         articleService.deleteArticle(index);
         return "redirect:/";
+    }
+
+    @GetMapping("/{index}/update")
+    public String getArticleUpdateForm(@PathVariable Long index, HttpServletRequest request, Model model) {
+        if (!isOwnArticle(index, request)) {
+            log.info("update article error : 자신의 글만 수정 가능");
+            return "redirect:/questions/" + index;
+        }
+
+        log.info("get profile update form");
+        model.addAttribute("article", articleService.findArticleDtoById(index));
+        return "/qna/updateForm";
+    }
+
+    @PostMapping("/{index}/update")
+    public String saveArticleUpdateForm(@Validated @ModelAttribute("article") ArticleDto dto, @PathVariable Long index, HttpSession session) {
+        articleService.updateArticle(index, dto, session.getAttribute("SESSIONED_USER"));
+        log.info("save form = {}", dto.getTitle());
+        return "redirect:/questions/" + index;
+    }
+
+    private boolean isOwnArticle(Long index, HttpServletRequest request) {
+        Article findArticle = articleService.findArticleById(index);
+
+        HttpSession session = request.getSession(false);
+        User sessionUser = (User) session.getAttribute("SESSIONED_USER");
+
+        if (!sessionUser.isOwnArticle(findArticle)) {
+            return false;
+        }
+        return true;
     }
 }

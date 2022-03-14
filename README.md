@@ -2,12 +2,20 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+## Step05 ToDO-List
+
+- [x] 로그인을 하도록 interceptor 구현, 등록하기
+- [ ] 게시글 작성에서 글쓴이 입력 필드 삭제하기
+- [x] 수정은 자신의 글만 가능하도록
+- [x] 자신의 글만 삭제 가능하도록
+- [x] 요구사항과 달리 히든필드 사용X, Control URI 사용할 것
+
 ## Step04 리뷰 내용 수정 사항
 
 - [x] DbTemplate null 검증부분 고치기
 - [x] login메서드 하나만 public으로 만들기 -> Dto받는 메서드만 public으로
 - [x] UserController에 에러코드 400으로 수정
-- [ ] @DisplayName 에 예상 결과도 함축시켜 보기
+- [x] @DisplayName 에 예상 결과도 함축시켜 보기
 - [x] UserControllerTest given절 다시 생각해보기
 
 ## Step04 ToDo-List
