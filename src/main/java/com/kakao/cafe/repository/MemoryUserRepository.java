@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private static List<User> store = new CopyOnWriteArrayList<>();
+    private List<User> store = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(User user) {
