@@ -33,12 +33,31 @@ class MemoryUserRepositoryTest {
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class User_객체가_주어지면 {
+        class 새로운_User_객체가_주어지면 {
 
             @Test
             @DisplayName("주어진 객체를 저장하고 저장된 객체의 인덱스를 리턴한다")
             void 주어진_객체를_저장하고_저장된_객체의_인덱스를_리턴한다() {
                 assertThat(repository.save(givenUser)).isEqualTo(0);
+            }
+        }
+
+        @Nested
+        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
+        class 기존에_존재하는_User_객체가_주어지면 {
+
+            User updatedUser = givenUser.update("new@test.user", "updatepassword1");
+
+            @BeforeEach
+            void setUp() {
+                repository.clear();
+            }
+
+            @Test
+            @DisplayName("기존에 저장되어있던 객체의 인덱스를 리턴한다")
+            void 기존에_저장되어있던_객체의_인덱스를_리턴한다() {
+                int expected = repository.save(givenUser);
+                assertThat(repository.save(updatedUser)).isEqualTo(expected);
             }
         }
     }
