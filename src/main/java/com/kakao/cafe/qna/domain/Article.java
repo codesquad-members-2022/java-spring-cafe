@@ -12,31 +12,28 @@ public class Article {
 	private LocalDate writingDate;
 	private Long cafeUserId;
 
-	public Article(Long articleId, String writer, String title, String content) {
-		this.articleId = articleId;
-		this.writer = writer;
-		this.title = title;
-		this.content = content;
-		this.writingDate = LocalDate.now();
+	public Article() {
 	}
 
-	// 새글 작성
-	public Article(String writer, String title, String content, Long cafeUserId) {
-		this.writer = writer;
-		this.title = title;
-		this.content = content;
-		this.cafeUserId = cafeUserId;
-		this.writingDate = LocalDate.now();
+	public static Article createOf(String writer, String title, String content, Long cafeUserId) {
+		Article article = new Article();
+		article.writer = writer;
+		article.title = title;
+		article.content = content;
+		article.cafeUserId = cafeUserId;
+		article.writingDate = LocalDate.now();
+		return article;
 	}
 
-	// from db
-	public Article(Long articleId, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
-		this.articleId = articleId;
-		this.writer = writer;
-		this.title = title;
-		this.content = content;
-		this.cafeUserId = cafeUserId;
-		this.writingDate = writingDate;
+	public static Article loadOf(Long articleId, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
+		Article article = new Article();
+		article.articleId = articleId;
+		article.writer = writer;
+		article.title = title;
+		article.content = content;
+		article.cafeUserId = cafeUserId;
+		article.writingDate = writingDate;
+		return article;
 	}
 
 	public boolean isEquals(Long id) {

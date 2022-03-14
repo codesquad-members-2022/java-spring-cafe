@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.qna.domain.Article.*;
 import static java.util.stream.Collectors.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class ArticleService {
 
 	public long write(ArticleDto.WriteRequest writeRequest) {
 		User user = getUserByUserId(writeRequest.getUserId());
-		Article question = new Article(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
+		Article question = createOf(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
 		Article getArticle = articleRepository.save(question);
 		return getArticle.getArticleId();
 	}

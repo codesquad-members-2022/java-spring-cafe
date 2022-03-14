@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.qna.domain.Article.*;
 import static com.kakao.cafe.user.infra.MemoryUserRepositoryTest.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -32,7 +33,7 @@ class ArticleServiceTest {
 	@Test
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
-		Article expected = new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
+		Article expected = createOf(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
 		expected.setArticleId(1L);
 		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 		when(userService.getUserByUserId(any())).thenReturn(getUser());

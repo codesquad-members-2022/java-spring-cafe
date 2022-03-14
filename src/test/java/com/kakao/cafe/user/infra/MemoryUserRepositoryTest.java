@@ -50,6 +50,6 @@ public class MemoryUserRepositoryTest {
 	}
 
 	public static User getUser() {
-		return new User(CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
+		return User.createOf(CAFE_USER_ID, CAFE_USER_NAME, CAFE_USER_EMAIL, CAFE_USER_PASSWORD);
 	}
 }

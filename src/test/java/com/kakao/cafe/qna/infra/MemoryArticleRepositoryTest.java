@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna.infra;
 
+import static com.kakao.cafe.qna.domain.Article.*;
 import static com.kakao.cafe.qna.domain.ArticleServiceTest.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -64,6 +65,6 @@ class MemoryArticleRepositoryTest {
 	}
 
 	public Article getArticle() {
-		return new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
+		return createOf(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
 	}
 }

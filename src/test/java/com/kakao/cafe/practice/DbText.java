@@ -39,7 +39,7 @@ public class DbText {
 
 	@Test
 	void for_setting_db_data() throws SQLException {
-		User user = new User("tester", "testName", "test@email.com", "1234asdf");
+		User user = User.createOf("tester", "testName", "test@email.com", "1234asdf");
 		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_enter_password) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, user.getUserId());
@@ -76,7 +76,7 @@ public class DbText {
 		while (rs.next()) {
 			long id = rs.getLong("id");
 			String name = rs.getString("name");
-			User user = new User(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
+			User user = User.loadOf(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
 
 			soft.assertThat(user.getId()).isNotZero();
 			soft.assertThat(user.getName().length()).isGreaterThan(2);
@@ -97,7 +97,7 @@ public class DbText {
 		ResultSet rs = pstmt.executeQuery();
 
 		while (rs.next()) {
-			User user = new User(rs.getLong("id"),
+			User user = User.loadOf(rs.getLong("id"),
 				rs.getString("user_id"),
 				rs.getString("name"),
 				rs.getString("email"),

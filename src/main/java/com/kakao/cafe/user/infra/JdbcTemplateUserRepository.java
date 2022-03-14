@@ -1,6 +1,7 @@
 package com.kakao.cafe.user.infra;
 
 import static com.kakao.cafe.common.utils.sql.SqlFormatter.*;
+import static com.kakao.cafe.user.domain.User.*;
 import static com.kakao.cafe.user.infra.JdbcTemplateUserRepository.UserColumns.*;
 import static com.kakao.cafe.user.infra.MemoryUserRepository.*;
 
@@ -145,7 +146,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
 	private RowMapper<User> userRowMapper() {
 		return (rs, rowNum) -> {
-			User user = new User(rs.getLong(ID.getColumnName()),
+			User user = loadOf(rs.getLong(ID.getColumnName()),
 				rs.getString(USER_ID.getColumnName()),
 				rs.getString(PASSWORD.getColumnName()),
 				rs.getString(NAME.getColumnName()),
