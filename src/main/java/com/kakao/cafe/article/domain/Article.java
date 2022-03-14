@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Article {
 
-    private Integer id;
+    private Long id;
     private final String title;
     private final String content;
     private final LocalDateTime createdDate;
@@ -37,7 +37,7 @@ public class Article {
     }
 
     // ---- public method ----
-    public boolean equalsId(Integer id) {
+    public boolean equalsId(Long id) {
         return this.id.intValue() == id.intValue();
     }
 
@@ -76,11 +76,11 @@ public class Article {
     }
 
     // ---- getter setter ----
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -24,9 +24,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(Integer savedId) {
+    public Optional<Article> findById(Long savedId) {
         try {
-            return Optional.of(articleRegistry.get(savedId - 1));
+            return Optional.of(articleRegistry.get(savedId.intValue() - 1));
         } catch (IndexOutOfBoundsException e) {
             return Optional.empty();
         }
@@ -43,7 +43,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     private Optional<Article> createArticle(Article article) {
-        article.setId(articleRegistry.size() + 1);
+        article.setId((long) (articleRegistry.size() + 1));
         articleRegistry.add(article);
 
         return Optional.of(article);

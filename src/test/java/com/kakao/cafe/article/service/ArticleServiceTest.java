@@ -152,7 +152,7 @@ class ArticleServiceTest {
             @Test
             void 예외가_발생한다() {
                 // arrange
-                Integer unsavedId = 1;
+                Long unsavedId = 1L;
                 String articleNotFoundExceptionMessage = "글을 찾을 수 없습니다.";
 
                 // assert
@@ -170,7 +170,7 @@ class ArticleServiceTest {
 
     private Article getArticle() {
         Article article = getIdNullArticle();
-        article.setId(1);
+        article.setId(1L);
 
         return article;
     }

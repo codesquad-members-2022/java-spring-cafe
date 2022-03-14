@@ -55,7 +55,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public ModelAndView viewArticle(@PathVariable("id") int id, ModelAndView modelAndView) {
+    public ModelAndView viewArticle(@PathVariable("id") Long id, ModelAndView modelAndView) {
         Article article = articleService.viewArticle(id);
 
         modelAndView.setViewName("qna/show");

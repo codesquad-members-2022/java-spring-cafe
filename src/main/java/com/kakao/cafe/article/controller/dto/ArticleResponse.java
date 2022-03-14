@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public class ArticleResponse {
 
-    private Integer id;
+    private Long id;
     private String title;
     private String createdDate;
     private long viewCount;
@@ -23,11 +23,11 @@ public class ArticleResponse {
         return response;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -103,7 +103,7 @@ class ArticleRepositoryTest {
             @Test
             void 글을_찾을수없다() {
                 // arrange
-                int unsavedId = 1;
+                Long unsavedId = 1L;
 
                 // assert
                 articleRepository.findById(unsavedId)
@@ -154,7 +154,7 @@ class ArticleRepositoryTest {
 
     private Article getArticle() {
         Article article = getIdNullArticle();
-        article.setId(1);
+        article.setId(1L);
 
         return article;
     }
