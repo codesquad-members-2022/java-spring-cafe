@@ -19,6 +19,10 @@ public class ArticleService {
         articleRepository.saveArticle(article);
     }
 
-    public List<Article> loadAllArticles() {return articleRepository.loadAllArticles();}
+    public List<Article> loadAllArticles() {
+        return articleRepository.loadAllArticles();
+    }
 
+    public Article loadOneArticle(int index) { return articleRepository.loadOneArticle(index);
+    }
 }

@@ -8,4 +8,5 @@ public interface ArticleRepository {
 
     Article saveArticle(Article article);
     List<Article> loadAllArticles();
+    Article loadOneArticle(int index);
 }

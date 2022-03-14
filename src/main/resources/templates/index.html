@@ -10,11 +10,11 @@
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a href="../static/qna/show.html" th:text="${article.title}"></a>
+                              <a th:href="@{/articles/{index}(index=${article.getId()})}" th:text="${article.title}"></a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
-                              <span class="time" th:text="${article.createdDate}">2016-01-15 18:47</span>
+                              <span class="time" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                               <a href="user/profile.html" class="author" th:text="${article.writer}"></a>
                           </div>
                           <div class="reply" title="댓글">

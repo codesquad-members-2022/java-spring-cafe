@@ -7,6 +7,7 @@ public class Article {
     private String title;
     private String content;
     private LocalDateTime createdDate;
+    private int id;
 
     public Article(String writer, String title, String content, LocalDateTime createdDate) {
         this.writer = writer;
@@ -29,5 +30,13 @@ public class Article {
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
