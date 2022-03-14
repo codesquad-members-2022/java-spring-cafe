@@ -41,22 +41,27 @@
 
 #### 2.2 게시글 데이터 저장
 
+- [X] 새로 구현한 ``H2ArticleRepository``에 @Primary를 이용하여 1순위 주입 대상으로 변경
+
 - Article 클래스를 DB 테이블에 저장할 수 있도록 구현 
-  - [ ] Insert 구현 & TEST 
+  - [X] save 구현 & TEST
+
 
 - Article 테이블이 적절한 PK를 가지도록 구현
-  - [ ] PK로 기존에 작성된 ``Long id`` 사용 
+  - [X] PK로 기존에 작성된 ``Long id`` 사용(auto increment 적용) 
 
 <br>
 
 #### 2.3 게시글 목록 구현
 - 전체 게시글 목록 데이터를 DB에서 조회하도록 구현
+  - [X] findAll 구현 & TEST 
 
 <br>
 
 #### 2.4 게시글 상세보기 구현
 - 게시글의 세부 내용을 DB에서 가져오도록 구현
-
+  - [X] findById 구현 & TEST
+  
 <br>
 
 #### 2.5 사용자 정보 DB에 저장

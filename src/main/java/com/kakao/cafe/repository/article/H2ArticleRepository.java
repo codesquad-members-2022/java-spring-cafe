@@ -7,35 +7,38 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.domain.article.Article;
+import com.kakao.cafe.repository.KeyHolderGenerator;
 
 @Primary
 @Repository
 public class H2ArticleRepository implements ArticleRepository {
 
-    private Logger log = LoggerFactory.getLogger(H2ArticleRepository.class);
-
+    private final Logger log = LoggerFactory.getLogger(H2ArticleRepository.class);
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final KeyHolderGenerator keyHolderGenerator;
 
+    @Autowired
     public H2ArticleRepository(
-        NamedParameterJdbcTemplate jdbcTemplate) {
+        NamedParameterJdbcTemplate jdbcTemplate, KeyHolderGenerator keyHolderGenerator) {
         this.jdbcTemplate = jdbcTemplate;
+        this.keyHolderGenerator = keyHolderGenerator;
     }
 
     @Override
     public Long save(Article article) {
         String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = keyHolderGenerator.getKeyHolder();
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[]{"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         log.info("key is = {}", id);
@@ -58,7 +61,7 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public void deleteAll() {
-        String sql = "DELET FROM article";
+        String sql = "DELETE FROM article";
         jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 
