@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.LoginDto;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.MockHttpSession;
 
+
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -125,6 +128,68 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.updateUserInfo(updateUserDto))
                 .isInstanceOf(ClientException.class)
                 .hasMessage("비밀번호가 일치하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("회원가입이 되어있는 유저라면 로그인을 할 수 있다.")
+    void loginTest() {
+        //given
+        LoginDto loginUser = new LoginDto("ron2", "1234");
+        given(userRepository.findById("ron2")).willReturn(Optional.of(user));
+
+        //when
+        UserResponseDto login = userService.login(loginUser);
+
+        //then
+        assertThat(login.getUserId()).isEqualTo(loginUser.getUserId());
+        assertThat(login.getUserId()).isEqualTo(user.getUserId());
+        assertThat(login.getName()).isEqualTo(user.getName());
+        assertThat(login.getEmail()).isEqualTo(user.getEmail());
+
+    }
+
+    @Test
+    @DisplayName("회원가입이 되어있지않은 유저로 로그인을 시도하면 ClientExceptin이 발생한다.")
+    void login_not_signup_user_throw_test() {
+        //given
+        LoginDto loginUser = new LoginDto("notRegistered", "1234");
+        given(userRepository.findById("notRegistered")).willReturn(Optional.empty());
+
+        //when and then
+        assertThatThrownBy(()->userService.login(loginUser))
+                .isInstanceOf(ClientException.class)
+                .hasMessage("아이디 혹은 비밀번호가 일치하지 않습니다.");
+
+    }
+
+    @Test
+    @DisplayName("로그인시 패스워드가 일치하지 않는다면 ClientExceptin이 발생한다.")
+    void login_wrong_password_throw_test() {
+        //given
+        LoginDto loginUser = new LoginDto("ron2", "wrongPassword");
+        given(userRepository.findById("ron2")).willReturn(Optional.of(user));
+
+        //when and then
+        assertThatThrownBy(()->userService.login(loginUser))
+                .isInstanceOf(ClientException.class)
+                .hasMessage("아이디 혹은 비밀번호가 일치하지 않습니다.");
+
+    }
+
+    @Test
+    @DisplayName("로그아웃시 session을 삭제한다")
+    void logoutTest() {
+        //given
+        HttpSession httpSession = new MockHttpSession();
+
+        //when
+        userService.logout(httpSession);
+
+        //then session이 무효화되었는지 확인 (service에서 session을 무효화할 필요가 있을까..?)
+        assertThatThrownBy(httpSession::invalidate)
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("The session has already been invalidated");
+
     }
 
 }
