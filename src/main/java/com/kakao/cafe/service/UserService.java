@@ -67,9 +67,9 @@ public class UserService {
     }
 
     public void update(String userId, User updateUser) {
-        User user = userRepository.findById(userId)
+        userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_USER_ID));
-        user.updateInfo(updateUser);
+        userRepository.save(updateUser);
     }
 
     public void clear() {
