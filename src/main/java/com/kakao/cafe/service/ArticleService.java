@@ -23,4 +23,8 @@ public class ArticleService {
     public List<Article> findAll() {
         return memoryArticleRepository.findArticles();
     }
+
+    public Article findOne(int index) {
+        return memoryArticleRepository.findArticle(index);
+    }
 }

@@ -5,6 +5,7 @@ import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -34,6 +35,13 @@ public class ArticleController {
     public String create(Article article) {
         articleService.write(article);
         return "redirect:/";
+    }
+
+    @GetMapping("/articles/{index}")
+    public String article(@PathVariable int index, Model model) {
+        Article article = articleService.findOne(index);
+        model.addAttribute("article", article);
+        return "qna/show";
     }
 
 }

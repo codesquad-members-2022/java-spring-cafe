@@ -20,4 +20,8 @@ public class MemoryArticleRepository {
     public List<Article> findArticles() {
         return store;
     }
+
+    public Article findArticle(int index) {
+        return store.get(index-1);
+    }
 }
