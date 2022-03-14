@@ -3,13 +3,16 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.LoginDto;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +57,21 @@ public class UserService {
 
         return user;
     }
+
+    public UserResponseDto login(LoginDto loginDto) {
+        User loginUser = userRepository.findById(loginDto.getUserId())
+                .filter(user -> user.isSamePassword(loginDto.getPassword()))
+                .orElseThrow(() -> {
+                    throw new ClientException(HttpStatus.UNAUTHORIZED, "아이디 혹은 비밀번호가 일치하지 않습니다.");
+                });
+
+        return new UserResponseDto(loginUser);
+    }
+
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+    }
+
 
     private void checkDuplicateId(User user) {
         userRepository.findById(user.getUserId()).ifPresent(u -> {
