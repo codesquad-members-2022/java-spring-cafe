@@ -2,6 +2,8 @@ package com.kakao.cafe.user.domain;
 
 import java.time.LocalDateTime;
 
+import com.kakao.cafe.qna.domain.Article;
+
 public class User {
 	public static final long USER_LIMIT_TIME = 10L;
 	private Long id;
@@ -97,6 +99,10 @@ public class User {
 
 	private boolean isPassedLimitTime() {
 		return LocalDateTime.now().isAfter(this.lastUpdatedDate.plusMinutes(USER_LIMIT_TIME));
+	}
+
+	public boolean isWriter(Article article) {
+		return this.id == article.getCafeUserId();
 	}
 
 	public Long getId() {

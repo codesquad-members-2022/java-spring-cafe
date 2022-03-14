@@ -1,20 +1,19 @@
 package com.kakao.cafe.qna.domain;
 
 import static com.kakao.cafe.common.utils.StringValidator.*;
-import static com.kakao.cafe.common.utils.TypeConvertor.*;
 
 import java.time.LocalDate;
 
 public class Article {
-	private Long id;
+	private Long articleId;
 	private String writer;
 	private String title;
 	private String content;
 	private LocalDate writingDate;
 	private Long cafeUserId;
 
-	public Article(Long id, String writer, String title, String content) {
-		this.id = id;
+	public Article(Long articleId, String writer, String title, String content) {
+		this.articleId = articleId;
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
@@ -31,8 +30,8 @@ public class Article {
 	}
 
 	// from db
-	public Article(Long id, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
-		this.id = id;
+	public Article(Long articleId, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
+		this.articleId = articleId;
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
@@ -41,7 +40,7 @@ public class Article {
 	}
 
 	public boolean isEquals(Long id) {
-		return this.id == id;
+		return this.articleId == id;
 	}
 
 	public void changeTitle(String changedTitle) {
@@ -59,12 +58,12 @@ public class Article {
 		}
 	}
 
-	public Long getId() {
-		return id;
+	public Long getArticleId() {
+		return articleId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setArticleId(Long articleId) {
+		this.articleId = articleId;
 	}
 
 	public String getWriter() {
@@ -90,7 +89,7 @@ public class Article {
 	@Override
 	public String toString() {
 		return "Article{" +
-			"id=" + id +
+			"id=" + articleId +
 			", writer='" + writer + '\'' +
 			", title='" + title + '\'' +
 			", content='" + content + '\'' +

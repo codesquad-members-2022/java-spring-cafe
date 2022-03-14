@@ -82,7 +82,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	@Override
 	public Article save(Article entity) {
-		if (!Objects.isNull(entity.getId())) {
+		if (!Objects.isNull(entity.getArticleId())) {
 			updateArticle(entity);
 			return entity;
 		}
@@ -91,7 +91,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	}
 
 	private void updateArticle(Article entity) {
-		Optional<Article> article = findById(entity.getId());
+		Optional<Article> article = findById(entity.getArticleId());
 		if (article.isPresent()) {
 			update(entity);
 		}
@@ -110,7 +110,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 		Map<String, Object> parameters = getArticleMap(entity);
 		Number key = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-		entity.setId(key.longValue());
+		entity.setArticleId(key.longValue());
 	}
 
 	private Map<String, Object> getArticleMap(Article entity) {

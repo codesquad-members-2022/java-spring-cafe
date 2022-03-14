@@ -45,7 +45,7 @@ public class SessionUtils {
 		}
 	}
 
-	private static Object getHttpSessionAttribute(HttpSession httpSession) {
+	public static Object getHttpSessionAttribute(HttpSession httpSession) {
 		return httpSession.getAttribute(SESSION_KEY);
 	}
 }

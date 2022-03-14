@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kakao.cafe.common.utils.session.SessionUser;
+
 @Controller
 @RequestMapping("/questions")
 public class ArticleController {
@@ -53,7 +55,7 @@ public class ArticleController {
 			return REDIRECT_LOGIN_VIEW;
 		}
 		logger.info("request fixing question: {}", id);
-		ArticleDto.WriteResponse question = articleService.read(id);  // TODO 작성자가 다를 때, 에러화면
+		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
 		model.addAttribute("question", question);
 		return "qna/updateForm";
 	}
@@ -67,9 +69,13 @@ public class ArticleController {
 	}
 
 	@GetMapping("/{id}")
-	public String lookAtTheDetailsOfTheQuestion(@PathVariable Long id, Model model) { // TODO
+	public String lookAtTheDetailsOfTheQuestion(@PathVariable Long id, HttpSession httpSession, Model model) {
+		boolean isValid = isValidLogin(httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
 		logger.info("request details of question: {}", id);
-		ArticleDto.WriteResponse question = articleService.read(id);
+		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
 		model.addAttribute("question", question);
 		return "qna/show";
 	}

@@ -2,18 +2,15 @@ package com.kakao.cafe.qna.domain;
 
 import static com.kakao.cafe.user.infra.MemoryUserRepositoryTest.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.user.domain.UserService;
 
@@ -36,7 +33,7 @@ class ArticleServiceTest {
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
 		Article expected = new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
-		expected.setId(1L);
+		expected.setArticleId(1L);
 		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
 		when(userService.getUserByUserId(any())).thenReturn(getUser());
 		when(articleRepository.save(any())).thenReturn(expected);

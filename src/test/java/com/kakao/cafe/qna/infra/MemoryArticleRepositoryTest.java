@@ -2,7 +2,6 @@ package com.kakao.cafe.qna.infra;
 
 import static com.kakao.cafe.qna.domain.ArticleServiceTest.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
@@ -34,9 +33,9 @@ class MemoryArticleRepositoryTest {
 		Article expected = getArticle();
 		Article article = memoryArticleRepository.save(expected);
 
-		Optional<Article> actual = memoryArticleRepository.findById(article.getId());
+		Optional<Article> actual = memoryArticleRepository.findById(article.getArticleId());
 		assertThat(actual.isPresent()).isTrue();
-		assertThat(actual.get().getId()).isNotZero();
+		assertThat(actual.get().getArticleId()).isNotZero();
 	}
 
 	@Test
@@ -48,7 +47,7 @@ class MemoryArticleRepositoryTest {
 		testArticle.changeTitle(changedTitle);
 		Article actual = memoryArticleRepository.save(testArticle);
 
-		assertThat(actual.getId()).isNotZero();
+		assertThat(actual.getArticleId()).isNotZero();
 		assertThat(actual.getTitle()).isNotEqualTo(TEST_TITLE);
 	}
 

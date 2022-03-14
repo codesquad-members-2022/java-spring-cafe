@@ -152,7 +152,7 @@ public class ArticleDto {
 		private final LocalDate writingDate;
 
 		public WriteResponse(Article article) {
-			this.id = toTextFromLong(article.getId());
+			this.id = toTextFromLong(article.getArticleId());
 			this.writer = article.getWriter();
 			this.title = article.getTitle();
 			this.contents = StringEscapeUtils.unescapeHtml4(article.getContent());

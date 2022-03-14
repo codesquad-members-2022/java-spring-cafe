@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.common.utils.session.SessionUser;
 import com.kakao.cafe.user.domain.User;
 import com.kakao.cafe.user.domain.UserService;
 
@@ -21,10 +22,14 @@ public class ArticleService {
 	}
 
 	public long write(ArticleDto.WriteRequest writeRequest) {
-		User user = userService.getUserByUserId(writeRequest.getUserId());
+		User user = getUserByUserId(writeRequest.getUserId());
 		Article question = new Article(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
 		Article getArticle = articleRepository.save(question);
-		return getArticle.getId();
+		return getArticle.getArticleId();
+	}
+
+	private User getUserByUserId(String userId) {
+		return userService.getUserByUserId(userId);
 	}
 
 	public List<ArticleDto.WriteResponse> getAllArticles() {
@@ -34,8 +39,12 @@ public class ArticleService {
 			.collect(toUnmodifiableList());
 	}
 
-	public ArticleDto.WriteResponse read(Long id) {
+	public ArticleDto.WriteResponse read(Long id, SessionUser sessionUser) {
+		User user = getUserByUserId(sessionUser.getUserId());
 		Article article = get(id);
+		if (!user.isWriter(article)) {
+			throw new IllegalArgumentException("invalid access to article board");
+		}
 		return new ArticleDto.WriteResponse(article);
 	}
 
