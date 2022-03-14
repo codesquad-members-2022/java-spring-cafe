@@ -62,8 +62,8 @@ public class UserController {
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
-        UserResponse userResponse = SessionUtil.checkUser(session, userId);
-        userService.updateUser(userResponse, request);
+        UserResponse user = SessionUtil.checkUser(session, userId);
+        userService.updateUser(user, request);
         return "redirect:/users";
     }
 

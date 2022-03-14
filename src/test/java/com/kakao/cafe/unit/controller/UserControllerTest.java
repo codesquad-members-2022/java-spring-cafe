@@ -74,8 +74,6 @@ class UserControllerTest {
         given(userService.findUsers())
             .willReturn(users);
 
-        System.out.println("users = " + users);
-
         // when
         ResultActions actions = performGet("/users");
 
