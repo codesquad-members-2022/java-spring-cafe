@@ -38,13 +38,13 @@ public class MainController {
 
 	@PostMapping("/do_login")
 	public String login(LoginDto loginDto, HttpSession httpSession, RedirectAttributes redirectAttributes) {
-		boolean isValidated = userService.validateLogin(loginDto, redirectAttributes);
-		if (!isValidated) {
+		SessionUser sessionUser = userService.validateLogin(loginDto, redirectAttributes);
+		if (!sessionUser.isValidated()) {
 			return "redirect:/login";
 		}
 
 		logger.info("login : {}", loginDto.getUserId());
-		httpSession.setAttribute(SESSION_KEY, from(loginDto.getUserId()));
+		httpSession.setAttribute(SESSION_KEY, sessionUser);
 		httpSession.setMaxInactiveInterval(1200);  // 20분
 		return "redirect:/";
 	}

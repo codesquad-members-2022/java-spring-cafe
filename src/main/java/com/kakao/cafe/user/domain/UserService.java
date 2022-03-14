@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
 import com.kakao.cafe.main.LoginDto;
+import com.kakao.cafe.main.SessionUser;
 
 @Service
 public class UserService {
@@ -91,19 +92,19 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public boolean validateLogin(LoginDto loginDto, RedirectAttributes redirectAttributes) {
+	public SessionUser validateLogin(LoginDto loginDto, RedirectAttributes redirectAttributes) {
 		Optional<User> getUser = userRepository.findByUserId(loginDto.getUserId());
 		if (getUser.isEmpty()) {
-			return false;
+			return new SessionUser(false);
 		}
 		User user = getUser.get();
 		if (!user.isAllowedStatusOfPasswordEntry()) {
 			redirectAttributes.addFlashAttribute("notAllow", USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);  // 낯섦
-			return false;
+			return new SessionUser(false);
 		}
 		if (user.isDifferentPassword(loginDto.getPassword())) {
-			return false;
+			return new SessionUser(false);
 		}
-		return true;
+		return SessionUser.of(user.getUserId(), user.getName());
 	}
 }
