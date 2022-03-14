@@ -3,7 +3,7 @@ package com.kakao.cafe.controller.dto;
 import com.kakao.cafe.domain.Article;
 import java.time.LocalDateTime;
 
-public class PostDto {
+public class ArticleDto {
 
     private int id;
     private String writerNickname;
@@ -12,7 +12,7 @@ public class PostDto {
     private int viewCount;
     private LocalDateTime createdAt;
 
-    public PostDto(Article post) {
+    public ArticleDto(Article post) {
         this.id = post.getId();
         this.writerNickname = post.getUserId();
         this.title = post.getTitle();

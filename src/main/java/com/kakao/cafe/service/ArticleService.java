@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.PostDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.controller.dto.PostingRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -23,19 +23,19 @@ public class ArticleService {
         return articleRepository.save(newArticle);
     }
 
-    public PostDto read(int id) {
+    public ArticleDto read(int id) {
         try {
             Article article = articleRepository.findById(id);
             article.addViewCount();
-            return new PostDto(article);
+            return new ArticleDto(article);
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다.");
         }
     }
 
-    public List<PostDto> findPosts() {
+    public List<ArticleDto> findPosts() {
         return articleRepository.findAll().stream()
-            .map(PostDto::new)
+            .map(ArticleDto::new)
             .collect(Collectors.toList());
     }
 }

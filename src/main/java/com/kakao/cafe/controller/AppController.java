@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.PostDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ public class AppController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<PostDto> articles = articleService.findPosts();
+        List<ArticleDto> articles = articleService.findPosts();
         model.addAttribute("articles", articles);
         model.addAttribute("totalArticleCount", articles.size());
         return "index";

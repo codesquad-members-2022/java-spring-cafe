@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.kakao.cafe.controller.dto.PostDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.controller.dto.PostingRequestDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.MemoryArticleRepository;
@@ -42,7 +42,7 @@ class ArticleServiceTest {
         int givenId = articleRepository.save(givenArticle);
 
         //when
-        PostDto result = articleService.read(givenId);
+        ArticleDto result = articleService.read(givenId);
 
         //then
         assertThat(result.getViewCount()).isEqualTo(givenArticle.getViewCount() + 1);
@@ -73,7 +73,7 @@ class ArticleServiceTest {
         }
 
         //when
-        List<PostDto> posts = articleService.findPosts();
+        List<ArticleDto> posts = articleService.findPosts();
 
         //then
         assertThat(posts.size()).isEqualTo(10);
