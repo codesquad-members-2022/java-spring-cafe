@@ -65,7 +65,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/users/{id}/form")
+    @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable String id, Model model, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute("sessionedUser");
         if(isUnathorized(sessionedUser)) {
@@ -107,6 +107,7 @@ public class UserController {
         UserResponseDto loginUser = userService.login(loginDto);
 
         if(loginUser == null) {
+            logger.info("[{}] failed login", loginDto.getUserId());
             return "user/login_failed";
         }
 
