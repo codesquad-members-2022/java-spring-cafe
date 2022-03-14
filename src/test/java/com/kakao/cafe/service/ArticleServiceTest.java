@@ -73,7 +73,7 @@ class ArticleServiceTest {
         }
 
         //when
-        List<Article> posts = articleService.findPosts();
+        List<PostDto> posts = articleService.findPosts();
 
         //then
         assertThat(posts.size()).isEqualTo(10);

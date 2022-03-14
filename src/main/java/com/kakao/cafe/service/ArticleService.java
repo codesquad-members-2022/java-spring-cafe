@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,7 +33,9 @@ public class ArticleService {
         }
     }
 
-    public List<Article> findPosts() {
-        return articleRepository.findAll();
+    public List<PostDto> findPosts() {
+        return articleRepository.findAll().stream()
+            .map(PostDto::new)
+            .collect(Collectors.toList());
     }
 }
