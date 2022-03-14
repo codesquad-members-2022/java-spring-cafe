@@ -6,6 +6,9 @@ import com.kakao.cafe.article.exception.ArticleUnsavedException;
 import com.kakao.cafe.article.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class ArticleService {
 
@@ -22,4 +25,8 @@ public class ArticleService {
                 .orElseThrow(ArticleUnsavedException::new);
     }
 
+    public List<Article> findArticles() {
+        return articleRepository.findAll()
+                .orElse(Collections.emptyList());
+    }
 }

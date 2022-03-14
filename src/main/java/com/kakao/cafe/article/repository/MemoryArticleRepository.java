@@ -31,6 +31,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
+    public Optional<List<Article>> findAll() {
+        return Optional.of(Collections.unmodifiableList(articleRegistry));
+    }
+
+    @Override
     public void deleteAll() {
         articleRegistry.clear();
     }

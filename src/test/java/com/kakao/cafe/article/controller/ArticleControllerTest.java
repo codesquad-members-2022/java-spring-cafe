@@ -1,24 +1,44 @@
 package com.kakao.cafe.article.controller;
 
+import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.repository.ArticleRepository;
 import com.kakao.cafe.article.repository.MemoryArticleRepository;
 import com.kakao.cafe.article.service.ArticleService;
+import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ExtendWith(MockitoExtension.class)
 @DisplayName("ArticleController 단위 테스트")
 class ArticleControllerTest {
 
-    private final ArticleService articleService = new ArticleService(new MemoryArticleRepository());
-    private final ArticleController articleController = new ArticleController(articleService);
+    @Mock
+    private ArticleService articleService;
+
+    @InjectMocks
+    private ArticleController articleController;
 
     private MockMvc mockMvc;
 
@@ -59,7 +79,8 @@ class ArticleControllerTest {
             @Test
             void 질문_글쓰기_화면으로_돌아간다() throws Exception {
                 // arrange
-                String questionWriteUrlPath = "qna/form";
+                String questionWriteView = "qna/form";
+                when(articleService.write(any())).thenThrow(RequiredFieldNotFoundException.class);
 
                 // act
                 ResultActions result = mockMvc.perform(
@@ -70,11 +91,63 @@ class ArticleControllerTest {
 
                 // assert
                 result.andExpect(status().is4xxClientError())
-                        .andExpect(forwardedUrl(questionWriteUrlPath));
+                        .andExpect(forwardedUrl(questionWriteView));
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("글 목록 조회는")
+    class MainPageTest {
+
+        @Nested
+        @DisplayName("저장된 게시글이 있으면")
+        class ArticleExistTest {
+
+            @Test
+            void 게시글_목록과_함께_메인_페이지로_이동한다() throws Exception {
+                // arrange
+                String mainPageViewName = "index";
+                String articlesKey = "articles";
+                String articleCountKey = "articleCount";
+                Article articleMock = new Article("", null, null, null);
+                when(articleService.findArticles()).thenReturn(List.of(articleMock));
+
+                // act
+                ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/"));
+
+                // assert
+                ModelAndView modelAndView = resultActions.andExpect(status().isOk())
+                        .andReturn()
+                        .getModelAndView();
+                assertThat(modelAndView).isNotNull();
+                assertThat(modelAndView.getViewName()).isEqualTo(mainPageViewName);
+                assertThat(modelAndView.getModel()).isNotNull();
+                assertThat(modelAndView.getModel().containsKey(articlesKey)).isTrue();
+                assertThat(modelAndView.getModel().containsKey(articleCountKey)).isTrue();
             }
         }
 
+        @Nested
+        @DisplayName("저장된 게시글이 없어도")
+        class NoArticleTest {
 
+            @Test
+            void 메인_페이지로_이동한다() throws Exception {
+                // arrange
+                String mainPageViewName = "index";
+                when(articleService.findArticles()).thenReturn(Collections.emptyList());
+
+                // act
+                ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/"));
+
+                // assert
+                ModelAndView modelAndView = resultActions.andExpect(status().isOk())
+                        .andReturn()
+                        .getModelAndView();
+                assertThat(modelAndView).isNotNull();
+                assertThat(modelAndView.getViewName()).isEqualTo(mainPageViewName);
+            }
+        }
     }
-
 }

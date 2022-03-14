@@ -13,12 +13,14 @@ public class Article {
     private final String content;
     private final LocalDateTime createdDate;
     private final LocalDateTime modifiedDate;
+    private long viewCount;
 
     public Article(String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.title = title;
         this.content = content;
         this.createdDate = getOrDefault(createdDate, LocalDateTime.now());
         this.modifiedDate = getOrDefault(modifiedDate, LocalDateTime.now());
+        this.viewCount = 0;
 
         validateRequiredField(this);
     }
@@ -70,6 +72,14 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public long getViewCount() {
+        return viewCount;
     }
 
     @Override

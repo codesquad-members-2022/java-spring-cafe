@@ -4,6 +4,7 @@ import com.kakao.cafe.article.domain.Article;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -75,6 +76,43 @@ class ArticleRepositoryTest {
                 articleRepository.findById(unsavedId)
                         .ifPresent(article -> Assertions.fail());
 
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("글 목록을 조회할 때")
+    class FindAllTest{
+        @Nested
+        @DisplayName("저장된 글이 있으면")
+        class ArticleExistTest {
+            @Test
+            void 글_목록을_반환한다() {
+                // arrange
+                Integer savedId = 1;
+                Article savedArticle = new Article("제목", "내용", LocalDateTime.now(), LocalDateTime.now());
+                savedArticle.setId(savedId);
+                articleRepository.save(savedArticle);
+
+                // act
+                List<Article> articles = articleRepository.findAll().orElseThrow();
+
+                // assert
+                assertThat(articles).size().isEqualTo(1);
+                assertThat(articles.get(0)).isEqualTo(savedArticle);
+            }
+        }
+
+        @Nested
+        @DisplayName("저장된 글이 없으면")
+        class NoArticleTest {
+            @Test
+            void 빈_목록을_반환한다() {
+                // act
+                List<Article> articles = articleRepository.findAll().orElseThrow();
+
+                // assert
+                assertThat(articles).size().isEqualTo(0);
             }
         }
     }

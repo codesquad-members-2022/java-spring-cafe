@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+@DisplayName("Article 단위 테스트")
 class ArticleTest {
 
     @Nested
