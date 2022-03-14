@@ -4,12 +4,12 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
 public class MemoryUserRepository implements UserRepository {
-    private final List<User> users = new ArrayList<>();
+    private final List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
     public void save(User user) {
