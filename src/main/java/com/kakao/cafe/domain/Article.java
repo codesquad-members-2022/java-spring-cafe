@@ -27,4 +27,7 @@ public class Article {
         return content;
     }
 
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
 }
