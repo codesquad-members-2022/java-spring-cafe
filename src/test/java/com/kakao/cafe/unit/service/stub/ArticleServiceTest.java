@@ -49,6 +49,11 @@ public class ArticleServiceTest {
         public void deleteAll() {
 
         }
+
+        @Override
+        public void deleteById(Integer articleId) {
+
+        }
     }
 
     private static class UserStubRepository implements UserRepository {

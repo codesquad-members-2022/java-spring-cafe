@@ -14,4 +14,6 @@ public interface ArticleRepository {
 
     void deleteAll();
 
+    void deleteById(Integer articleId);
+
 }

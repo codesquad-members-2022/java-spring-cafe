@@ -36,8 +36,8 @@
                 <a class="link-modify-article" href="/articles/{{&articleId}}/form">수정</a>
               </li>
               <li>
-                <form class="form-delete" action="#" method="POST">
-                  <input type="hidden" name="_method" value="DELETE">
+                <form class="form-delete" action="/articles/{{&articleId}}" method="POST">
+                  <input type="hidden" name="_method" value="delete">
                   <button class="link-delete-article" type="submit">삭제</button>
                 </form>
               </li>

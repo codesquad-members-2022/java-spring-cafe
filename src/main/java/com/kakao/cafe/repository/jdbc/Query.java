@@ -7,6 +7,7 @@ public enum Query {
     SELECT_ARTICLE,
     DELETE_ARTICLES,
     UPDATE_ARTICLE,
+    DELETE_ARTICLE,
 
     // user
     COUNT_USER,

@@ -74,7 +74,7 @@ public class ArticleService {
         return Mapper.map(article, ArticleResponse.class);
     }
 
-    public ArticleResponse updateArticle(UserResponse user, ArticleSaveRequest request,
+    public ArticleResponse updateUserArticle(UserResponse user, ArticleSaveRequest request,
         Integer articleId) {
         // Article 도메인 객체를 저장로부터 반환
         Article article = articleRepository.findById(articleId)
@@ -93,9 +93,22 @@ public class ArticleService {
         return Mapper.map(savedArticle, ArticleResponse.class);
     }
 
+
+    public void deleteUserArticle(UserResponse user, Integer articleId) {
+        // Article 도메인 객체를 저장로부터 반환
+        Article article = articleRepository.findById(articleId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        // 요청한 유저가 작성한 Article 객체인지 검증
+        validateUser(article, user);
+
+        articleRepository.deleteById(articleId);
+    }
+
     private void validateUser(Article article, UserResponse user) {
         if (!article.checkWriter(user.getUserId())) {
             throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_WRITER);
         }
     }
+
 }

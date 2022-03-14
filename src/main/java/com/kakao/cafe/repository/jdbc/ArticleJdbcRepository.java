@@ -17,7 +17,8 @@ import org.springframework.stereotype.Repository;
 public class ArticleJdbcRepository implements ArticleRepository {
 
     // 데이터베이스 내 필드명
-    private static final String ARTICLE_ID = "article_id";
+    private static final String ARTICLE_ID_CAMEL = "articleId";
+    private static final String ARTICLE_ID_SNAKE = "article_id";
     private static final String WRITER = "writer";
     private static final String TITLE = "title";
     private static final String CONTENTS = "contents";
@@ -63,7 +64,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         return jdbcTemplate.query(sql,
             (rs, rowNum) ->
                 new Article(
-                    rs.getInt(ARTICLE_ID),
+                    rs.getInt(ARTICLE_ID_SNAKE),
                     rs.getString(WRITER),
                     rs.getString(TITLE),
                     rs.getString(CONTENTS),
@@ -79,10 +80,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
         try {
             Article article = jdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource()
-                    .addValue(ARTICLE_ID, articleId),
+                    .addValue(ARTICLE_ID_CAMEL, articleId),
                 (rs, rowNum) ->
                     new Article(
-                        rs.getInt(ARTICLE_ID),
+                        rs.getInt(ARTICLE_ID_SNAKE),
                         rs.getString(WRITER),
                         rs.getString(TITLE),
                         rs.getString(CONTENTS),
@@ -100,7 +101,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void deleteAll() {
         String sql = queryProps.get(Query.DELETE_ARTICLES);
-
         jdbcTemplate.update(sql, new MapSqlParameterSource());
+    }
+
+    @Override
+    public void deleteById(Integer articleId) {
+        String sql = queryProps.get(Query.DELETE_ARTICLE);
+        jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId));
     }
 }
