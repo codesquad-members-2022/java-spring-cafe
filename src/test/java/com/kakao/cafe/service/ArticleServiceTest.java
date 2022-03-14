@@ -3,12 +3,12 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.Controller.dto.ArticleForm;
 import com.kakao.cafe.Controller.dto.ArticleResponse;
 import com.kakao.cafe.domain.Article;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class ArticleServiceTest {
 
     @Autowired
@@ -28,21 +29,16 @@ class ArticleServiceTest {
         articleForm = new ArticleForm("ader", "titleTest", "contentsTest");
     }
 
-    @AfterEach
-    void tearDown() {
-        articleService.deleteAllArticles();
-    }
-
     @Test
     @DisplayName("ArticleForm 정보를 정상적으로 입력하고 저장을 시도하면 정상적으로 저장된다")
     void saveTest() {
         // given
 
         // when
-        Long saveId = articleService.save(articleForm);
+        Article article = articleService.save(articleForm);
 
         // then
-        assertThat(saveId).isEqualTo(articleService.findArticleResponseById(saveId).getId());
+        assertThat(article.getId()).isEqualTo(articleService.findArticleResponseById(article.getId()).getId());
     }
 
 
@@ -50,13 +46,13 @@ class ArticleServiceTest {
     @DisplayName("저장되어 있는 id로 검색을 시도하면 해당하는 ArticleResponse를 리턴한다")
     void findByIdTest() {
         // given
-        Long saveId = articleService.save(articleForm);
+        Article saveArticle = articleService.save(articleForm);
 
         // when
-        ArticleResponse findArticleResponse = articleService.findArticleResponseById(saveId);
+        ArticleResponse findArticleResponse = articleService.findArticleResponseById(saveArticle.getId());
 
         // then
-        assertThat(findArticleResponse.getId()).isEqualTo(saveId);
+        assertThat(findArticleResponse.getId()).isEqualTo(saveArticle.getId());
     }
 
     @Test

@@ -4,12 +4,12 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.Controller.dto.UserRequestDto;
 import com.kakao.cafe.exception.DuplicateUserIdException;
 import com.kakao.cafe.exception.NoMatchUserException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class UserServiceTest {
 
     @Autowired
@@ -30,11 +31,6 @@ class UserServiceTest {
         userRequestDtos.add(new UserRequestDto("test1", "1234", "박우진", "abc@naver.com"));
         userRequestDtos.add(new UserRequestDto("test2", "1234", "김우진", "abc@google.com"));
         userRequestDtos.add(new UserRequestDto("test3", "1234", "최우진", "abc@kakao.com"));
-    }
-
-    @AfterEach
-    void tearDown() {
-        userService.deleteAllUsers();
     }
 
     @Test
