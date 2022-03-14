@@ -22,4 +22,8 @@ public class ArticleWriteRequest {
     public String getContents() {
         return contents;
     }
+
+    public Article toDomain() {
+        return new Article(writer, title, contents);
+    }
 }

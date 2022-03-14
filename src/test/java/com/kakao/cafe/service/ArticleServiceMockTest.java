@@ -15,6 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -30,8 +31,8 @@ class ArticleServiceMockTest {
 
     @Test
     void write_메서드_만약_article이_들어온다면_저장소에_저장한다() {
-        given(articleRepository.save(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1"))))
-                .willReturn(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1")));
+        given(articleRepository.save(new Article("쿠킴1", "제목1", "본문1")))
+                .willReturn(new Article("쿠킴1", "제목1", "본문1"));
 
         Article result = articleService.write(new ArticleWriteRequest("쿠킴1", "제목1", "본문1"));
 
@@ -44,8 +45,8 @@ class ArticleServiceMockTest {
     void findAricles_메서드_저장소의_모든_article를_리스트로_리턴한다() {
         given(articleRepository.findAll())
                 .willReturn(
-                        List.of(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1")),
-                        new Article(new ArticleWriteRequest("쿠킴2", "제목2", "본문2")))
+                        List.of(new Article("쿠킴1", "제목1", "본문1"),
+                                new Article("쿠킴2", "제목2", "본문2"))
                 );
 
         List<Article> result = articleService.findArticles();
@@ -56,12 +57,12 @@ class ArticleServiceMockTest {
 
     @Test
     void findArticle_메서드_만약_유효한_articleId가_주어진다면_해당_Article를_리턴한다() {
-        given(articleRepository.findByArticleId(any()))
-                .willReturn(Optional.ofNullable(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1"))));
+        given(articleRepository.findByArticleId(anyInt()))
+                .willReturn(Optional.ofNullable(new Article("쿠킴1", "제목1", "본문1")));
 
-        Article result = articleService.findArticle(any());
+        Article result = articleService.findArticle(anyInt());
 
-        then(articleRepository).should(times(1)).findByArticleId(any());
+        then(articleRepository).should(times(1)).findByArticleId(anyInt());
         assertThat(result.getWriter()).isEqualTo("쿠킴1");
         assertThat(result.getTitle()).isEqualTo("제목1");
         assertThat(result.getContents()).isEqualTo("본문1");

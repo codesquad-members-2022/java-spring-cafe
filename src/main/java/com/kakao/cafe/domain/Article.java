@@ -11,10 +11,10 @@ public class Article {
     private final String contents;
     private final LocalDateTime createdTime;
 
-    public Article(ArticleWriteRequest articleWriteRequest) {
-        writer = articleWriteRequest.getWriter();
-        title = articleWriteRequest.getTitle();
-        contents = articleWriteRequest.getContents();
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
         createdTime = LocalDateTime.now();
     }
 

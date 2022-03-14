@@ -20,7 +20,7 @@ class MemoryArticleRepositoryTest {
     @BeforeEach
     void setUp() {
         repository = new MemoryArticleRepository();
-        article = new Article(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
+        article = new Article("쿠킴", "제목1234", "본문1234");
     }
 
     @AfterEach
@@ -39,8 +39,8 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void findAll메소드는_만약_파라미터없이_실행된다면_저장되어있는_article_모두를_리스트로_리턴한다() {
-        repository.save(new Article(new ArticleWriteRequest("쿠킴1", "제목1234", "본문1234")));
-        repository.save(new Article(new ArticleWriteRequest("쿠킴2", "제목1234", "본문1234")));
+        repository.save(new Article("쿠킴1", "제목1", "본문1"));
+        repository.save(new Article("쿠킴2", "제목1234", "본문1234"));
 
         List<Article> result = repository.findAll();
 
@@ -49,7 +49,7 @@ class MemoryArticleRepositoryTest {
 
     @Test
     void findByArticleId메소드는_만약_존재하는_id가주어진다면_해당id의_옵셔널_Article를_리턴한다() {
-        Article article = repository.save(new Article(new ArticleWriteRequest("쿠킴1", "제목1234", "본문1234")));
+        Article article = repository.save(new Article("쿠킴1", "제목1", "본문1"));
 
         Optional<Article> result = repository.findByArticleId(1);
 

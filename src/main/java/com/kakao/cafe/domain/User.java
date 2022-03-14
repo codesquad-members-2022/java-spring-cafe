@@ -10,6 +10,7 @@ public class User {
     private final String name;
     private final String email;
 
+    // Domain이 DTO에 의존적이지만 기억하기위해 변경 X, Article는 변경
     public User(UserJoinRequest userForm) {
         this.userId = userForm.getUserId();
         this.password = userForm.getPassword();
