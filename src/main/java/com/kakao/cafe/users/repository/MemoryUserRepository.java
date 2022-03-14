@@ -1,8 +1,6 @@
 package com.kakao.cafe.users.repository;
 
-import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
 import com.kakao.cafe.users.domain.User;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-@Primary
 public class MemoryUserRepository implements UserRepository {
 
     private final List<User> userRegistry = Collections.synchronizedList(new ArrayList<>());
