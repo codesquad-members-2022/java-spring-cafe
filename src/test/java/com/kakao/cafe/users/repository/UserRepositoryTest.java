@@ -79,31 +79,6 @@ class UserRepositoryTest {
                 assertThat(findUser1).isEqualTo(expectedUser1);
                 assertThat(findUser2).isEqualTo(expectedUser2);
             }
-
-            @Test
-            @DisplayName("userId 가 중복된 사용자를 저장하는 경우, 등록에 실패한다.")
-            void duplicatedTwoId_throwUniqueFieldDuplicatedException() {
-                // arrange
-                User user1 = new User.Builder()
-                        .setUserId("jwkim")
-                        .setPasswd("1234")
-                        .setName("김진완")
-                        .setEmail("wlsdhls0423@naver.com")
-                        .build();
-                User user2 = new User.Builder()
-                        .setUserId("jwkim")
-                        .setPasswd("1234")
-                        .setName("김진완")
-                        .setEmail("wlsdhls0423@naver.com")
-                        .build();
-
-                // assert
-                assertThatThrownBy(()->{
-                    repository.save(user1);
-                    repository.save(user2);
-                }).isInstanceOf(UniqueFieldDuplicatedException.class)
-                        .hasMessageContaining(UniqueFieldDuplicated);
-            }
         }
     }
 

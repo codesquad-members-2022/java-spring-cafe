@@ -20,8 +20,6 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<Long> save(User user) {
-        validateUserIdUnique(user);
-
         user.setId(idGenerator.getAndIncrement());
         userRegistry.add(user);
         return Optional.of(user.getId());
@@ -49,11 +47,5 @@ public class MemoryUserRepository implements UserRepository {
     @Override
     public void deleteAll() {
         userRegistry.clear();
-    }
-
-    private void validateUserIdUnique(User user) {
-        if (findByUserId(user.getUserId()).isPresent()) {
-            throw new UniqueFieldDuplicatedException();
-        }
     }
 }
