@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public class MemoryArticleRepository implements ArticleRepository{
-    private List<Article> articleStore = Collections.synchronizedList(new ArrayList<>());
+    private final List<Article> articleStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public Article save(Article article) {

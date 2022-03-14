@@ -40,8 +40,4 @@ public class Article {
     public void setIndex(int index) {
         this.index = index+1;
     }
-
-    public boolean compareBy(int index) {
-        return this.index == index;
-    }
 }

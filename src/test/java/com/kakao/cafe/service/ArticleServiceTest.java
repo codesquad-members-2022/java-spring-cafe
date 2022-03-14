@@ -32,9 +32,10 @@ class ArticleServiceTest {
     @DisplayName("게시글이 잘 저장되는가")
     void post() {
         ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.");
-        String articleTitle1 = articleService.post(articleForm1);
+        articleService.post(articleForm1);
+        ArticleForm savedArticleForm = articleService.findOneArticle(0);
 
-        assertThat("게시글 제목1").isEqualTo(articleTitle1);
+        assertThat("게시글 제목1").isEqualTo(savedArticleForm.getTitle());
     }
 
     @Test

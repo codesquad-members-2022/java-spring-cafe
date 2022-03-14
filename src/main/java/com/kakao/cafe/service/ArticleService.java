@@ -15,10 +15,9 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public String post(ArticleForm articleForm) {
+    public void post(ArticleForm articleForm) {
         Article article = articleForm.createArticle();
         articleRepository.save(article);
-        return article.getTitle();
     }
 
     public List<Article> findArticles() {
