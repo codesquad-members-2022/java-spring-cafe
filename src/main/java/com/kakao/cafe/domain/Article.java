@@ -62,6 +62,16 @@ public class Article {
         return Objects.equals(this.articleId, articleId);
     }
 
+    public boolean checkWriter(String userId) {
+        return writer.equals(userId);
+    }
+
+    public Article update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -86,4 +96,5 @@ public class Article {
             ", createdDate=" + createdDate +
             '}';
     }
+
 }

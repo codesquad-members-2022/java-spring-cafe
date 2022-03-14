@@ -21,12 +21,9 @@ public class SessionUtil {
     }
 
     public static UserResponse getUser(HttpSession session) {
-        UserResponse userResponse = (UserResponse) Optional.ofNullable(
+        return (UserResponse) Optional.ofNullable(
                 session.getAttribute(SESSION_USER))
             .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
-
-        System.out.println("userResponse = " + userResponse);
-        return userResponse;
     }
 
 }
