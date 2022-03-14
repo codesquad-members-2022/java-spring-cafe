@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 import com.kakao.cafe.controller.dto.PostDto;
 import com.kakao.cafe.controller.dto.PostingRequestDto;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.MemoryArticleRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -39,8 +38,7 @@ class ArticleServiceTest {
     @Test
     void valid_read() {
         //given
-        User loggedInUser = new User("test@user.com", "testuser", "test");
-        Article givenArticle = new Article(loggedInUser, "test title", "test content");
+        Article givenArticle = new Article("Anonymous", "test title", "test content");
         int givenId = articleRepository.save(givenArticle);
 
         //when
@@ -67,11 +65,10 @@ class ArticleServiceTest {
     @Test
     void findPosts() {
         //given
-        User loggedInUser = new User("test@user.com", "testuser", "test");
         for (int i = 1; i <= 10; i++) {
             String title = "test title" + i;
             String content = "test content" + i;
-            Article article = new Article(loggedInUser, title, content);
+            Article article = new Article("Anonymous", title, content);
             articleRepository.save(article);
         }
 

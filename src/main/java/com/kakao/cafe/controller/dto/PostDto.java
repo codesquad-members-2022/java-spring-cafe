@@ -14,7 +14,7 @@ public class PostDto {
 
     public PostDto(Article post) {
         this.id = post.getId();
-        this.writerNickname = post.getWriterNickName();
+        this.writerNickname = post.getUserId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.viewCount = post.getViewCount();
