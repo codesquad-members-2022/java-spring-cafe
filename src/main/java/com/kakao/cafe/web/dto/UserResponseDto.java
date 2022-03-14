@@ -14,6 +14,10 @@ public class UserResponseDto {
         this.email = user.getEmail();
     }
 
+    public boolean isSameId(String userId) {
+        return this.userId.equals(userId);
+    }
+
     public String getUserId() {
         return userId;
     }

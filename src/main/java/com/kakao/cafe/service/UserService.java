@@ -59,13 +59,10 @@ public class UserService {
     }
 
     public UserResponseDto login(LoginDto loginDto) {
-        User loginUser = userRepository.findById(loginDto.getUserId())
+        return userRepository.findById(loginDto.getUserId())
                 .filter(user -> user.isSamePassword(loginDto.getPassword()))
-                .orElseThrow(() -> {
-                    throw new ClientException(HttpStatus.UNAUTHORIZED, "아이디 혹은 비밀번호가 일치하지 않습니다.");
-                });
-
-        return new UserResponseDto(loginUser);
+                .map(UserResponseDto::new)
+                .orElse(null);
     }
 
     public void logout(HttpSession httpSession) {
