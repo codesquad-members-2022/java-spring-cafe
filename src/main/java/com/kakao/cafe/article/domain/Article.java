@@ -15,14 +15,19 @@ public class Article {
     private LocalDateTime modifiedDate;
     private long viewCount;
 
-    public Article(String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public Article(Long id, String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate, long viewCount) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.createdDate = getOrDefault(createdDate, LocalDateTime.now());
-        this.modifiedDate = getOrDefault(modifiedDate, LocalDateTime.now());
-        this.viewCount = 0;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+        this.viewCount = viewCount;
 
         validateRequiredField(this);
+    }
+
+    public Article(String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+        this(null, title, content, createdDate, modifiedDate, 0);
     }
 
     public static Article createWithWriteRequest(ArticleWriteRequest writeRequest) {
