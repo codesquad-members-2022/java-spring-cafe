@@ -10,5 +10,5 @@ public interface UserRepository {
     Optional<User> findById(int id);
     Optional<User> findByUserId(String userId);
     List<User> findAll();
-
+    Optional<User> findByEmail(String email);
 }

@@ -21,17 +21,9 @@ public class UserService {
 
     //회원가입
     public int signUp(UserDto user) {
-        validateDuplicateUser(user);
+        validateDuplicateData(user);
         userRepository.save(new User(user));
         return user.getId();
-    }
-
-
-    private void validateDuplicateUser(UserDto user) {
-        userRepository.findByUserId(user.getUserId())
-            .ifPresent(m -> {
-                throw new IllegalStateException("이미 존재하는 회원입니다.");
-            });
     }
 
     //전체 회원 조회
@@ -44,12 +36,29 @@ public class UserService {
         return user.orElseThrow();
     }
 
-    public int update(UserDto updateData) {
-        validateDuplicateUser(updateData);
-        User updateTargetUser = findOne(updateData.getId());
-        updateTargetUser.updateProfile(updateData);
+    public int update(UserDto updateUserData) {
+        validateDuplicateData(updateUserData);
+        User updatedUser = userRepository.save(new User(updateUserData));
+        return updatedUser.getId();
+    }
 
-        return updateTargetUser.getId();
+    private void validateDuplicateData(UserDto updateData) {
+        validateDuplicateUser(updateData.getUserId());
+        validateDuplicateEmail(updateData.getEmail());
+    }
+
+    private void validateDuplicateUser(String userId) {
+        userRepository.findByUserId(userId)
+            .ifPresent(m -> {
+                throw new IllegalStateException("이미 존재하는 회원입니다.");
+            });
+    }
+
+    private void validateDuplicateEmail(String email) {
+        userRepository.findByEmail(email)
+            .ifPresent(m -> {
+                throw new IllegalStateException("이미 사용중인 이메일입니다.");
+            });
     }
 
 }
