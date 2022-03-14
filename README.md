@@ -68,7 +68,8 @@
 - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
   - [X] UserRepository 메서드 구현(save, findById, findAll)
   - [X] 중복 검증
-  - [ ] 사용자 정보 update 구현
+  - [X] 사용자 정보 update 구현
+  - [ ] Test
 
 <br>
 

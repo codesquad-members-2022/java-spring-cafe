@@ -21,16 +21,16 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public void save(User user) {
-        User checkedUser = users.stream()
+        User foundUser = users.stream()
             .filter(u -> u.checkIfTheIDIsTheSame(user))
             .findAny()
             .orElse(user);
 
-        if (checkedUser.equals(user)) {
+        if (foundUser.equals(user)) {
             users.add(user);
             return;
         }
-        checkedUser.updateInfo(user);
+        foundUser.updateInfo(user);
     }
 
     @Override
