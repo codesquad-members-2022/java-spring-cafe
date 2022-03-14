@@ -8,18 +8,18 @@ import java.util.*;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private List<User> userList = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     @Override
     public User save(User user) {
-        userList.add(user);
+        users.add(user);
         return user;
     }
 
     @Override
     public Optional<User> findById(String id) {
         User selectedUser = null;
-        for (User user : userList) {
+        for (User user : users) {
             if (Objects.equals(user.getUserId(), id)) {
                 selectedUser = user;
                 break;
@@ -30,10 +30,10 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(userList);
+        return new ArrayList<>(users);
     }
 
     public void clearUserList() {
-        userList.clear();
+        users.clear();
     }
 }

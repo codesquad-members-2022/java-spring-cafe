@@ -22,7 +22,7 @@
           <table class="table table-hover">
               <tbody>
 
-              <tr th:each="user:${userList}">
+              <tr th:each="user:${users}">
                   <th scope="row" th:text="${userStat.index + 1}">User Number</th> <td><a th:href="@{users/{userId}(userId = ${user.userId})}" th:text="${user.userId}">User ID</a></td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
               </tr>
               </tbody>
