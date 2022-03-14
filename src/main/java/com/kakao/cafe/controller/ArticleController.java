@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.ArticleSaveDto;
+import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
@@ -29,7 +30,7 @@ public class ArticleController {
 
     @GetMapping("/questions/create")
     public String createForm(Model model) {
-        addAttributeUsers(model);
+        usersAddAttribute(model);
         model.addAttribute("articleSaveDto", new ArticleSaveDto());
         return "qna/form";
     }
@@ -37,7 +38,7 @@ public class ArticleController {
     @PostMapping("/questions")
     public String create(@Valid ArticleSaveDto articleSaveDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            addAttributeUsers(model);
+            usersAddAttribute(model);
             logger.error("errors={}", bindingResult);
             return "qna/form";
         }
@@ -46,7 +47,14 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    private void addAttributeUsers(Model model) {
+    @GetMapping("/")
+    public String showArticles(Model model) {
+        List<Article> articles = articleService.findArticles();
+        model.addAttribute("articles", articles);
+        return "index";
+    }
+
+    private void usersAddAttribute(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
     }

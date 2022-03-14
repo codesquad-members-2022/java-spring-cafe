@@ -16,4 +16,9 @@ public class MemoryArticleRepository implements ArticleRepository {
         articles.add(article);
     }
 
+    @Override
+    public List<Article> findAll() {
+        return articles;
+    }
+
 }

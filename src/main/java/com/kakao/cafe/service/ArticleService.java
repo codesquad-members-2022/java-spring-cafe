@@ -7,6 +7,8 @@ import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArticleService {
     private final ArticleRepository articleRepository;
@@ -23,4 +25,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public List<Article> findArticles() {
+        return articleRepository.findAll();
+    }
 }
