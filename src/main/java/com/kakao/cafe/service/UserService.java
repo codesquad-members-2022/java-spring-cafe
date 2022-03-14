@@ -1,9 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Long join(User user) {
+    public Long signUp(User user) {
         // TODO : validate duplication and format of email, nickname, password
         userRepository.save(user);
         return user.getId();
