@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.UserDto;
 import com.kakao.cafe.controller.dto.SignUpRequestDto;
+import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -43,9 +44,15 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateUser(@PathVariable String userId, Model model) {
+    public String updateUserForm(@PathVariable String userId, Model model) {
         UserDto userDto = userService.findUser(userId);
         model.addAttribute("user", userDto);
         return "user/updateForm";
+    }
+
+    @PostMapping("/{userId}/update")
+    public String updateUser(UserUpdateRequestDto form) {
+        userService.updateUser(form);
+        return "redirect:/users";
     }
 }

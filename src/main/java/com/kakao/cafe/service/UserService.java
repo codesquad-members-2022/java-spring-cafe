@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.SignUpRequestDto;
 import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -45,5 +46,18 @@ public class UserService {
         return userRepository.findAll().stream()
             .map(UserDto::new)
             .collect(Collectors.toList());
+    }
+
+    public int updateUser(UserUpdateRequestDto form) {
+        User user = userRepository.findByUserId(form.getUserId())
+            .orElseThrow(() -> new NoSuchElementException("해당 닉네임을 가진 회원이 존재하지 않습니다."));
+
+        if (!user.isCorrectPassword(form.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        User updatedUser = user.update(form.getNewEmail(), form.getNewPassword());
+
+        return userRepository.save(updatedUser);
     }
 }

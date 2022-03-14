@@ -14,6 +14,9 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public int save(User user) {
+        if(store.contains(user)) {
+            return store.indexOf(user);
+        }
         store.add(user);
         return store.size() - 1;
     }

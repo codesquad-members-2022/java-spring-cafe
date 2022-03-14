@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 public class User {
 
     private String email;
-    private String userId;
+    private final String userId;
     private String password;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     public User(String email, String userId, String password) {
         this.email = email;
@@ -34,5 +34,15 @@ public class User {
 
     public boolean hasSameUserId(String userId) {
         return this.userId.equals(userId);
+    }
+
+    public boolean isCorrectPassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public User update(String newEmail, String newPassword) {
+        this.email = newEmail;
+        this.password = newPassword;
+        return this;
     }
 }
