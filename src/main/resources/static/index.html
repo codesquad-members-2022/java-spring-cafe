@@ -22,8 +22,8 @@
       <div class="panel panel-default qna-list">
           <ul class="list">
               <li>
-                  <div class="wrap">
-                      <div class="main" th:each="article:%{articles}">
+                  <div class="wrap" th:each="article:${articles}">
+                      <div class="main">
                           <strong class="subject">
                               <a th:href="@{questions/{articleId}(articleId = ${article.id})}" th:text="${article.title}">Article Title</a>
                           </strong>
@@ -54,7 +54,7 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
-                  <a href="../templates/form.html" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  <a href="/questions" class="btn btn-primary pull-right" role="button">질문하기</a>
               </div>
           </div>
         </div>
