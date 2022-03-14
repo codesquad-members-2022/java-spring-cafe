@@ -53,12 +53,12 @@ public class UserService {
 
     public void modify(UserUpdateFormDto userUpdateFormDto) {
         User previousUser = getExistenceValidatedUser(userUpdateFormDto.getUserId());
-        isMatchWithPreviousPassword(previousUser, userUpdateFormDto.getPreviousPassword());
+        validateMatchWithPreviousPassword(previousUser, userUpdateFormDto.getPreviousPassword());
         User newUser = userUpdateFormDto.toEntity();
         userRepository.update(previousUser, newUser);
     }
 
-    private void isMatchWithPreviousPassword(User user, String password) {
+    private void validateMatchWithPreviousPassword(User user, String password) {
         if (!user.getPassword().equals(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
