@@ -8,32 +8,33 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/questions")
 public class ArticleController {
 
     private final ArticleService articleService;
 
-    @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
     }
 
-    @GetMapping("/questions")
+    @GetMapping
     public String createForm() {
         return "../templates/form";
     }
 
-    @PostMapping("/questions")
+    @PostMapping
     public String create(ArticleForm form) {
         Article article = new Article(form);
         articleService.create(article);
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{articleId}")
+    @GetMapping("/{articleId}")
     public String viewArticle(@PathVariable("articleId") int articleId, Model model) {
         Article selectedArticle;
         Optional<Article> foundArticle = articleService.findById(articleId);
