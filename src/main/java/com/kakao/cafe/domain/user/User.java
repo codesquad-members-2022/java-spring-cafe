@@ -26,18 +26,19 @@ public class User {
         return this.userId.equals(userId);
     }
 
-    public boolean isMatchPassword(String password) {
-        return this.password.equals(password);
+    public void validatePassword(String password) {
+        if (!this.password.equals(password)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+        }
     }
 
-    private boolean isMatchUserId(String userId) {
-        return this.userId.equals(userId);
+    public void validateUserId(String userId) {
+        if (!this.userId.equals(userId)) {
+            throw new IllegalArgumentException("수정하려는 유저 정보가 일치하지 않습니다.");
+        }
     }
 
     public User update(User user) {
-        if (!isMatchUserId(user.getUserId())) {
-            throw new IllegalArgumentException("수정하려는 유저 정보가 일치하지 않습니다.");
-        }
         this.name = user.getName();
         this.email = user.getEmail();
         this.password = user.getPassword();
