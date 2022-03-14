@@ -35,4 +35,9 @@ public class UserController {
         model.addAttribute("userList", userList);
         return "user/list";
     }
+
+    @GetMapping("/test")
+    public String test(Model model) {
+        return "user/test";
+    }
 }
