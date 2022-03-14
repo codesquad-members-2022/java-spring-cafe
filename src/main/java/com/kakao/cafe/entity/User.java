@@ -1,13 +1,14 @@
 package com.kakao.cafe.entity;
 
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
 
 public class User {
 
-    private final String email;
     private final String userId;
-    private final String name;
-    private final String password;
+    private String email;
+    private String name;
+    private String password;
 
     public User(String email, String userId, String name, String password) {
         this.email = email;
@@ -22,6 +23,13 @@ public class User {
 
     public boolean isSameUserEmail(String userEmail) {
         return this.email.equals(userEmail);
+    }
+
+    public User updateUser(UserRequestDto requestDto) {
+        this.email = requestDto.getUserEmail();
+        this.name = requestDto.getUserName();
+        this.password = requestDto.getPassword();
+        return this;
     }
 
     public UserResponseDto of() {

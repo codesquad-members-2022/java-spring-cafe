@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
@@ -30,6 +31,13 @@ public class UserService {
                 .stream()
                 .map(User::of)
                 .collect(Collectors.toList());
+    }
+
+    public UserResponseDto update(String userId, UserRequestDto userUpdateInfo) {
+        return userRepository.findUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .updateUser(userUpdateInfo)
+                .of();
     }
 
     public UserResponseDto findIdUser(String userId) {

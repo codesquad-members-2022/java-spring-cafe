@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public class UserMemorySaveRepository implements UserRepository {
 
-    private static final List<User> userStore = Collections.synchronizedList(new ArrayList<>());
+    private final List<User> userStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public User userSave(User user) {
