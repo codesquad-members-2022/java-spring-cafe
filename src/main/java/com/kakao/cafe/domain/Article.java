@@ -51,7 +51,7 @@ public class Article {
         return Objects.hash(id);
     }
 
-    public boolean equalId(int referId) {
-        return Objects.equals(this.id, referId);
+    public boolean isSameId(int referId) {
+        return this.id == referId;
     }
 }
