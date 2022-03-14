@@ -8,13 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/users")
@@ -57,33 +56,5 @@ public class UserController {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
         return "user/profile";
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ModelAndView returnFormAndSendExceptionMessage(HttpServletRequest request, HttpServletResponse response, IllegalArgumentException exception) throws IOException {
-        logger.error("IllegalArgumentException={}", exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", exception.getMessage());
-
-        String requestURI = request.getRequestURI();
-        if (requestURI.equals("/users")) {
-            UserDto userDto = changeParamsToUserDto(request);
-            modelAndView.addObject(userDto);
-            modelAndView.setViewName("user/form");
-        }
-
-        if (!modelAndView.hasView()) {
-            response.sendError(404, "페이지를 찾을 수 없습니다");
-        }
-        return modelAndView;
-    }
-
-    private UserDto changeParamsToUserDto(HttpServletRequest request) {
-        UserDto userDto = new UserDto();
-        userDto.setUserId(request.getParameter("userId"));
-        userDto.setPassword(request.getParameter("password"));
-        userDto.setName(request.getParameter("name"));
-        userDto.setEmail(request.getParameter("email"));
-        return userDto;
     }
 }
