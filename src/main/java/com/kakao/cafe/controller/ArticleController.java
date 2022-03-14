@@ -55,7 +55,7 @@ public class ArticleController {
     public String formUpdateQuestion(@PathVariable(value = "id") Integer articleId, Model model,
         HttpSession session) {
         UserResponse user = SessionUtil.getUser(session);
-        ArticleResponse article = articleService.findUserArticle(user, articleId);
+        ArticleResponse article = articleService.mapUserArticle(user, articleId);
         model.addAttribute("article", article);
         return "qna/form";
     }
@@ -64,7 +64,7 @@ public class ArticleController {
     public String updateQuestion(@PathVariable(value = "id") Integer articleId,
         ArticleSaveRequest request, HttpSession session) {
         UserResponse user = SessionUtil.getUser(session);
-        articleService.updateUserArticle(user, request, articleId);
+        articleService.updateArticle(user, request, articleId);
         return "redirect:/";
     }
 
@@ -72,7 +72,7 @@ public class ArticleController {
     public String deleteQuestion(@PathVariable(value = "id") Integer articleId,
         HttpSession session) {
         UserResponse user = SessionUtil.getUser(session);
-        articleService.deleteUserArticle(user, articleId);
+        articleService.deleteArticle(user, articleId);
         return "redirect:/";
     }
 

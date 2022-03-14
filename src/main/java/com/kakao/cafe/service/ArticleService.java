@@ -62,26 +62,16 @@ public class ArticleService {
         return Mapper.map(article, ArticleResponse.class);
     }
 
-    public ArticleResponse findUserArticle(UserResponse user, Integer articleId) {
-        // Article 도메인 객체를 저장소로부터 반환
-        Article article = articleRepository.findById(articleId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
-
-        // 요청한 유저가 작성한 Article 객체인지 검증
-        validateUser(article, user);
+    public ArticleResponse mapUserArticle(UserResponse user, Integer articleId) {
+        Article article = findUserArticle(user, articleId);
 
         // Article 도메인 객체를 ArticleResponse DTO 로 변환
         return Mapper.map(article, ArticleResponse.class);
     }
 
-    public ArticleResponse updateUserArticle(UserResponse user, ArticleSaveRequest request,
+    public ArticleResponse updateArticle(UserResponse user, ArticleSaveRequest request,
         Integer articleId) {
-        // Article 도메인 객체를 저장로부터 반환
-        Article article = articleRepository.findById(articleId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
-
-        // 요청한 유저가 작성한 Article 객체인지 검증
-        validateUser(article, user);
+        Article article = findUserArticle(user, articleId);
 
         // Article 도메인 객체에 대해 업데이트 요청사항을 변경
         Article updatedArticle = article.update(request.getTitle(), request.getContents());
@@ -94,18 +84,23 @@ public class ArticleService {
     }
 
 
-    public void deleteUserArticle(UserResponse user, Integer articleId) {
-        // Article 도메인 객체를 저장로부터 반환
-        Article article = articleRepository.findById(articleId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
-
-        // 요청한 유저가 작성한 Article 객체인지 검증
-        validateUser(article, user);
+    public void deleteArticle(UserResponse user, Integer articleId) {
+        findUserArticle(user, articleId);
 
         articleRepository.deleteById(articleId);
     }
 
-    private void validateUser(Article article, UserResponse user) {
+    private Article findUserArticle(UserResponse user, Integer articleId) {
+        // Article 도메인 객체를 저장소로부터 반환
+        Article article = articleRepository.findById(articleId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        // 요청한 유저가 작성한 Article 객체인지 검증
+        validateUser(user, article);
+        return article;
+    }
+
+    private void validateUser(UserResponse user, Article article) {
         if (!article.checkWriter(user.getUserId())) {
             throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_WRITER);
         }
