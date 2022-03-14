@@ -5,9 +5,9 @@ import com.kakao.cafe.domain.User;
 import java.util.List;
 
 public interface UserRepository {
-    User findById(Long id);
+    User findByUserId(String userId);
     List<User> findAll();
     User save(User user);
-    void update(Long id, User updateParam);
+    void update(String userId, User updateParam);
     void clearStore();
 }

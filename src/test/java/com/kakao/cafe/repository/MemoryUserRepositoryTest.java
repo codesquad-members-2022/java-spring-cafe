@@ -26,7 +26,7 @@ class MemoryUserRepositoryTest {
         memoryUserRepository.save(user);
 
         // then
-        User savedUser = memoryUserRepository.findById(user.getId());
+        User savedUser = memoryUserRepository.findByUserId(user.getUserId());
         assertThat(savedUser).isEqualTo(user);
     }
 
@@ -52,13 +52,13 @@ class MemoryUserRepositoryTest {
         // given
         User user = new User("user", "123123", "김김김", "user@example.com");
         memoryUserRepository.save(user);
-        Long userId = user.getId();
+        String userId = user.getUserId();
 
         // when
         User updateParam = new User("updateParam", "456456", "이이이", "updateParam@example.com");
         memoryUserRepository.update(userId, updateParam);
 
-        User findUser = memoryUserRepository.findById(userId);
+        User findUser = memoryUserRepository.findByUserId(userId);
 
         // then
         assertThat(findUser.getEmail()).isEqualTo(updateParam.getEmail());

@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findOne(Long userId) {
-        return userRepository.findById(userId);
+    public User findOne(String userId) {
+        return userRepository.findByUserId(userId);
     }
 }
