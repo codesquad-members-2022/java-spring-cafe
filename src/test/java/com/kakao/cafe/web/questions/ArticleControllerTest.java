@@ -58,7 +58,7 @@ class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("글을 작성하고 Post 요청 보내기")
+    @DisplayName("글을 작성하고 Post 요청시 root로 redirection 되어야 한다.")
     void getFormArticleTest() throws Exception {
         // when
         ResultActions requestThenResult = mockMvc.perform(post("/questions")
@@ -74,6 +74,7 @@ class ArticleControllerTest {
     }
 
     @Test
+    @DisplayName("특정 게시물 요청시 이동 해야함")
     void showSpecificArticleTest() throws Exception {
         // given
         given(mockArticleService.findArticleById(any())).willReturn(article1);

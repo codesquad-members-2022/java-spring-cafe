@@ -1,6 +1,7 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Article {
     private Long id;
@@ -54,5 +55,18 @@ public class Article {
 
     public void setLocalDateTime(LocalDateTime localDateTime) {
         this.localDateTime = localDateTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Article article = (Article) o;
+        return Objects.equals(getId(), article.getId()) && Objects.equals(getUserId(), article.getUserId()) && Objects.equals(getTitle(), article.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUserId(), getTitle());
     }
 }

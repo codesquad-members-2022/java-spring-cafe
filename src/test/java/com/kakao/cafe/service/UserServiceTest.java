@@ -56,7 +56,7 @@ public class UserServiceTest {
     public void registerValidationTest() {
         // given
         User sameUser = new User("Shine", "1234", "Shine", "Shine@gmail.com");
-        given(userRepository.findById(user.getUserId())).willReturn(Optional.of(user));
+        given(userRepository.findByUserId(user.getUserId())).willReturn(Optional.of(user));
 
         // when, then
         assertThatThrownBy(() -> userService.register(sameUser)).isInstanceOf(DuplicateUserException.class);
@@ -77,7 +77,7 @@ public class UserServiceTest {
     @Test
     public void findUserTest() {
         // given
-        given(userRepository.findById(any())).willReturn(Optional.of(user));
+        given(userRepository.findByUserId(any())).willReturn(Optional.of(user));
 
         // when
         User findUser = userService.findUserById(user.getUserId());
@@ -90,7 +90,7 @@ public class UserServiceTest {
     @DisplayName("등록되지 않은 유저 아이디로 유저를 조화하면 예외를 반환한다")
     public void findUserExceptionTest() {
         // given
-        given(userRepository.findById(any())).willReturn(Optional.empty());
+        given(userRepository.findByUserId(any())).willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> userService.findUserById(any())).isInstanceOf(NotFoundException.class);
@@ -99,9 +99,10 @@ public class UserServiceTest {
     @Test
     public void updateTest() {
         // given
-        User other = new User("Shine", "5678", "update", "update@gmail.com");
+        User other = new User("Shine", "1234", "update", "update@gmail.com");
         other.setId(1L);
 
+        given(userRepository.findByUserId(any())).willReturn(Optional.of(user));
         given(userRepository.update(user.getUserId(), other)).willReturn(true);
 
         // when

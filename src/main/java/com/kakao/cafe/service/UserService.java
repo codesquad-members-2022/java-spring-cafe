@@ -27,7 +27,7 @@ public class UserService {
     }
 
     private boolean isDuplicateUserId(String userId) {
-        return repository.findById(userId).isPresent();
+        return repository.findByUserId(userId).isPresent();
     }
 
     public List<User> findUsers() {
@@ -35,11 +35,17 @@ public class UserService {
     }
 
     public User findUserById(String userId) {
-        return repository.findById(userId)
+        return repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND_EXCEPTION));
     }
 
-    public boolean userUpdate(User user){
-        return repository.update(user.getUserId(), user);
+    public boolean userUpdate(User user) {
+        User findUser = findUserById(user.getUserId());
+
+        if (findUser.isSamePassword(user.getPassword())) {
+            return repository.update(user.getUserId(), user);
+        }
+
+        return false;
     }
 }

@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findById(String userId) {
+    public Optional<User> findByUserId(String userId) {
         return Optional.ofNullable(userMap.get(userId));
     }
 
@@ -42,8 +43,8 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public boolean update(String userId, User updateParam) {
-        if (findById(userId).isPresent()) {
-            User findUser = findById(userId).get();
+        if (findByUserId(userId).isPresent()) {
+            User findUser = findByUserId(userId).get();
             findUser.setUserId(updateParam.getUserId());
             findUser.setPassword(updateParam.getPassword());
             findUser.setName(updateParam.getName());

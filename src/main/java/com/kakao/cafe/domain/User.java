@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import java.util.Objects;
+
 public class User {
     private Long id;
     private String userId;
@@ -58,6 +60,19 @@ public class User {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getPassword(), user.getPassword());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getUserId(), getPassword());
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
@@ -66,5 +81,13 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public boolean isSamePassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public boolean isSameUserId(User user) {
+        return this.userId.equals(user.userId);
     }
 }

@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.users;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.validation.UserValidation;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -110,12 +113,54 @@ class UserControllerTest {
         given(userService.findUserById(any())).willReturn(user);
 
         // when
-        ResultActions actions = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+        ResultActions requestThenResult = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
                 .accept(MediaType.TEXT_HTML_VALUE));
 
         // then
-        actions.andExpect(status().isOk())
+        requestThenResult.andExpect(status().isOk())
                 .andExpect(model().attribute("user", user))
                 .andExpect(view().name("/user/updateForm"));
+    }
+
+    @Test
+    public void updateSucessTest() throws Exception {
+        // given
+        User updateUser = new User("Shine", "1234", "ShineUpdate", "update@naver.com");
+        MockHttpSession mockSession = new MockHttpSession();
+        given(userService.userUpdate(any())).willReturn(true);
+
+        // when
+        mockSession.setAttribute("SESSIONED_USER", user);
+        ResultActions requestThenResult = mockMvc.perform(post("/users/" + user.getUserId() + "/update")
+                .session(mockSession)
+                .param("userId", "Shine")
+                .param("password", "1234")
+                .param("name", "updateShine")
+                .param("email", "update@naver.com")
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        requestThenResult.andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/users"));
+    }
+
+    @Test
+    public void updateFailTest() throws Exception {
+        // given
+        MockHttpSession mockSession = new MockHttpSession();
+        given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
+
+        // when
+        mockSession.setAttribute("SESSIONED_USER", user);
+
+        // then
+        assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
+                .session(mockSession)
+                .param("userId", "Shine")
+                .param("password", "1234")
+                .param("name", "Shine")
+                .param("email", "shine@naver.com")
+                .accept(MediaType.TEXT_HTML)
+        )).hasCause(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
     }
 }
