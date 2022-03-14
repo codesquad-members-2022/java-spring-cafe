@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +35,9 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String doLogin(@Validated @ModelAttribute("form") LoginDto form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) {
+    public String doLogin(@Validated @ModelAttribute("form") LoginDto form, BindingResult bindingResult,
+                          @RequestParam(defaultValue = "/") String redirectURL,
+                          HttpServletRequest request, HttpServletResponse response) {
         log.info("into doLogin : {}, {}", form.getUserId(), form.getPassword());
 
         if (bindingResult.hasErrors()) {
@@ -58,7 +61,7 @@ public class LoginController {
         session.setAttribute(LOGIN_USER_KEY, findUser);
         log.info("로그인 성공 : {}", findUser);
 
-        return "redirect:/";
+        return "redirect:" + redirectURL;
     }
 
     @PostMapping("/logout")
