@@ -106,4 +106,42 @@ class ArticleControllerTest {
                 .andExpect(model().attribute("article", article1))
                 .andExpect(view().name("/qna/show"));
     }
+
+    @Test
+    @DisplayName("로그인 한 사용자만 자신의 게시물을 삭제할 수 있다.")
+    public void login_Success_User_Can_Delete_Owner_Article() throws Exception {
+        // given : testA 유저 준비
+        mySession.setAttribute("SESSIONED_USER", new User("testA", "1234", "test1", "test11111@naver.com"));
+        given(mockArticleService.findArticleById(any())).willReturn(article1);
+        given(mockArticleService.deleteArticle(any())).willReturn(1L);
+
+        // when : 삭제할 글도 testA 꺼
+        ResultActions requestThenResult = mockMvc.perform(post("/questions/" + article1.getId() + "/delete")
+                .session(mySession)
+                .accept(MediaType.TEXT_HTML_VALUE)
+        );
+
+        // then
+        requestThenResult.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
+    @Test
+    @DisplayName("로그인 한 사용자는 남의 게시물을 삭제할 수 없다.")
+    public void login_Success_User_Can_Delete_Other_Article() throws Exception {
+        // given
+        mySession.setAttribute("SESSIONED_USER", user); // 세션에 저장된 test1 유저
+        given(mockArticleService.findArticleById(any())).willReturn(article1);
+        given(mockArticleService.deleteArticle(any())).willReturn(1L);
+
+        // when 아티클1 작성 유저는 testA
+        ResultActions requestThenResult = mockMvc.perform(post("/questions/" + article1.getId() + "/delete")
+                .session(mySession)
+                .accept(MediaType.TEXT_HTML_VALUE)
+        );
+
+        // then
+        requestThenResult.andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/questions/" + article1.getId()));
+    }
 }

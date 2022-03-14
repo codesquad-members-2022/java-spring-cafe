@@ -33,12 +33,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Long delete(Long id) {
         if (articleMap.containsKey(id)) {
             articleMap.remove(id);
-            return true;
+            return id;
         }
-        return false;
+        return -1L;
     }
 
     @Override

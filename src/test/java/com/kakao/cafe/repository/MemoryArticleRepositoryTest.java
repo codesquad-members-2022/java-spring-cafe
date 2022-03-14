@@ -62,10 +62,10 @@ class MemoryArticleRepositoryTest {
         // when
         Long userId = repository.save(article1);
         repository.save(article2);
-        boolean isDeleted = repository.delete(userId);
+        Long deleteId = repository.delete(userId);
 
         // then
-        assertThat(isDeleted).isTrue();
+        assertThat(deleteId).isEqualTo(1L);
         assertThat(repository.findById(userId).isEmpty()).isTrue();
     }
 

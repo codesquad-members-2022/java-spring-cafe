@@ -37,4 +37,7 @@ public class ArticleService {
         return repository.findAll();
     }
 
+    public Long deleteArticle(Long articleId) {
+        return repository.delete(articleId);
+    }
 }
