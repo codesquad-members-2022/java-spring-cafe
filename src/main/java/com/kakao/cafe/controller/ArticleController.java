@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
 
+
     private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {

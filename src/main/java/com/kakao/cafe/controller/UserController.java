@@ -2,12 +2,9 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.dto.UserSaveRequest;
-import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.InvalidRequestException;
-import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.SessionUtil;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-
-    private static final String SESSION_USER = "SESSION_USER";
 
     private final UserService userService;
 
@@ -51,13 +46,13 @@ public class UserController {
     @PostMapping
     public String createUser(UserSaveRequest request, HttpSession session) {
         UserResponse user = userService.register(request);
-        session.setAttribute(SESSION_USER, user);
+        session.setAttribute(SessionUtil.SESSION_USER, user);
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}/form")
     public String formUpdateUser(@PathVariable String userId, Model model, HttpSession session) {
-        confirmSession(session, userId);
+        SessionUtil.checkUser(session, userId);
 
         UserResponse user = userService.findUser(userId);
         model.addAttribute("user", user);
@@ -67,20 +62,9 @@ public class UserController {
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
-        UserResponse userResponse = confirmSession(session, userId);
+        UserResponse userResponse = SessionUtil.checkUser(session, userId);
         userService.updateUser(userResponse, request);
         return "redirect:/users";
-    }
-
-    private UserResponse confirmSession(HttpSession session, String userId) {
-        UserResponse userResponse = (UserResponse) Optional.ofNullable(
-                session.getAttribute(SESSION_USER))
-            .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
-
-        if (!userResponse.getUserId().equals(userId)) {
-            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
-        }
-        return userResponse;
     }
 
 }
