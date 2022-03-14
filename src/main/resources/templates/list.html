@@ -23,7 +23,7 @@
               <tbody>
 
               <tr th:each="user:${userList}">
-                  <th scope="row" th:text="${userStat.index + 1}">User Number</th> <td><a th:href="@{user/{userId}(userId = ${user.userId})}" th:text="${user.userId}">User ID</a></td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                  <th scope="row" th:text="${userStat.index + 1}">User Number</th> <td><a th:href="@{users/{userId}(userId = ${user.userId})}" th:text="${user.userId}">User ID</a></td> <td th:text="${user.name}">name</td> <td th:text="${user.email}">email</td><td><a href="#" class="btn btn-success" role="button">수정</a></td>
               </tr>
               </tbody>
               <thead>
