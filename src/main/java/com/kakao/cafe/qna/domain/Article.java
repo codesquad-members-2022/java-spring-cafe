@@ -1,6 +1,7 @@
 package com.kakao.cafe.qna.domain;
 
 import static com.kakao.cafe.common.utils.StringValidator.*;
+import static com.kakao.cafe.common.utils.TypeConvertor.*;
 
 import java.time.LocalDate;
 
@@ -46,6 +47,15 @@ public class Article {
 	public void changeTitle(String changedTitle) {
 		if (!isNullOrBlank(changedTitle)) {
 			this.title = changedTitle;
+		}
+	}
+
+	public void update(ArticleDto.EditRequest updateDto) {
+		if (!isNullOrBlank(updateDto.getTitle())) {
+			this.title = updateDto.getTitle();
+		}
+		if (!isNullOrBlank(updateDto.getContents())) {
+			this.content = updateDto.getContents();
 		}
 	}
 

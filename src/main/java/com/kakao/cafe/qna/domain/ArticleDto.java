@@ -104,6 +104,46 @@ public class ArticleDto {
 		}
 	}
 
+	public static class EditRequest {
+		private final String id;
+		private final String writer;
+		private final String title;
+		private final String contents;
+		private final String userId;
+
+		public EditRequest(String id, String writer, String title, String contents, String userId) {
+			this.id = id;
+			this.writer = writer;
+			this.title = title;
+			this.contents = contents;
+			this.userId = userId;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public Long getIdByLong() {
+			return toLongFromText(id);
+		}
+
+		public String getWriter() {
+			return writer;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getContents() {
+			return contents;
+		}
+
+		public String getUserId() {
+			return userId;
+		}
+	}
+
 	public static class WriteResponse {
 		private final String id;
 		private final String writer;

@@ -39,7 +39,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	enum ArticleColumns implements SqlColumns {
 		ALL("*", "", ""),
-		ARTICLE_ID("article_id", ":article_id", ":id"),
+		ARTICLE_ID("article_id", ":article_id", ":articleId"),
 		WRITER("writer", ":writer", ":writer"),
 		TITLE("title", ":title", ":title"),
 		CONTENT("content", ":content", ":content"),
@@ -98,7 +98,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	}
 
 	private void update(Article entity) {
-		String sql = getSqlOfUpdate(TABLE_NAME_OF_ARTICLE, List.of(WRITER, TITLE, CONTENT, WRITING_DATE), ARTICLE_ID);
+		String sql = getSqlOfUpdate(TABLE_NAME_OF_ARTICLE, List.of(WRITER, TITLE, CONTENT), ARTICLE_ID);
 		SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
 		int update = namedParameterJdbcTemplate.update(sql, params);
 		logger.info("update user : {}", update);

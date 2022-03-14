@@ -23,12 +23,16 @@ public class UserService {
 	}
 
 	public long register(UserDto.Request userDto) {
-		if (userRepository.existByUserId(userDto.getUserId())) {
+		if (isExistByUserId(userDto.getUserId())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
 		User user = new User(userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		User getUser = userRepository.save(user);
 		return getUser.getId();
+	}
+
+	public boolean isExistByUserId(String userId) {
+		return userRepository.existByUserId(userId);
 	}
 
 	public List<User> findUsers() {

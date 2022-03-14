@@ -21,8 +21,8 @@ create table cafe_articles
     writing_date DATE not null,
     cafe_user_id bigint,
     constraint cafe_user_id
-        foreign key (cafe_user_id )
-            references cafe_users ( id )
+    foreign key (cafe_user_id )
+    references cafe_users ( id )
 );
 
 -- delete cafe_users;

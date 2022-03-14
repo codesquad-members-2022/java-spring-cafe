@@ -40,7 +40,7 @@ public class DbText {
 	@Test
 	void for_setting_db_data() throws SQLException {
 		User user = new User("tester", "testName", "test@email.com", "1234asdf");
-		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_change) values (?,?,?,?,?,?,?)";
+		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_enter_password) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, user.getUserId());
 		pstmt.setString(2, user.getName());
@@ -104,7 +104,7 @@ public class DbText {
 				rs.getString("password"),
 				rs.getObject("created_date", LocalDateTime.class),
 				rs.getObject("last_updated_date", LocalDateTime.class),
-				rs.getBoolean("restricted_change"));
+				rs.getBoolean("restricted_enter_password"));
 
 			assertThat(user.getId()).isEqualTo(id);
 			logger.info("User : {}", user);

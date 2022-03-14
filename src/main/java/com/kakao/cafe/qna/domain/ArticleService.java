@@ -35,12 +35,24 @@ public class ArticleService {
 	}
 
 	public ArticleDto.WriteResponse read(Long id) {
-		String errors = String.format("Article %d", id);
-		Article article = articleRepository.findById(id)
-			.orElseThrow(() -> {
-				throw new DomainNotFoundException(errors);
-			});
+		Article article = get(id);
 		return new ArticleDto.WriteResponse(article);
+	}
+
+	public void edit(ArticleDto.EditRequest updateDto) {
+		Article article = get(updateDto.getIdByLong());
+		if (!userService.isExistByUserId(updateDto.getUserId())) {
+			String errorMessage = String.format("no exist user: {}, invalid access to article", updateDto.getUserId());
+			throw new IllegalArgumentException(errorMessage);
+		}
+		article.update(updateDto);
+		articleRepository.save(article);
+	}
+
+	private Article get(Long id) {
+		String errorMessage = String.format("no exist article : %s", id);
+		return articleRepository.findById(id)
+			.orElseThrow(() -> new DomainNotFoundException(errorMessage));
 	}
 }
 
