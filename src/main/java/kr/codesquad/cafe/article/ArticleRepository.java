@@ -2,6 +2,7 @@ package kr.codesquad.cafe.article;
 
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,8 @@ public class ArticleRepository {
     private final List<Article> repository = Collections.synchronizedList(new ArrayList<>());
 
     public void save(Article article) {
-        article.setId(repository.size() + 1);
+        article.setIndex(repository.size() + 1);
+        article.setTimestamp(LocalDateTime.now());
         repository.add(article);
     }
 

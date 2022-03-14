@@ -1,4 +1,4 @@
-package kr.codesquad.cafe.configuration;
+package kr.codesquad.cafe.system;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;

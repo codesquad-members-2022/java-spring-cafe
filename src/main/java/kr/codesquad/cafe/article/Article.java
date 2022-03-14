@@ -2,19 +2,30 @@ package kr.codesquad.cafe.article;
 
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+
 public class Article {
 
-    private Integer id;
+    private Integer index;
+    private LocalDateTime timestamp;
     private String writer;
     private String title;
     private String contents;
 
-    public Integer getId() {
-        return id;
+    public Integer getIndex() {
+        return index;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIndex(Integer index) {
+        this.index = index;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getWriter() {
