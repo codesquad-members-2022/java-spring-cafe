@@ -29,13 +29,16 @@ public class User {
     }
 
     public static User createWithJoinRequest(UserJoinRequest joinRequest) {
-        return new User(null,
+        LocalDateTime now = LocalDateTime.now();
+
+        return new User(
+                null,
                 joinRequest.getUserId(),
                 joinRequest.getPasswd(),
                 joinRequest.getName(),
                 joinRequest.getEmail(),
-                LocalDateTime.now(),
-                LocalDateTime.now());
+                now,
+                now);
     }
 
     // ---- public method ----
