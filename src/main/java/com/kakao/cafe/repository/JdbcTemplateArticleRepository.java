@@ -49,6 +49,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                 .setTitle(rs.getString("title"))
                 .setContents(rs.getString("contents"))
                 .build();
+            article.setId(rs.getInt("id"));
             article.setCreatedTime(rs.getString("created_time"));
             return article;
         };
