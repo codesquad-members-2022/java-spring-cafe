@@ -36,6 +36,7 @@ public class UserService {
     public UserResponseDto update(String userId, UserRequestDto userUpdateInfo) {
         return userRepository.findUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .isSameUserPassword(userUpdateInfo)
                 .updateUser(userUpdateInfo)
                 .of();
     }

@@ -25,6 +25,13 @@ public class User {
         return this.email.equals(userEmail);
     }
 
+    public User isSameUserPassword(UserRequestDto requestDto) {
+        if (this.password.equals(requestDto.getPassword())) {
+            return this;
+        }
+        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+    }
+
     public User updateUser(UserRequestDto requestDto) {
         this.email = requestDto.getUserEmail();
         this.name = requestDto.getUserName();
