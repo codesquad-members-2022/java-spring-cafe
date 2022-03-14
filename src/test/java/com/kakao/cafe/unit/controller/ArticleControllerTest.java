@@ -138,7 +138,7 @@ public class ArticleControllerTest {
             .willThrow(new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
 
         // when
-        ResultActions actions = performGet("/articles/2");
+        ResultActions actions = performGet("/articles/0");
 
         // then
         actions.andExpect(status().isOk())

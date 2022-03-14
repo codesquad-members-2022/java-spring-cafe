@@ -8,6 +8,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.GeneratedKeyHolderFactory;
 import com.kakao.cafe.repository.jdbc.KeyHolderFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,7 +104,8 @@ public class ArticleJdbcRepositoryTest {
         // given
         articleRepository.save(article);
 
-        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents", null);
+        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents",
+            LocalDateTime.now());
 
         // when
         articleRepository.save(changedArticle);

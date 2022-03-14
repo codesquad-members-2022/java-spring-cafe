@@ -18,6 +18,7 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.util.SessionUtil;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -88,7 +89,8 @@ public class ArticleControllerTest {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
         article = new Article("writer", "title", "contents");
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
         userResponse = new UserResponse(1, "writer", "userPassword", "userName",
             "user@example.com");
         otherResponse = new UserResponse(1, "otherId", "otherPassword", "otherName",
