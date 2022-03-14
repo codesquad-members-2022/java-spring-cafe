@@ -24,8 +24,8 @@ public class ArticleService {
         return article.getId();
     }
 
-    public Long addArticle(ArticleDto dto) {
-        Article article = new Article(dto.getWriter(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
+    public Long addArticle(ArticleDto dto, User user) {
+        Article article = new Article(user.getUserId(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
         return addArticle(article);
     }
 
@@ -55,7 +55,7 @@ public class ArticleService {
             throw new IllegalArgumentException("해당 글을 수정할 권한이 없습니다.");
         }
 
-        Article updateArticleForm = new Article(dto.getWriter(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
+        Article updateArticleForm = new Article(user.getUserId(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
         updateArticleForm.setId(index);
         repository.update(index, updateArticleForm);
     }

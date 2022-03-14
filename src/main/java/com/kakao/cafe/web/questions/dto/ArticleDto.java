@@ -3,7 +3,6 @@ package com.kakao.cafe.web.questions.dto;
 import javax.validation.constraints.NotBlank;
 
 public class ArticleDto {
-    @NotBlank
     private String writer;
 
     @NotBlank

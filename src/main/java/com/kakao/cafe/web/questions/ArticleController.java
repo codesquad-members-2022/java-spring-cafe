@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -34,14 +35,15 @@ public class ArticleController {
     }
 
     @PostMapping
-    public String saveForm(@Validated @ModelAttribute("article") ArticleDto dto, BindingResult bindingResult) {
-
+    public String saveForm(@Validated @ModelAttribute("article") ArticleDto dto, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             log.info("saveForm Validation had Errors");
             return "/qna/form";
         }
 
-        articleService.addArticle(dto);
+        User sessioned_user = (User) session.getAttribute("SESSIONED_USER");
+
+        articleService.addArticle(dto, sessioned_user);
         log.info("save form = {}", dto.getTitle());
         return "redirect:/";
     }
@@ -56,10 +58,10 @@ public class ArticleController {
     }
 
     @PostMapping("/{index}/delete")
-    public String deleteArticle(@PathVariable Long index, HttpServletRequest request) {
+    public String deleteArticle(@PathVariable Long index, HttpServletRequest request) throws AuthenticationException {
         if (!isOwnArticle(index, request)) {
             log.info("delete article error : 자신의 글만 삭제 가능");
-            return "redirect:/questions/" + index;
+            throw new AuthenticationException("해당 글을 삭제할 권한이 없습니다.");
         }
 
         log.info("delete article id = {}", index);
@@ -68,10 +70,10 @@ public class ArticleController {
     }
 
     @GetMapping("/{index}/update")
-    public String getArticleUpdateForm(@PathVariable Long index, HttpServletRequest request, Model model) {
+    public String getArticleUpdateForm(@PathVariable Long index, HttpServletRequest request, Model model) throws AuthenticationException {
         if (!isOwnArticle(index, request)) {
             log.info("update article error : 자신의 글만 수정 가능");
-            return "redirect:/questions/" + index;
+            throw new AuthenticationException("해당 글을 수정할 권한이 없습니다.");
         }
 
         log.info("get profile update form");

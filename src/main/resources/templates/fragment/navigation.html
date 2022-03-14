@@ -53,12 +53,26 @@
             <div class="collapse navbar-collapse" id="navbar-collapse2">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="../index.html">Posts</a></li>
-                    <li><a href="../user/login.html" th:if="${session.SESSIONED_USER eq null}" th:href="@{/login}" role="button">로그인</a></li>
-                    <li><a href="#" th:if="${session.SESSIONED_USER ne null}" th:onclick="|javascript:postLogout()|" role="button" >로그아웃</a></li>
-                    <li><a href="../user/form.html" th:if="${session.SESSIONED_USER eq null}" th:href="@{/users/create}" role="button">회원가입</a></li>
-                    <li><a href="#" th:if="${session.SESSIONED_USER ne null}" th:href="@{/users/{userId}/form(userId=${session.SESSIONED_USER.userId})}" role="button">개인정보수정</a></li>
+                    <li><a href="../user/login.html" th:if="${session.SESSIONED_USER eq null}" th:href="@{/login}"
+                           role="button">로그인</a></li>
+                    <li><a href="#" th:if="${session.SESSIONED_USER ne null}" th:onclick="|javascript:postLogout()|"
+                           role="button">로그아웃</a></li>
+                    <li><a href="../user/form.html" th:if="${session.SESSIONED_USER eq null}" th:href="@{/users/create}"
+                           role="button">회원가입</a></li>
+                    <li><a href="#" th:if="${session.SESSIONED_USER ne null}"
+                           th:href="@{/users/{userId}/form(userId=${session.SESSIONED_USER.userId})}" role="button">개인정보수정</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
+    <script>
+        function postLogout() {
+            let f = document.createElement('form');
+            f.setAttribute('method', 'post');
+            f.setAttribute('action', '/logout');
+            document.body.appendChild(f);
+            f.submit();
+        }
+    </script>
 </th:block>
