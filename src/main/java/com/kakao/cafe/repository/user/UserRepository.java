@@ -6,11 +6,11 @@ import java.util.Optional;
 import com.kakao.cafe.domain.user.User;
 
 public interface UserRepository {
-    List<User> findAll();
-
     void save(User user);
 
     Optional<User> findById(String id);
+
+    List<User> findAll();
 
     void deleteAll();
 }
