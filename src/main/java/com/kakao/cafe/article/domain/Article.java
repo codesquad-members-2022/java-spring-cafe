@@ -12,7 +12,7 @@ public class Article {
     private final String title;
     private final String content;
     private final LocalDateTime createdDate;
-    private final LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate;
     private long viewCount;
 
     public Article(String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
@@ -40,11 +40,25 @@ public class Article {
     public boolean equalsId(Integer id) {
         return this.id.intValue() == id.intValue();
     }
+
     public boolean equalsTitle(String title) {
         return this.title.equals(title);
     }
+
     public boolean equalsContent(String content) {
         return this.content.equals(content);
+    }
+
+    public boolean equalsViewCount(long viewCount) {
+        return this.viewCount == viewCount;
+    }
+
+    public void addViewCount() {
+        this.viewCount++;
+    }
+
+    public void updateModifiedDate() {
+        this.modifiedDate = LocalDateTime.now();
     }
 
     // ---- private method ----
@@ -74,8 +88,16 @@ public class Article {
         return title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
     public LocalDateTime getCreatedDate() {
         return createdDate;
+    }
+
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
     }
 
     public long getViewCount() {

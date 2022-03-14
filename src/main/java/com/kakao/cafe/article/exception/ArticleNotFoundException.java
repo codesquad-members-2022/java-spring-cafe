@@ -10,6 +10,6 @@ public class ArticleNotFoundException extends ArticleRuntimeException {
 
     @Override
     public HttpStatus getStatus() {
-        return HttpStatus.BAD_REQUEST;
+        return HttpStatus.NOT_FOUND;
     }
 }

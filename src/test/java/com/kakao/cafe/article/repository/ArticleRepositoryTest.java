@@ -1,12 +1,16 @@
 package com.kakao.cafe.article.repository;
 
 import com.kakao.cafe.article.domain.Article;
+import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @DisplayName("ArticleRepository 단위 테스트")
 class ArticleRepositoryTest {
@@ -19,17 +23,17 @@ class ArticleRepositoryTest {
     }
 
     @Nested
-    @DisplayName("새로운 글을 저장할 때")
+    @DisplayName("글을 저장할 때")
     class SaveTest{
 
         @Nested
-        @DisplayName("정보가 정상적으로 들어왔을 경우")
-        class CorrectDataTest {
+        @DisplayName("등록 요청이면")
+        class CreateTest {
 
             @Test
-            void 등록에_성공한다() {
+            void 글이_새로_저장된다() {
                 // arrange
-                Article expectedArticle = getArticle();
+                Article expectedArticle = getIdNullArticle();
 
                 // act
                 Article savedArticle = articleRepository.save(expectedArticle).orElseThrow();
@@ -37,6 +41,37 @@ class ArticleRepositoryTest {
 
                 // assert
                 assertThat(savedArticle).isEqualTo(expectedArticle);
+            }
+        }
+
+        @Nested
+        @DisplayName("수정 요청이고")
+        class ModifyTest {
+
+            @Test
+            void 저장된_글이면_수정이하고_수정된_글을_반환한다() {
+                // arrange
+                Article modifiedArticle = articleRepository.save(getIdNullArticle()).orElseThrow();
+                modifiedArticle.addViewCount();
+                LocalDateTime beforeUpdatedModifiedDate = modifiedArticle.getModifiedDate();
+
+                // act
+                Article updatedArticle = articleRepository.save(modifiedArticle).orElseThrow();
+
+                // assert
+                assertThat(updatedArticle.equalsId(modifiedArticle.getId())).isTrue();
+                assertThat(updatedArticle.equalsViewCount(modifiedArticle.getViewCount())).isTrue();
+                assertThat(updatedArticle.getModifiedDate()).isAfter(beforeUpdatedModifiedDate);
+            }
+
+            @Test
+            void 저장되지_않은_글이면_수정되지_않고_글도_반환되지_않는다() {
+                // arrange
+                Article unsavedArticle = getArticle();
+
+                // assert
+                articleRepository.save(unsavedArticle)
+                        .ifPresent(article -> fail());
             }
         }
     }
@@ -52,15 +87,13 @@ class ArticleRepositoryTest {
             @Test
             void 정상적으로_글을_반환한다() {
                 // arrange
-                Article expectedArticle = getArticle();
-                Article savedArticle = articleRepository.save(expectedArticle).orElseThrow();
-                expectedArticle.setId(savedArticle.getId());
+                Article savedArticle = articleRepository.save(getIdNullArticle()).orElseThrow();
 
                 // act
-                Article findArticle = articleRepository.findById(expectedArticle.getId()).orElseThrow();
+                Article findArticle = articleRepository.findById(savedArticle.getId()).orElseThrow();
 
                 // assert
-                assertThat(findArticle).isEqualTo(expectedArticle);
+                assertThat(findArticle).isEqualTo(savedArticle);
             }
         }
 
@@ -74,7 +107,7 @@ class ArticleRepositoryTest {
 
                 // assert
                 articleRepository.findById(unsavedId)
-                        .ifPresent(article -> Assertions.fail());
+                        .ifPresent(article -> fail());
 
             }
         }
@@ -89,10 +122,7 @@ class ArticleRepositoryTest {
             @Test
             void 글_목록을_반환한다() {
                 // arrange
-                Integer savedId = 1;
-                Article savedArticle = new Article("제목", "내용", LocalDateTime.now(), LocalDateTime.now());
-                savedArticle.setId(savedId);
-                articleRepository.save(savedArticle);
+                Article savedArticle = articleRepository.save(getIdNullArticle()).orElseThrow();
 
                 // act
                 List<Article> articles = articleRepository.findAll().orElseThrow();
@@ -117,16 +147,16 @@ class ArticleRepositoryTest {
         }
     }
 
-    private Article getArticle() {
-        String expectedTitle = "제목 입니다.";
-        String expectedContent = "내용 입니다.";
-        LocalDateTime expectedCreatedDate = LocalDateTime.now();
-        LocalDateTime expectedModifiedDate = LocalDateTime.now();
+    private Article getIdNullArticle() {
+        LocalDateTime datetime = LocalDateTime.MIN;
+        return new Article("제목 입니다.","내용 입니다.", datetime, datetime);
+    }
 
-        return new Article(expectedTitle,
-                expectedContent,
-                expectedCreatedDate,
-                expectedModifiedDate);
+    private Article getArticle() {
+        Article article = getIdNullArticle();
+        article.setId(1);
+
+        return article;
     }
 
 }

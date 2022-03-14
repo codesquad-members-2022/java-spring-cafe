@@ -1,5 +1,8 @@
 package com.kakao.cafe.exception;
 
+import com.kakao.cafe.article.controller.ArticleController;
+import com.kakao.cafe.article.exception.ArticleNotFoundException;
+import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.users.controller.UserController;
 import com.kakao.cafe.users.exception.UserNotFountException;
 import com.kakao.cafe.users.service.UserService;
@@ -27,9 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("GlobalExceptionHandler 단위 테스트")
 public class GlobalExceptionHandlerTest {
 
+    private final GlobalExceptionHandler globalExceptionHandler = new GlobalExceptionHandler();
+
     @Nested
     @DisplayName("회원 관련 기능에서")
-    class UserControllerTest{
+    class UserControllerTest {
 
         @Mock
         private UserService userService;
@@ -42,7 +47,7 @@ public class GlobalExceptionHandlerTest {
         @BeforeEach
         void setup() {
             mockMvc = MockMvcBuilders.standaloneSetup(userController)
-                    .setControllerAdvice(new GlobalExceptionHandler())
+                    .setControllerAdvice(globalExceptionHandler)
                     .build();
         }
 
@@ -57,6 +62,45 @@ public class GlobalExceptionHandlerTest {
 
                 // act
                 ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
+
+                // assert
+                actions.andExpect(status().is4xxClientError())
+                        .andExpect(GlobalExceptionHandlerTest.this::assert404Page);
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("글 관련 기능에서")
+    class ArticleControllerTest {
+
+        @Mock
+        private ArticleService articleService;
+
+        @InjectMocks
+        private ArticleController articleController;
+
+        private MockMvc mockMvc;
+
+        @BeforeEach
+        void setup() {
+            mockMvc = MockMvcBuilders
+                    .standaloneSetup(articleController)
+                    .setControllerAdvice(globalExceptionHandler)
+                    .build();
+        }
+
+        @Nested
+        @DisplayName("글 상세보기를 할 때")
+        class FindProfileTest{
+            @Test
+            @DisplayName("존재하지 글을 조회하면 404 페이지로 이동한다.")
+            void findProfile_failed() throws Exception {
+                // arrange
+                when(articleService.viewArticle(any())).thenThrow(ArticleNotFoundException.class);
+
+                // act
+                ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/articles/1"));
 
                 // assert
                 actions.andExpect(status().is4xxClientError())

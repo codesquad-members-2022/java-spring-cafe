@@ -1,8 +1,6 @@
 package com.kakao.cafe.article.controller;
 
 import com.kakao.cafe.article.domain.Article;
-import com.kakao.cafe.article.repository.ArticleRepository;
-import com.kakao.cafe.article.repository.MemoryArticleRepository;
 import com.kakao.cafe.article.service.ArticleService;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,10 +18,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -110,8 +106,7 @@ class ArticleControllerTest {
                 String mainPageViewName = "index";
                 String articlesKey = "articles";
                 String articleCountKey = "articleCount";
-                Article articleMock = new Article("", null, null, null);
-                when(articleService.findArticles()).thenReturn(List.of(articleMock));
+                when(articleService.findArticles()).thenReturn(List.of(getArticleMock()));
 
                 // act
                 ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/"));
@@ -132,6 +127,7 @@ class ArticleControllerTest {
         @DisplayName("저장된 게시글이 없어도")
         class NoArticleTest {
 
+
             @Test
             void 메인_페이지로_이동한다() throws Exception {
                 // arrange
@@ -149,5 +145,39 @@ class ArticleControllerTest {
                 assertThat(modelAndView.getViewName()).isEqualTo(mainPageViewName);
             }
         }
+    }
+
+    @Nested
+    @DisplayName("글 상세보기는")
+    class ViewArticleTest {
+
+        @Nested
+        @DisplayName("저장된 글의 id 로 조회하면")
+        class SavedIdTest{
+
+            @Test
+            void 글_상세보기_페이지로_이동한다() throws Exception {
+                // arrange
+                String articleShowViewName = "qna/show";
+                String articleKey = "article";
+                when(articleService.viewArticle(any())).thenReturn(getArticleMock());
+
+                // act
+                ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/articles/1"));
+
+                // assert
+                ModelAndView modelAndView = resultActions.andExpect(status().isOk())
+                        .andReturn()
+                        .getModelAndView();
+                assertThat(modelAndView).isNotNull();
+                assertThat(modelAndView.getViewName()).isEqualTo(articleShowViewName);
+                assertThat(modelAndView.getModel()).isNotNull();
+                assertThat(modelAndView.getModel().containsKey(articleKey)).isTrue();
+            }
+        }
+    }
+
+    private Article getArticleMock() {
+        return new Article("", null, null, null);
     }
 }

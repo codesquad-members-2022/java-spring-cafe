@@ -2,9 +2,13 @@ package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.controller.dto.ArticleWriteRequest;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
+import com.kakao.cafe.utils.DateUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -33,7 +37,5 @@ class ArticleTest {
                         .hasMessageContaining(RequiredFieldNotFound);
             }
         }
-
     }
-
 }

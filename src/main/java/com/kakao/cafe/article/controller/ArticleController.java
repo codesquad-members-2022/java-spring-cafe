@@ -1,5 +1,6 @@
 package com.kakao.cafe.article.controller;
 
+import com.kakao.cafe.article.controller.dto.ArticleDetail;
 import com.kakao.cafe.article.controller.dto.ArticleResponse;
 import com.kakao.cafe.article.controller.dto.ArticleWriteRequest;
 import com.kakao.cafe.article.domain.Article;
@@ -49,6 +50,16 @@ public class ArticleController {
 
         modelAndView.addObject("articleCount", articles.size());
         modelAndView.setViewName("index");
+
+        return modelAndView;
+    }
+
+    @GetMapping("/articles/{id}")
+    public ModelAndView viewArticle(@PathVariable("id") int id, ModelAndView modelAndView) {
+        Article article = articleService.viewArticle(id);
+
+        modelAndView.setViewName("qna/show");
+        modelAndView.addObject("article", ArticleDetail.of(article));
 
         return modelAndView;
     }

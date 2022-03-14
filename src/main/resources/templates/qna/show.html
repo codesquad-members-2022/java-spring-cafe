@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> includes/html_header}}
+    <title>kakao Java Web Programming</title>
+    <link href="../css/post/show.css" rel="stylesheet">
+</head>
+<body>
+    <div class="background">
+        {{> includes/header}}
+
+        <div class="container" id="main">
+            <div class="col-md-12 col-sm-12 col-lg-12">
+                {{#article}}
+                    {{> qna/includes/article_detail}}
+                {{/article}}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
