@@ -9,7 +9,7 @@
     <div class="container" id="main">
        <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default content-main">
-              <form name="question" method="post" th:object="${userDto}" action="/users">
+              <form name="question" method="post" th:object="${userSaveDto}" action="/users">
                   <div th:if="${exception != null}" th:text="${exception}" th:th:classappend="field-error"/>
                   <div class="form-group">
                       <label for="userId">사용자 아이디</label>

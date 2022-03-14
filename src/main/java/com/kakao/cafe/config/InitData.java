@@ -1,7 +1,7 @@
 package com.kakao.cafe.config;
 
 import com.kakao.cafe.controller.dto.ArticleDto;
-import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.controller.dto.UserSaveDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Component;
@@ -24,27 +24,27 @@ public class InitData {
     @PostConstruct
     public void init() {
         for (int i = 1; i <= 10; i++) {
-            UserDto userDto = createRandomUser(i);
+            UserSaveDto userSaveDto = createRandomUser(i);
             try {
-                userService.save(userDto);
+                userService.save(userSaveDto);
             } catch (Exception e) {
                 continue;
             }
             if (random.nextBoolean()) {
-                ArticleDto articleDto = createRandomArticleSaveDto(userDto.getUserId());
+                ArticleDto articleDto = createRandomArticleSaveDto(userSaveDto.getUserId());
                 articleService.save(articleDto);
             }
         }
     }
 
-    private UserDto createRandomUser(int i) {
-        UserDto userDto = new UserDto();
+    private UserSaveDto createRandomUser(int i) {
+        UserSaveDto userSaveDto = new UserSaveDto();
         String[] emails = {"naver", "kakao", "gmail"};
-        userDto.setUserId("userId" + (random.nextInt(100) + 1));
-        userDto.setName("name" + i);
-        userDto.setPassword("password" + i);
-        userDto.setEmail("email" + (random.nextInt(100) + 1) + "@" + emails[random.nextInt(3)] + ".com");
-        return userDto;
+        userSaveDto.setUserId("userId" + (random.nextInt(100) + 1));
+        userSaveDto.setName("name" + i);
+        userSaveDto.setPassword("password" + i);
+        userSaveDto.setEmail("email" + (random.nextInt(100) + 1) + "@" + emails[random.nextInt(3)] + ".com");
+        return userSaveDto;
     }
 
     private ArticleDto createRandomArticleSaveDto(String userId) {

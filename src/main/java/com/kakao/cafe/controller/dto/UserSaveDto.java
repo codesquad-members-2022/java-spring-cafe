@@ -5,7 +5,7 @@ import com.kakao.cafe.domain.User;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class UserDto {
+public class UserSaveDto {
 
     @NotBlank
     private String userId;
@@ -18,13 +18,6 @@ public class UserDto {
 
     @Email
     private String email;
-
-    public UserDto(User user) {
-        userId = user.getUserId();
-        password = user.getPassword();
-        name = user.getName();
-        email = user.getEmail();
-    }
 
     public User toEntity() {
         return new User(userId, password, name, email);

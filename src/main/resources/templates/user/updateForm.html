@@ -9,22 +9,31 @@
     <div class="container" id="main">
        <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default content-main">
-              <form name="question" method="post" th:object="${userDto}" action="/users">
+              <form name="question" method="post" th:object="${userUpdateDto}" th:action="@{/users/{userId}(userId=${userUpdateDto.userId})}">
+                  <input type="hidden" name="_method" value="PUT"/>
                   <div th:if="${exception != null}" th:text="${exception}" th:th:classappend="field-error"/>
                   <div class="form-group">
                       <label for="userId">사용자 아이디</label>
                       <input class="form-control" id="userId" name="userId" placeholder="User ID"
-                             th:field="*{userId}" th:errorclass="field-error">
+                             th:field="*{userId}" th:errorclass="field-error" disabled>
                       <p class="field-error" th:errors="*{userId}">
                           사용자 아이디 오류
                       </p>
                   </div>
                   <div class="form-group">
-                      <label for="password">비밀번호</label>
-                      <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                             th:field="*{password}" th:errorclass="field-error">
-                      <p class="field-error" th:errors="*{password}">
-                          비밀번호 오류
+                      <label for="currentPassword">현재 비밀번호</label>
+                      <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호"
+                             th:field="*{currentPassword}" th:errorclass="field-error">
+                      <p class="field-error" th:errors="*{currentPassword}">
+                          현재 비밀번호 오류
+                      </p>
+                  </div>
+                  <div class="form-group">
+                      <label for="newPassword">변경 비밀번호</label>
+                      <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="새 비밀번호"
+                             th:field="*{newPassword}" th:errorclass="field-error">
+                      <p class="field-error" th:errors="*{newPassword}">
+                          새 비밀번호 오류
                       </p>
                   </div>
                   <div class="form-group">

@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.controller.dto.UserSaveDto;
+import com.kakao.cafe.controller.dto.UserUpdateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void save(UserDto userDto) {
-        validateUser(userDto);
-        
-        User user = userDto.toEntity();
+    public void save(UserSaveDto userSaveDto) {
+        validateUserSaveDto(userSaveDto);
+        User user = userSaveDto.toEntity();
         userRepository.save(user);
     }
 
@@ -30,9 +30,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void validateUser(UserDto userDto) {
-        validateUserId(userDto.getUserId());
-        validateEmail(userDto.getEmail());
+    public void update(UserUpdateDto userUpdateDto) {
+        validateUserUpdateDto(userUpdateDto);
+        User user = userUpdateDto.toEntity();
+        userRepository.save(user);
+    }
+
+    private void validateUserSaveDto(UserSaveDto userSaveDto) {
+        validateUserId(userSaveDto.getUserId());
+        validateEmail(userSaveDto.getEmail());
+    }
+
+    private void validateUserUpdateDto(UserUpdateDto userUpdateDto) {
+        User findUser = userRepository.findByUserId(userUpdateDto.getUserId());
+        if (findUser.isNotEqualsPassword(userUpdateDto.getCurrentPassword())) {
+            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+        }
     }
 
     private void validateUserId(String userId) {

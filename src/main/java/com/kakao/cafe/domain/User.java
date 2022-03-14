@@ -14,6 +14,18 @@ public class User {
         this.email = email;
     }
 
+    public boolean isEqualsUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean isNotEqualsPassword(String password) {
+        return !this.password.equals(password);
+    }
+
+    public boolean isEqualsEmail(String email) {
+        return this.email.equals(email);
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -30,11 +42,13 @@ public class User {
         return email;
     }
 
-    public boolean isEqualsUserId(String userId) {
-        return this.userId.equals(userId);
-    }
-
-    public boolean isEqualsEmail(String email) {
-        return this.email.equals(email);
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
