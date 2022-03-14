@@ -16,9 +16,9 @@ public class ArticleService {
     }
 
     public void saveArticle(Article article) {
-        articleRepository.save(article);
+        articleRepository.saveArticle(article);
     }
 
-    public List<Article> loadAllArticles() {return articleRepository.findAllArticles();}
+    public List<Article> loadAllArticles() {return articleRepository.loadAllArticles();}
 
 }

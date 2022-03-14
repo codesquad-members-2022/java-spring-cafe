@@ -12,13 +12,13 @@ public class MemoryArticleRepository implements ArticleRepository {
     private static List<Article> articles = new ArrayList<>();
 
     @Override
-    public Article save(Article article) {
+    public Article saveArticle(Article article) {
         articles.add(article);
         return article;
     }
 
     @Override
-    public List<Article> findAllArticles() {
+    public List<Article> loadAllArticles() {
         return articles;
     }
 }
