@@ -49,7 +49,7 @@ class H2ArticleRepositoryTest {
     @Test
     void article_save() {
         // given
-        KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("id", 1)));
+        KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("id", 7)));
 
         given(keyHolderGenerator.getKeyHolder())
             .willReturn(keyHolder);
@@ -58,7 +58,7 @@ class H2ArticleRepositoryTest {
         Long id = articleRepository.save(article);
 
         // then
-        assertThat(id).isEqualTo(1);
+        assertThat(id).isEqualTo(7);
     }
 
     @DisplayName("저장된 id를 통해 Article을 가져올 수 있다.")
