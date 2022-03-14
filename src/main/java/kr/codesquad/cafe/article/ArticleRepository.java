@@ -20,6 +20,10 @@ public class ArticleRepository {
     }
 
     public Optional<Article> findOne(int index) {
+        if (index > repository.size()) {
+            return Optional.empty();
+        }
+
         return Optional.ofNullable(repository.get(index - 1));
     }
 

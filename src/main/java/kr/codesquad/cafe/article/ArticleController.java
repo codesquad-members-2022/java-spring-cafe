@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -32,6 +33,13 @@ public class ArticleController {
         service.post(article);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/questions/{index}")
+    public String viewQuestion(@PathVariable("index") int index, Model model) {
+        model.addAttribute("article", service.retrieve(index));
+
+        return "qna/show";
     }
 
 }
