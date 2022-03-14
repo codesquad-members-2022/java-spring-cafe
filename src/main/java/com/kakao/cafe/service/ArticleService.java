@@ -20,10 +20,10 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Long save(ArticleForm article) {
-        Long id = articleRepository.save(ArticleForm.toEntity(articleRepository.nextSequence(), article));
+    public Article save(ArticleForm article) {
+        Article saveArticle = articleRepository.save(ArticleForm.toEntity(article));
 
-        return id;
+        return saveArticle;
     }
 
     private Article findById(Long id) {
@@ -41,9 +41,5 @@ public class ArticleService {
         return articleRepository.findAll().stream()
                 .map(ArticleResponse::of)
                 .collect(Collectors.toUnmodifiableList());
-    }
-
-    public void deleteAllArticles() {
-        articleRepository.deleteAllArticles();
     }
 }

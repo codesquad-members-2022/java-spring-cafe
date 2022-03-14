@@ -24,7 +24,7 @@ public class ArticleResponse {
     public static ArticleResponse of(Article article) {
         ArticleResponse articleResponse = new ArticleResponse(article.getId(), article.getWriter(), article.getTitle(), article.getContents());
         articleResponse.setCreatedTime(article.getCreatedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
-        articleResponse.setLastModifiedTime(article.getLastModifiedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
+        articleResponse.setLastModifiedTime(article.getUpdatedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
         return articleResponse;
     }
 
