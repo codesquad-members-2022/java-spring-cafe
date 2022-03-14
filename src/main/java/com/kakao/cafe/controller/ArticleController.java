@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.service.ArticleService;
 import java.util.List;
 import org.springframework.stereotype.Controller;
@@ -25,21 +25,21 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String createQuestion(ArticleDto articleDto) {
-        articleService.write(articleDto);
+    public String createQuestion(ArticleSaveRequest request) {
+        articleService.write(request);
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String listQuestions(Model model) {
-        List<Article> articles = articleService.findArticles();
+        List<ArticleResponse> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "qna/list";
     }
 
     @GetMapping("articles/{id}")
     public String showQuestion(@PathVariable(value = "id") Integer articleId, Model model) {
-        Article article = articleService.findArticle(articleId);
+        ArticleResponse article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";
     }

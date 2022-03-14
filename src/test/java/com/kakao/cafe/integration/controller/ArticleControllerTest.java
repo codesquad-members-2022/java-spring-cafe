@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -40,6 +41,7 @@ public class ArticleControllerTest {
     ArticleSetUp articleSetUp;
 
     Article article;
+    ArticleResponse articleResponse;
 
     @Component
     public static class ArticleSetUp {
@@ -72,6 +74,8 @@ public class ArticleControllerTest {
             .title("title")
             .contents("contents")
             .build();
+
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
     }
 
     @AfterEach
@@ -125,14 +129,14 @@ public class ArticleControllerTest {
     @DisplayName("등록된 모든 글을 화면에 출력한다")
     public void listArticlesTest() throws Exception {
         // given
-        Article savedArticle = articleSetUp.saveArticle(article);
+        articleSetUp.saveArticle(article);
 
         // when
         ResultActions actions = performGet("/");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("articles", List.of(savedArticle)))
+            .andExpect(model().attribute("articles", List.of(articleResponse)))
             .andExpect(view().name("qna/list"));
     }
 
@@ -147,7 +151,7 @@ public class ArticleControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("article", savedArticle))
+            .andExpect(model().attribute("article", articleResponse))
             .andExpect(view().name("qna/show"));
     }
 

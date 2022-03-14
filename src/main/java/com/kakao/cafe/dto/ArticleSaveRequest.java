@@ -1,10 +1,13 @@
 package com.kakao.cafe.dto;
 
-public class ArticleDto {
+public class ArticleSaveRequest {
 
     private String writer;
     private String title;
     private String contents;
+
+    private ArticleSaveRequest() {
+    }
 
     public String getWriter() {
         return writer;
@@ -18,7 +21,7 @@ public class ArticleDto {
         return contents;
     }
 
-    public ArticleDto(String writer, String title, String contents) {
+    public ArticleSaveRequest(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;

@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.UserController;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
@@ -41,6 +42,7 @@ class UserControllerTest {
     private MockHttpSession session;
 
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
@@ -51,6 +53,9 @@ class UserControllerTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
 
         session = new MockHttpSession();
         session.setAttribute("SESSION_USER", user);
@@ -71,10 +76,12 @@ class UserControllerTest {
     @DisplayName("모든 유저를 조회한다")
     public void listUsersTest() throws Exception {
         // given
-        List<User> users = List.of(user);
+        List<UserResponse> users = List.of(userResponse);
 
         given(userService.findUsers())
             .willReturn(users);
+
+        System.out.println("users = " + users);
 
         // when
         ResultActions actions = performGet("/users");
@@ -90,14 +97,14 @@ class UserControllerTest {
     public void showUserTest() throws Exception {
         // given
         given(userService.findUser(any()))
-            .willReturn(user);
+            .willReturn(userResponse);
 
         // when
         ResultActions actions = performGet("/users/userId");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", user))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/profile"));
     }
 
@@ -117,7 +124,7 @@ class UserControllerTest {
     public void createUserTest() throws Exception {
         // given
         given(userService.register(any()))
-            .willReturn(user);
+            .willReturn(userResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")
@@ -173,14 +180,14 @@ class UserControllerTest {
     public void updateUserFormTest() throws Exception {
         // given
         given(userService.findUser(any()))
-            .willReturn(user);
+            .willReturn(userResponse);
 
         // when
         ResultActions actions = performGet("/users/userId/form", session);
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", user))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/update_form"));
     }
 
@@ -188,12 +195,8 @@ class UserControllerTest {
     @DisplayName("유저 정보 업데이트 후에 메인 페이지로 전환한다")
     public void updateUserTest() throws Exception {
         // given
-        User changedUser = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        UserResponse changedUser = new UserResponse(1, "userId", "userPassword", "otherName",
+            "other@example.com");
 
         given(userService.updateUser(any()))
             .willReturn(changedUser);

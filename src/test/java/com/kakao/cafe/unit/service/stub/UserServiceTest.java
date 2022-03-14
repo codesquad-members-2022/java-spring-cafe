@@ -4,8 +4,9 @@ import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginDto;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserLoginRequest;
+import com.kakao.cafe.dto.UserResponse;
+import com.kakao.cafe.dto.UserSaveRequest;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
@@ -59,6 +60,7 @@ public class UserServiceTest {
 
     private UserService userService;
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
@@ -70,17 +72,20 @@ public class UserServiceTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
     }
 
     @Test
     @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
-        UserDto userDto = new UserDto("newId", "otherPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("newId", "otherPassword", "otherName",
             "other@example.com");
 
         // when
-        User savedUser = userService.register(userDto);
+        UserResponse savedUser = userService.register(request);
 
         // then
         then(savedUser.getUserId()).isEqualTo("userId");
@@ -93,10 +98,11 @@ public class UserServiceTest {
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        UserDto userDto = new UserDto("dupId", "userPassword", "userName", "user@example.com");
+        UserSaveRequest request = new UserSaveRequest("dupId", "userPassword", "userName",
+            "user@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.register(userDto));
+        Throwable throwable = catchThrowable(() -> userService.register(request));
 
         // when, then
         then(throwable)
@@ -108,20 +114,20 @@ public class UserServiceTest {
     @DisplayName("모든 유저를 조회한다")
     public void findUsersTest() {
         // when
-        List<User> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
 
         // then
-        then(users).containsExactlyElementsOf(List.of(user));
+        then(users).containsExactlyElementsOf(List.of(userResponse));
     }
 
     @Test
     @DisplayName("유저 아이디를 입력해 유저를 조회한다")
     public void findUserTest() {
         // when
-        User findUser = userService.findUser("userId");
+        UserResponse findUser = userService.findUser("userId");
 
         // then
-        then(findUser).isEqualTo(user);
+        then(findUser).isEqualTo(userResponse);
     }
 
     @Test
@@ -140,11 +146,11 @@ public class UserServiceTest {
     @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
     public void updateUserTest() {
         // given
-        UserDto userDto = new UserDto("userId", "userPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("userId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        User updatedUser = userService.updateUser(userDto);
+        UserResponse updatedUser = userService.updateUser(request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -156,11 +162,11 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        UserDto userDto = new UserDto("newId", "userPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("newId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
 
         // then
         then(throwable)
@@ -172,11 +178,12 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectUserIdTest() {
         // given
-        UserDto userDto = new UserDto("otherId", "userPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("otherId", "userPassword",
+            "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
 
         // then
         then(throwable)
@@ -188,11 +195,12 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectPasswordTest() {
         // given
-        UserDto userDto = new UserDto("userId", "otherPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("userId", "otherPassword",
+            "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userDto));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
 
         // then
         then(throwable)
@@ -204,10 +212,10 @@ public class UserServiceTest {
     @DisplayName("로그인 시 기존 유저 정보와 일치하면 유저 정보를 반환한다")
     public void loginTest() {
         // given
-        LoginDto loginDto = new LoginDto("userId", "userPassword");
+        UserLoginRequest request = new UserLoginRequest("userId", "userPassword");
 
         // when
-        User user = userService.login(loginDto);
+        UserResponse user = userService.login(request);
 
         // then
         then(user.getUserId()).isEqualTo("userId");
@@ -217,10 +225,10 @@ public class UserServiceTest {
     @DisplayName("로그인 시 존재하지 않는 유저 로그인 정보를 입력하면 예외를 반환한다")
     public void loginUserNotFoundTest() {
         // given
-        LoginDto loginDto = new LoginDto("newId", "userPassword");
+        UserLoginRequest request = new UserLoginRequest("newId", "userPassword");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.login(loginDto));
+        Throwable throwable = catchThrowable(() -> userService.login(request));
 
         // then
         then(throwable)
@@ -232,10 +240,10 @@ public class UserServiceTest {
     @DisplayName("로그인 시 일치하지 않는 비밀번호를 입력하면 예외를 반환한다")
     public void loginIncorrectUserTest() {
         // given
-        LoginDto loginDto = new LoginDto("userId", "otherPassword");
+        UserLoginRequest request = new UserLoginRequest("userId", "otherPassword");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.login(loginDto));
+        Throwable throwable = catchThrowable(() -> userService.login(request));
 
         // then
         then(throwable)

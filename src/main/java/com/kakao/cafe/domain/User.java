@@ -102,8 +102,8 @@ public class User {
         return this;
     }
 
-    public User authenticate(String userId, String password) {
-        if (!this.userId.equals(userId) || !this.password.equals(password)) {
+    public User checkPassword(String password) {
+        if (!this.password.equals(password)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
         return this;

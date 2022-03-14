@@ -9,10 +9,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.controller.ArticleController;
-import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,16 +35,12 @@ public class ArticleControllerTest {
     @MockBean
     private ArticleService articleService;
 
-    private Article article;
+    private ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
-        article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
     }
 
     private ResultActions performGet(String url) throws Exception {
@@ -66,7 +63,7 @@ public class ArticleControllerTest {
     public void createArticleTest() throws Exception {
         // given
         given(articleService.write(any()))
-            .willReturn(article);
+            .willReturn(articleResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
@@ -85,14 +82,14 @@ public class ArticleControllerTest {
     public void listArticlesTest() throws Exception {
         // given
         given(articleService.findArticles())
-            .willReturn(List.of(article));
+            .willReturn(List.of(articleResponse));
 
         // when
         ResultActions actions = performGet("/");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("articles", List.of(article)))
+            .andExpect(model().attribute("articles", List.of(articleResponse)))
             .andExpect(view().name("qna/list"));
     }
 
@@ -101,14 +98,14 @@ public class ArticleControllerTest {
     public void showArticleTest() throws Exception {
         // given
         given(articleService.findArticle(any()))
-            .willReturn(article);
+            .willReturn(articleResponse);
 
         // when
         ResultActions actions = performGet("/articles/1");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("article", article))
+            .andExpect(model().attribute("article", articleResponse))
             .andExpect(view().name("qna/show"));
     }
 

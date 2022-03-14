@@ -10,7 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.AuthController;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginDto;
+import com.kakao.cafe.dto.UserLoginRequest;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
@@ -36,6 +37,7 @@ public class AuthControllerTest {
     private UserService userService;
 
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
@@ -45,6 +47,9 @@ public class AuthControllerTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
     }
 
     @Test
@@ -63,8 +68,8 @@ public class AuthControllerTest {
     @DisplayName("유저가 로그인 정보를 입력하고 로그인에 성공한다")
     public void loginTest() throws Exception {
         // given
-        given(userService.login(any(LoginDto.class)))
-            .willReturn(user);
+        given(userService.login(any(UserLoginRequest.class)))
+            .willReturn(userResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/login")
@@ -81,7 +86,7 @@ public class AuthControllerTest {
     @DisplayName("유저가 존재하지 않는 유저 아이디를 입력하고 로그인에 실패한다")
     public void loginUserNotFoundTest() throws Exception {
         // given
-        given(userService.login(any(LoginDto.class)))
+        given(userService.login(any(UserLoginRequest.class)))
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
@@ -100,7 +105,7 @@ public class AuthControllerTest {
     @DisplayName("유저가 일치하지 않는 비밀번호를 입력하고 로그인에 실패한다")
     public void loginIncorrectUserTest() throws Exception {
         // given
-        given(userService.login(any(LoginDto.class)))
+        given(userService.login(any(UserLoginRequest.class)))
             .willThrow(new InvalidRequestException(ErrorCode.INCORRECT_USER));
 
         // when

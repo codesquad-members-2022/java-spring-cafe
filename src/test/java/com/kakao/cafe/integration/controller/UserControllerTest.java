@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -38,6 +39,7 @@ public class UserControllerTest {
     private MockHttpSession session;
 
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
@@ -47,6 +49,9 @@ public class UserControllerTest {
             .name("userName")
             .email("user@example.com")
             .build();
+
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
 
         session = new MockHttpSession();
         session.setAttribute("SESSION_USER", user);
@@ -73,14 +78,14 @@ public class UserControllerTest {
     @DisplayName("모든 유저를 조회한다")
     public void listUserTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(user);
+        userSetUp.saveUser(user);
 
         // when
         ResultActions actions = performGet("/users");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("users", List.of(savedUser)))
+            .andExpect(model().attribute("users", List.of(userResponse)))
             .andExpect(view().name("user/list"));
     }
 
@@ -88,14 +93,14 @@ public class UserControllerTest {
     @DisplayName("유저 아이디로 유저를 조회한다")
     public void showUserTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(user);
+        userSetUp.saveUser(user);
 
         // when
         ResultActions actions = performGet("/users/userId");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", savedUser))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/profile"));
     }
 
@@ -169,7 +174,7 @@ public class UserControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", user))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/update_form"));
     }
 

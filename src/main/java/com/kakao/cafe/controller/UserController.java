@@ -1,7 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserDto;
+import com.kakao.cafe.dto.UserResponse;
+import com.kakao.cafe.dto.UserSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
@@ -31,14 +32,14 @@ public class UserController {
 
     @GetMapping
     public String listUsers(Model model) {
-        List<User> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String showUser(@PathVariable String userId, Model model) {
-        User user = userService.findUser(userId);
+        UserResponse user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
@@ -49,8 +50,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(UserDto userDto, HttpSession session) {
-        User user = userService.register(userDto);
+    public String createUser(UserSaveRequest request, HttpSession session) {
+        UserResponse user = userService.register(request);
         session.setAttribute(SESSION_USER, user);
         return "redirect:/users";
     }
@@ -59,18 +60,18 @@ public class UserController {
     public String formUpdateUser(@PathVariable String userId, Model model, HttpSession session) {
         confirmSession(session, userId);
 
-        User user = userService.findUser(userId);
+        UserResponse user = userService.findUser(userId);
         model.addAttribute("user", user);
         return "user/update_form";
     }
 
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable String userId, UserDto userDto,
+    public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
         confirmSession(session, userId);
 
-        userDto.setUserId(userId);
-        userService.updateUser(userDto);
+        request.setUserId(userId);
+        userService.updateUser(request);
         return "redirect:/users";
     }
 

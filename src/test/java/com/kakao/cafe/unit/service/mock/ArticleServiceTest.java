@@ -7,7 +7,8 @@ import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User.Builder;
-import com.kakao.cafe.dto.ArticleDto;
+import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -37,6 +38,7 @@ public class ArticleServiceTest {
     private UserRepository userRepository;
 
     Article article;
+    ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
@@ -46,13 +48,15 @@ public class ArticleServiceTest {
             .title("title")
             .contents("contents")
             .build();
+
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
     }
 
     @Test
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
         // given
-        ArticleDto articleDto = new ArticleDto("writer", "title", "contents");
+        ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
         given(userRepository.findByUserId(any(String.class)))
             .willReturn(Optional.of(new Builder()
@@ -66,23 +70,23 @@ public class ArticleServiceTest {
             .willReturn(article);
 
         // when
-        Article savedArticle = articleService.write(articleDto);
+        ArticleResponse savedArticle = articleService.write(request);
 
         // then
-        then(savedArticle).isEqualTo(article);
+        then(savedArticle).isEqualTo(articleResponse);
     }
 
     @Test
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
         // given
-        ArticleDto articleDto = new ArticleDto("writer", "title", "contents");
+        ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
         given(userRepository.findByUserId(any(String.class)))
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(articleDto));
+        Throwable throwable = catchThrowable(() -> articleService.write(request));
 
         // when
         then(throwable)
@@ -98,10 +102,10 @@ public class ArticleServiceTest {
             .willReturn(List.of(article));
 
         // when
-        List<Article> articles = articleService.findArticles();
+        List<ArticleResponse> articles = articleService.findArticles();
 
         // then
-        then(articles).containsExactlyElementsOf(List.of(article));
+        then(articles).containsExactlyElementsOf(List.of(articleResponse));
     }
 
     @Test
@@ -112,10 +116,10 @@ public class ArticleServiceTest {
             .willReturn(Optional.of(article));
 
         // when
-        Article findArticle = articleService.findArticle(article.getArticleId());
+        ArticleResponse findArticle = articleService.findArticle(article.getArticleId());
 
         // then
-        then(findArticle).isEqualTo(article);
+        then(findArticle).isEqualTo(articleResponse);
     }
 
     @Test
