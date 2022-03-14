@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -16,55 +14,17 @@ public class Article {
     private Article() {
     }
 
-    public static class Builder {
-
-        private Integer articleId;
-        private String writer;
-        private String title;
-        private String contents;
-        private LocalDateTime createdDate;
-
-        public Builder articleId(Integer articleId) {
-            this.articleId = articleId;
-            return this;
-        }
-
-        public Builder writer(String writer) {
-            this.writer = writer;
-            return this;
-        }
-
-        public Builder title(String title) {
-            this.title = title;
-            return this;
-        }
-
-        public Builder contents(String contents) {
-            this.contents = contents;
-            return this;
-        }
-
-        public Builder createdDate(LocalDateTime createdDate) {
-            this.createdDate = createdDate;
-            return this;
-        }
-
-        public Article build() {
-            if (writer == null || title == null | contents == null) {
-                throw new NotFoundException(ErrorCode.FIELD_NOT_FOUND);
-            }
-
-            this.createdDate = LocalDateTime.now();
-            return new Article(this);
-        }
+    public Article(String writer, String title, String contents) {
+        this(null, writer, title, contents, LocalDateTime.now());
     }
 
-    private Article(Builder builder) {
-        articleId = builder.articleId;
-        writer = builder.writer;
-        title = builder.title;
-        contents = builder.contents;
-        createdDate = builder.createdDate;
+    public Article(Integer articleId, String writer, String title, String contents,
+        LocalDateTime createdDate) {
+        this.articleId = articleId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
     }
 
     public Integer getArticleId() {

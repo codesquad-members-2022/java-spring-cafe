@@ -69,12 +69,7 @@ public class ArticleControllerTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article.Builder()
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
-
+        article = new Article("writer", "title", "contents");
         articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
     }
 
@@ -104,14 +99,7 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
         // given
-        articleSetUp.saveUser(
-            new User.Builder()
-                .userId("writer")
-                .password("userPassword")
-                .name("userName")
-                .email("user@example.com")
-                .build()
-        );
+        articleSetUp.saveUser(new User("writer", "userPassword", "userName", "user@example.com"));
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")

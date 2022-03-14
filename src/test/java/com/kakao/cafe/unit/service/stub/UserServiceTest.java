@@ -24,12 +24,8 @@ public class UserServiceTest {
 
     private static class UserStubRepository implements UserRepository {
 
-        private final User user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
+        private final User user = new User("userId", "userPassword", "userName",
+            "user@example.com");
 
         @Override
         public User save(User user) {
@@ -66,13 +62,7 @@ public class UserServiceTest {
     public void setUp() {
         userService = new UserService(new UserStubRepository());
 
-        user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
+        user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
     }

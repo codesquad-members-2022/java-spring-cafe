@@ -40,13 +40,7 @@ public class UserServiceTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
+        user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
     }
@@ -145,13 +139,7 @@ public class UserServiceTest {
         UserSaveRequest request = new UserSaveRequest("userId", "userPassword", "otherName",
             "other@example.com");
 
-        User changedUser = new User.Builder()
-            .userNum(1)
-            .userId("userId")
-            .password("userPassword")
-            .name("other")
-            .email("other@example.com")
-            .build();
+        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
@@ -164,7 +152,7 @@ public class UserServiceTest {
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
-        then(updatedUser.getName()).isEqualTo("other");
+        then(updatedUser.getName()).isEqualTo("otherName");
         then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 

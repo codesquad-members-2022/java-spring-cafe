@@ -5,7 +5,6 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.User.Builder;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
@@ -13,6 +12,7 @@ import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,12 +24,7 @@ public class ArticleServiceTest {
 
     private static class ArticleStubRepository implements ArticleRepository {
 
-        Article article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        Article article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
 
         @Override
         public Article save(Article article) {
@@ -72,12 +67,7 @@ public class ArticleServiceTest {
             if (userId.equals("none")) {
                 throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
             }
-            return Optional.of(new Builder()
-                .userId("writer")
-                .password("userPassword")
-                .name("userName")
-                .email("email@example.com")
-                .build());
+            return Optional.of(new User("userId", "userPassword", "userName", "user@example.com"));
         }
 
         @Override
@@ -87,21 +77,13 @@ public class ArticleServiceTest {
     }
 
     private ArticleService articleService;
-    Article article;
     ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
         articleService = new ArticleService(new ArticleStubRepository(), new UserStubRepository());
-
-        article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
-
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
     }
 
     @Test
@@ -146,7 +128,7 @@ public class ArticleServiceTest {
     @DisplayName("질문 id 로 저장소에 저장된 질문을 조회한다")
     public void findArticleTest() {
         // when
-        ArticleResponse findArticle = articleService.findArticle(article.getArticleId());
+        ArticleResponse findArticle = articleService.findArticle(1);
 
         // then
         then(findArticle).isEqualTo(articleResponse);

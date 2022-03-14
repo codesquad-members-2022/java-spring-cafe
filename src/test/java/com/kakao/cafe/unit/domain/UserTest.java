@@ -16,19 +16,8 @@ public class UserTest {
     @DisplayName("유저 아이디와 비밀번호가 일치하면 유저 객체의 속성을 변경한다")
     public void updateUserTest() {
         // given
-        User user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
-        User other = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User user = new User("userId", "userPassword", "userName", "user@example.com");
+        User other = new User("userId", "userPassword", "otherName", "other@example.com");
 
         // when
         User updatedUser = user.update(other);
@@ -42,19 +31,8 @@ public class UserTest {
     @DisplayName("업데이트 시 변경할 유저의 유저 아이디가 일치하지 않으면 예외를 반환한다")
     public void updateUserIdIncorrectTest() {
         // given
-        User user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
-        User other = new User.Builder()
-            .userId("otherId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User user = new User("userId", "userPassword", "userName", "user@example.com");
+        User other = new User("otherId", "userPassword", "otherName", "other@example.com");
 
         // when
         Throwable throwable = catchThrowable(() -> user.update(other));
@@ -69,19 +47,8 @@ public class UserTest {
     @DisplayName("업데이트 시 변경할 유저의 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserPasswordIncorrectTest() {
         // given
-        User user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
-        User other = new User.Builder()
-            .userId("userId")
-            .password("otherPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User user = new User("userId", "userPassword", "userName", "user@example.com");
+        User other = new User("userId", "otherPassword", "userName", "user@example.com");
 
         // when
         Throwable throwable = catchThrowable(() -> user.update(other));

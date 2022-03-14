@@ -2,7 +2,6 @@ package com.kakao.cafe.domain;
 
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
-import com.kakao.cafe.exception.NotFoundException;
 import java.util.Objects;
 
 public class User {
@@ -16,55 +15,16 @@ public class User {
     private User() {
     }
 
-    public static class Builder {
-
-        private Integer userNum;
-        private String userId;
-        private String password;
-        private String name;
-        private String email;
-
-        public Builder userNum(int userNum) {
-            this.userNum = userNum;
-            return this;
-        }
-
-        public Builder userId(String userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public User build() {
-            if (userId == null || password == null | name == null || email == null) {
-                throw new NotFoundException(ErrorCode.FIELD_NOT_FOUND);
-            }
-
-            return new User(this);
-        }
-
+    public User(String userId, String password, String name, String email) {
+        this(null, userId, password, name, email);
     }
 
-    private User(Builder builder) {
-        userNum = builder.userNum;
-        userId = builder.userId;
-        password = builder.password;
-        name = builder.name;
-        email = builder.email;
+    public User(Integer userNum, String userId, String password, String name, String email) {
+        this.userNum = userNum;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public Integer getUserNum() {

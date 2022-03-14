@@ -46,14 +46,7 @@ class UserControllerTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User.Builder()
-            .userNum(1)
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
-
+        user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
 
