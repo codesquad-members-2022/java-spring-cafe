@@ -8,13 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.exception.ErrorMessage;
 import com.kakao.cafe.repository.UserRepository;
 
 @Controller
 public class UserController {
-	private static final String ERROR_MESSAGE_NO_SUCH_USER_ID = "존재하지 않는 user ID 입니다.";
 	private final UserRepository userRepository;
 
 	@Autowired
@@ -48,8 +49,28 @@ public class UserController {
 
 	@GetMapping("/users/{userId}")
 	public String profile(@PathVariable String userId, Model model) {
-		User user = userRepository.findByUserId(userId).orElseThrow(() -> new IllegalStateException(ERROR_MESSAGE_NO_SUCH_USER_ID));
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(() -> new IllegalStateException(ErrorMessage.NO_SUCH_USER_ID.getMessage()));
 		model.addAttribute("user", user);
 		return "user/profile";
+	}
+
+	@GetMapping("/users/{userId}/form")
+	public String updateForm(@PathVariable String userId, Model model) {
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(() -> new IllegalStateException(ErrorMessage.NO_SUCH_USER_ID.getMessage()));
+		model.addAttribute("user", user);
+		return "user/updateForm";
+	}
+
+	@PutMapping("/users/{userId}")
+	public String updateProfile(@PathVariable String userId, String password, String name, String email, Model model) {
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(() -> new IllegalStateException(ErrorMessage.NO_SUCH_USER_ID.getMessage()));
+		userRepository.delete(user);
+		user.updateProfile(password, name, email);
+		userRepository.save(user);
+		model.addAttribute("user", user);
+		return "redirect:/users";
 	}
 }
