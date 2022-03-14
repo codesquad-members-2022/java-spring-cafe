@@ -33,7 +33,7 @@ public class LoginController {
 
         User user = loginService.checkInfo(loginParam);
         if (!user.confirmPassword(loginParam.getPassword())) {
-            return "redirect:/users/login_failed";
+            return "user/login_failed";
         }
 
         session.setAttribute("userInfo", user);
