@@ -11,6 +11,7 @@ public class User {
     private String email;
 
     public User(UserDto form) {
+        id = form.getId();
         userId = form.getUserId();
         password = form.getPassword();
         name = form.getName();
@@ -64,4 +65,7 @@ public class User {
         this.email = updateUserData.getEmail();
     }
 
+    public boolean hasId() {
+        return id > 0;
+    }
 }
