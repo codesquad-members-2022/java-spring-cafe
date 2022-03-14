@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class ArticleServiceTest {
@@ -23,6 +24,7 @@ class ArticleServiceTest {
     }
 
     @Test
+    @DisplayName("게시글을 저장하면, 게시글을 ArrayList에 저장하고 id를 리턴한다.")
     void posting() {
         //given
         PostingRequestDto validPostingRequestDto =
@@ -36,6 +38,7 @@ class ArticleServiceTest {
     }
 
     @Test
+    @DisplayName("게시글을 존재하는 id로 조회하면, 해당 id를 가진 게시글의 조회수를 1 올려주고 해당 게시글을 리턴한다.")
     void valid_read() {
         //given
         Article givenArticle = new Article("Anonymous", "test title", "test content");
@@ -49,6 +52,7 @@ class ArticleServiceTest {
     }
 
     @Test
+    @DisplayName("게시글을 존재하지 않는 id로 조회하면, \"해당 아이디를 가진 게시글이 존재하지 않습니다.\"라는 NoSuchElementException을 던진다.")
     void invalid_read() {
         //given
         int givenId = -1;
@@ -63,6 +67,7 @@ class ArticleServiceTest {
     }
 
     @Test
+    @DisplayName("게시글을 전부 조회하면, 저장된 게시글 전부를 List에 담아 리턴한다.")
     void findPosts() {
         //given
         for (int i = 1; i <= 10; i++) {
