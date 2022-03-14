@@ -1,6 +1,6 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.dto.ArticleSaveDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -19,9 +19,9 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public void save(ArticleSaveDto articleSaveDto) {
-        User user = userRepository.findByUserId(articleSaveDto.getUserId());
-        Article article = new Article(user, articleSaveDto.getTitle(), articleSaveDto.getContents());
+    public void save(ArticleDto articleDto) {
+        User user = userRepository.findByUserId(articleDto.getUserId());
+        Article article = new Article(user, articleDto.getTitle(), articleDto.getContents());
         articleRepository.save(article);
     }
 

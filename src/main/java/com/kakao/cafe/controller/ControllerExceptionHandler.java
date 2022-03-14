@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.ArticleSaveDto;
+import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.controller.dto.UserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,19 +38,19 @@ public class ControllerExceptionHandler {
             modelAndView.setViewName("user/form");
         }
         if (requestURI.equals("/questions")) {
-            ArticleSaveDto articleSaveDto = changeParamsToArticleSaveDto(request);
-            modelAndView.addObject(articleSaveDto);
+            ArticleDto articleDto = changeParamsToArticleSaveDto(request);
+            modelAndView.addObject(articleDto);
             modelAndView.setViewName("qna/form");
         }
         return modelAndView;
     }
 
-    private ArticleSaveDto changeParamsToArticleSaveDto(HttpServletRequest request) {
-        ArticleSaveDto articleSaveDto = new ArticleSaveDto();
-        articleSaveDto.setUserId(request.getParameter("userId"));
-        articleSaveDto.setTitle(request.getParameter("title"));
-        articleSaveDto.setContents(request.getParameter("contents"));
-        return articleSaveDto;
+    private ArticleDto changeParamsToArticleSaveDto(HttpServletRequest request) {
+        ArticleDto articleDto = new ArticleDto();
+        articleDto.setUserId(request.getParameter("userId"));
+        articleDto.setTitle(request.getParameter("title"));
+        articleDto.setContents(request.getParameter("contents"));
+        return articleDto;
     }
 
     private UserDto changeParamsToUserDto(HttpServletRequest request) {

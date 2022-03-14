@@ -19,6 +19,13 @@ public class UserDto {
     @Email
     private String email;
 
+    public UserDto(User user) {
+        userId = user.getUserId();
+        password = user.getPassword();
+        name = user.getName();
+        email = user.getEmail();
+    }
+
     public User toEntity() {
         return new User(userId, password, name, email);
     }

@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.dto.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
-        validateUser(user);
+    public void save(UserDto userDto) {
+        validateUser(userDto);
+        
+        User user = userDto.toEntity();
         userRepository.save(user);
     }
 
@@ -27,20 +30,20 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void validateUser(User user) {
-        validateUserId(user);
-        validateEmail(user);
+    private void validateUser(UserDto userDto) {
+        validateUserId(userDto.getUserId());
+        validateEmail(userDto.getEmail());
     }
 
-    private void validateUserId(User user) {
-        boolean isExistUserId = userRepository.isExistUserId(user.getUserId());
+    private void validateUserId(String userId) {
+        boolean isExistUserId = userRepository.isExistUserId(userId);
         if (isExistUserId) {
             throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
         }
     }
 
-    private void validateEmail(User user) {
-        boolean isExistEmail = userRepository.isExistEmail(user.getEmail());
+    private void validateEmail(String email) {
+        boolean isExistEmail = userRepository.isExistEmail(email);
         if (isExistEmail) {
             throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
         }
