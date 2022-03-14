@@ -1,11 +1,13 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,28 +18,34 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String signUp(User user) {
-        validateDuplicatedUser(user);
+    public UserResponseDto signUp(User user) {
+        UserResponseDto userResponseDto = user.of();
+        validateDuplicatedUser(userResponseDto);
         userRepository.userSave(user);
-        return user.getUserId();
+        return userResponseDto;
     }
 
-    public List<User> findUsers() {
-        return userRepository.findAllUser();
+    public List<UserResponseDto> findUsers() {
+        return userRepository.findAllUser()
+                .stream()
+                .map(User::of)
+                .collect(Collectors.toList());
     }
 
-    public User findIdUser(String userId) {
+    public UserResponseDto findIdUser(String userId) {
         return userRepository.findUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .of();
     }
 
-    public User findEmailUser(String userEmail) {
+    public UserResponseDto findEmailUser(String userEmail) {
         return userRepository.findEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .of();
     }
 
-    private void validateDuplicatedUser(User user) {
-        userRepository.findEmail(user.getEmail()).ifPresent(s -> {
+    private void validateDuplicatedUser(UserResponseDto userResponseDto) {
+        userRepository.findEmail(userResponseDto.getEmail()).ifPresent(s -> {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         });
     }

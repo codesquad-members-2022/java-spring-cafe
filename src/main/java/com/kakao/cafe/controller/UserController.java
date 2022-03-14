@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.UserService;
 
@@ -29,7 +30,7 @@ public class UserController {
     @GetMapping("/list")
     public String findAllUser(Model model) {
         log.info("유저 리스트 조회 시도");
-        List<User> users = userService.findUsers();
+        List<UserResponseDto> users = userService.findUsers();
         model.addAttribute("users", users);
         log.info("유저 리스트 조회 성공 유저 수={}", users.size());
         log.debug("유저리스트={}", users);
@@ -37,21 +38,21 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public String users(@ModelAttribute User user) {
+    public String create(@ModelAttribute User user) {
         log.info("유저 회원가입 시도");
-        userService.signUp(user);
-        log.info("{} 이메일을 가지는 유저 회원가입 성공", user.getEmail());
-        log.debug("회원가입={}", user);
+        UserResponseDto userResponseDto = userService.signUp(user);
+        log.info("{} 이메일을 가지는 유저 회원가입 성공", userResponseDto.getEmail());
+        log.debug("회원가입={}", userResponseDto);
         return "redirect:list";
     }
 
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable String userId, Model model) {
         log.info("유저 프로필 조회 시도");
-        User findUser = userService.findIdUser(userId);
-        model.addAttribute("user", findUser);
-        log.info("{} 유저 프로필 조회 성공", findUser.getUserId());
-        log.debug("프로필조회={}", findUser);
+        UserResponseDto findUserResponseDto = userService.findIdUser(userId);
+        model.addAttribute("user", findUserResponseDto);
+        log.info("{} 유저 프로필 조회 성공", findUserResponseDto.getUserId());
+        log.debug("프로필조회={}", findUserResponseDto);
         return "user/profile";
     }
 }

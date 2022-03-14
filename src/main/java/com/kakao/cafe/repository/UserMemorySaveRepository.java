@@ -5,13 +5,14 @@ import com.kakao.cafe.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class UserMemorySaveRepository implements UserRepository {
 
-    private static final List<User> userStore = new ArrayList<>();
+    private static final List<User> userStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public User userSave(User user) {

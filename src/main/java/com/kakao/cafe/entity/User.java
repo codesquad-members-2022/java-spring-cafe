@@ -1,5 +1,7 @@
 package com.kakao.cafe.entity;
 
+import com.kakao.cafe.dto.UserResponseDto;
+
 public class User {
 
     private final String email;
@@ -14,14 +16,6 @@ public class User {
         this.password = password;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public boolean isSameUserId(String userId) {
         return this.userId.equals(userId);
     }
@@ -30,17 +24,11 @@ public class User {
         return this.email.equals(userEmail);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", userId='" + userId + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+    public UserResponseDto of() {
+        UserResponseDto dto = new UserResponseDto();
+        return dto.userName(name)
+                .userEmail(email)
+                .userId(userId)
+                .getUserDto();
     }
 }
