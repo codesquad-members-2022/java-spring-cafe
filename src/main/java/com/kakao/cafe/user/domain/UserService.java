@@ -27,7 +27,7 @@ public class UserService {
 		if (isExistByUserId(userDto.getUserId())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
-		User user = createOf(userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
+		User user = UserFactory.create(userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		User getUser = userRepository.save(user);
 		return getUser.getId();
 	}

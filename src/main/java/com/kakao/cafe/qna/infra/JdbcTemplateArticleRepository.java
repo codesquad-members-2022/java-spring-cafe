@@ -26,6 +26,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.common.utils.sql.SqlColumns;
 import com.kakao.cafe.qna.domain.Article;
+import com.kakao.cafe.qna.domain.ArticleFactory;
 import com.kakao.cafe.qna.domain.ArticleRepository;
 import com.kakao.cafe.user.infra.JdbcTemplateUserRepository;
 
@@ -144,7 +145,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	private RowMapper<Article> articleRowMapper() {
 		return (rs, rowNum) -> {
-			Article article = loadOf(rs.getLong(ARTICLE_ID.getColumnName()),
+			Article article = ArticleFactory.create(rs.getLong(ARTICLE_ID.getColumnName()),
 				rs.getString(WRITER.getColumnName()),
 				rs.getString(TITLE.getColumnName()),
 				rs.getString(CONTENT.getColumnName()),

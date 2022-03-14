@@ -1,6 +1,5 @@
 package com.kakao.cafe.qna.infra;
 
-import static com.kakao.cafe.qna.domain.Article.*;
 import static com.kakao.cafe.qna.domain.ArticleServiceTest.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -13,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.qna.domain.Article;
+import com.kakao.cafe.qna.domain.ArticleFactory;
 
 class MemoryArticleRepositoryTest {
 	@Autowired
@@ -65,6 +65,6 @@ class MemoryArticleRepositoryTest {
 	}
 
 	public Article getArticle() {
-		return createOf(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
+		return ArticleFactory.create(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
 	}
 }

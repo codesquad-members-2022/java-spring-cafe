@@ -27,6 +27,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.common.utils.sql.SqlColumns;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserFactory;
 import com.kakao.cafe.user.domain.UserRepository;
 
 @Repository
@@ -146,7 +147,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
 	private RowMapper<User> userRowMapper() {
 		return (rs, rowNum) -> {
-			User user = loadOf(rs.getLong(ID.getColumnName()),
+			User user = UserFactory.create(rs.getLong(ID.getColumnName()),
 				rs.getString(USER_ID.getColumnName()),
 				rs.getString(PASSWORD.getColumnName()),
 				rs.getString(NAME.getColumnName()),

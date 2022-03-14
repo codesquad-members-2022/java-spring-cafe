@@ -25,7 +25,12 @@ public class Article {
 		return article;
 	}
 
-	public static Article loadOf(Long articleId, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
+	public static Article loadOf(Long articleId,
+								String writer,
+								String title,
+								String content,
+								Long cafeUserId,
+								LocalDate writingDate) {
 		Article article = new Article();
 		article.articleId = articleId;
 		article.writer = writer;

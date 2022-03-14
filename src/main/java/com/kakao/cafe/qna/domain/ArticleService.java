@@ -24,7 +24,7 @@ public class ArticleService {
 
 	public long write(ArticleDto.WriteRequest writeRequest) {
 		User user = getUserByUserId(writeRequest.getUserId());
-		Article question = createOf(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
+		Article question = ArticleFactory.create(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
 		Article getArticle = articleRepository.save(question);
 		return getArticle.getArticleId();
 	}

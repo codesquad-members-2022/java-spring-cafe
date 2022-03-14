@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kakao.cafe.qna.domain.ArticleFactory;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserFactory;
 
 @SpringBootTest
 @Transactional
@@ -39,7 +41,7 @@ public class DbText {
 
 	@Test
 	void for_setting_db_data() throws SQLException {
-		User user = User.createOf("tester", "testName", "test@email.com", "1234asdf");
+		User user = UserFactory.create("tester", "testName", "test@email.com", "1234asdf");
 		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_enter_password) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, user.getUserId());
@@ -76,7 +78,7 @@ public class DbText {
 		while (rs.next()) {
 			long id = rs.getLong("id");
 			String name = rs.getString("name");
-			User user = User.loadOf(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
+			User user = UserFactory.create(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
 
 			soft.assertThat(user.getId()).isNotZero();
 			soft.assertThat(user.getName().length()).isGreaterThan(2);
@@ -97,7 +99,7 @@ public class DbText {
 		ResultSet rs = pstmt.executeQuery();
 
 		while (rs.next()) {
-			User user = User.loadOf(rs.getLong("id"),
+			User user = UserFactory.create(rs.getLong("id"),
 				rs.getString("user_id"),
 				rs.getString("name"),
 				rs.getString("email"),
