@@ -5,6 +5,9 @@ public class Article {
     private String title;
     private String contents;
 
+    public String getTitle() {
+        return title;
+    }
 
     public void setWriter(String writer) {
         this.writer = writer;
