@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.qna.domain.ArticleService;
-import com.kakao.cafe.user.domain.User;
-import com.kakao.cafe.user.domain.UserRepository;
 import com.kakao.cafe.user.domain.UserService;
 
 @Controller
