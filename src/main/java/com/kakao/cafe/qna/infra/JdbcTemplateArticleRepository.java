@@ -163,4 +163,12 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	public List<Article> findAll() {
 		return this.namedParameterJdbcTemplate.query(getSqlOfSelect(TABLE_NAME_OF_ARTICLE, List.of(ALL), NONE), articleRowMapper());
 	}
+
+	@Override
+	public void delete(Long id) {
+		String sql = String.format("DELETE FROM cafe_articles WHERE %s = %s", ARTICLE_ID.getColumnName(),
+			ARTICLE_ID.getNamedParameter());
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(ARTICLE_ID.getColumnName(), id);
+		this.namedParameterJdbcTemplate.update(sql, namedParameters);
+	}
 }

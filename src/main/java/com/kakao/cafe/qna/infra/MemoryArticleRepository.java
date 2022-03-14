@@ -87,6 +87,12 @@ public class MemoryArticleRepository implements ArticleRepository {
 	}
 
 	@Override
+	public void delete(Long id) {
+		System.out.println(this.data.get(Math.toIntExact(id)-1));
+		this.data.remove(this.data.get(Math.toIntExact(id)-1));
+	}
+
+	@Override
 	public void deleteAll() {
 		this.data.clear();
 	}

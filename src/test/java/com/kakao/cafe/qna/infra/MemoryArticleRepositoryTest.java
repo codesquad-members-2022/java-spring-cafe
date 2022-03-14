@@ -51,8 +51,19 @@ class MemoryArticleRepositoryTest {
 		assertThat(actual.getTitle()).isNotEqualTo(TEST_TITLE);
 	}
 
+	@Test
+	@DisplayName("글의 삭제 처리 후 삭제 됨을 확인한다.")
+	void delete_article() {
+		Article testArticle = getArticle();
+		Article expected = memoryArticleRepository.save(testArticle);
+
+		memoryArticleRepository.delete(expected.getArticleId());
+
+		Optional<Article> actual = memoryArticleRepository.findById(expected.getArticleId());
+		assertThat(actual.isEmpty()).isTrue();
+	}
+
 	public Article getArticle() {
 		return new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
 	}
-
 }

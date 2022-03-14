@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,8 +49,21 @@ public class ArticleController {
 		return REDIRECT_ROOT;
 	}
 
+	// 상세보기
+	@GetMapping("/{id}")
+	public String lookAtTheDetailsOfTheQuestion(@PathVariable Long id, HttpSession httpSession, Model model) {
+		boolean isValid = isValidLogin(httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
+		logger.info("request details of question: {}", id);
+		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
+		model.addAttribute("question", question);
+		return "qna/show";
+	}
+
 	@GetMapping("/{id}/form")
-	public String sendViewWhenAskFix(@PathVariable Long id, HttpSession httpSession, Model model) {
+	public String sendViewWhenAskEditing(@PathVariable Long id, HttpSession httpSession, Model model) {
 		boolean isValid = isValidLogin(httpSession, logger);
 		if (!isValid) {
 			return REDIRECT_LOGIN_VIEW;
@@ -61,23 +75,18 @@ public class ArticleController {
 	}
 
 	@PutMapping("/{id}")
-	public String isAskedFixQuestion(@PathVariable Long id, ArticleDto.EditRequest updateDto) {
+	public String isAskedEditQuestion(@PathVariable Long id, ArticleDto.EditRequest updateDto) {
 		logger.info("request edit question: {}", id);
 		articleService.edit(updateDto);
 		String url = String.format("%squestions/%d", REDIRECT_ROOT, id);
 		return url;
 	}
 
-	@GetMapping("/{id}")
-	public String lookAtTheDetailsOfTheQuestion(@PathVariable Long id, HttpSession httpSession, Model model) {
-		boolean isValid = isValidLogin(httpSession, logger);
-		if (!isValid) {
-			return REDIRECT_LOGIN_VIEW;
-		}
-		logger.info("request details of question: {}", id);
-		ArticleDto.WriteResponse question = articleService.read(id, (SessionUser)getHttpSessionAttribute(httpSession));
-		model.addAttribute("question", question);
-		return "qna/show";
+	@DeleteMapping("/{id}")
+	public String isAskedRemoveQuestion(@PathVariable Long id) {
+		logger.info("request delete article: {}", id);
+		articleService.remove(id);
+		return REDIRECT_ROOT;
 	}
 
 	@ExceptionHandler(value = IllegalArgumentException.class)

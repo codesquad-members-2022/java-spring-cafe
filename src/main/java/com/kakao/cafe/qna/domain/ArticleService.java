@@ -63,5 +63,9 @@ public class ArticleService {
 		return articleRepository.findById(id)
 			.orElseThrow(() -> new DomainNotFoundException(errorMessage));
 	}
+
+	public void remove(Long id) {
+		articleRepository.delete(id);
+	}
 }
 
