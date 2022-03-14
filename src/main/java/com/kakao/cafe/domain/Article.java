@@ -1,9 +1,15 @@
 package com.kakao.cafe.domain;
 
 public class Article {
+    private long id;
     private String writer;
     private String title;
     private String contents;
+
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

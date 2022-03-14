@@ -12,6 +12,7 @@ public class MemoryArticleRepository {
     private List<Article> store = new ArrayList<>();
 
     public Article save(Article article) {
+        article.setId(store.size()+1);
         store.add(article);
         return article;
     }
