@@ -16,13 +16,8 @@ public class LoginService {
 
     public User checkInfo(LoginParam loginParam) {
         String userId = loginParam.getUserId();
-        String password = loginParam.getPassword();
         User user = userRepository.findOne(userId)
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 회원입니다."));
-
-        if (!user.confirmPassword(password)) {
-            throw new RuntimeException("비밀번호가 틀렸습니다.");
-        }
 
         return user;
     }
