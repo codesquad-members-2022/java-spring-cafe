@@ -54,9 +54,9 @@ class UserControllerTest {
         @DisplayName("모든 데이터를 정상적으로 넣으면 성공한다.")
         void join_success() throws Exception {
             // arrange
-            Long registeredId = 1L;
+
             String expectedRedirectUrl = "/users";
-            when(userService.join(any())).thenReturn(registeredId);
+            when(userService.join(any())).thenReturn(getUser());
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -143,24 +143,14 @@ class UserControllerTest {
         }
 
         private List<User> getUsers() {
-            return List.of(new User.Builder()
-                            .setId(1L)
-                            .setUserId("jwkim")
-                            .setPasswd("1234")
-                            .setName("김진완")
-                            .setEmail("wlsdhks0423@naver.com")
-                            .setCreatedDate(LocalDateTime.now())
-                            .setModifiedDate(LocalDateTime.now())
-                            .build(),
-                    new User.Builder()
-                            .setId(2L)
-                            .setUserId("jay")
-                            .setPasswd("1234")
-                            .setName("김제이")
-                            .setEmail("jay@naver.com")
-                            .setCreatedDate(LocalDateTime.now())
-                            .setModifiedDate(LocalDateTime.now())
-                            .build());
+            User user1 = getIdNullUser("jwkim");
+            user1.setId(1L);
+            User user2 = getIdNullUser("jay");
+            user2.setId(2L);
+            User user3 = getIdNullUser("clad");
+            user3.setId(3L);
+
+            return List.of(user1, user2, user3);
         }
     }
 
@@ -188,18 +178,28 @@ class UserControllerTest {
             assertThat(modelAndView.getModel().get("user")).isNotNull();
         }
 
-        private User getUser() {
-            return new User.Builder()
-                    .setId(1L)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-        }
+    }
 
+    private User getIdNullUser(String userId) {
+        LocalDateTime dateTime = LocalDateTime.MIN;
+        return new User.Builder()
+                .setUserId(userId)
+                .setPasswd("1234")
+                .setName("김진완")
+                .setEmail("wlsdhks0423@naver.com")
+                .setCreatedDate(dateTime)
+                .setModifiedDate(dateTime)
+                .build();
+    }
+
+    private User getIdNullUser() {
+        return getIdNullUser("jwkim");
+    }
+
+    private User getUser() {
+        User user = getIdNullUser();
+        user.setId(1L);
+        return user;
     }
 
 }

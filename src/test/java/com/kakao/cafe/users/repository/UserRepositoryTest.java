@@ -1,6 +1,5 @@
 package com.kakao.cafe.users.repository;
 
-import com.kakao.cafe.exception.repository.UniqueFieldDuplicatedException;
 import com.kakao.cafe.users.domain.User;
 import org.junit.jupiter.api.*;
 
@@ -34,50 +33,29 @@ class UserRepositoryTest {
             @DisplayName("정보가 정상적으로 들어왔을 경우, 등록에 성공한다.")
             void insert_success() {
                 // arrange
-                User expectedUser = new User.Builder()
-                        .setUserId("jwkim")
-                        .setPasswd("1234")
-                        .setName("김진완")
-                        .setEmail("wlsdhls0423@naver.com")
-                        .build();
+                User expectedUser = getIdNullUser();
 
                 // act
-                Long savedId = repository.save(expectedUser).orElseThrow();
-                expectedUser.setId(savedId);
-                User findUser = repository.findById(savedId).orElseThrow();
+                User savedUser = repository.save(expectedUser).orElseThrow();
 
                 // assert
-                assertThat(findUser).isEqualTo(expectedUser);
+                assertThat(savedUser).isEqualTo(expectedUser);
             }
 
             @Test
             @DisplayName("userId 가 다른 두 사용자를 저장하는 경우, 등록에 성공한다.")
             void differentTwoId_insertSuccess() {
                 // arrange
-                User expectedUser1 = new User.Builder()
-                        .setUserId("Jay")
-                        .setPasswd("1234")
-                        .setName("김진완")
-                        .setEmail("wlsdhls0423@naver.com")
-                        .build();
-                User expectedUser2 = new User.Builder()
-                        .setUserId("jwkim")
-                        .setPasswd("1234")
-                        .setName("김진완")
-                        .setEmail("wlsdhls0423@naver.com")
-                        .build();
+                User expectedUser1 = getIdNullUser("jay");
+                User expectedUser2 = getIdNullUser("jwkim");
 
                 // act
-                Long savedId1 = repository.save(expectedUser1).orElseThrow();
-                Long savedId2 = repository.save(expectedUser2).orElseThrow();
-                expectedUser1.setId(savedId1);
-                expectedUser2.setId(savedId2);
-                User findUser1 = repository.findById(savedId1).orElseThrow();
-                User findUser2 = repository.findById(savedId2).orElseThrow();
+                User savedUser1 = repository.save(expectedUser1).orElseThrow();
+                User savedUser2 = repository.save(expectedUser2).orElseThrow();
 
                 // assert
-                assertThat(findUser1).isEqualTo(expectedUser1);
-                assertThat(findUser2).isEqualTo(expectedUser2);
+                assertThat(savedUser1).isEqualTo(expectedUser1);
+                assertThat(savedUser2).isEqualTo(expectedUser2);
             }
         }
     }
@@ -90,17 +68,11 @@ class UserRepositoryTest {
         @DisplayName("저장된 id 로 조회하면 정상적으로 결과를 반환한다.")
         void oneUserSaved_findByIdSuccess() {
             // arrange
-            User expectedUser = new User.Builder()
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
+            User expectedUser = getIdNullUser("jwkim");
+            User savedUser = repository.save(expectedUser).orElseThrow();
 
             // act
-            Long savedId = repository.save(expectedUser).orElseThrow();
-            expectedUser.setId(savedId);
-            Optional<User> findResult = repository.findById(savedId);
+            Optional<User> findResult = repository.findById(savedUser.getId());
 
             // assert
             findResult.ifPresentOrElse(
@@ -126,14 +98,8 @@ class UserRepositoryTest {
         void oneUserSaved_findByUserIdSuccess() {
             // arrange
             String expectedUserId = "jwkim";
-            User expectedUser = new User.Builder()
-                    .setUserId(expectedUserId)
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
-            Long savedId = repository.save(expectedUser).orElseThrow();
-            expectedUser.setId(savedId);
+            User expectedUser = getIdNullUser(expectedUserId);
+            repository.save(expectedUser).orElseThrow();
 
             // act
             Optional<User> findResult = repository.findByUserId(expectedUserId);
@@ -148,19 +114,10 @@ class UserRepositoryTest {
         @DisplayName("저장되지 않은 userId 로 조회하면 조회되지 않는다.")
         void oneUserSaved_findByIdFailed() {
             // arrange
-            String expectedUserId = "jwkim";
-            User user = new User.Builder()
-                    .setUserId(expectedUserId)
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
-
-            // act
-            repository.save(user).orElseThrow();
+            String unsavedId = "jwkim";
 
             // assert
-            repository.findByUserId(expectedUserId + "_hello")
+            repository.findByUserId(unsavedId)
                     .ifPresent(findUser -> Assertions.fail());
 
         }
@@ -174,12 +131,7 @@ class UserRepositoryTest {
         @DisplayName("1명의 회원이 있으면, 길이가 1개인 회원 리스트를 반환한다.")
         void oneUserSaved_findAllReturnList_size_1 () {
             // arrange
-            User expectedUser = new User.Builder()
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
+            User expectedUser = getIdNullUser();
             repository.save(expectedUser);
 
             // act
@@ -195,18 +147,8 @@ class UserRepositoryTest {
         @DisplayName("2명의 User 가 있을때, 길이가 2개인 User 리스트를 반환한다.")
         void twoUserSaved_findAllReturnList_size_2() {
             // arrange
-            User user1 = new User.Builder()
-                    .setUserId("jwkim1")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
-            User user2 = new User.Builder()
-                    .setUserId("jwkim2")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .build();
+            User user1 = getIdNullUser("jwkim1");
+            User user2 = getIdNullUser("jwkim2");
             repository.save(user1);
             repository.save(user2);
 
@@ -230,5 +172,18 @@ class UserRepositoryTest {
             // assert
             assertThat(users).size().isEqualTo(0);
         }
+    }
+
+    private User getIdNullUser() {
+        return getIdNullUser("jwkim");
+    }
+
+    private User getIdNullUser(String userId) {
+        return new User.Builder()
+                .setUserId(userId)
+                .setPasswd("1234")
+                .setName("김진완")
+                .setEmail("wlsdhks0423@naver.com")
+                .build();
     }
 }

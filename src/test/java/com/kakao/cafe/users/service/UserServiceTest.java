@@ -39,8 +39,7 @@ class UserServiceTest {
                     new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
 
             // act
-            Long savedId = userService.join(joinRequest);
-            User savedUser = userRepository.findById(savedId).orElseThrow();
+            User savedUser = userService.join(joinRequest);
 
             // assert
             assertThat(savedUser.equalsUserId(joinRequest.getUserId())).isTrue();
@@ -76,16 +75,16 @@ class UserServiceTest {
             // arrange
             UserJoinRequest joinRequest =
                     new UserJoinRequest("jwkim","1234","김진완","wlsdhks0423@naver.com");
-            Long savedId = userService.join(joinRequest);
+            User savedUser = userService.join(joinRequest);
 
             // act
-            User savedUser = userService.findOne(savedId);
+            User findUser = userService.findOne(savedUser.getId());
 
             // assert
-            assertThat(savedUser.equalsUserId(joinRequest.getUserId())).isTrue();
-            assertThat(savedUser.equalsPasswd(joinRequest.getPasswd())).isTrue();
-            assertThat(savedUser.equalsName(joinRequest.getName())).isTrue();
-            assertThat(savedUser.equalsEmail(joinRequest.getEmail())).isTrue();
+            assertThat(findUser.equalsUserId(joinRequest.getUserId())).isTrue();
+            assertThat(findUser.equalsPasswd(joinRequest.getPasswd())).isTrue();
+            assertThat(findUser.equalsName(joinRequest.getName())).isTrue();
+            assertThat(findUser.equalsEmail(joinRequest.getEmail())).isTrue();
         }
 
         @Test

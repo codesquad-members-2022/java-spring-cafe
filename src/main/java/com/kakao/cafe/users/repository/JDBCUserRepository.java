@@ -31,7 +31,7 @@ public class JDBCUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<Long> save(User user) {
+    public Optional<User> save(User user) {
         Connection conn = null;
         PreparedStatement stmt = null;
 
@@ -46,7 +46,8 @@ public class JDBCUserRepository implements UserRepository {
             ResultSet generatedKeys = stmt.getGeneratedKeys();
 
             if (generatedKeys.next()) {
-                return Optional.of(generatedKeys.getLong(1));
+//                return Optional.of(generatedKeys.getLong(1));
+                return null;
             }
 
             return Optional.empty();

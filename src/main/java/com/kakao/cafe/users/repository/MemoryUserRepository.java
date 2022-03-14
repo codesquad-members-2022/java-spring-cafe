@@ -19,10 +19,10 @@ public class MemoryUserRepository implements UserRepository {
     private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
-    public Optional<Long> save(User user) {
+    public Optional<User> save(User user) {
         user.setId(idGenerator.getAndIncrement());
         userRegistry.add(user);
-        return Optional.of(user.getId());
+        return Optional.of(user);
     }
 
     @Override

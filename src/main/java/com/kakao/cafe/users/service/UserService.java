@@ -22,7 +22,7 @@ public class UserService {
         this.userRepository = repository;
     }
 
-    public Long join(UserJoinRequest joinRequest) {
+    public User join(UserJoinRequest joinRequest) {
         validateDuplicateUser(joinRequest);
         
         return userRepository.save(User.createWithJoinRequest(joinRequest))
