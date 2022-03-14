@@ -4,7 +4,7 @@ import com.kakao.cafe.controller.UserDto;
 
 public class User {
 
-    private Long id;
+    private int id;
     private String userId;
     private String password;
     private String name;
@@ -17,11 +17,11 @@ public class User {
         email = form.getEmail();
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -21,11 +21,12 @@ public class UserService {
     }
 
     //회원가입
-    public Long signUp(UserDto user) {
+    public int signUp(UserDto user) {
         validateDuplicateUser(user);
         userRepository.save(new User(user));
         return user.getId();
     }
+
 
     private void validateDuplicateUser(UserDto user) {
         userRepository.findByUserId(user.getUserId())
@@ -39,7 +40,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User findOne(Long id) throws NoSuchElementException {
+    public User findOne(int id) throws NoSuchElementException {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow();
     }

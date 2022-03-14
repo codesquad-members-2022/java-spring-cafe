@@ -2,17 +2,17 @@ package com.kakao.cafe.controller;
 
 public class UserDto {
 
-    private Long id;
+    private int id;
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

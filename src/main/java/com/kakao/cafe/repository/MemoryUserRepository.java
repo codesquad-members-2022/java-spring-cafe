@@ -11,30 +11,31 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class MemoryUserRepository implements UserRepository{
 
-    private static Map<Long, User> store = new HashMap<>();
-    private static long sequence = 0L;
+    private static List<User> store = new ArrayList<>();
 
     @Override
     public User save(User user) {
-        user.setId(++sequence);
-        store.put(user.getId(), user);
+        user.setId(store.size() + 1);
+        store.add(user);
         return null;
     }
 
     @Override
-    public Optional<User> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
+    public Optional<User> findById(int id) {
+        return store.stream()
+            .filter(user -> user.getId() == id)
+            .findAny();
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return store.values().stream()
+        return store.stream()
             .filter(user -> user.getUserId().equals(userId))
             .findAny();
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return new ArrayList<>(store);
     }
 }

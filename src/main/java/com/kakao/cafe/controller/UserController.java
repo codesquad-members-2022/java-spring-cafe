@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -42,7 +44,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String show(@PathVariable("id") Long id, Model model) {
+    public String show(@PathVariable("id") int id, Model model) {
         logger.info("id: {}", id);
         User user = userService.findOne(id);
         model.addAttribute("user", user);
@@ -50,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/form")
-    public String update(@PathVariable("id") Long id, Model model) {
+    public String updateForm(@PathVariable("id") int id, Model model) {
         User user = userService.findOne(id);
         model.addAttribute("user", user);
         return "user/updateForm";
