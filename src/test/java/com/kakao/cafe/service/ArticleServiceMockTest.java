@@ -30,12 +30,11 @@ class ArticleServiceMockTest {
 
     @Test
     void write_메서드_만약_article이_들어온다면_저장소에_저장한다() {
-        given(articleRepository.save(any()))
+        given(articleRepository.save(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1"))))
                 .willReturn(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1")));
 
         Article result = articleService.write(new ArticleWriteRequest("쿠킴1", "제목1", "본문1"));
 
-        then(articleRepository).should(times(1)).save(any());
         assertThat(result.getWriter()).isEqualTo("쿠킴1");
         assertThat(result.getTitle()).isEqualTo("제목1");
         assertThat(result.getContents()).isEqualTo("본문1");
@@ -44,8 +43,10 @@ class ArticleServiceMockTest {
     @Test
     void findAricles_메서드_저장소의_모든_article를_리스트로_리턴한다() {
         given(articleRepository.findAll())
-                .willReturn(List.of(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1")),
-                        new Article(new ArticleWriteRequest("쿠킴2", "제목2", "본문2"))));
+                .willReturn(
+                        List.of(new Article(new ArticleWriteRequest("쿠킴1", "제목1", "본문1")),
+                        new Article(new ArticleWriteRequest("쿠킴2", "제목2", "본문2")))
+                );
 
         List<Article> result = articleService.findArticles();
 
