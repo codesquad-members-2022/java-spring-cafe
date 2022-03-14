@@ -35,7 +35,7 @@ public class UserServiceTest {
             if (user.getUserId().equals("dupId")) {
                 throw new DuplicateException(ErrorCode.DUPLICATE_USER);
             }
-            return this.user.update(user);
+            return user;
         }
 
         @Override
@@ -140,7 +140,7 @@ public class UserServiceTest {
             "other@example.com");
 
         // when
-        UserResponse updatedUser = userService.updateUser(request);
+        UserResponse updatedUser = userService.updateUser(user, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -152,11 +152,13 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
+        User other = new User("newId", "userPassword", "userName", "user@example.com");
+
         UserSaveRequest request = new UserSaveRequest("newId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(other, request));
 
         // then
         then(throwable)
@@ -165,32 +167,14 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
-    public void updateUserIncorrectUserIdTest() {
-        // given
-        UserSaveRequest request = new UserSaveRequest("otherId", "userPassword",
-            "otherName",
-            "other@example.com");
-
-        // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
-
-        // then
-        then(throwable)
-            .isInstanceOf(InvalidRequestException.class)
-            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
-    }
-
-    @Test
     @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
     public void updateUserIncorrectPasswordTest() {
         // given
         UserSaveRequest request = new UserSaveRequest("userId", "otherPassword",
-            "otherName",
-            "other@example.com");
+            "otherName", "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(user, request));
 
         // then
         then(throwable)

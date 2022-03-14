@@ -68,20 +68,19 @@ public class UserController {
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
-        confirmSession(session, userId);
-
-        request.setUserId(userId);
-        userService.updateUser(request);
+        User user = confirmSession(session, userId);
+        userService.updateUser(user, request);
         return "redirect:/users";
     }
 
-    private void confirmSession(HttpSession session, String userId) {
+    private User confirmSession(HttpSession session, String userId) {
         User sessionUser = (User) Optional.ofNullable(session.getAttribute(SESSION_USER))
             .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
 
         if (!sessionUser.getUserId().equals(userId)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
+        return sessionUser;
     }
 
 }

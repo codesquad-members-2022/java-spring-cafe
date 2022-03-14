@@ -195,7 +195,7 @@ public class UserControllerTest {
     @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserPasswordTest() throws Exception {
         // given
-        User other = new User("other", "otherPassword", "otherName", "other@example.com");
+        User other = new User("otherId", "userPassword", "otherName", "other@example.com");
 
         userSetUp.saveUser(other);
 
@@ -206,8 +206,8 @@ public class UserControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
-            .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
             .andExpect(view().name("error/index"));
     }
 

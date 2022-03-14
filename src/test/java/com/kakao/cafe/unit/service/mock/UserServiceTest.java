@@ -148,7 +148,7 @@ public class UserServiceTest {
             .willReturn(changedUser);
 
         // when
-        UserResponse updatedUser = userService.updateUser(request);
+        UserResponse updatedUser = userService.updateUser(user, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -161,58 +161,18 @@ public class UserServiceTest {
     public void updateUserNotFoundTest() {
         // given
         UserSaveRequest request = new UserSaveRequest("otherId", "userPassword",
-            "otherName",
-            "other@example.com");
+            "otherName", "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(user, request));
 
         // then
         then(throwable)
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
-    }
-
-    @Test
-    @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
-    public void updateUserIncorrectUserIdTest() {
-        // given
-        UserSaveRequest request = new UserSaveRequest("otherId", "userPassword",
-            "otherName", "other@example.com");
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
-
-        // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
-
-        // then
-        then(throwable)
-            .isInstanceOf(InvalidRequestException.class)
-            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
-    }
-
-    @Test
-    @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
-    public void updateUserIncorrectPasswordTest() {
-        // given
-        UserSaveRequest request = new UserSaveRequest("userId", "otherPassword",
-            "otherName",
-            "other@example.com");
-
-        given(userRepository.findByUserId(any()))
-            .willReturn(Optional.of(user));
-
-        // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(request));
-
-        // then
-        then(throwable)
-            .isInstanceOf(InvalidRequestException.class)
-            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
     }
 
     @Test

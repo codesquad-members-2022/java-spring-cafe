@@ -26,7 +26,7 @@ public class UserCollectionRepository implements UserRepository {
         // merge
         User findUser = findByUserId(user.getUserId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
-        findUser.update(user);
+        findUser.update(user.getName(), user.getEmail());
         return user;
     }
 

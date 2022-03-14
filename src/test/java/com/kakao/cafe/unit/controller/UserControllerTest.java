@@ -191,7 +191,7 @@ class UserControllerTest {
         UserResponse changedUser = new UserResponse(1, "userId", "userPassword", "otherName",
             "other@example.com");
 
-        given(userService.updateUser(any()))
+        given(userService.updateUser(any(), any()))
             .willReturn(changedUser);
 
         // when
@@ -211,7 +211,7 @@ class UserControllerTest {
     @DisplayName("유저 정보 변경 시 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserIncorrectUserIdTest() throws Exception {
         // given
-        given(userService.updateUser(any()))
+        given(userService.updateUser(any(), any()))
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
@@ -231,7 +231,7 @@ class UserControllerTest {
     @DisplayName("유저 정보 변경 시 아이디 혹은 비밀번호가 일치하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserIncorrectPasswordTest() throws Exception {
         // given
-        given(userService.updateUser(any()))
+        given(userService.updateUser(any(), any()))
             .willThrow(new InvalidRequestException(ErrorCode.INCORRECT_USER));
 
         // when

@@ -64,19 +64,22 @@ public class UserService {
             });
     }
 
-    public UserResponse updateUser(UserSaveRequest request) {
-        // UserSaveRequest DTO 객체를 User 도메인 객체로 변환
-        User user = Mapper.map(request, User.class);
+    public UserResponse updateUser(User user, UserSaveRequest request) {
+        // session 에서 반환된 객체를 검증
+        user.checkPassword(request.getPassword());
 
         // User 도메인 객체를 저장소에서 반환
         User findUser = userRepository.findByUserId(user.getUserId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
+        // User 도메인 객체에 대해 업데이트 요청사항을 변경
+        User updatedUser = findUser.update(request.getName(), request.getEmail());
+
         // 저장소에 업데이트된 User 객체를 저장
-        User updatedUser = userRepository.save(findUser.update(user));
+        User savedUser = userRepository.save(updatedUser);
 
         // User 도메인 객체를 UserResponse 객체로 변환
-        return Mapper.map(updatedUser, UserResponse.class);
+        return Mapper.map(savedUser, UserResponse.class);
     }
 
     public UserResponse login(UserLoginRequest request) {

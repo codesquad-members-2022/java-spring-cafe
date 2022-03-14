@@ -51,22 +51,16 @@ public class User {
         this.userNum = userNum;
     }
 
-    public User update(User user) {
-        if (!userId.equals(user.userId) || !password.equals(user.password)) {
-            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
-        }
-
-        this.name = user.name;
-        this.email = user.email;
-
+    public User update(String name, String email) {
+        this.name = name;
+        this.email = email;
         return this;
     }
 
-    public User checkPassword(String password) {
+    public void checkPassword(String password) {
         if (!this.password.equals(password)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
-        return this;
     }
 
     @Override
