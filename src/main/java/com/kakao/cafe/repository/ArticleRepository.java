@@ -10,5 +10,5 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    Optional<Article> findByArticleId(Integer id);
+    Optional<Article> findByArticleId(int id);
 }

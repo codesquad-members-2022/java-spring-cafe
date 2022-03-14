@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Article {
 
-    private Integer id;
+    private int id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -18,7 +18,7 @@ public class Article {
         createdTime = LocalDateTime.now();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -34,7 +34,7 @@ public class Article {
         return contents;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -43,7 +43,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return Objects.equals(id, article.id);
+        return id == article.id;
     }
 
     @Override
@@ -51,8 +51,7 @@ public class Article {
         return Objects.hash(id);
     }
 
-    public boolean equalId(Integer referId) {
+    public boolean equalId(int referId) {
         return Objects.equals(this.id, referId);
     }
-
 }
