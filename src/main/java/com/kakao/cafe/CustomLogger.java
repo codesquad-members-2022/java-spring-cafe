@@ -8,7 +8,7 @@ public class CustomLogger {
     private final Logger log;
 
     public CustomLogger(Class clazz) {
-        this.log =LoggerFactory.getLogger(clazz);
+        this.log = LoggerFactory.getLogger(clazz);
     }
 
     public void info(String format, Object... arguments) {
