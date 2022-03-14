@@ -10,16 +10,15 @@ public class Article {
     private String uploadDate;
     private String writer;
 
-    public void setSubject(String subject) {
+    public Article(String writer, String subject, String content) {
         this.subject = subject;
+        this.content = content;
+        this.uploadDate = new java.sql.Date(new Date().getTime()).toString();
+        this.writer = writer;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public int getArticleId() {
@@ -46,12 +45,21 @@ public class Article {
         this.articleId = articleId;
     }
 
-
-    public Article(String userId, String subject, String content) {
-        this.subject = subject;
-        this.content = content;
-        this.uploadDate = new java.sql.Date(new Date().getTime()).toString();
-        this.writer = userId;
+    public boolean isEqualArticle(Article toArticle) {
+        if (this.articleId == toArticle.articleId && this.uploadDate.equals(toArticle.uploadDate) && this.content.equals(toArticle.content) && this.writer.equals(toArticle.writer) && this.subject.equals(toArticle.subject)) {
+            return true;
+        }
+        return false;
     }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", subject='" + subject + '\'' +
+                ", content='" + content + '\'' +
+                ", uploadDate='" + uploadDate + '\'' +
+                ", writer='" + writer + '\'' +
+                '}';
+    }
 }

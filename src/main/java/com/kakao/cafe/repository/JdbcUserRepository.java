@@ -100,9 +100,6 @@ public class JdbcUserRepository implements UserRepository{
         } finally {
             close(conn, pstmt, rs);
         }
-        if (user==null){
-            return null;
-        }
         return user;
     }
 

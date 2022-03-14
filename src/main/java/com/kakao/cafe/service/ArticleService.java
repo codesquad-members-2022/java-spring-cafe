@@ -34,8 +34,8 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    private void validUser(String userId) {
-        if (userService.findOne(userId)==null) {
+    private void validUser(String writer) {
+        if (userService.findOne(writer)==null) {
             throw new NullPointerException();
         }
     }
