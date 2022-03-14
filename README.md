@@ -8,19 +8,20 @@
 
 ## URL convention
 
-| URL                 | 기능        |
-|---------------------|-----------|
-| GET /login          | 로그인 화면    |
-| POST /do_login      | 로그인       |
-| GET /logout         | 로그아웃      |
-| GET /users          | 회원 목록 조회  |
-| POST /users         | 회원 가입     |
-| GET /users/:id      | 회원 프로필 조회 |
-| GET /users/:id/form | 회원 정보 수정  |
-| GET /               | 글 목록 조회하기 |
-| GET /questions/     | 질문하기      |
-| POST /questions/    | 글쓰기       |
-| GET /questions/:id  | 게시글 상세보기  |
+| URL                     | 기능        |
+|-------------------------|-----------|
+| GET /login              | 로그인 화면    |
+| POST /do_login          | 로그인       |
+| GET /logout             | 로그아웃      |
+| GET /users              | 회원 목록 조회  |
+| POST /users             | 회원 가입     |
+| GET /users/:id          | 회원 프로필 조회 |
+| GET /users/:id/form     | 회원 정보 수정  |
+| GET /                   | 글 목록 조회하기 |
+| GET /questions/         | 질문하기      |
+| POST /questions/        | 글쓰기       |
+| GET /questions/:id      | 게시글 상세보기  |
+| GET /questions/:id/form | 게시글 수정하기  |
 
 
 #### 프로그래밍 요구사항
@@ -86,5 +87,23 @@
 1️⃣ 사용자는 여러개의 게시글을 작성 할 수 있다. (1:N 관계)
 - User의 PK id 를 Article의 FK로 지정한다.
 
+
+</details>
+
+
+<br>
+
+
+<details>
+<summary>👻 게시글 수정하기</summary>
+
+- 게시글 수정은 로그인 사용자와 게시글 작성자의 사용자와 동일해야 한다.
+  - GET /questions/:id/form : SessionUser의 userId의 id == Article 의 id
+- 추후 댓글 등 다른 사용자도 접근 가능한 페이지이기 때문에, 다른 사용자가 수정 버튼 클릭시에는 ~~안내 메시지를~~, 에러 메시지 반환하도록 한다.
+  - "작성자가 아닌 사람은 수정하실 수 없습니다." 
+  - status code : 400 
+- PUT 메서드로 요청
+  - 멱등성
+  - 리소스 생성 또는 수정
 
 </details>

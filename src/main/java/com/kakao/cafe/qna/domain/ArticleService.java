@@ -13,7 +13,7 @@ import com.kakao.cafe.user.domain.UserService;
 @Service
 public class ArticleService {
 	private final ArticleRepository articleRepository;
-	private final UserService userService;
+	private final UserService userService;  // 서비스레이어가 나을까요? UserRepository 가 나을까요? 기준은 뭘까요?
 
 	public ArticleService(ArticleRepository articleRepository, UserService userService) {
 		this.articleRepository = articleRepository;
