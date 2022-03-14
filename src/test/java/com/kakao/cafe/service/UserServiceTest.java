@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserMemorySaveRepository;
 
@@ -69,5 +70,19 @@ class UserServiceTest {
             userService.findEmailUser(unregisteredUserEmail);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("존재하지 않는 사용자입니다.");
+    }
+
+    @Test
+    @DisplayName("개인정보 수정 시 기존 패스워드와 다른 패스워드를 입력하는 경우 예외가 발생해야 한다.")
+    void validatePasswordTest() {
+        // given
+        userA = new User("emailA", "userIdA", "nameA", "pawA");
+        userRepository.userSave(userA);
+        UserRequestDto requestDto = new UserRequestDto("changeName", "changeEmail", "pawB");
+        // when
+        assertThatThrownBy(() -> {
+            userService.update("userIdA", requestDto);
+        }).isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
 }
