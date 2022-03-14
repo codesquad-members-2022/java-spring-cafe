@@ -13,6 +13,9 @@ SELECT_ARTICLE: >
 DELETE_ARTICLES: >
   DELETE FROM article
 
+UPDATE_ARTICLE: >
+  UPDATE article SET title = :title, contents = :contents WHERE article_id = :articleId
+
 ### user ###
 
 COUNT_USER: >

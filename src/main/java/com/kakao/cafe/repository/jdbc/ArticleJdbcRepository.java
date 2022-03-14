@@ -36,15 +36,23 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = queryProps.get(Query.INSERT_ARTICLE);
-        KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
+        if (article.getArticleId() == null) {
+            // persist
+            String sql = queryProps.get(Query.INSERT_ARTICLE);
+            KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
 
-        article.setCreatedDate(LocalDateTime.now());
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
+            article.setCreatedDate(LocalDateTime.now());
+            jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
 
-        if (keyHolder.getKey() != null) {
-            article.setArticleId(keyHolder.getKey().intValue());
+            if (keyHolder.getKey() != null) {
+                article.setArticleId(keyHolder.getKey().intValue());
+            }
+            return article;
         }
+        // merge
+        String sql = queryProps.get(Query.UPDATE_ARTICLE);
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+
         return article;
     }
 
