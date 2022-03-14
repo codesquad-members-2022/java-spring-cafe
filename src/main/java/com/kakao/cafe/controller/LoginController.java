@@ -37,7 +37,6 @@ public class LoginController {
         }
 
         session.setAttribute("userInfo", user);
-
         return "redirect:/users";
     }
 

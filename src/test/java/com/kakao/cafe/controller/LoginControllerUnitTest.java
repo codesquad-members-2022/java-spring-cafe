@@ -46,21 +46,16 @@ public class LoginControllerUnitTest {
     @DisplayName("로그인 요청 정보의 비밀번호와 실제 사용자의 비밀번호가 일치하면 세션에 사용자 정보를 저장한 후 사용자 목록 페이지로 이동한다.")
     @Test
     void loginSuccess() throws Exception {
-        // given
         LoginParam loginParam = new LoginParam("userId", "password");
         User user = new User(1, "userId", "password", "name", "email");
         given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
 
-        // when
         mvc.perform(post("/login").params(convertToMultiValueMap(loginParam)).session(session))
                 .andExpectAll(
+                        request().sessionAttribute("userInfo", user),
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
-
-        // then
-        User sessionUser = (User) session.getAttribute("userInfo");
-        assertThat(sessionUser).usingRecursiveComparison().isEqualTo(user);
 
         verify(service).checkInfo(ArgumentMatchers.refEq(loginParam));
     }
@@ -76,14 +71,11 @@ public class LoginControllerUnitTest {
         // when
         mvc.perform(post("/login").params(convertToMultiValueMap(loginParam)).session(session))
                 .andExpectAll(
+                        request().sessionAttributeDoesNotExist("userInfo"),
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
                         content().encoding(StandardCharsets.UTF_8),
                         status().isOk()
                 );
-
-        // then
-        User sessionUser = (User) session.getAttribute("userInfo");
-        assertThat(sessionUser).isNull();
 
         verify(service).checkInfo(ArgumentMatchers.refEq(loginParam));
     }
