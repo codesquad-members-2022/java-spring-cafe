@@ -10,7 +10,5 @@ public interface MemberRepository {
 
     Optional<Member> findByIndex(int userIndex);
 
-    Optional<Member> findByName(String name);
-
     List<Member> findAll();
 }

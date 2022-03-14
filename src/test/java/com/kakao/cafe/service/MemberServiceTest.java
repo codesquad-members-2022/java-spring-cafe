@@ -12,7 +12,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class MemberServiceTest {
-
     MemberService memberService;
     MemoryMemberRepository memberRepository;
 
@@ -23,12 +22,12 @@ class MemberServiceTest {
     }
 
     @AfterEach
-    public void afterEach(){
+    public void afterEach() {
         memberRepository.clearStore();
     }
 
     @Test
-    @DisplayName("회원가입한 이름과 가입한 id의 이름과 동일해야 한다")
+    @DisplayName("회원가입한 이름과 부여한 인덱스로 찾은 이름과 동일해야 한다")
     void join() {
         //given
         Member member = new Member();
@@ -61,7 +60,7 @@ class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입한 이름 n개와 마지막 가입한 회원에게 부여된 id의 n값이 동일해야 한다.")
+    @DisplayName("회원가입한 이름 갯수와 마지막 가입한 회원에게 부여된 index의 값이 동일해야 한다.")
     void findOne() {
         //given
         Member member1 = new Member();

@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Member;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -9,30 +10,16 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryMemberRepositoryTest {
-
     MemoryMemberRepository repository = new MemoryMemberRepository();
 
     @AfterEach
-    public void afterEach(){
+    public void afterEach() {
         repository.clearStore();
     }
 
     @Test
-    public void save(){
-        //given
-        Member member = new Member();
-        member.setName("Vans");
-        repository.save(member);
-
-        //when
-        Member result = repository.findByIndex(member.getUserIndex()).get();
-
-        //then
-        assertThat(member).isEqualTo(result);
-    }
-
-    @Test
-    public void findByName(){
+    @DisplayName("회원으로 저장한 이름과 부여한 인덱스로 찾은 이름과 동일해야 한다")
+    public void saveAndFindByIndex() {
         //given
         Member member1 = new Member();
         member1.setName("Vans1");
@@ -42,14 +29,17 @@ class MemoryMemberRepositoryTest {
         repository.save(member2);
 
         //when
-        Member result = repository.findByName("Vans1").get();
+        Member result1 = repository.findByIndex(member1.getUserIndex()).get();
+        Member result2 = repository.findByIndex(member2.getUserIndex()).get();
 
         //then
-        assertThat(result).isEqualTo(member1);
+        assertThat(member1).isEqualTo(result1);
+        assertThat(member2).isEqualTo(result2);
     }
 
     @Test
-    public void findAll(){
+    @DisplayName("회원가입한 이름 n개와 저장된 회원의 n개가 동일해야한다.")
+    public void findAll() {
         //given
         Member member1 = new Member();
         member1.setName("Vans1");

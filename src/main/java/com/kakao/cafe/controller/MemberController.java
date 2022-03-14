@@ -12,7 +12,6 @@ import java.util.List;
 
 @Controller
 public class MemberController {
-
     private final MemberService memberService;
 
     @Autowired
@@ -39,9 +38,18 @@ public class MemberController {
     }
 
     @GetMapping("/users")
-    public String list(Model model){
+    public String memberList(Model model) {
         List<Member> members = memberService.findMembers();
-        model.addAttribute("users",members);
+        model.addAttribute("users", members);
         return "user/list";
     }
+
+    //TODO 회원 프로필 조회 기능 구현
+//    @GetMapping("/users/{userName}")
+//    public String showProfile(@PathVariable String userName, Model model){
+//        Member member = memberService.findEmail();
+//        model.addAttribute("users",members);
+//        return "user/list";
+//    }
+
 }

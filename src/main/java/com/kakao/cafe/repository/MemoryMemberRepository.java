@@ -9,7 +9,7 @@ import java.util.*;
 @Repository
 public class MemoryMemberRepository implements MemberRepository {
     private final List<Member> store = new ArrayList<>();
-    private static final int CORRECT_INDEX = 1;
+    private final int CORRECT_INDEX = 1;
 
     @Override
     public Member save(Member member) {
@@ -22,13 +22,6 @@ public class MemoryMemberRepository implements MemberRepository {
     @Override
     public Optional<Member> findByIndex(int userIndex) {
         return Optional.ofNullable(store.get(userIndex - CORRECT_INDEX));
-    }
-
-    @Override
-    public Optional<Member> findByName(String name) {
-        return store.stream()
-                .filter(member -> member.getName().equals(name))
-                .findAny();
     }
 
     @Override
