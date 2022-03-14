@@ -69,7 +69,7 @@
   - [X] UserRepository 메서드 구현(save, findById, findAll)
   - [X] 중복 검증
   - [X] 사용자 정보 update 구현
-  - [ ] Test
+  - [X] Test
 
 <br>
 

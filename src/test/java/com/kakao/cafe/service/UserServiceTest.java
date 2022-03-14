@@ -67,7 +67,6 @@ class UserServiceTest {
         assertThat(user.getEmail()).isEqualTo("lee@naver.com");
     }
 
-
     @DisplayName("userId를 사용하여 UserProfileDto를 반환받는다.")
     @Test
     void test_find_User_By_UserId_for_UserProfileDto() {

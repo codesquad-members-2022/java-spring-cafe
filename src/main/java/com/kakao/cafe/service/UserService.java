@@ -3,14 +3,11 @@ package com.kakao.cafe.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
 import com.kakao.cafe.domain.user.dto.UserProfileDto;
-import com.kakao.cafe.repository.article.H2ArticleRepository;
 import com.kakao.cafe.repository.user.UserRepository;
 
 @Service

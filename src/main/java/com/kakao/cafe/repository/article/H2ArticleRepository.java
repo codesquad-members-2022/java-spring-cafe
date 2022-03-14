@@ -39,7 +39,7 @@ public class H2ArticleRepository implements ArticleRepository {
     public Long save(Article article) {
         String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
         KeyHolder keyHolder = keyHolderGenerator.getKeyHolder();
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[]{"id"});
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[] {"id"});
         long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
         log.info("key is = {}", id);
         return id;
