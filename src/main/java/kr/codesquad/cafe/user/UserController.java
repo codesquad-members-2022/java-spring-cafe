@@ -19,7 +19,7 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping ("/users")
+    @GetMapping("/users")
     public String viewUserList(Model model) {
         model.addAttribute("users", service.findAll());
 
@@ -50,6 +50,17 @@ public class UserController {
         try {
             model.addAttribute("user", service.findByUserId(userId));
             return "/users/profile";
+        } catch (NoSuchElementException e) {
+            //noinspection SpringMVCViewInspection
+            return "redirect:/users";
+        }
+    }
+
+    @GetMapping("/users/{userId}/form")
+    public String viewUpdateForm(@PathVariable("userId") String userId, Model model) {
+        try {
+            model.addAttribute("user", service.findByUserId(userId));
+            return "/users/updateForm";
         } catch (NoSuchElementException e) {
             //noinspection SpringMVCViewInspection
             return "redirect:/users";

@@ -69,3 +69,7 @@
     - 요청 메서드: PUT /users/{id}/update
     - UserRepository에서 id가 일치하는 사용자를 조회하고 save() 메서드로 업데이트한다.
     - 수정 후 유저 목록으로 이동 (redirect:/users)
+
+### 구현과정 
+
+- 스프링 부트 2.2 업데이트 이후로 `application.properties` 파일에 `spring.mvc.hiddenmethod.filter.enabled=true`를 추가해야 브라우저가 form의 히든값으로 put 요청을 보내는 것을 인식할 수 있다. 
