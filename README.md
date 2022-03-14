@@ -302,3 +302,34 @@
     - Controller 와 Service 레이어는 세트로 '어떠한 특정 도메인을 담당하고 있다' 정도로 표현했습니다.
   - Repository 패키지에서 불필요한 추상화 클래스를 제거했습니다.
     - 추상화 클래스에서 해당 Repository가 사용하고 있는 저장소를 필드로 가지고 있는 용도로 사용했었지만 jdbc를 사용하는 레포지토리와의 통일성을 위해 삭제했습니다.
+
+# 스프링 카페 4단계 - 로그인 구현
+
+- ## 요구사항
+  - [x] HttpSession 을 사용하여 로그인, 로그아웃 구현하기
+    - [x] 비밀번호가 일치하지 않아 로그인 실패시 login_failed.html 로 이동하기
+  - [x] 로그인, 로그아웃 상태에 따라 상단 메뉴 다르게 표시하기
+  - [x] (선택) 개인정보 수정 기능 추가하기
+    - [x] 다른 사용자의 정보를 수정하려할 시 updateForm_failed.html 로 이동하기 (에러 페이지를 만든 후 에러 메시지를 출력한다.)
+  
+- ## 해야할 일
+  - HttpServletRequest, log 정리하기 (ControllerAdvice 사용 X)
+  - Interceptor 학습하고 적용하기
+  - 예외 처리 정리하기
+  - 아직 해결하지 못한 3단계 리뷰 내용 반영하고 코멘트 달기
+
+- ## 실행결과
+
+  #### 로그인하지 않은 상태
+  ![SmartSelectImage_2022-03-14-21-29-37](https://user-images.githubusercontent.com/47964708/158173149-e8d67c77-e08b-433b-b550-c5d734e0d2be.png)  
+  #### 로그인 후 개인정보수정 메뉴를 선택
+  ![SmartSelectImage_2022-03-14-21-31-52](https://user-images.githubusercontent.com/47964708/158173151-eefe8edc-19d8-42fe-9fd1-58bf9e065de4.png)  
+  ![SmartSelectImage_2022-03-14-21-32-28](https://user-images.githubusercontent.com/47964708/158173152-e785024d-3da7-4ff9-979c-b5dd4aece4cc.png)  
+  #### 개인정보 수정에 성공
+  ![SmartSelectImage_2022-03-14-21-32-45](https://user-images.githubusercontent.com/47964708/158173154-8706d4ed-6c4e-43ee-b1a2-eebc709402df.png)  
+  #### 다른 사용자의 정보를 수정하려할 시
+  ![SmartSelectImage_2022-03-14-21-32-57](https://user-images.githubusercontent.com/47964708/158173156-77c5414c-b319-46ec-9556-2cdbd5694c5f.png)  
+  #### 로그아웃
+  ![SmartSelectImage_2022-03-14-21-33-09](https://user-images.githubusercontent.com/47964708/158173157-b34ea0a2-3310-49af-b0fb-d78d463f383f.png)  
+  #### 비밀번호가 일치하지 않았을 시
+  ![SmartSelectImage_2022-03-14-21-33-27](https://user-images.githubusercontent.com/47964708/158173160-52e42fb8-0501-449b-9e13-da120db7e6bf.png)  
