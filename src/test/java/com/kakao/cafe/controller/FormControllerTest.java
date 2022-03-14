@@ -20,7 +20,7 @@ class FormControllerTest {
     void get_form() throws Exception {
         mvc.perform(get("/form"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/user/form"));
+            .andExpect(view().name("user/form"));
     }
 
     @DisplayName("/qnaForm으로 GET 요청이 오면 /qna/formQna view가 반환된다.")
@@ -28,6 +28,6 @@ class FormControllerTest {
     void get_qnaForm() throws Exception {
         mvc.perform(get("/qnaForm"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/qna/formQna"));
+            .andExpect(view().name("qna/formQna"));
     }
 }

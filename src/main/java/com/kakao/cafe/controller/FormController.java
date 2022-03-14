@@ -13,12 +13,12 @@ public class FormController {
     @GetMapping("/form")
     public String form() {
         logger.info("GET /form");
-        return "/user/form";
+        return "user/form";
     }
 
     @GetMapping("/qnaForm")
     public String qnaForm() {
         logger.info("GET /qnaForm");
-        return "/qna/formQna";
+        return "qna/formQna";
     }
 }

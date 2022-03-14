@@ -51,7 +51,7 @@ class UserControllerTest {
         mvc.perform(get("/users"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("users"))
-            .andExpect(view().name("/list"));
+            .andExpect(view().name("list"));
     }
 
     @DisplayName("존재하는 userId를 대상으로 /users/{userId}를 호출할 경우, 프로필 뷰가 반환된다.")
@@ -59,7 +59,7 @@ class UserControllerTest {
     void get_userProfile() throws Exception {
         mvc.perform(get("/users/lucid"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/user/profile"));
+            .andExpect(view().name("user/profile"));
     }
 
     @DisplayName("존재하지 않는 userId를 대상으로 /users/{userId}를 호출할 경우, 에러페이지가 반환된다.")
@@ -76,7 +76,7 @@ class UserControllerTest {
         mvc.perform(get("/users/123/check"))
             .andExpect(status().isOk())
             .andExpect(model().attributeExists("userId"))
-            .andExpect(view().name("/user/passwordCheck"));
+            .andExpect(view().name("user/passwordCheck"));
     }
 
     @DisplayName("존재하는 id를 대상으로 edit Post 요청 시 정상 비밀번호를 입력하면 updateForm이 반환된다.")
@@ -86,7 +86,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .param("password", "1234"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/user/updateForm"));
+            .andExpect(view().name("user/updateForm"));
     }
 
     @DisplayName("존재하는 id를 대상으로 edit Post 요청 시 틀린 비밀번호를 입력하면 에러페이지가 반환된다.")
