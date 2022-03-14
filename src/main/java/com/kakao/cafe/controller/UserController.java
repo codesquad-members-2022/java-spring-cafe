@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -43,7 +45,7 @@ public class UserController {
         UserResponseDto userResponseDto = userService.signUp(user);
         log.info("{} 이메일을 가지는 유저 회원가입 성공", userResponseDto.getEmail());
         log.debug("회원가입={}", userResponseDto);
-        return "redirect:list";
+        return "redirect:/users/list";
     }
 
     @GetMapping("/profile/{userId}")
@@ -61,7 +63,15 @@ public class UserController {
         log.info("유저 정보 변경 시도");
         UserResponseDto findUser = userService.findIdUser(userId);
         model.addAttribute("user", findUser);
-        log.info("변경 전 유저 정보={}", findUser);
+        log.debug("변경 전 유저 정보={}", findUser);
         return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}/update")
+    public String userUpdate(@PathVariable String userId, @ModelAttribute UserRequestDto userUpdateInfo) {
+        UserResponseDto updateUser = userService.update(userId, userUpdateInfo);
+        log.debug("변경 후 유저 정보={}", updateUser);
+        log.info("유저 정보 변경 성공");
+        return "redirect:/users/list";
     }
 }
