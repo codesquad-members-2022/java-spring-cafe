@@ -11,6 +11,7 @@ import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -42,14 +43,19 @@ public class ArticleServiceTest {
     private Article article;
     private ArticleResponse articleResponse;
     private UserResponse userResponse;
+    private UserResponse otherResponse;
+    private ArticleSaveRequest request;
 
     @BeforeEach
     public void setUp() {
         article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
-        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
             "user@example.com");
+        otherResponse = new UserResponse(1, "otherId", "otherPassword", "otherName",
+            "other@example.com");
+        request = new ArticleSaveRequest("writer", "otherTitle", "otherContents");
     }
 
     @Test
@@ -134,4 +140,159 @@ public class ArticleServiceTest {
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 
+    @Test
+    @DisplayName("유저 정보와 질문 id 로 유저의 질문을 조회한다")
+    public void mapUserArticleTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        // when
+        ArticleResponse findArticle = articleService.mapUserArticle(userResponse,
+            article.getArticleId());
+
+        // then
+        then(findArticle.getArticleId()).isEqualTo(1);
+        then(findArticle.getWriter()).isEqualTo("writer");
+        then(findArticle.getTitle()).isEqualTo("title");
+        then(findArticle.getContents()).isEqualTo("contents");
+    }
+
+    @Test
+    @DisplayName("유저 정보와 존재하지 않는 질문 id 로 유저의 질문을 조회하면 예외를 반환한다")
+    public void mapUserArticleNotFoundTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willThrow(new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.mapUserArticle(userResponse, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
+    }
+
+
+    @Test
+    @DisplayName("다른 유저 정보와 질문 id 로 유저의 질문을 조회하면 예외를 반환한다")
+    public void mapUserArticleValidateTest() {
+        // given
+        given(articleRepository.findById(any(Integer.class)))
+            .willReturn(Optional.of(article));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.mapUserArticle(otherResponse, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_ARTICLE_WRITER.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보, 질문 변경 사항과 질문 id 로 유저의 질문을 업데이트한다")
+    public void updateArticleTest() {
+        Article result = new Article(1, "writer", "otherTitle", "otherContents",
+            LocalDateTime.now());
+
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        given(articleRepository.save(any()))
+            .willReturn(result);
+
+        // when
+        ArticleResponse updatedArticle = articleService.updateArticle(userResponse, request,
+            article.getArticleId());
+
+        // then
+        then(updatedArticle.getArticleId()).isEqualTo(1);
+        then(updatedArticle.getWriter()).isEqualTo("writer");
+        then(updatedArticle.getTitle()).isEqualTo("otherTitle");
+        then(updatedArticle.getContents()).isEqualTo("otherContents");
+    }
+
+    @Test
+    @DisplayName("유저 정보, 질문 변경 사항과 존재하지 않는 질문 id 로 유저의 질문을 업데이트 시 예외를 반환한다")
+    public void updateArticleNotFoundTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willThrow(new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.updateArticle(userResponse, request, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("다른 유저 정보, 질문 변경 사항과 질문 id 로 유저의 질문을 업데이트 시 예외를 반환한다")
+    public void updateArticleValidateTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.updateArticle(otherResponse, request, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_ARTICLE_WRITER.getMessage());
+    }
+
+    @Test
+    @DisplayName("유저 정보와 질문 id 로 유저의 질문을 삭제한다")
+    public void deleteArticleTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        // when
+        articleService.deleteArticle(userResponse, article.getArticleId());
+    }
+
+    @Test
+    @DisplayName("유저 정보와 존재하지 않는 질문 id 로 유저의 질문을 삭제 시 예외를 반환한다")
+    public void deleteArticleNotFoundTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willThrow(new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.deleteArticle(userResponse, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("다른 유저 정보와 질문 id 로 유저의 질문을 삭제 시 예외를 반환한다")
+    public void deleteArticleValidateTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.deleteArticle(otherResponse, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_ARTICLE_WRITER.getMessage());
+    }
 }

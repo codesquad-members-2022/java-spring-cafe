@@ -158,4 +158,7 @@ public class ArticleServiceTest {
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 
+    // TODO: ArticleService 에서 mapUserArticle, updateUserArticle, deleteUserArticle stub 테스트 필요
+    // (mock 테스트는 진행 완료)
+
 }
