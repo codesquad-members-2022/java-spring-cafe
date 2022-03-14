@@ -31,9 +31,7 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String list(Model model) {
-		List<UserDto> users = userService.findAllUsers().stream()
-			.map(UserDto::new)
-			.collect(Collectors.toList());
+		List<UserDto> users = userService.findAllUsers();
 		model.addAttribute("users", users);
 		return "user/list";
 	}
