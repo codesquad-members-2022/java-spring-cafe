@@ -1,14 +1,15 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
 
-@org.springframework.stereotype.Repository
-public class VolatilityArticleRepository implements Repository<Article, Long> {
+@Repository
+public class VolatilityArticleRepository implements DomainRepository<Article, Long> {
 
     private final Vector<Article> articles = new Vector<>();
 

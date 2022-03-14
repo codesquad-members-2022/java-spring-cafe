@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Vector;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -27,13 +26,19 @@ public class ArticleServiceUnitTest {
     ArticleService articleService;
 
     @Mock
-    Repository<Article, Long> repository;
+    DomainRepository<Article, Long> repository;
 
     @Test
     @DisplayName("질문 글 목록을 반환한다.")
     void searchAll() {
         // given
-        List<Article> articles = new Vector<>();
+        List<Article> articles = List.of(
+                new Article(1, "writer1", "title1", "contents1", LocalDate.now()),
+                new Article(2, "writer2", "title2", "contents2", LocalDate.now()),
+                new Article(3, "writer3", "title3", "contents3", LocalDate.now()),
+                new Article(4, "writer4", "title4", "contents4", LocalDate.now()),
+                new Article(5, "writer5", "title5", "contents5", LocalDate.now())
+        );
         given(repository.findAll()).willReturn(articles);
 
         // when

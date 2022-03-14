@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class UserServiceUnitTest {
     UserService userService;
 
     @Mock
-    Repository<User, String> repository;
+    DomainRepository<User, String> repository;
 
     @Test
     @DisplayName("사용자 목록을 반환한다.")
@@ -55,7 +55,7 @@ class UserServiceUnitTest {
     void addSuccess() {
         // given
         NewUserParam newUserParam
-                = new NewUserParam("user", "1234","name", "user@gmail.com");
+                = new NewUserParam("user", "1234", "name", "user@gmail.com");
         User user = newUserParam.convertToUser();
         given(repository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
@@ -75,7 +75,7 @@ class UserServiceUnitTest {
     @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패한다.")
     void addFail() {
         NewUserParam newUserParam
-                = new NewUserParam("user", "1234","name", "user@gmail.com");
+                = new NewUserParam("user", "1234", "name", "user@gmail.com");
         given(repository.findOne(any(String.class)))
                 .willReturn(Optional.ofNullable(newUserParam.convertToUser()));
 
@@ -90,8 +90,8 @@ class UserServiceUnitTest {
     @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 같으면 저장소에 반영한다.")
     void updateSuccess() {
         ModifiedUserParam modifiedUserParam =
-                new ModifiedUserParam(1,"userId","1234","1234",
-                        "4321","name", "user@gmail.com");
+                new ModifiedUserParam(1, "userId", "1234", "1234",
+                        "4321", "name", "user@gmail.com");
 
         User user = modifiedUserParam.convertToUser();
         given(repository.save(user)).willReturn(Optional.ofNullable(user));
@@ -99,12 +99,13 @@ class UserServiceUnitTest {
         assertThat(userService.update(modifiedUserParam)).isEqualTo(user);
         verify(repository).save(user);
     }
+
     @Test
     @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 다르면 예외가 발생한다.")
     void updateFail() {
         ModifiedUserParam modifiedUserParam =
-                new ModifiedUserParam(1,"userId","1234","4321",
-                        "4321","name", "user@gmail.com");
+                new ModifiedUserParam(1, "userId", "1234", "4321",
+                        "4321", "name", "user@gmail.com");
 
         assertThatThrownBy(() -> userService.update(modifiedUserParam))
                 .isInstanceOf(UnMatchedPasswordException.class)
@@ -116,7 +117,7 @@ class UserServiceUnitTest {
     void searchSuccess() {
         // given
         String userId = "userId";
-        User user = new User(1, userId,"password","name","email");
+        User user = new User(1, userId, "password", "name", "email");
         given(repository.findOne(userId)).willReturn(Optional.ofNullable(user));
 
         // when

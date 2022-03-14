@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public class ArticleService {
 
-    private final Repository<Article, Long> articleRepository;
+    private final DomainRepository<Article, Long> articleRepository;
 
-    public ArticleService(Repository<Article, Long> articleRepository) {
+    public ArticleService(DomainRepository<Article, Long> articleRepository) {
         this.articleRepository = articleRepository;
     }
 

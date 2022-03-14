@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserIdException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +16,9 @@ import static com.kakao.cafe.message.UserMessage.*;
 @Service
 public class UserService {
 
-    private final Repository<User, String> userRepository;
+    private final DomainRepository<User, String> userRepository;
 
-    public UserService(Repository<User, String> userRepository) {
+    public UserService(DomainRepository<User, String> userRepository) {
         this.userRepository = userRepository;
     }
 

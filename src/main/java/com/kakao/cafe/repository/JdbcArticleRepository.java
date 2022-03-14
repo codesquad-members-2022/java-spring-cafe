@@ -10,14 +10,15 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Primary
-@org.springframework.stereotype.Repository
-public class JdbcArticleRepository implements Repository<Article, Long> {
+@Repository
+public class JdbcArticleRepository implements DomainRepository<Article, Long> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
