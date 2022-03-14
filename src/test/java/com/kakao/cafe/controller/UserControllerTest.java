@@ -28,13 +28,19 @@ class UserControllerTest {
 
     @BeforeEach
     void init() {
+        userService.clear();
         userService.save(new User("lucid", "1234", "jh", "lucid@lucid"));
     }
 
     @DisplayName("users에 post 요청을 하면 /users로 리다이렉트된다.")
     @Test
     void post_users() throws Exception {
-        mvc.perform(post("/users"))
+        mvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .param("userId", "test")
+                .param("password", "0000")
+                .param("name", "jh")
+                .param("email", "test@test"))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/users"));
     }
