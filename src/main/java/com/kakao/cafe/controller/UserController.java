@@ -55,4 +55,13 @@ public class UserController {
         log.debug("프로필조회={}", findUserResponseDto);
         return "user/profile";
     }
+
+    @GetMapping("/{userId}/update")
+    public String userUpdateFrom(@PathVariable String userId, Model model) {
+        log.info("유저 정보 변경 시도");
+        UserResponseDto findUser = userService.findIdUser(userId);
+        model.addAttribute("user", findUser);
+        log.info("변경 전 유저 정보={}", findUser);
+        return "user/updateForm";
+    }
 }
