@@ -13,6 +13,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
+        article.setId(articles.size() + 1);
         articles.add(article);
     }
 
@@ -22,8 +23,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findByIndex(int index) {
-        return articles.get(index);
+    public Article findById(int id) {
+        return articles.get(id - 1);
     }
 
 }

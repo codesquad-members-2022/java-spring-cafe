@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.ArticleDto;
-import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.controller.dto.UserSaveDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -33,8 +33,8 @@ public class ControllerExceptionHandler {
 
         String requestURI = request.getRequestURI();
         if (requestURI.equals("/users")) {
-            UserDto userDto = changeParamsToUserDto(request);
-            modelAndView.addObject(userDto);
+            UserSaveDto userSaveDto = changeParamsToUserDto(request);
+            modelAndView.addObject(userSaveDto);
             modelAndView.setViewName("user/form");
         }
         if (requestURI.equals("/questions")) {
@@ -53,12 +53,12 @@ public class ControllerExceptionHandler {
         return articleDto;
     }
 
-    private UserDto changeParamsToUserDto(HttpServletRequest request) {
-        UserDto userDto = new UserDto();
-        userDto.setUserId(request.getParameter("userId"));
-        userDto.setPassword(request.getParameter("password"));
-        userDto.setName(request.getParameter("name"));
-        userDto.setEmail(request.getParameter("email"));
-        return userDto;
+    private UserSaveDto changeParamsToUserDto(HttpServletRequest request) {
+        UserSaveDto userSaveDto = new UserSaveDto();
+        userSaveDto.setUserId(request.getParameter("userId"));
+        userSaveDto.setPassword(request.getParameter("password"));
+        userSaveDto.setName(request.getParameter("name"));
+        userSaveDto.setEmail(request.getParameter("email"));
+        return userSaveDto;
     }
 }

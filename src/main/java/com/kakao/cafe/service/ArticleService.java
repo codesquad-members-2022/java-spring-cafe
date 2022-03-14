@@ -29,7 +29,7 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article findOne(int index) {
-        return articleRepository.findByIndex(index);
+    public Article findOne(int articleId) {
+        return articleRepository.findById(articleId);
     }
 }

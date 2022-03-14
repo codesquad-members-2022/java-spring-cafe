@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Article {
+    private Integer id;
     private User user;
     private String title;
     private List<String> contents;
@@ -17,6 +18,14 @@ public class Article {
 
     public boolean isEqualsTitle(String title) {
         return this.title.equals(title);
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getUser() {
