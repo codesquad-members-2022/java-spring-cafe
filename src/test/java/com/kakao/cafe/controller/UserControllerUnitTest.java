@@ -69,6 +69,7 @@ public class UserControllerUnitTest {
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
+
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
 

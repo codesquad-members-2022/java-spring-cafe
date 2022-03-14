@@ -34,7 +34,7 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
         List<UserEntity> entities = jdbc.query("select id, user_id, password, name, email from member",
                 Collections.emptyMap(), rowMapper);
 
-        return new Vector<>(entities.stream().map(entity -> entity.convertToUser()).collect(Collectors.toList()));
+        return Collections.unmodifiableList(entities.stream().map(entity -> entity.convertToUser()).collect(Collectors.toList()));
     }
 
     @Override

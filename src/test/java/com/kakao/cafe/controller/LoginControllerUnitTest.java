@@ -21,7 +21,6 @@ import org.springframework.util.MultiValueMap;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -63,12 +62,10 @@ public class LoginControllerUnitTest {
     @DisplayName("로그인 요청 정보의 비밀번호와 실제 사용자의 비밀번호가 일치하지 않으면 user/login_failed.html 을 읽어온다.")
     @Test
     void loginFail() throws Exception {
-        // given
         LoginParam loginParam = new LoginParam("userId", "Inconsistency");
         User user = new User(1, "userId", "password", "name", "email");
         given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
 
-        // when
         mvc.perform(post("/login").params(convertToMultiValueMap(loginParam)).session(session))
                 .andExpectAll(
                         request().sessionAttributeDoesNotExist("userInfo"),
@@ -81,8 +78,7 @@ public class LoginControllerUnitTest {
     }
 
     private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {
-        });
+        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.setAll(map);
 

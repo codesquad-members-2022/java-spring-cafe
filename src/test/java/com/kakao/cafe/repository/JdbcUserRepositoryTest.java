@@ -55,7 +55,7 @@ class JdbcUserRepositoryTest {
 
         //then
         User result = repository.findOne(user.getUserId()).get();
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
@@ -71,7 +71,7 @@ class JdbcUserRepositoryTest {
 
         //then
         User result = repository.findOne(modifiedUser.getUserId()).get();
-        assertThat(result).isEqualTo(modifiedUser);
+        assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
 
     @Test
@@ -85,6 +85,6 @@ class JdbcUserRepositoryTest {
         User result = repository.findOne(user.getUserId()).get();
 
         //then
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 }

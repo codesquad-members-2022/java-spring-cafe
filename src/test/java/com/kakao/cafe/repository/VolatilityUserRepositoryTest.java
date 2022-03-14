@@ -46,7 +46,7 @@ class VolatilityUserRepositoryTest {
 
         //then
         User result = repository.findOne(user.getUserId()).get();
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
@@ -62,7 +62,7 @@ class VolatilityUserRepositoryTest {
 
         //then
         User result = repository.findOne(modifiedUser.getUserId()).get();
-        assertThat(result).isEqualTo(modifiedUser);
+        assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
 
     @Test
@@ -76,6 +76,6 @@ class VolatilityUserRepositoryTest {
         User result = repository.findOne(user.getUserId()).get();
 
         //then
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 }

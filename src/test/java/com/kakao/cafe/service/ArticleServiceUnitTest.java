@@ -45,7 +45,7 @@ public class ArticleServiceUnitTest {
         List<Article> result = articleService.searchAll();
 
         // then
-        assertThat(result).isEqualTo(articles);
+        assertThat(result).usingRecursiveComparison().isEqualTo(articles);
         verify(repository).findAll();
     }
 
@@ -62,7 +62,7 @@ public class ArticleServiceUnitTest {
         Article newArticle = articleService.add(newArticleParam);
 
         // then
-        assertThat(newArticle).isEqualTo(article);
+        assertThat(newArticle).usingRecursiveComparison().isEqualTo(article);
         verify(repository).save(article);
     }
 
@@ -78,7 +78,7 @@ public class ArticleServiceUnitTest {
         Article result = articleService.search(id);
 
         // then
-        assertThat(result).isEqualTo(article);
+        assertThat(result).usingRecursiveComparison().isEqualTo(article);
         verify(repository).findOne(anyLong());
     }
 }

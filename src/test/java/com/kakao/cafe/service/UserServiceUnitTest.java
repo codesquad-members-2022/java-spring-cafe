@@ -46,7 +46,7 @@ class UserServiceUnitTest {
         List<User> result = userService.searchAll();
 
         // then
-        assertThat(result).isEqualTo(users);
+        assertThat(result).usingRecursiveComparison().isEqualTo(users);
         verify(repository).findAll();
     }
 
@@ -66,7 +66,7 @@ class UserServiceUnitTest {
         User newUser = userService.add(newUserParam);
 
         // then
-        assertThat(newUser).isEqualTo(user);
+        assertThat(newUser).usingRecursiveComparison().isEqualTo(user);
 
         verify(repository).findOne(user.getUserId());
     }
@@ -96,7 +96,7 @@ class UserServiceUnitTest {
         User user = modifiedUserParam.convertToUser();
         given(repository.save(user)).willReturn(Optional.ofNullable(user));
 
-        assertThat(userService.update(modifiedUserParam)).isEqualTo(user);
+        assertThat(userService.update(modifiedUserParam)).usingRecursiveComparison().isEqualTo(user);
         verify(repository).save(user);
     }
 
@@ -124,7 +124,7 @@ class UserServiceUnitTest {
         User result = userService.search(userId);
 
         // then
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
         verify(repository).findOne(userId);
     }
 

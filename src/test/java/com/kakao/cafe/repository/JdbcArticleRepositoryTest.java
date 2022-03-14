@@ -56,7 +56,7 @@ class JdbcArticleRepositoryTest {
 
         //then
         Article result = repository.findOne(article.getId()).get();
-        assertThat(result).isEqualTo(article);
+        assertThat(result).usingRecursiveComparison().isEqualTo(article);
     }
 
     @Test
@@ -70,6 +70,6 @@ class JdbcArticleRepositoryTest {
         Article result = repository.findOne(article.getId()).get();
 
         //then
-        assertThat(result).isEqualTo(article);
+        assertThat(result).usingRecursiveComparison().isEqualTo(article);
     }
 }
