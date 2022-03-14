@@ -2,16 +2,26 @@ package com.kakao.cafe.domain;
 
 public class User {
     private Long id;
-    private String email;
     private String userId;
     private String password;
+    private String name;
+    private String email;
 
     public User() {}
 
-    public User(String email, String userId, String password) {
-        this.email = email;
+    public User(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
+        this.name = name;
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {

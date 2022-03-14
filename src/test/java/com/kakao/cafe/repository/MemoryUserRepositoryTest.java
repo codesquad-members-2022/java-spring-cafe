@@ -20,7 +20,7 @@ class MemoryUserRepositoryTest {
     @Test
     void save() {
         // given
-        User user = new User("user@email.com", "user", "123123");
+        User user = new User("user", "123123", "김김김", "user@example.com");
 
         // when
         memoryUserRepository.save(user);
@@ -33,8 +33,8 @@ class MemoryUserRepositoryTest {
     @Test
     void findAll() {
         // given
-        User user1 = new User("user1@email.com", "user1", "123123");
-        User user2 = new User("user2@email.com", "user2", "456456");
+        User user1 = new User("user1", "123123", "김김김", "user1@example.com");
+        User user2 = new User("user2", "456456", "이이이", "user2@example.com");
 
         memoryUserRepository.save(user1);
         memoryUserRepository.save(user2);
@@ -50,12 +50,12 @@ class MemoryUserRepositoryTest {
     @Test
     void update() {
         // given
-        User user = new User("user@email.com", "user", "123123");
+        User user = new User("user", "123123", "김김김", "user@example.com");
         memoryUserRepository.save(user);
         Long userId = user.getId();
 
         // when
-        User updateParam = new User("updateParam@email.com", "updateParam", "456456");
+        User updateParam = new User("updateParam", "456456", "이이이", "updateParam@example.com");
         memoryUserRepository.update(userId, updateParam);
 
         User findUser = memoryUserRepository.findById(userId);
