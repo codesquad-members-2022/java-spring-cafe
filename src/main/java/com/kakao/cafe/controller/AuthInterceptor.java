@@ -22,13 +22,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         if (session == null) {
-            response.sendRedirect("/error");
+            response.sendRedirect("/login/form");
             return false;
         }
 
         UserResponse user = (UserResponse) session.getAttribute(SessionUtil.SESSION_USER);
         if (user == null) {
-            response.sendRedirect("/error");
+            response.sendRedirect("/login/form");
             return false;
         }
         return true;

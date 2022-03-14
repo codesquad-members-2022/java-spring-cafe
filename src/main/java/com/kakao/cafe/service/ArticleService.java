@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -23,9 +24,12 @@ public class ArticleService {
         this.userRepository = userRepository;
     }
 
-    public ArticleResponse write(ArticleSaveRequest articleSaveRequest) {
+    public ArticleResponse write(UserResponse userResponse, ArticleSaveRequest request) {
+        // request 객체에 writer 설정
+        request.setWriter(userResponse.getUserId());
+
         // ArticleSaveRequest DTO 객체를 Article 도메인 객체로 변환
-        Article article = Mapper.map(articleSaveRequest, Article.class);
+        Article article = Mapper.map(request, Article.class);
 
         // 회원가입하지 않은 유저 이름으로 글을 작성 시 예외 처리
         userRepository.findByUserId(article.getWriter())

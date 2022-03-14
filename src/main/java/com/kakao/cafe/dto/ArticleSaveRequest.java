@@ -21,9 +21,14 @@ public class ArticleSaveRequest {
         return contents;
     }
 
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
     public ArticleSaveRequest(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
+
 }

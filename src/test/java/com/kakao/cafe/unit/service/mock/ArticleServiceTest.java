@@ -9,6 +9,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
@@ -37,14 +38,18 @@ public class ArticleServiceTest {
 
     @Mock
     private UserRepository userRepository;
-    Article article;
-    ArticleResponse articleResponse;
+
+    private Article article;
+    private ArticleResponse articleResponse;
+    private UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
         article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
     }
 
     @Test
@@ -61,7 +66,7 @@ public class ArticleServiceTest {
             .willReturn(article);
 
         // when
-        ArticleResponse savedArticle = articleService.write(request);
+        ArticleResponse savedArticle = articleService.write(userResponse, request);
 
         // then
         then(savedArticle).isEqualTo(articleResponse);
@@ -77,7 +82,7 @@ public class ArticleServiceTest {
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(request));
+        Throwable throwable = catchThrowable(() -> articleService.write(userResponse, request));
 
         // when
         then(throwable)

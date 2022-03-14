@@ -1,5 +1,7 @@
 package com.kakao.cafe.integration.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -9,9 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.util.SessionUtil;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +24,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
 @ComponentScan
@@ -35,13 +42,19 @@ import org.springframework.test.web.servlet.ResultActions;
 public class ArticleControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ArticleSetUp articleSetUp;
+    private ArticleSetUp articleSetUp;
 
-    Article article;
-    ArticleResponse articleResponse;
+    @MockBean
+    private HandlerInterceptor interceptor;
+
+    private MockHttpSession session;
+
+    private Article article;
+    private ArticleResponse articleResponse;
+    private UserResponse userResponse;
 
     @Component
     public static class ArticleSetUp {
@@ -68,9 +81,16 @@ public class ArticleControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        given(interceptor.preHandle(any(), any(), any())).willReturn(true);
+
         article = new Article("writer", "title", "contents");
         articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
+        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
+            "user@example.com");
+
+        session = new MockHttpSession();
+        session.setAttribute(SessionUtil.SESSION_USER, userResponse);
     }
 
     @AfterEach
@@ -103,6 +123,7 @@ public class ArticleControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
+            .session(session)
             .param("writer", "writer")
             .param("title", "title")
             .param("contents", "contents")

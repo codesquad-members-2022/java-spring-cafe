@@ -1,5 +1,7 @@
 package com.kakao.cafe.integration.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -18,11 +20,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,13 +40,17 @@ public class UserControllerTest {
     @Autowired
     private UserSetUp userSetUp;
 
-    private MockHttpSession session;
+    @MockBean
+    private HandlerInterceptor interceptor;
 
-    User user;
-    UserResponse userResponse;
+    private MockHttpSession session;
+    private User user;
+    private UserResponse userResponse;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        given(interceptor.preHandle(any(), any(), any())).willReturn(true);
+
         user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");

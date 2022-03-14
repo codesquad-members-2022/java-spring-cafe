@@ -2,8 +2,11 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.SessionUtil;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +29,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String createQuestion(ArticleSaveRequest request) {
-        articleService.write(request);
+    public String createQuestion(ArticleSaveRequest request, HttpSession session) {
+        UserResponse user = SessionUtil.getUser(session);
+        articleService.write(user, request);
         return "redirect:/";
     }
 

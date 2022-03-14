@@ -10,9 +10,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.SessionUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,8 +24,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @WebMvcTest(ArticleController.class)
 @DisplayName("ArticleController 단위 테스트")
@@ -33,14 +37,26 @@ public class ArticleControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private HandlerInterceptor interceptor;
+
+    @MockBean
     private ArticleService articleService;
 
+    private MockHttpSession session;
     private ArticleResponse articleResponse;
+    private UserResponse userResponse;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        given(interceptor.preHandle(any(), any(), any())).willReturn(true);
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
+        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
+            "user@example.com");
+
+        session = new MockHttpSession();
+        session.setAttribute(SessionUtil.SESSION_USER, userResponse);
     }
 
     private ResultActions performGet(String url) throws Exception {
@@ -62,11 +78,12 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하고 업로드한다")
     public void createArticleTest() throws Exception {
         // given
-        given(articleService.write(any()))
+        given(articleService.write(any(), any()))
             .willReturn(articleResponse);
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
+            .session(session)
             .param("writer", "writer")
             .param("title", "title")
             .param("contents", "contents")
