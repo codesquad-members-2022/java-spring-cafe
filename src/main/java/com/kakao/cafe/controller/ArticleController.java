@@ -21,7 +21,7 @@ public class ArticleController {
     }
 
     @GetMapping("/questions")
-    public String createArticle() {
+    public String formCreateArticle() {
         return "qna/form";
     }
 
