@@ -1,6 +1,7 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.repository.CafeRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements CafeRepository<User, String> {
 
     private List<User> store = new CopyOnWriteArrayList<>();
 
