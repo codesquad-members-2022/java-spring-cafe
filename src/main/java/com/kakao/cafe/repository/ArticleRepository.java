@@ -9,4 +9,6 @@ public interface ArticleRepository {
     void save(Article article);
 
     List<Article> findAll();
+
+    Article findByIndex(int index);
 }

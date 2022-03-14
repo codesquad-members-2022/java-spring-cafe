@@ -28,4 +28,8 @@ public class ArticleService {
     public List<Article> findArticles() {
         return articleRepository.findAll();
     }
+
+    public Article findOne(int index) {
+        return articleRepository.findByIndex(index);
+    }
 }

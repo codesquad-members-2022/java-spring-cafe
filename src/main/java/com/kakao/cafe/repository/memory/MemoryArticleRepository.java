@@ -21,4 +21,9 @@ public class MemoryArticleRepository implements ArticleRepository {
         return articles;
     }
 
+    @Override
+    public Article findByIndex(int index) {
+        return articles.get(index);
+    }
+
 }
