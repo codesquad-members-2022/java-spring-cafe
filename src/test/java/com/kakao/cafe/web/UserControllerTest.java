@@ -161,7 +161,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("updateInfo put 요청시 로그인이 되어 있지 않으면(세션이 없으면) ")
+    @DisplayName("updateInfo put 요청시, 로그인된 유저가 아닌 다른 유저의 정보를 변경하려고 하면 ClientException이 발생한다. ")
     void updateInfo_another_user_access_Test() throws Exception {
         //given
         httpSession.setAttribute("sessionedUser", userResponseDto);

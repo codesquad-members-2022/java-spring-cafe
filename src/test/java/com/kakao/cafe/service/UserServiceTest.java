@@ -149,30 +149,31 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입이 되어있지않은 유저로 로그인을 시도하면 ClientExceptin이 발생한다.")
+    @DisplayName("회원가입이 되어있지않은 유저로 로그인을 시도하면 null을 반환한다.")
     void login_not_signup_user_throw_test() {
         //given
         LoginDto loginUser = new LoginDto("notRegistered", "1234");
-        given(userRepository.findById("notRegistered")).willReturn(Optional.empty());
+        given(userRepository.findById(any())).willReturn(Optional.empty());
 
-        //when and then
-        assertThatThrownBy(()->userService.login(loginUser))
-                .isInstanceOf(ClientException.class)
-                .hasMessage("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        //when
+        UserResponseDto login = userService.login(loginUser);
 
+        //then
+        assertThat(login).isNull();
     }
 
     @Test
-    @DisplayName("로그인시 패스워드가 일치하지 않는다면 ClientExceptin이 발생한다.")
+    @DisplayName("로그인시 패스워드가 일치하지 않는다면 null을 반환한다.")
     void login_wrong_password_throw_test() {
         //given
         LoginDto loginUser = new LoginDto("ron2", "wrongPassword");
         given(userRepository.findById("ron2")).willReturn(Optional.of(user));
 
-        //when and then
-        assertThatThrownBy(()->userService.login(loginUser))
-                .isInstanceOf(ClientException.class)
-                .hasMessage("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        //when
+        UserResponseDto login = userService.login(loginUser);
+
+        //then
+        assertThat(login).isNull();
 
     }
 
