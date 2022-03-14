@@ -19,5 +19,7 @@ public class ArticleWriteRequest {
         return title;
     }
 
-    public String getContents() { return contents; }
+    public String getContents() {
+        return contents;
+    }
 }
