@@ -21,6 +21,7 @@
         </header>
         {{#user}}
         <form name="question" class="info-container" method="post" action="/users/{userId}/update">
+            <input type="hidden" name="_method" value="PUT" />
             <div class="form-group">
                 <label for="userId">닉네임</label>
                 <input class="form-control" id="userId" name="userId" placeholder="닉네임을 입력하세요"
