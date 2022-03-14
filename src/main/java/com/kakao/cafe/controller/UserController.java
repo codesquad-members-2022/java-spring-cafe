@@ -1,6 +1,6 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.Users;
+import com.kakao.cafe.domain.users.Users;
 import com.kakao.cafe.service.users.UserService;
 import java.util.List;
 import org.springframework.stereotype.Controller;

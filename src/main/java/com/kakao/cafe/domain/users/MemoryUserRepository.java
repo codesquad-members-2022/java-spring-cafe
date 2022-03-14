@@ -1,4 +1,4 @@
-package com.kakao.cafe.domain.user;
+package com.kakao.cafe.domain.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserRepository {
+public class MemoryUserRepository implements UserRepository{
 
 	Map<String, Users> users = new HashMap<>();
 
