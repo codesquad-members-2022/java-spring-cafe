@@ -56,4 +56,12 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void updateProfile(UserDto updateUserData) {
+        this.userId = updateUserData.getUserId();
+        this.password = updateUserData.getPassword();
+        this.name = updateUserData.getName();
+        this.email = updateUserData.getEmail();
+    }
+
 }

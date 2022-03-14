@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.controller.UserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -43,6 +42,14 @@ public class UserService {
     public User findOne(int id) throws NoSuchElementException {
         Optional<User> user = userRepository.findById(id);
         return user.orElseThrow();
+    }
+
+    public int update(UserDto updateData) {
+        validateDuplicateUser(updateData);
+        User updateTargetUser = findOne(updateData.getId());
+        updateTargetUser.updateProfile(updateData);
+
+        return updateTargetUser.getId();
     }
 
 }
