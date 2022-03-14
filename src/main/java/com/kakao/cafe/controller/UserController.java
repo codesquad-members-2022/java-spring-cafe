@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.dto.UserSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
@@ -68,19 +67,20 @@ public class UserController {
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
-        User user = confirmSession(session, userId);
-        userService.updateUser(user, request);
+        UserResponse userResponse = confirmSession(session, userId);
+        userService.updateUser(userResponse, request);
         return "redirect:/users";
     }
 
-    private User confirmSession(HttpSession session, String userId) {
-        User sessionUser = (User) Optional.ofNullable(session.getAttribute(SESSION_USER))
+    private UserResponse confirmSession(HttpSession session, String userId) {
+        UserResponse userResponse = (UserResponse) Optional.ofNullable(
+                session.getAttribute(SESSION_USER))
             .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
 
-        if (!sessionUser.getUserId().equals(userId)) {
+        if (!userResponse.getUserId().equals(userId)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
-        return sessionUser;
+        return userResponse;
     }
 
 }

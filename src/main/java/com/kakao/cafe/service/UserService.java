@@ -64,7 +64,10 @@ public class UserService {
             });
     }
 
-    public UserResponse updateUser(User user, UserSaveRequest request) {
+    public UserResponse updateUser(UserResponse userResponse, UserSaveRequest request) {
+        // UserResponse 객체를 User 객체로 변환
+        User user = Mapper.map(userResponse, User.class);
+
         // session 에서 반환된 객체를 검증
         user.checkPassword(request.getPassword());
 

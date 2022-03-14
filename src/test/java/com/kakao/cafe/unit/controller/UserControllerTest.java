@@ -51,7 +51,7 @@ class UserControllerTest {
             "user@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute("SESSION_USER", user);
+        session.setAttribute("SESSION_USER", userResponse);
     }
 
     private ResultActions performGet(String url) throws Exception {

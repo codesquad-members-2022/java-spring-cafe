@@ -48,7 +48,7 @@ public class UserControllerTest {
             "user@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute("SESSION_USER", user);
+        session.setAttribute("SESSION_USER", userResponse);
     }
 
     @AfterEach

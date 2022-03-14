@@ -140,7 +140,7 @@ public class UserServiceTest {
             "other@example.com");
 
         // when
-        UserResponse updatedUser = userService.updateUser(user, request);
+        UserResponse updatedUser = userService.updateUser(userResponse, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -152,13 +152,14 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        User other = new User("newId", "userPassword", "userName", "user@example.com");
+        UserResponse otherResponse = new UserResponse(1, "newId", "userPassword", "userName",
+            "user@example.com");
 
         UserSaveRequest request = new UserSaveRequest("newId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(other, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(otherResponse, request));
 
         // then
         then(throwable)
@@ -174,7 +175,7 @@ public class UserServiceTest {
             "otherName", "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(user, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userResponse, request));
 
         // then
         then(throwable)

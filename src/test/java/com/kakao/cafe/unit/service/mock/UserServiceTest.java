@@ -148,7 +148,7 @@ public class UserServiceTest {
             .willReturn(changedUser);
 
         // when
-        UserResponse updatedUser = userService.updateUser(user, request);
+        UserResponse updatedUser = userService.updateUser(userResponse, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -167,7 +167,7 @@ public class UserServiceTest {
             .willReturn(Optional.empty());
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(user, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userResponse, request));
 
         // then
         then(throwable)
