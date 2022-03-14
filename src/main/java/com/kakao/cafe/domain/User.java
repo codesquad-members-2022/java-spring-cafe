@@ -42,8 +42,12 @@ public class User {
         return email;
     }
 
-    public boolean ownerOf(String id) {
-        return id.equals(userId);
+    public boolean ownerOf(String userId) {
+        return userId.equals(this.userId);
+    }
+
+    public boolean confirmPassword(String password) {
+        return password.equals(this.password);
     }
 
     @Override
