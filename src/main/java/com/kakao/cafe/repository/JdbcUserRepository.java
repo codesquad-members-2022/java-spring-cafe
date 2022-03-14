@@ -27,7 +27,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);
-        jdbc.update("MERGE INTO user KEY (user_id) VALUES (:userId, :password, :name, :email)", parameters);
+        jdbc.update("INSERT INTO user VALUES (:userId, :password, :name, :email) ON DUPLICATE KEY UPDATE name = :name, email = :email", parameters);
 
         return user;
     }
