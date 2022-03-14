@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class UserServiceTest {
 
     UserRepository repository = new UserMemoryRepository();
-    UserService service = new UserServiceImpl(repository);
+    UserService service = new UserService(repository);
 
     @BeforeEach
     void clear() {
