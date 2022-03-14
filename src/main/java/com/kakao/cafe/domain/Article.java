@@ -1,8 +1,7 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.Controller.dto.ArticleForm;
-
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Article extends BaseModel {
 
@@ -11,13 +10,21 @@ public class Article extends BaseModel {
     private String title;
     private String contents;
 
-    public Article(Long id, String writer, String title, String contents) {
+    public Article(Long id, String writer, String title, String contents, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        super.setCreatedTime(LocalDateTime.now());
-        super.setLastModifiedTime(LocalDateTime.now());
+        super.setCreatedTime(Optional.ofNullable(createdTime).orElse(LocalDateTime.now()));
+        super.setUpdatedTime(Optional.ofNullable(updatedTime).orElse(LocalDateTime.now()));
+    }
+
+    public Article(String writer, String title, String contents, LocalDateTime createdTime, LocalDateTime updatedTime) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        super.setCreatedTime(Optional.ofNullable(createdTime).orElse(LocalDateTime.now()));
+        super.setUpdatedTime(Optional.ofNullable(updatedTime).orElse(LocalDateTime.now()));
     }
 
     public Long getId() {

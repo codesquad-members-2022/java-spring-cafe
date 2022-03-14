@@ -3,7 +3,7 @@ package com.kakao.cafe.Controller.dto;
 import com.kakao.cafe.domain.Article;
 
 import javax.validation.constraints.NotEmpty;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 public class ArticleForm {
 
@@ -12,8 +12,8 @@ public class ArticleForm {
     @NotEmpty(message = "필수 입력사항입니다.")
     private String title;
     private String contents;
-    private String createdTime;
-    private String lastModifiedTime;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 
     public ArticleForm() {
     }
@@ -24,11 +24,13 @@ public class ArticleForm {
         this.contents = contents;
     }
 
-    public static Article toEntity(Long id, ArticleForm articleForm) {
-        return new Article(id,
+    public static Article toEntity(ArticleForm articleForm) {
+        return new Article(
                 articleForm.getWriter(),
                 articleForm.getTitle(),
-                articleForm.getContents());
+                articleForm.getContents(),
+                articleForm.getCreatedTime(),
+                articleForm.getUpdatedTime());
     }
 
     public String getWriter() {
@@ -55,19 +57,19 @@ public class ArticleForm {
         this.contents = contents;
     }
 
-    public String getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(String createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
-    public String getLastModifiedTime() {
-        return lastModifiedTime;
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
     }
 
-    public void setLastModifiedTime(String lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+    public void setUpdatedTime(LocalDateTime updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }
