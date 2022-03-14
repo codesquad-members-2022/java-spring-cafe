@@ -32,9 +32,9 @@ public class LoginController {
         logRequestInfo(request);
 
         User user = loginService.checkInfo(loginParam);
-        session.setAttribute("user", user);
+        session.setAttribute("userInfo", user);
 
-        return "redirect:/";
+        return "redirect:/users";
     }
 
     private void logRequestInfo(HttpServletRequest request) {

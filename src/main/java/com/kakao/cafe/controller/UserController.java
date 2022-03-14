@@ -1,5 +1,6 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -64,12 +66,20 @@ public class UserController {
     @GetMapping("/{userId}/form")
     public ModelAndView goUpdateForm(@PathVariable String userId,
                                      HttpServletRequest request,
+                                     HttpSession session,
                                      ModelAndView mav) {
 
         logRequestInfo(request);
 
         mav.setViewName("user/updateForm");
         mav.addObject("user", userService.search(userId));
+
+        User user = (User) session.getAttribute("userInfo");
+        if (!user.ownerOf(userId)) {
+            mav.setViewName("user/updateForm_failed");
+            mav.addObject("message", "본인 정보만 수정할 수 있습니다.");
+        }
+
         return mav;
     }
 
