@@ -75,11 +75,6 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public void deleteAllUsers() {
-//        String sql = "delete "
-    }
-
-    @Override
     public List<User> findAll() {
         return namedParameterJdbcTemplate.query(
                 "SELECT user_id, password, name, email, created_time, updated_time " +

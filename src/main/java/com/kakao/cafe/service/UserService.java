@@ -72,8 +72,4 @@ public class UserService {
 
         return UserDto.from(findUser);
     }
-
-    public void deleteAllUsers() {
-        userRepository.deleteAllUsers();
-    }
 }

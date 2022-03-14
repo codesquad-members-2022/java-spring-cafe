@@ -3,7 +3,6 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -33,11 +32,6 @@ public class UserMemoryRepository implements UserRepository{
         return users.stream()
                 .filter(user -> user.getUserId().equals(userId))
                 .findFirst();
-    }
-
-    @Override
-    public void deleteAllUsers() {
-        this.users = new ArrayList<>();
     }
 
     @Override
