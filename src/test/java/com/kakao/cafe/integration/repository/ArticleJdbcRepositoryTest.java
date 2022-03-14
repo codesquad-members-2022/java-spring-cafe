@@ -97,5 +97,42 @@ public class ArticleJdbcRepositoryTest {
         then(findArticle).isEqualTo(Optional.empty());
     }
 
+    @Test
+    @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트한다")
+    public void saveMergeTest() {
+        // given
+        articleRepository.save(article);
+
+        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents", null);
+
+        // when
+        articleRepository.save(changedArticle);
+        Optional<Article> findArticle = articleRepository.findById(changedArticle.getArticleId());
+
+        // then
+        then(findArticle)
+            .hasValueSatisfying(article -> {
+                then(article.getArticleId()).isEqualTo(1);
+                then(article.getWriter()).isEqualTo("writer");
+                then(article.getTitle()).isEqualTo("otherTitle");
+                then(article.getContents()).isEqualTo("otherContents");
+            });
+    }
+
+    @Test
+    @DisplayName("질문 id 로 질문 객체를 삭제한다")
+    public void deleteByArticleIdTest() {
+        // given
+        articleRepository.save(article);
+
+        // when
+        articleRepository.deleteById(article.getArticleId());
+        Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
+
+        // then
+        then(findArticle).isEqualTo(Optional.empty());
+
+    }
+
 }
 
