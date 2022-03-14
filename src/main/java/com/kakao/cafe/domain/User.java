@@ -54,7 +54,7 @@ public class User {
         return Objects.hash(userId);
     }
 
-    public boolean equalId(String referUserId) {
+    public boolean isSameId(String referUserId) {
         return Objects.equals(userId, referUserId);
     }
 }
