@@ -66,7 +66,8 @@ public class UserService {
     }
 
     public void logout(HttpSession httpSession) {
-        httpSession.invalidate();
+        //httpSession.invalidate();
+        httpSession.removeAttribute("sessionedUser");
     }
 
 

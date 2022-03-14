@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
@@ -70,7 +71,7 @@ public class UserController {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute("sessionedUser");
         if(isUnathorized(sessionedUser)) {
             logger.info("User not logged in tries access [{}]'s info", id);
-            return "user/login";
+            return "redirect:/user/login";
         }
         checkAccessPermission(id, sessionedUser);
 
@@ -85,7 +86,7 @@ public class UserController {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute("sessionedUser");
         if(isUnathorized(sessionedUser)) {
             logger.info("User not logged in tries access {}'s info", id);
-            return "user/login";
+            return "redirect:/user/login";
         }
         checkAccessPermission(id, sessionedUser);
         logger.info("[{}] updated info [{}]", id, userDto);
@@ -102,11 +103,12 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String loginUser(LoginDto loginDto, HttpSession httpSession) {
+    public String loginUser(LoginDto loginDto, HttpSession httpSession, HttpServletResponse httpServletResponse) {
         logger.info("[{}] request login",loginDto.getUserId());
         UserResponseDto loginUser = userService.login(loginDto);
 
         if(loginUser == null) {
+            httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
             logger.info("[{}] failed login", loginDto.getUserId());
             return "user/login_failed";
         }
