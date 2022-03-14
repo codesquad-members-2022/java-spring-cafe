@@ -21,7 +21,7 @@ public class MemoryMemberRepositoryTest {
 
     @Test
     public void save() {
-        User user = new User(new UserForm("sampleId", "sampleName", "sample@email.com"));
+        User user = new User("sampleId", "sampleName", "sample@email.com");
         User result = repository.save(user);
 
 //        Assertions.assertEquals(user.getUserId(), result.getUserId());
@@ -34,7 +34,7 @@ public class MemoryMemberRepositoryTest {
 
     @Test
     public void findById() {
-        User user = new User(new UserForm("sampleId", "sampleName", "sample@email.com"));
+        User user = new User("sampleId", "sampleName", "sample@email.com");
         repository.save(user);
         User result = repository.findById("sampleId").get();
         assertThat(result).isEqualTo(user);
@@ -42,8 +42,8 @@ public class MemoryMemberRepositoryTest {
 
     @Test
     public void findAll() {
-        User firstUser = new User(new UserForm("sampleId", "sampleNameOne", "sampleOne@email.com"));
-        User secondUser = new User(new UserForm("sampleIdTwo", "sampleNameTwo", "sampleTwo@email.com"));
+        User firstUser = new User("sampleId", "sampleNameOne", "sampleOne@email.com");
+        User secondUser = new User("sampleIdTwo", "sampleNameTwo", "sampleTwo@email.com");
 
         List<User> users = new ArrayList<>();
         users.add(firstUser);

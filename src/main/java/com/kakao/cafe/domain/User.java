@@ -10,10 +10,10 @@ public class User {
     private String name;
     private String email;
 
-    public User(UserForm form) {
-        this.userId = form.getUserId();
-        this.name = form.getName();
-        this.email = form.getEmail();
+    public User(String userId, String name, String email) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
     }
 
     public String getUserId() {
