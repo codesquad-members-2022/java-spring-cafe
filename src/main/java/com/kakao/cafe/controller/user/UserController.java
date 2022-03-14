@@ -21,12 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/new")
+    @GetMapping("/signup")
     public String createForm() {
         return "/user/form";
     }
 
-    @PostMapping("/new")
+    @PostMapping("/signup")
     public String create(UserForm form) {
         User user = new User(form.getName(), form.getEmail(), form.getPassword());
         userService.join(user);
