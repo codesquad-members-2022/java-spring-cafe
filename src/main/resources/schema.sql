@@ -13,11 +13,11 @@ CREATE TABLE user (
 DROP TABLE IF EXISTS article;
 
 CREATE TABLE article (
-  id        BIGINT       NOT NULL AUTO_INCREMENT,
-  writer    VARCHAR(100) NOT NULL,
-  title     VARCHAR(100) NOT NULL,
-  contents  VARCHAR(255) NOT NULL,
-  created_time TIMESTAMP,
-  updated_time TIMESTAMP,
-  PRIMARY KEY (id)
+    id           BIGINT       NOT NULL AUTO_INCREMENT,
+    writer       VARCHAR(100) NOT NULL,
+    title        VARCHAR(100) NOT NULL,
+    contents     VARCHAR(255) NOT NULL,
+    created_time TIMESTAMP,
+    updated_time TIMESTAMP,
+    PRIMARY KEY (id)
 );
