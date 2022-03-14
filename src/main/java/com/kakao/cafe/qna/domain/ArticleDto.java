@@ -18,11 +18,13 @@ public class ArticleDto {
 		private final String writer;
 		private final String title;
 		private final String contents;
+		private final String userId;
 
-		public WriteRequest(String writer, String title, String contents) {
+		public WriteRequest(String writer, String title, String contents, String userId) {
 			this.writer = writer;
 			this.title = title;
 			this.contents = StringEscapeUtils.escapeHtml4(contents);
+			this.userId = userId;
 		}
 
 		public String getWriter() {
@@ -37,15 +39,22 @@ public class ArticleDto {
 			return contents;
 		}
 
+		public String getUserId() {
+			return userId;
+		}
+
 		public void isValid(Logger logger) {
-			if (isOneMoreBlank()) {
-				logger.warn("request question : {}", this);
-				throw new IllegalArgumentException(getErrorMessageWithBlank());
+			try {
+				if (isOneMoreBlank()) {
+					throw new IllegalArgumentException(getErrorMessageWithBlank());
+				}
+			} catch (IllegalArgumentException exception) {
+				logger.error("error of the request question : {}", exception);
 			}
 		}
 
 		private boolean isOneMoreBlank() {
-			return isWriterBlank() || isTitleBlank() || isContentsBlank();
+			return isWriterBlank() || isTitleBlank() || isContentsBlank() || isUserIdBlank();
 		}
 
 		private boolean isContentsBlank() {
@@ -58,6 +67,10 @@ public class ArticleDto {
 
 		private boolean isWriterBlank() {
 			return isNullOrBlank(this.writer);
+		}
+
+		private boolean isUserIdBlank() {
+			return isNullOrBlank(this.userId);
 		}
 
 		public String getErrorMessageWithBlank() {

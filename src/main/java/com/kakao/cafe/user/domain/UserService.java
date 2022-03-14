@@ -74,7 +74,7 @@ public class UserService {
 		return false;
 	}
 
-	private User getUserByUserId(String userId) {
+	public User getUserByUserId(String userId) {
 		return userRepository.findByUserId(userId)
 			.orElseThrow(() -> {
 				throw new DomainNotFoundException("user");

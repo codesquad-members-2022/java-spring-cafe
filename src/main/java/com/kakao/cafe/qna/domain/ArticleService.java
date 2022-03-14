@@ -7,17 +7,22 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
+import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserService;
 
 @Service
 public class ArticleService {
 	private final ArticleRepository articleRepository;
+	private final UserService userService;
 
-	public ArticleService(ArticleRepository articleRepository) {
+	public ArticleService(ArticleRepository articleRepository, UserService userService) {
 		this.articleRepository = articleRepository;
+		this.userService = userService;
 	}
 
 	public long write(ArticleDto.WriteRequest writeRequest) {
-		Article question = new Article(writeRequest.getWriter(), writeRequest.getTitle(), writeRequest.getContents());
+		User user = userService.getUserByUserId(writeRequest.getUserId());
+		Article question = new Article(user.getName(), writeRequest.getTitle(), writeRequest.getContents(), user.getId());
 		Article getArticle = articleRepository.save(question);
 		return getArticle.getId();
 	}

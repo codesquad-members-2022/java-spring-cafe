@@ -43,6 +43,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		WRITER("writer", ":writer", ":writer"),
 		TITLE("title", ":title", ":title"),
 		CONTENT("content", ":content", ":content"),
+		FK_CAFE_USER_ID("cafe_user_id", ":cafe_user_id", ":cafeUserId"),
 		WRITING_DATE("writing_date", ":writingDate", ":writingDate"),
 		COUNT_ALL("COUNT(*)", null, null),
 		NONE(null, null, null);
@@ -117,6 +118,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		parameters.put(WRITER.getColumnName(), entity.getWriter());
 		parameters.put(TITLE.getColumnName(), entity.getTitle());
 		parameters.put(CONTENT.getColumnName(), entity.getContent());
+		parameters.put(FK_CAFE_USER_ID.getColumnName(), entity.getCafeUserId());
 		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());
 		return parameters;
 	}
@@ -145,6 +147,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 				rs.getString(WRITER.getColumnName()),
 				rs.getString(TITLE.getColumnName()),
 				rs.getString(CONTENT.getColumnName()),
+				rs.getLong(FK_CAFE_USER_ID.getColumnName()),
 				rs.getObject(WRITING_DATE.getColumnName(), LocalDate.class));
 			return article;
 		};

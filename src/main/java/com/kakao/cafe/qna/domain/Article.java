@@ -10,6 +10,7 @@ public class Article {
 	private String title;
 	private String content;
 	private LocalDate writingDate;
+	private Long cafeUserId;
 
 	public Article(Long id, String writer, String title, String content) {
 		this.id = id;
@@ -19,15 +20,22 @@ public class Article {
 		this.writingDate = LocalDate.now();
 	}
 
-	public Article(String writer, String title, String content) {
-		this(null, writer, title, content);
+	// 새글 작성
+	public Article(String writer, String title, String content, Long cafeUserId) {
+		this.writer = writer;
+		this.title = title;
+		this.content = content;
+		this.cafeUserId = cafeUserId;
+		this.writingDate = LocalDate.now();
 	}
 
-	public Article(Long id, String writer, String title, String content, LocalDate writingDate) {
+	// from db
+	public Article(Long id, String writer, String title, String content, Long cafeUserId, LocalDate writingDate) {
 		this.id = id;
 		this.writer = writer;
 		this.title = title;
 		this.content = content;
+		this.cafeUserId = cafeUserId;
 		this.writingDate = writingDate;
 	}
 
@@ -59,6 +67,10 @@ public class Article {
 
 	public String getContent() {
 		return content;
+	}
+
+	public Long getCafeUserId() {
+		return cafeUserId;
 	}
 
 	public LocalDate getWritingDate() {

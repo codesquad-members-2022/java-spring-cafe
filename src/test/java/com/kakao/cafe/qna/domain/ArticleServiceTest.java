@@ -1,5 +1,6 @@
 package com.kakao.cafe.qna.domain;
 
+import static com.kakao.cafe.user.infra.MemoryUserRepositoryTest.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -14,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.kakao.cafe.user.domain.UserService;
+
 @ExtendWith(MockitoExtension.class)
 public
 class ArticleServiceTest {
@@ -26,18 +29,21 @@ class ArticleServiceTest {
 
 	@Mock
 	ArticleRepository articleRepository;
+	@Mock
+	UserService userService;
 
 	@Test
 	@DisplayName("글쓰기 작성한 내용을 DB에 저장 된 것을 확인한다.")
 	void writing_article_test() {
-		Article expected = new Article(1L, TEST_WRITER, TEST_TITLE, TEST_CONTENT);
+		Article expected = new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
+		expected.setId(1L);
 		ArticleDto.WriteRequest articleDto = getArticleDto(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
-		when(articleRepository.save(any()))
-			.thenReturn(expected);
+		when(userService.getUserByUserId(any())).thenReturn(getUser());
+		when(articleRepository.save(any())).thenReturn(expected);
 
 		long actual = this.articleService.write(articleDto);
 
-		assertThat(actual).isEqualTo(expected.getId());
+		assertThat(actual).isNotZero();
 	}
 
 /*
@@ -62,6 +68,6 @@ class ArticleServiceTest {
 	}*/
 
 	private ArticleDto.WriteRequest getArticleDto(String writer, String title, String content) {
-		return new ArticleDto.WriteRequest(writer, title, content);
+		return new ArticleDto.WriteRequest(writer, title, content, "userId");
 	}
 }
