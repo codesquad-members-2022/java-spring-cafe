@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String list(Model model) {
+    public String searchUserList(Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
 

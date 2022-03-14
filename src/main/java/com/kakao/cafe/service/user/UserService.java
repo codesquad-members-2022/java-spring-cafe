@@ -14,5 +14,5 @@ public interface UserService {
 
     List<User> findAllUsers();
 
-    void validateUser(User user);
+    void isDuplicatedUser(User user);
 }
