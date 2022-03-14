@@ -5,13 +5,14 @@ import com.kakao.cafe.entity.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class ArticleMemorySaveRepository implements ArticleRepository {
 
-    private final List<Article> articleStore = new ArrayList<>();
+    private final List<Article> articleStore = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public Article articleSave(Article article) {
@@ -23,7 +24,7 @@ public class ArticleMemorySaveRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAllArticle() {
-        return articleStore;
+        return Collections.unmodifiableList(articleStore);
     }
 
     @Override

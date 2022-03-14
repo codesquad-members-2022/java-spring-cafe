@@ -38,7 +38,7 @@ public class UserMemorySaveRepository implements UserRepository {
 
     @Override
     public List<User> findAllUser() {
-        return userStore;
+        return Collections.unmodifiableList(userStore);
     }
 
     public void clearStore() {
