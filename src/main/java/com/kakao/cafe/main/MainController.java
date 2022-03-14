@@ -1,9 +1,6 @@
 package com.kakao.cafe.main;
 
-import static com.kakao.cafe.main.SessionUser.*;
-import static com.kakao.cafe.user.domain.UserUpdateDto.*;
-
-import java.util.Optional;
+import static com.kakao.cafe.common.utils.session.SessionUser.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -15,11 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kakao.cafe.common.utils.session.SessionUser;
 import com.kakao.cafe.qna.domain.ArticleService;
 import com.kakao.cafe.user.domain.UserService;
 
 @Controller
 public class MainController {
+	public static final String REDIRECT_ROOT = "redirect:/";
+	public static final String REDIRECT_LOGIN_VIEW = REDIRECT_ROOT + "login";
+
 	private final ArticleService articleService;
 	private final UserService userService;
 
@@ -40,18 +41,18 @@ public class MainController {
 	public String login(LoginDto loginDto, HttpSession httpSession, RedirectAttributes redirectAttributes) {
 		SessionUser sessionUser = userService.validateLogin(loginDto, redirectAttributes);
 		if (!sessionUser.isValidated()) {
-			return "redirect:/login";
+			return REDIRECT_LOGIN_VIEW;
 		}
 
 		logger.info("login : {}", loginDto.getUserId());
 		httpSession.setAttribute(SESSION_KEY, sessionUser);
 		httpSession.setMaxInactiveInterval(1200);  // 20분
-		return "redirect:/";
+		return REDIRECT_ROOT;
 	}
 
 	@GetMapping("/logout")
 	public String logout(HttpSession httpSession) {
 		httpSession.removeAttribute(SESSION_KEY);
-		return "redirect:/";
+		return REDIRECT_ROOT;
 	}
 }

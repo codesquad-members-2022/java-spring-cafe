@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
 import com.kakao.cafe.main.LoginDto;
-import com.kakao.cafe.main.SessionUser;
+import com.kakao.cafe.common.utils.session.SessionUser;
 
 @Service
 public class UserService {

@@ -1,8 +1,11 @@
 package com.kakao.cafe.qna.domain;
 
 import static com.kakao.cafe.common.utils.MessageFormatter.*;
+import static com.kakao.cafe.common.utils.session.SessionUtils.*;
+import static com.kakao.cafe.main.MainController.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +29,11 @@ public class ArticleController {
 	}
 
 	@GetMapping()
-	public String view() {
+	public String view(HttpSession httpSession) {
+		boolean isValid = isValidLogin(httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
 		return "/qna/form";
 	}
 
@@ -35,7 +42,7 @@ public class ArticleController {
 		articleDto.isValid(logger);
 		logger.info("request question : {}", articleDto);
 		articleService.write(articleDto);
-		return "redirect:/";
+		return REDIRECT_ROOT;
 	}
 
 	@GetMapping("/{id}")

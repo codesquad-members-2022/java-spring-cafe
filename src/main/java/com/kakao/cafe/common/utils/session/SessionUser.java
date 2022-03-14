@@ -1,4 +1,4 @@
-package com.kakao.cafe.main;
+package com.kakao.cafe.common.utils.session;
 
 
 public class SessionUser {
@@ -21,6 +21,10 @@ public class SessionUser {
 		sessionUser.userName = userName;
 		sessionUser.isAuthenticated = true;
 		return sessionUser;
+	}
+
+	public String getUserId() {
+		return userId;
 	}
 
 	public String getUserName() {

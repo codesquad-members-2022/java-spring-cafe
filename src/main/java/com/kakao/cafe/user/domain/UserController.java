@@ -1,6 +1,8 @@
 package com.kakao.cafe.user.domain;
 
-import static com.kakao.cafe.main.SessionUser.*;
+import static com.kakao.cafe.common.utils.session.SessionUser.*;
+import static com.kakao.cafe.common.utils.session.SessionUtils.*;
+import static com.kakao.cafe.main.MainController.*;
 import static com.kakao.cafe.user.domain.UserUpdateDto.*;
 
 import java.util.Objects;
@@ -21,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kakao.cafe.main.SessionUser;
+import com.kakao.cafe.common.utils.session.SessionUser;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
+	public static final String REDIRECT_USER_ROOT_URL = REDIRECT_ROOT + "users";
 	Logger logger = LoggerFactory.getLogger(UserController.class);
 	private final UserService userService;
 
@@ -39,7 +42,7 @@ public class UserController {
 		userDto.isValid(logger);
 		logger.info("user sign up : {}",userDto.getUserId());
 		userService.register(userDto);
-		return "redirect:/users";
+		return REDIRECT_USER_ROOT_URL;
 	}
 
 	@GetMapping()
@@ -59,8 +62,10 @@ public class UserController {
 
 	@GetMapping("/{user-id}/form")
 	public String updateView(@PathVariable(value = "user-id") String userId, Model model, HttpSession httpSession) {
-		isValidAccess(userId, httpSession);
-
+		boolean isValid = isValidAccess(userId, httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
 		logger.info("view for profile updating : {}", userId);
 		UserUpdateDto.Response response = userService.findUserForUpdateFrom(userId);
 		/*
@@ -86,13 +91,13 @@ public class UserController {
 			setTimeLimit(userId, redirectAttributes, invalidResponse);
 			invalidResponse.addCount();
 			redirectAttributes.addFlashAttribute("checks", invalidResponse);
-			String redirectUrl = String.format("/users/%s/form", userId);
-			return "redirect:" + redirectUrl;
+			String redirectUrl = String.format("users/%s/form", userId);
+			return REDIRECT_ROOT + redirectUrl;
 		}
 
 		logger.info("update profile: {}", userId);
 		userService.changeProfile(userDto);
-		return "redirect:/users/";
+		return REDIRECT_USER_ROOT_URL;
 	}
 
 	// 403..
@@ -113,33 +118,5 @@ public class UserController {
 		ModelAndView mav = new ModelAndView(requestURI);
 		mav.addObject("message", exception.getMessage());
 		return mav;
-	}
-
-	private void isValidAccess(String userId, HttpSession httpSession) {
-		try {
-			isEmptyAccessor(httpSession);
-			isTheSameLoginUserAsAccount(userId, httpSession);
-		} catch (IllegalArgumentException exception) {
-			logger.error("invalid access : {}", exception);
-		}
-
-	}
-
-	private void isTheSameLoginUserAsAccount(String userId, HttpSession httpSession) {
-		SessionUser sessionUser = (SessionUser)getHttpSessionAttribute(httpSession);
-		if (sessionUser.isDifferentFrom(userId)) {
-			throw new IllegalArgumentException("로그인 정보를 입력 하세요.");
-		}
-	}
-
-	private void isEmptyAccessor(HttpSession httpSession) {
-		Object accessor = getHttpSessionAttribute(httpSession);
-		if (Objects.isNull(accessor)) {
-			throw new IllegalArgumentException("로그인 하세요");
-		}
-	}
-
-	private Object getHttpSessionAttribute(HttpSession httpSession) {
-		return httpSession.getAttribute(SESSION_KEY);
 	}
 }
