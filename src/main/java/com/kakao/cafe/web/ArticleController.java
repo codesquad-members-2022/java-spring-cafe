@@ -29,7 +29,7 @@ public class ArticleController {
     public String writeForm() {
         logger.info("User in qna-form");
 
-        return "/qna/form";
+        return "qna/form";
     }
 
     @PostMapping("/write-qna")
@@ -45,7 +45,7 @@ public class ArticleController {
         logger.info("Show all articles");
         model.addAttribute("articles", articleService.findAll());
 
-        return "/qna/list";
+        return "qna/list";
     }
 
     @GetMapping("/show/{id}")
@@ -56,6 +56,6 @@ public class ArticleController {
         model.addAttribute("article", result);
         logger.info("Show article{}", result);
 
-        return "/qna/show";
+        return "qna/show";
     }
 }
