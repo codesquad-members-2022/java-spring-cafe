@@ -23,6 +23,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     private static final String TITLE = "title";
     private static final String CONTENTS = "contents";
     private static final String CREATED_DATE = "created_date";
+    private static final String COUNT = "count";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final KeyHolderFactory keyHolderFactory;
@@ -68,7 +69,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
                     rs.getString(WRITER),
                     rs.getString(TITLE),
                     rs.getString(CONTENTS),
-                    rs.getObject(CREATED_DATE, LocalDateTime.class)
+                    rs.getObject(CREATED_DATE, LocalDateTime.class),
+                    rs.getInt(COUNT)
                 )
         );
     }
