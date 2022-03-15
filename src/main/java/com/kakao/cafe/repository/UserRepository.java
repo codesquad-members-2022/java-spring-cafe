@@ -7,13 +7,9 @@ import java.util.Optional;
 
 public interface UserRepository {
 
-    Long nextUserSequence();
-
     User save(User user);
 
     Optional<User> findByUserId(String userId);
-
-    void deleteAllUsers();
 
     List<User> findAll();
 }

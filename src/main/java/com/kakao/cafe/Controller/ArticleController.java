@@ -2,7 +2,6 @@ package com.kakao.cafe.Controller;
 
 import com.kakao.cafe.Controller.dto.ArticleForm;
 import com.kakao.cafe.Controller.dto.ArticleResponse;
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class ArticleController {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
@@ -32,25 +30,19 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String create(@Valid ArticleForm articleDto, Errors errors) {
+    public String create(@Valid ArticleForm articleForm, Errors errors) {
         if (errors.hasErrors()) {
             return "qna/form";
         }
 
-        Article article = new Article(articleService.nextSequence(), articleDto);
-        articleService.save(article);
+        articleService.save(articleForm);
 
         return "redirect:/";
     }
 
     @GetMapping("/")
     public String articleList(Model model) {
-        List<Article> findArticles = articleService.findAll();
-
-        List<ArticleResponse> articles = findArticles.stream()
-                .map(article -> new ArticleResponse().toArticleResponse(article))
-                .collect(Collectors.toUnmodifiableList());
-
+        List<ArticleResponse> articles = articleService.findAll();
         model.addAttribute("articles", articles);
 
         return "index";
@@ -58,9 +50,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String findById(@PathVariable long id, Model model) {
-        Article findArticle = articleService.findById(id);
-        ArticleResponse article = new ArticleResponse().toArticleResponse(findArticle);
-
+        ArticleResponse article = articleService.findArticleResponseById(id);
         model.addAttribute("article", article);
 
         return "qna/show";

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class BaseModel {
 
     private LocalDateTime createdTime;
-    private LocalDateTime lastModifiedTime;
+    private LocalDateTime updatedTime;
 
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
@@ -15,11 +15,11 @@ public class BaseModel {
         return createdTime;
     }
 
-    public void setLastModifiedTime(LocalDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
+    public void setUpdatedTime(LocalDateTime updatedTime) {
+        this.updatedTime = updatedTime;
     }
 
-    public LocalDateTime getLastModifiedTime() {
-        return lastModifiedTime;
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
     }
 }

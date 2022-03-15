@@ -11,23 +11,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ArticleMemoryRepository implements ArticleRepository{
 
     List<Article> articles = new CopyOnWriteArrayList<>();
-    Long articleSize = 0L;
+    Long articleSequence = 0L;
 
-    @Override
-    public Long nextSequence() {
-        return this.articleSize;
+    private Long nextSequence() {
+        return this.articleSequence;
     }
 
-    private void addArticleSize() {
-        articleSize++;
+    private void setArticleSequence(int sequence) {
+        articleSequence = Math.max(articleSequence, sequence);
     }
 
     @Override
-    public Long save(Article article) {
-        articles.add(article);
-        addArticleSize();
+    public Article save(Article article) {
+        Article saveArticle = new Article(nextSequence(), article.getWriter(), article.getTitle(), article.getContents(),
+                article.getCreatedTime(), article.getUpdatedTime());
 
-        return article.getId();
+        articles.add(saveArticle);
+        setArticleSequence(articles.size());
+
+        return findById(saveArticle.getId()).orElse(saveArticle);
     }
 
     @Override
@@ -40,9 +42,5 @@ public class ArticleMemoryRepository implements ArticleRepository{
     @Override
     public List<Article> findAll() {
         return articles;
-    }
-
-    public void deleteAllArticles() {
-        this.articles = new CopyOnWriteArrayList<>();
     }
 }

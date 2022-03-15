@@ -1,12 +1,14 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.Controller.dto.ArticleForm;
+import com.kakao.cafe.Controller.dto.ArticleResponse;
 import com.kakao.cafe.domain.Article;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,46 +17,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class ArticleServiceTest {
 
     @Autowired
     ArticleService articleService;
-    private Article article;
+    private ArticleForm articleForm;
 
     @BeforeEach
     void setUp() {
-        article = new Article(0L, "ader", "titleTest", "contentsTest");
-    }
-
-    @AfterEach
-    void tearDown() {
-        articleService.deleteAllArticles();
+        articleForm = new ArticleForm("ader", "titleTest", "contentsTest");
     }
 
     @Test
-    @DisplayName("Article 정보를 정상적으로 입력하고 저장을 시도하면 정상적으로 저장된다")
+    @DisplayName("ArticleForm 정보를 정상적으로 입력하고 저장을 시도하면 정상적으로 저장된다")
     void saveTest() {
         // given
 
         // when
-        Long saveId = articleService.save(article);
+        Article article = articleService.save(articleForm);
 
         // then
-        assertThat(saveId).isEqualTo(article.getId());
+        assertThat(article.getId()).isEqualTo(articleService.findArticleResponseById(article.getId()).getId());
     }
 
 
     @Test
-    @DisplayName("저장되어 있는 id로 검색을 시도하면 해당하는 Article을 리턴한다")
+    @DisplayName("저장되어 있는 id로 검색을 시도하면 해당하는 ArticleResponse를 리턴한다")
     void findByIdTest() {
         // given
-        Long saveId = articleService.save(article);
+        Article saveArticle = articleService.save(articleForm);
 
         // when
-        Article findArticle = articleService.findById(saveId);
+        ArticleResponse findArticleResponse = articleService.findArticleResponseById(saveArticle.getId());
 
         // then
-        assertThat(findArticle.isSameArticle(saveId)).isEqualTo(true);
+        assertThat(findArticleResponse.getId()).isEqualTo(saveArticle.getId());
     }
 
     @Test
@@ -64,7 +62,7 @@ class ArticleServiceTest {
 
         // when
         NoSuchElementException e = assertThrows(NoSuchElementException.class,
-                () -> articleService.findById(-1L));
+                () -> articleService.findArticleResponseById(-1L));
 
         // then
         assertThat(e.getMessage()).isEqualTo("일치하는 질문이 없습니다.");
@@ -74,16 +72,16 @@ class ArticleServiceTest {
     @DisplayName("findAll 메소드를 호출하면 현재 저장된 Article리스트를 리턴한다")
     void findAllTest() {
         // given
-        Article article2 = new Article(1L, "ader2", "titleTest2", "contentsTest2");
-        Article article3 = new Article(2L, "ader3", "titleTest3", "contentsTest3");
-        articleService.save(article);
-        articleService.save(article2);
-        articleService.save(article3);
+        ArticleForm articleForm2 = new ArticleForm("ader2", "titleTest2", "contentsTest2");
+        ArticleForm articleForm3 = new ArticleForm("ader3", "titleTest3", "contentsTest3");
+        articleService.save(articleForm);
+        articleService.save(articleForm2);
+        articleService.save(articleForm3);
 
         // when
-        List<Article> findArticles = articleService.findAll();
+        List<ArticleResponse> articles = articleService.findAll();
 
         // then
-        assertThat(findArticles.size()).isEqualTo(3);
+        assertThat(articles.size()).isEqualTo(3);
     }
 }

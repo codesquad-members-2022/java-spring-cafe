@@ -12,10 +12,7 @@ public class ArticleResponse {
     private String contents;
     private String createdTime;
     private String lastModifiedTime;
-    private final String articleListDateFormat = "yyyy-MM-dd HH:MM";
-
-    public ArticleResponse() {
-    }
+    private static final String articleListDateFormat = "yyyy-MM-dd HH:MM";
 
     public ArticleResponse(Long id, String writer, String title, String contents) {
         this.id = id;
@@ -24,10 +21,10 @@ public class ArticleResponse {
         this.contents = contents;
     }
 
-    public ArticleResponse toArticleResponse(Article article) {
+    public static ArticleResponse of(Article article) {
         ArticleResponse articleResponse = new ArticleResponse(article.getId(), article.getWriter(), article.getTitle(), article.getContents());
         articleResponse.setCreatedTime(article.getCreatedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
-        articleResponse.setLastModifiedTime(article.getLastModifiedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
+        articleResponse.setLastModifiedTime(article.getUpdatedTime().format(DateTimeFormatter.ofPattern(articleListDateFormat)));
         return articleResponse;
     }
 

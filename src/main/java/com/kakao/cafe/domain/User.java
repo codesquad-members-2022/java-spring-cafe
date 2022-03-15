@@ -1,41 +1,27 @@
 package com.kakao.cafe.domain;
 
-import com.kakao.cafe.Controller.dto.UserRequestDto;
-
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class User {
 
-    private Long id;
     private String userId;
     private String password;
     private String name;
     private String email;
-    private LocalDateTime created_date;
-    private LocalDateTime updated_date;
+    private LocalDateTime createdTime;
+    private LocalDateTime updatedTime;
 
-    public User(Long id, String userId, String password, String name, String email) {
-        this.id = id;
+    private User() {
+    }
+
+    public User(String userId, String password, String name, String email, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.created_date = LocalDateTime.now();
-        this.updated_date = LocalDateTime.now();
-    }
-
-    public User(Long id, UserRequestDto userCreateDto) {
-        this.id = id;
-        this.userId = userCreateDto.getUserId();
-        this.password = userCreateDto.getPassword();
-        this.name = userCreateDto.getName();
-        this.email = userCreateDto.getEmail();
-        this.created_date = LocalDateTime.now();
-        this.updated_date = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
+        this.createdTime = Optional.ofNullable(createdTime).orElse(LocalDateTime.now());
+        this.updatedTime = Optional.ofNullable(updatedTime).orElse(LocalDateTime.now());
     }
 
     public String getUserId() {
@@ -54,12 +40,12 @@ public class User {
         return email;
     }
 
-    public LocalDateTime getCreated_date() {
-        return created_date;
+    public LocalDateTime getCreatedTime() {
+        return createdTime;
     }
 
-    public LocalDateTime getUpdated_date() {
-        return updated_date;
+    public LocalDateTime getUpdatedTime() {
+        return updatedTime;
     }
 
     public void update(String newPassword, String newName, String newEmail) {
@@ -74,5 +60,16 @@ public class User {
 
     public boolean isCorrectPassword(String password) {
         return this.password.equals(password);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                '}';
     }
 }
