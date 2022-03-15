@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class ArticleServiceTest {
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
     ArticleService articleService;
 
     @BeforeEach
