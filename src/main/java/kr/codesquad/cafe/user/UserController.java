@@ -43,7 +43,7 @@ public class UserController {
             model.addAttribute("message", e.getMessage());
             model.addAttribute("temp", form);
 
-            return "/users/form";
+            return "users/form";
         }
     }
 
@@ -51,7 +51,7 @@ public class UserController {
     public String viewUserProfile(@PathVariable("userId") String userId, Model model) {
         try {
             model.addAttribute("user", service.findByUserId(userId));
-            return "/users/profile";
+            return "users/profile";
         } catch (NoSuchElementException e) {
 
             //noinspection SpringMVCViewInspection
@@ -63,7 +63,7 @@ public class UserController {
     public String viewUpdateForm(@PathVariable("userId") String userId, Model model) {
         try {
             model.addAttribute("user", service.findByUserId(userId));
-            return "/users/updateForm";
+            return "users/updateForm";
         } catch (NoSuchElementException e) {
 
             //noinspection SpringMVCViewInspection
