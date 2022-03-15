@@ -84,10 +84,10 @@ public class UserController {
         User user = userService.findUserByUserId(userId);
         if (user.isYourPassword(password)) {
             String sessionUser = userId + password;
+            session.setAttribute(sessionUser, user);
             Cookie cookie = new Cookie("sessionUser", sessionUser);
             cookie.setPath("/");
             response.addCookie(cookie);
-            session.setAttribute(sessionUser, user);
             return "redirect:/";
         }
         return "login/login_failed";
