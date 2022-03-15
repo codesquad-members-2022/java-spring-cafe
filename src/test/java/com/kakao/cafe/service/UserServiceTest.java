@@ -110,7 +110,7 @@ class UserServiceTest {
         User user1 = createUser(1);
         User user2 = createUser(2);
         User user3 = createUser(3);
-        
+
         given(userRepository.findAll())
                 .willReturn(List.of(user1, user2, user3));
 

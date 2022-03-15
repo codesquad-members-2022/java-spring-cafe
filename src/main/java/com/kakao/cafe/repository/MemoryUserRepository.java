@@ -2,13 +2,13 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements UserRepository {
 
-    private final List<User> store = new ArrayList<>();
+    private final List<User> store = new CopyOnWriteArrayList<>();
 
     @Override
     public User save(User user) {

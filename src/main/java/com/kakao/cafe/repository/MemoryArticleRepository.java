@@ -2,13 +2,13 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
-    private final List<Article> store = new ArrayList<>();
+    private final List<Article> store = new CopyOnWriteArrayList<>();
 
     @Override
     public Article save(Article article) {
@@ -25,7 +25,7 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public List<Article> findAll() {
-        return store;
+        return List.copyOf(store);
     }
 
     @Override
