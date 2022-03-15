@@ -5,7 +5,7 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private int index;
+    private int id;
 
     public User(String userId, String name, String password, String email) {
         this.userId = userId;
@@ -29,12 +29,12 @@ public class User {
         return email;
     }
 
-    public int getIndex() {
-        return index;
+    public int getId() {
+        return id;
     }
 
-    public void setIndex(int index) {
-        this.index = index+1;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean compareById(String userId){

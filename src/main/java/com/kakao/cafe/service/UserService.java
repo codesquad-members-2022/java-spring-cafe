@@ -20,7 +20,7 @@ public class UserService{
         User user = userForm.createUser();
         validateDuplicateUserId(user);
         userRepository.save(user);
-        return user.getIndex();
+        return user.getId();
     }
 
     public List<User> findUsers() {
@@ -35,7 +35,7 @@ public class UserService{
     }
 
     public UserForm findOneUser(int index) {
-        User user = userRepository.findByIndex(index)
+        User user = userRepository.findById(index)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         return new UserForm(user.getUserId(), user.getName(), user.getPassword(), user.getEmail());
     }
@@ -43,12 +43,12 @@ public class UserService{
     public void update(UpdateUserForm updateUserForm, int index) {
         validatePassword(updateUserForm.getPassword(), index);
         User user = updateUserForm.createUser(updateUserForm.getNewPassword()); // 새로운 비밀번호로 User 객체 생성
-        user.setIndex(index);
+        user.setId(index);
         userRepository.update(user, index);
     }
 
     private void validatePassword(String password, int index) {
-        User user = userRepository.findByIndex(index)
+        User user = userRepository.findById(index)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
         if (!user.getPassword().equals(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
