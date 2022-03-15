@@ -265,6 +265,9 @@ public class ArticleServiceTest {
         given(articleRepository.findById(any()))
             .willReturn(Optional.of(article));
 
+        given(replyRepository.countByArticleIdAndNotUserId(any(), any()))
+            .willReturn(0);
+
         // when
         articleService.deleteArticle(sessionUser, article.getArticleId());
     }
@@ -301,5 +304,25 @@ public class ArticleServiceTest {
         then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INVALID_ARTICLE_WRITER.getMessage());
+    }
+
+    @Test
+    @DisplayName("다른 유저의 댓글이 있는 질문 삭제 시 예외를 반환한다")
+    public void deleteArticleOthersReplyTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        given(replyRepository.countByArticleIdAndNotUserId(any(), any()))
+            .willReturn(1);
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.deleteArticle(sessionUser, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_ARTICLE_DELETE.getMessage());
     }
 }

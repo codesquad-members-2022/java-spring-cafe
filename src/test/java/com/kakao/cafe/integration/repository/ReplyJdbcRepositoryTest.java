@@ -138,4 +138,22 @@ public class ReplyJdbcRepositoryTest {
         // then
         then(findReply).isEqualTo(Optional.empty());
     }
+
+    @Test
+    @DisplayName("유저 아이디와 질문 id 로 댓글 개수를 조회한다")
+    public void countByArticleIdAndUserId() {
+        // given
+        Reply savedReply = replyRepository.save(reply);
+
+        // when
+        Integer userCount = replyRepository.countByArticleIdAndNotUserId("userId",
+            savedReply.getArticleId());
+
+        Integer otherCount = replyRepository.countByArticleIdAndNotUserId("otherId",
+            savedReply.getArticleId());
+
+        // then
+        then(userCount).isEqualTo(0);
+        then(otherCount).isEqualTo(1);
+    }
 }

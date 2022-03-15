@@ -357,6 +357,54 @@ public class ArticleControllerTest {
     }
 
     @Test
+    @DisplayName("유저가 작성한 댓글만 달린 질문을 삭제하고 메인 페이지로 이동한다")
+    public void deleteArticleReplyUserOnlyTest() throws Exception {
+        // given
+        User savedUser = articleSetUp.saveUser(user);
+        Article savedArticle = articleSetUp.saveArticle(article);
+        Reply savedReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+
+        // when
+        ResultActions actions = mockMvc.perform(delete("/articles/" + savedArticle.getArticleId())
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("다른 유저가 작성한 댓글이 달린 질문을 삭제할 경우 에러 페이지로 이동한다")
+    public void deleteArticleReplyOtherTest() throws Exception {
+        // given
+        User savedUser = articleSetUp.saveUser(user);
+        User savedOther = articleSetUp.saveUser(
+            new User("otherId", "otherPassword", "otherName", "other@exasmple.com"));
+
+        Article savedArticle = articleSetUp.saveArticle(article);
+
+        Reply userReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "userComment"));
+        Reply otherReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedOther.getUserId(), "otherComment"));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            delete("/articles/" + article.getArticleId())
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(
+                model().attribute("status", ErrorCode.INVALID_ARTICLE_DELETE.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_DELETE.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
     @DisplayName("댓글을 작성하고 저장한 후 메인 페이지로 이동한다")
     public void createAnswerTest() throws Exception {
         // given
@@ -379,8 +427,8 @@ public class ArticleControllerTest {
     @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제한 후 메인 페이지로 이동한다")
     public void deleteAnswerTest() throws Exception {
         // given
-        Article savedArticle = articleSetUp.saveArticle(this.article);
-        User savedUser = articleSetUp.saveUser(this.user);
+        Article savedArticle = articleSetUp.saveArticle(article);
+        User savedUser = articleSetUp.saveUser(user);
         Reply savedReply = articleSetUp.saveReply(
             new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
 

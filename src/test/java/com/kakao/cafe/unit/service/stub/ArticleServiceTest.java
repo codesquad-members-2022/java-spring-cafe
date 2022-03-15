@@ -109,6 +109,11 @@ public class ArticleServiceTest {
         public void deleteById(Integer replyId) {
 
         }
+
+        @Override
+        public Integer countByArticleIdAndNotUserId(String userId, Integer articleId) {
+            return null;
+        }
     }
 
     private ArticleService articleService;

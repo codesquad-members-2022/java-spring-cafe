@@ -11,6 +11,7 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
+    // derived
     private Integer count;
 
     private Article() {

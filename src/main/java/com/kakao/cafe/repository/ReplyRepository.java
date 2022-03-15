@@ -14,4 +14,5 @@ public interface ReplyRepository {
 
     void deleteById(Integer replyId);
 
+    Integer countByArticleIdAndNotUserId(String userId, Integer articleId);
 }

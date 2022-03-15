@@ -86,7 +86,11 @@ public class ArticleService {
     public void deleteArticle(SessionUser user, Integer articleId) {
         findUserArticle(user, articleId);
 
+        if (!isDeletable(user.getUserId(), articleId)) {
+            throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_DELETE);
+        }
         articleRepository.deleteById(articleId);
+
     }
 
     private Article findUserArticle(SessionUser user, Integer articleId) {
@@ -103,6 +107,10 @@ public class ArticleService {
         if (!article.checkWriter(user.getUserId())) {
             throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_WRITER);
         }
+    }
+
+    private boolean isDeletable(String userId, Integer articleId) {
+        return replyRepository.countByArticleIdAndNotUserId(userId, articleId) == 0;
     }
 
 }
