@@ -91,6 +91,20 @@
   - 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
 - [x] 사용자 정보 DB에 저장
   - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
-- [ ] Heroku로 배포를 진행한다. 
+- [x] Heroku로 배포를 진행한다. 
   - README에 배포 URL을 기술한다.
+  - https://astraum-spring-cafe.herokuapp.com/
 
+### 구현과정
+
+- 인텔리제이에서 실행했을 때에는 문제가 없는데 Heroku에서는 문제가 되는 경우가 있다.
+  - Mustache partial 템플릿의 경로 맨 앞에 역슬래시가 붙어 있으면 참조 위치가 templates//{경로}가 되어 오류가 난다. 
+  - 컨트롤러에서 뷰 이름 맨 앞에 역슬래시가 붙어 있으면 템플릿이 아니라 URL로 인식하여 리다이렉션 또는 404 오류가 난다.
+- Heroku에 스프링 부트 앱을 push할 때 기본 설정은 자바 1.8 기준이다. `systems.properties` 설정 파일을 만들고 `java.runtime.version=11` 설정을 추가하였다. 
+- 의존성이 포함되지 않은 *plain.jar 파일로 인해 앱이 정상적으로 실행되지 않는 현상이 있었다. `build.gradle` 파일에 `jar {enabled = false}` 설정을 추가하여 *plain.jar 파일이 생성되지 않게 하였다.
+  - bootJar 및 jar의 classifier 속성을 바꾸어 bootJar로 생성된 executable jar가 우선적으로 실행되게 하는 방식으로도 해결할 수 있다. (https://docs.spring.io/spring-boot/docs/2.5.1/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives) 
+  - Procfile을 만들고 어느 jar를 실행시킬 것인지 경로를 명시하여 해결하는 방법도 있다 (https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku#the-procfile)
+- timestamp가 서울 시간 기준으로 생성되도록 config vars에 (키=TZ, 값=Asia/Seoul)을 추가하였다.
+- Heroku는 H2 데이터베이스 애드온을 지원하지 않는다. 
+  - db 파일을 프로젝트 폴더에 포함시켜서 같이 push하거나 spring.sql.init 계열 설정을 이용하여 테이블과 초기 데이터를 세팅해 줄 수는 있지만, 웹 상에서 저장하거나 변경한 데이터가 지속되지 않고 일정 주기로 초기화된다.
+  - H2 대신 PosgreSQL 등 Heroku가 지원하는 DB를 사용하거나, 만약 필요하다면 별도의 h2 서버를 띄워서 해결할 수도 있을 것이다.
