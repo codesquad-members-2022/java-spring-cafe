@@ -35,4 +35,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     public List<Article> findAll() {
         return new ArrayList<>(this.articles);
     }
+
+    public void clearArticles() {
+        articles.clear();
+        idSequence = 0;
+    }
 }
