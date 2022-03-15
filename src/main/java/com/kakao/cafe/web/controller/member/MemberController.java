@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.controller.member;
 
-import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
+import com.kakao.cafe.web.controller.member.dto.MemberProfileResponse;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("members")
 @Controller
@@ -35,8 +36,8 @@ public class MemberController {
     }
 
     @GetMapping("{id}")
-    public String findMemberById(Model model, @PathVariable int id) {
-        Member findMember = memberService.findById(id);
+    public String findMemberById(Model model, @PathVariable Integer id) {
+        MemberProfileResponse findMember = new MemberProfileResponse(memberService.findById(id));
         model.addAttribute("findMember", findMember);
         return "user/profile";
     }
@@ -52,7 +53,10 @@ public class MemberController {
      */
     @GetMapping("")
     public String findAll(Model model) {
-        List<Member> members = memberService.findAll();
+        List<MemberProfileResponse> members = memberService.findAll()
+                .stream()
+                .map(MemberProfileResponse::new)
+                .collect(Collectors.toList());
         int memberSize = members.size();
         model.addAttribute("members", members);
         model.addAttribute("memberSize", memberSize);
