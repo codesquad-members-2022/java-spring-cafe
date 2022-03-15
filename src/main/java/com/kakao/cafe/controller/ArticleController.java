@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.articledto.ArticleCreateDto;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +26,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article/questions")
-    public String crateArticle(ArticleCreateDto articleCreateDto) {
-        Article article = new Article(
-                articleCreateDto.getArticleTitle(),
-                articleCreateDto.getArticleContent()
-        );
-
+    public String crateArticle(Article article) {
         articleService.createArticle(article);
 
         return "redirect:/";
