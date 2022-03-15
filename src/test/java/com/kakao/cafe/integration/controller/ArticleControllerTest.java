@@ -365,6 +365,6 @@ public class ArticleControllerTest {
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/articles/" + article.getArticleId() + "/answers"));
+            .andExpect(view().name("redirect:/"));
     }
 }

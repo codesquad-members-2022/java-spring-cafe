@@ -86,7 +86,9 @@ public class ArticleServiceTest {
 
      */
 
-    private class ReplyStubRepository implements ReplyRepository {
+    private static class ReplyStubRepository implements ReplyRepository {
+
+        Reply reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
 
         @Override
         public Reply save(Reply reply) {
@@ -100,7 +102,7 @@ public class ArticleServiceTest {
 
         @Override
         public List<Reply> findByArticleId(Integer articleId) {
-            return null;
+            return List.of(reply);
         }
 
         @Override

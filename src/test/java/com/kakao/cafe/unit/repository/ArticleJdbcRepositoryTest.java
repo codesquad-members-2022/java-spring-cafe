@@ -145,7 +145,7 @@ public class ArticleJdbcRepositoryTest {
             .willReturn(1);
 
         // when
-        articleRepository.deleteById(any(Integer.class));
+        articleRepository.deleteById(article.getArticleId());
     }
 
 }
