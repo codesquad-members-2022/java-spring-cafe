@@ -98,6 +98,7 @@ public class ReplyJdbcRepository implements ReplyRepository {
 
     @Override
     public void deleteById(Integer replyId) {
-
+        String sql = queryProps.get(Query.DELETE_REPLY);
+        jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(REPLY_ID_CAMEL, replyId));
     }
 }

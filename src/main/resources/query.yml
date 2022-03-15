@@ -54,3 +54,6 @@ SELECT_REPLIES: >
 
 UPDATE_REPLY: >
   UPDATE reply SET comment = :comment WHERE reply_id = :replyId
+
+DELETE_REPLY: >
+  DELETE FROM reply WHERE reply_id = :replyId

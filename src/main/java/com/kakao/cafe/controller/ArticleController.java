@@ -88,4 +88,11 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    @DeleteMapping("articles/{questionId}/answers/{id}")
+    public String deleteAnswer(@PathVariable(value = "id") Integer replyId, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        replyService.deleteReply(user, replyId);
+        return "redirect:/";
+    }
+
 }
