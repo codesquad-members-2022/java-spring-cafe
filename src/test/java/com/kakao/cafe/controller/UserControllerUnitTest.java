@@ -60,7 +60,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4SignUpSuccess")
+    @MethodSource("paramsForSignUpSuccess")
     void signUpSuccess(NewUserParam newUserParam) throws Exception {
         given(service.add(newUserParam)).willReturn(userMapper.convertToDomain(newUserParam, User.class));
 
@@ -73,7 +73,7 @@ public class UserControllerUnitTest {
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
 
-    static Stream<Arguments> params4SignUpSuccess() {
+    static Stream<Arguments> paramsForSignUpSuccess() {
         return Stream.of(
                 Arguments.of(new NewUserParam("user5", "1234", "name5", "user5@gmail.com")),
                 Arguments.of(new NewUserParam("user6", "1234", "name6", "user6@gmail.com")),
@@ -84,7 +84,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("등록된 사용자가 회원가입을 요청하면 DuplicateUserException 이 발생한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4SignUpFail")
+    @MethodSource("paramsForSignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
         given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE));
 
@@ -97,7 +97,7 @@ public class UserControllerUnitTest {
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
 
-    static Stream<Arguments> params4SignUpFail() {
+    static Stream<Arguments> paramsForSignUpFail() {
         return Stream.of(
                 Arguments.of(new NewUserParam("user1", "1234", "name1", "user1@gmail.com")),
                 Arguments.of(new NewUserParam("user2", "1234", "name2", "user2@gmail.com")),
@@ -123,9 +123,9 @@ public class UserControllerUnitTest {
         verify(service).searchAll();
     }
 
-    @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
+    @DisplayName("회원프로필을 요청하면 해당하는 사용자 정보를 출력한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4SignUpFail")
+    @MethodSource("paramsForSignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
         User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
@@ -143,9 +143,9 @@ public class UserControllerUnitTest {
         verify(service).search(userId);
     }
 
-    @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록되지 않은 회원프로필을 요청하면 NoSuchUserException 예외가 발생한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4SignUpSuccess")
+    @MethodSource("paramsForSignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
         User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
@@ -162,7 +162,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하면 반영하고 사용자 목록을 출력한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4modifiedProfileSuccess")
+    @MethodSource("paramsForModifiedProfileSuccess")
     void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
         modifiedUserParam.switchPassword();
         User user = userMapper.convertToDomain(modifiedUserParam, User.class);
@@ -178,7 +178,7 @@ public class UserControllerUnitTest {
         verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
     }
 
-    static Stream<Arguments> params4modifiedProfileSuccess() {
+    static Stream<Arguments> paramsForModifiedProfileSuccess() {
         return Stream.of(
                 Arguments.of(new ModifiedUserParam(1, "user1", "1234", "1234",
                         "4321", "name1", "user1@gmail.com")),
@@ -193,7 +193,7 @@ public class UserControllerUnitTest {
 
     @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 UnMatchedPasswordException 을 발생시킨다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
-    @MethodSource("params4modifiedProfileFail")
+    @MethodSource("paramsForModifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
         modifiedUserParam.switchPassword();
         User user = userMapper.convertToDomain(modifiedUserParam, User.class);
@@ -210,7 +210,7 @@ public class UserControllerUnitTest {
         verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
     }
 
-    static Stream<Arguments> params4modifiedProfileFail() {
+    static Stream<Arguments> paramsForModifiedProfileFail() {
         return Stream.of(
                 Arguments.of(new ModifiedUserParam(1, "user1", "1234", "4321",
                         "4321", "name1", "user1@gmail.com")),

@@ -48,7 +48,7 @@ class JdbcUserRepositoryTest {
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
     void persist() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
         //when
         repository.save(user);
@@ -62,7 +62,7 @@ class JdbcUserRepositoryTest {
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
     void merge() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
         //when

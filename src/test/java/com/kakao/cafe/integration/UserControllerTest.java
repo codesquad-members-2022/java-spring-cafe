@@ -84,7 +84,7 @@ class UserControllerTest {
         );
     }
 
-    @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록된 사용자가 회원가입을 요청하면 Bad Request 를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
@@ -138,7 +138,7 @@ class UserControllerTest {
                 );
     }
 
-    @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록되지 않은 회원프로필을 요청하면 Bad Request 를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
