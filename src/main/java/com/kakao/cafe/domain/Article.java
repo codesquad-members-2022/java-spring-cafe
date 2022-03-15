@@ -1,5 +1,8 @@
 package com.kakao.cafe.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -9,6 +12,8 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate createDate;
 
     public Article(long id, String writer, String title, String contents, LocalDate createDate) {
