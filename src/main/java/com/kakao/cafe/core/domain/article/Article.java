@@ -4,9 +4,13 @@ import java.time.LocalDateTime;
 
 public class Article {
 
-    private int id;
+    private Integer id;
     private String title;
     private String content;
+
+    /**
+     * 회원과의 연관 관계는 추후 미션에서
+     */
     private String writer;
     private LocalDateTime createAt;
     private LocalDateTime lastModifiedAt;
@@ -22,7 +26,7 @@ public class Article {
         this.viewCount = viewCount;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

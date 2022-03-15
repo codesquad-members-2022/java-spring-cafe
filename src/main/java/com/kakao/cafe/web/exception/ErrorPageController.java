@@ -24,3 +24,4 @@ public class ErrorPageController {
         return "error-pages/500";
     }
 }
+

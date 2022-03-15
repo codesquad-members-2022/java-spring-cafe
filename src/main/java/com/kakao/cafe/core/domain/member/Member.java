@@ -12,7 +12,7 @@ public class Member {
     private String nickName;
     private LocalDateTime createAt;
 
-    public Member (int id){
+    public Member(int id) {
         this.id = id;
     }
 
@@ -24,7 +24,7 @@ public class Member {
         this.createAt = getSignUpDate();
     }
 
-    public Member (String email, String nickName){
+    public Member(String email, String nickName) {
         this.email = email;
         this.nickName = nickName;
     }
@@ -64,21 +64,26 @@ public class Member {
         private String nickName;
         private LocalDateTime createAt;
 
-        public Builder(Member member) {
-            this.id = member.id;
-            this.email = member.email;
-            this.password = member.password;
-            this.nickName = member.nickName;
-            this.createAt = member.createAt;
+        public Builder() {
         }
 
-        public Builder id(int id){
+        public Builder id(int id) {
             this.id = id;
             return this;
         }
 
-        public Builder nickName(String nickName){
+        public Builder nickName(String nickName) {
             this.nickName = nickName;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder password(String password) {
+            this.password = password;
             return this;
         }
 
@@ -92,11 +97,11 @@ public class Member {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return Objects.equals(id, member.id);
+        return id == member.id && Objects.equals(email, member.email) && Objects.equals(password, member.password) && Objects.equals(nickName, member.nickName) && Objects.equals(createAt, member.createAt);
     }
 
     @Override
     public int hashCode() {
-        return 3;
+        return Objects.hash(id, email, password, nickName, createAt);
     }
 }

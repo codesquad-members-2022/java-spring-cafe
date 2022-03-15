@@ -1,8 +1,8 @@
 package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.web.controller.article.dto.PostWriteRequest;
-import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
+import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
+import com.kakao.cafe.web.service.article.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,9 +29,9 @@ public class ArticleController {
     }
 
     @PostMapping("write")
-    public String write(PostWriteRequest request, BindingResult bindingResult) {
+    public String write(ArticleWriteRequest request, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
-            return "article/list";
+            return "list";
         }
         articleService.write(request.toEntity());
         return "redirect:/articles";
@@ -49,11 +49,5 @@ public class ArticleController {
         Article findArticle = articleService.findById(id);
         model.addAttribute("findArticle", findArticle);
         return "article/detail";
-    }
-
-    @PostMapping("{id}/edit")
-    public String edit(PostEditRequest request) {
-        articleService.edit(request);
-        return "redirect:/members";
     }
 }

@@ -22,7 +22,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a th:onclick="|location.href='@{/members}'|" class="black-component" type="button">멤버 리스트</a></li>
                 <li><a class="black-component" th:onclick="|location.href='@{/members/login}'|">로그인</a></li>
-                <li><a class="black-component" th:onclick="|location.href='@{/members/join}'|">회원가입</a></li>
+                <li><a class="black-component" th:onclick="|location.href='@{/members/signup}'|">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -37,6 +37,7 @@
     <p class="total_num" th:text="|${findMember.createAt} 님의 최근 접속 정보|">최근 접속 정보</p>
 
     <form th:object="${findMember}" method="post">
+        <input type="hidden" name="_method" value="put"/>
         <div class="container" id="main">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
@@ -52,8 +53,16 @@
                         <tbody>
                         <tr>
                             <td th:text="*{id}">No</td>
-                            <td th:text="*{nickName}"></td>
-                            <td th:text="*{email}"></td>
+                            <td>
+                                <label>
+                                    <input type="text" th:field="*{nickName}"/>
+                                </label>
+                            </td>
+                            <td>
+                                <label>
+                                    <input type="text" th:field="*{email}"/>
+                                </label>
+                            </td>
                             <td th:text="*{createAt}">가입 날짜</td>
                         </tr>
                         </tbody>
@@ -62,7 +71,8 @@
             </div>
         </div>
         <div class="post-btn-container">
-            <a class="black-component" th:onclick="|location.href='@{/members/{id}/edit (id=${findMember.id})}'|" role="button">회원정보 수정</a>
+            <button class="black-component" type="submit" role="button">회원정보 수정</button>
+            <!--            <a class="black-component" th:onclick="|location.href='@{/members/{id} (id=${findMember.id})}'|" role="button">회원정보 수정</a>-->
             <!--        <a href="post/form.html" class="btn btn-primary pull-right" role="button">글쓰기</a>-->
         </div>
     </form>

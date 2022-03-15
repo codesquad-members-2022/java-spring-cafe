@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 import static com.kakao.cafe.config.DataGenerator.getRandomLocalDateTime;
 
-public class PostWriteRequest {
+public class ArticleWriteRequest {
 
     private static final int ZERO = 0;
     private String title;
@@ -17,7 +17,7 @@ public class PostWriteRequest {
     private LocalDateTime lastModifiedAt;
     private int viewCount;
 
-    public PostWriteRequest(String title, String content, String writer) {
+    public ArticleWriteRequest(String title, String content, String writer) {
         this.title = title;
         this.content = content;
         this.writer = writer;

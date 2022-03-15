@@ -18,12 +18,10 @@ public class EntityManager<T> {
     private static final String CREATE_AT = "createAt";
     private static final String LAST_MODIFIEDAT = "lastModifiedAt";
 
-    public T save(T entity) {
+    public T persist(T entity) {
         String type = getClazz(entity);
-        if (!database.getIdDatabase(type).contains(getId(entity).get())) {
-            return database.save(type, entity);
-        }
-        return entity;
+        T t = database.save(type, entity);
+        return t;
     }
 
     public Optional<Object> getId(T entity) {
@@ -42,7 +40,7 @@ public class EntityManager<T> {
         return clazz.getSimpleName();
     }
 
-    private <T, R> boolean isChanged(T originalEntity, R checkObject) {
+    public <T, R> boolean isChanged(T originalEntity, R checkObject) {
         List<Field> fields = getAllFields(checkObject);
         for (Field field : fields) {
             Field originalEntityFieldName = getFieldByName(originalEntity, field.getName());
@@ -109,13 +107,9 @@ public class EntityManager<T> {
     }
 
     public static void main(String[] args) throws Exception {
-        Article articleA = new Article(1, "루시드잘생김", "그렇다", "Jun", LocalDateTime.now(), LocalDateTime.now(), 3);
-        Article articleB = new Article(1, "루시드잘생김", "그렇다", "Jun", LocalDateTime.now(), LocalDateTime.now(), 3);
+        Article articleA = new Article(1, "루시드", "그렇다", "Jun", LocalDateTime.now(), LocalDateTime.now(), 3);
+        Article articleB = new Article(1, "루시드", "그렇다", "Jun", LocalDateTime.now(), LocalDateTime.now(), 3);
         EntityManager<Article> entityManager = new EntityManager<>(new Database());
-        System.out.println(entityManager.save(articleA));
-        System.out.println(entityManager.save(articleA));
-        System.out.println(entityManager.getArticles().size());
-        System.out.println(entityManager.getArticles());
     }
 
     public List<Article> getArticles() {

@@ -3,19 +3,17 @@ package com.kakao.cafe.web.controller.member;
 import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.web.controller.member.dto.JoinRequest;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
-import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
 import com.kakao.cafe.web.service.member.MemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequestMapping("members")
+@Controller
 public class MemberController {
 
     private final MemberService memberService;
@@ -25,20 +23,15 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping("join")
+    @GetMapping("signup")
     public String join() {
         return "user/form";
     }
 
-    @PostMapping("join")
+    @PostMapping("signup")
     public String join(JoinRequest request) {
         memberService.join(request.toEntity());
         return "redirect:/";
-    }
-
-    @GetMapping("login")
-    public String login() {
-        return "user/login";
     }
 
     @GetMapping("{id}")
@@ -48,16 +41,9 @@ public class MemberController {
         return "user/profile";
     }
 
-    @GetMapping("{id}/edit")
-    public String edit(Model model, @PathVariable int id, ProfileChangeRequest request) {
-        ProfileChangeResponse response = memberService.getMemberDetails(id, request);
-        model.addAttribute("response", response);
-        return "user/profileedit";
-    }
-
-    @PostMapping("{id}/edit")
-    public String edit(ProfileChangeRequest request) {
-        memberService.edit(request);
+    @PutMapping("{id}")
+    public String editProfile(ProfileChangeRequest request) {
+        memberService.editProfile(request);
         return "redirect:/members";
     }
 
