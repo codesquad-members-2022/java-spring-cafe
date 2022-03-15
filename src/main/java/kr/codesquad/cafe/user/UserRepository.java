@@ -13,7 +13,15 @@ public class UserRepository {
     private final List<User> repository = Collections.synchronizedList(new ArrayList<>());
 
     public void save(User user) {
-        repository.add(user);
+        findByUserId(user.getUserId())
+                .ifPresentOrElse(
+                userOld -> update(userOld, user),
+                () -> repository.add(user)
+        );
+    }
+
+    private void update(User userOld, User userNew) {
+        repository.set(repository.indexOf(userOld), userNew);
     }
 
     public Optional<User> findByUserId(String userId) {

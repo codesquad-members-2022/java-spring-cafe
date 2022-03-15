@@ -14,12 +14,16 @@ public class User {
     }
 
     public void setUserId(String userId) {
-        Assert.hasLength(userId, "유저 ID는 공백이어선 안 됩니다.");
+        Assert.hasText(userId, "유저 ID는 공백이어선 안 됩니다.");
         this.userId = userId;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
-        Assert.hasLength(password, "패스워드는 공백이어선 안 됩니다.");
+        Assert.hasText(password, "패스워드는 공백이어선 안 됩니다.");
         this.password = password;
     }
 
@@ -28,7 +32,7 @@ public class User {
     }
 
     public void setName(String name) {
-        Assert.hasLength(name, "유저 이름은 공백이어선 안 됩니다.");
+        Assert.hasText(name, "유저 이름은 공백이어선 안 됩니다.");
         this.name = name;
     }
 
@@ -37,12 +41,16 @@ public class User {
     }
 
     public void setEmail(String email) {
-        Assert.hasLength(email, "유저 이메일은 공백이어선 안 됩니다.");
+        Assert.hasText(email, "유저 이메일은 공백이어선 안 됩니다.");
         this.email = email;
     }
 
     public boolean userIdIs(String userId) {
         return userId.equals(this.userId);
+    }
+
+    public boolean passwordIs(String password) {
+        return password.equals(this.password);
     }
 
     public boolean nameIs(String name) {
