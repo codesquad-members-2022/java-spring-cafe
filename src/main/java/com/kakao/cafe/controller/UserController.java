@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.userdto.UserCreateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class UserController {
 
     @GetMapping("/")
     public String homePage() {
-        return "home/index";
+        return "/home/index";
     }
 
     @GetMapping("/user/create")
@@ -32,13 +31,7 @@ public class UserController {
     }
 
     @PostMapping("/user/create")
-    public String createUser(UserCreateDto userCreateDto) {
-        User user = new User(
-                userCreateDto.getUserName(),
-                userCreateDto.getUserPassword(),
-                userCreateDto.getUserEmail()
-        );
-
+    public String createUser(User user) {
         userService.createUser(user);
 
         return "redirect:/user/list";
