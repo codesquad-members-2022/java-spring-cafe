@@ -38,7 +38,7 @@ public class ArticleJdbcRepositoryTest {
             queryProps);
     }
 
-    Article article;
+    private Article article;
 
     @BeforeEach
     public void setUp() {

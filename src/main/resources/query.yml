@@ -39,3 +39,12 @@ SELECT_USER: >
 
 DELETE_USERS: >
   DELETE FROM `user`
+
+### reply ###
+
+INSERT_REPLY: >
+  INSERT INTO reply (article_id, user_id, comment, created_date)
+  VALUES (:articleId, :userId, :comment, :createdDate)
+
+SELECT_REPLY: >
+  SELECT * FROM reply WHERE reply_id = :replyId
