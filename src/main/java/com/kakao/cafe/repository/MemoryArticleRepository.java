@@ -3,6 +3,8 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         article.setId(idSequence++);
-        article.setWrittenTime();
+        String writtenTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(writtenTime);
+        article.setWrittenTime(writtenTime);
         articles.add(article);
         return article;
     }

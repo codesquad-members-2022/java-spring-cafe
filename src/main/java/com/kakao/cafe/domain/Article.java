@@ -9,7 +9,7 @@ public class Article {
     private String title;
     private String author;
     private String contents;
-    private LocalDateTime writtenTime;
+    private String writtenTime;
 
     public Article(ArticleForm form) {
         this.title = form.getTitle();
@@ -27,6 +27,8 @@ public class Article {
 
     public String getAuthor() { return author; }
 
+    public String getWrittenTime() { return writtenTime; }
+
     public int getId() {
         return id;
     }
@@ -35,8 +37,8 @@ public class Article {
         this.id = id;
     }
 
-    public void setWrittenTime() {
-        this.writtenTime = LocalDateTime.now();
+    public void setWrittenTime(String writtenTime) {
+        this.writtenTime = writtenTime;
     }
 
 
