@@ -2,7 +2,8 @@ package com.kakao.cafe.domain;
 
 import java.time.LocalDate;
 
-import com.kakao.cafe.exception.ErrorMessage;
+import com.kakao.cafe.exception.ArticleException;
+import com.kakao.cafe.exception.ErrorCode;
 
 public class Article {
     private int id;
@@ -33,7 +34,7 @@ public class Article {
 
     public void checkBlankInput() {
         if (this.title.isBlank() || this.content.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.message);
+            throw new ArticleException(ErrorCode.BLANK_INPUT);
         }
     }
 }

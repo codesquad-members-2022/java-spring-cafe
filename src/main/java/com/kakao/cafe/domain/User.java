@@ -2,7 +2,8 @@ package com.kakao.cafe.domain;
 
 import java.time.LocalDate;
 
-import com.kakao.cafe.exception.ErrorMessage;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.UserException;
 
 public class User {
 
@@ -57,7 +58,7 @@ public class User {
 
     public void checkBlankInput() {
         if (this.nickname.isBlank() || this.email.isBlank() || this.password.isBlank()) {
-            throw new IllegalArgumentException(ErrorMessage.BLANK_INPUT.message);
+            throw new UserException(ErrorCode.BLANK_INPUT);
         }
     }
 }

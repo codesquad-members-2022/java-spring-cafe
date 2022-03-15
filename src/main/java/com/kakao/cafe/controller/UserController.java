@@ -40,7 +40,6 @@ public class UserController {
         return "redirect:/user/list";
     }
 
-    //TODO: 컨트롤러와 DTO가 domain(ex: User)을 모르게 하라??
     @GetMapping("/user/{nickname}")
     public String viewProfile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);

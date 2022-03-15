@@ -7,7 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.exception.ErrorMessage;
+import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.exception.UserException;
 import com.kakao.cafe.repository.MemoryUserRepository;
 
 class UserServiceTest {
@@ -41,12 +42,12 @@ class UserServiceTest {
         User user3 = new User("CAPI", "BC@gmail.com", "1234");
 
         assertThatThrownBy(() -> userService.join(user2))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(ErrorMessage.EXISTING_NICKNAME.message);
+            .isInstanceOf(UserException.class)
+            .hasMessage(ErrorCode.EXISTING_NICKNAME.message);
 
         assertThatThrownBy(() -> userService.join(user3))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage(ErrorMessage.EXISTING_EMAIL.message);
+            .isInstanceOf(UserException.class)
+            .hasMessage(ErrorCode.EXISTING_EMAIL.message);
     }
 
     @Test
