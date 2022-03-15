@@ -17,22 +17,20 @@ public class VolatilityUserRepository implements DomainRepository<User, String> 
 
     @Override
     public synchronized Optional<User> save(User user) {
-        Optional<User> other = findOne(user.getUserId());
-        if (other.isPresent()) {
-            return merge(other.get().getId(), user);
-        }
-        return persist(user);
+        findOne(user.getUserId()).ifPresentOrElse(
+                (other) -> merge(other.getId(), user),
+                () -> persist(user)
+        );
+        return Optional.ofNullable(user);
     }
 
-    private Optional<User> persist(User user) {
+    private void persist(User user) {
         user.setId(users.size() + 1);
         users.add(user);
-        return Optional.ofNullable(user);
     }
 
-    private Optional<User> merge(int index, User user) {
+    private void merge(int index, User user) {
         users.set(index - 1, user);
-        return Optional.ofNullable(user);
     }
 
     @Override
