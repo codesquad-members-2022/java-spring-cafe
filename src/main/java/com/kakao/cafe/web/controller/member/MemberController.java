@@ -28,10 +28,10 @@ public class MemberController {
         return "user/form";
     }
 
-    @PostMapping("signup")
+    @PostMapping("")
     public String join(JoinRequest request) {
         memberService.join(request.toEntity());
-        return "redirect:/";
+        return "redirect:/articles";
     }
 
     @GetMapping("{id}")
