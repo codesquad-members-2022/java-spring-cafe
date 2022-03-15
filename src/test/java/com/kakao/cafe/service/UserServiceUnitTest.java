@@ -22,8 +22,6 @@ import java.util.Vector;
 import static com.kakao.cafe.message.UserDomainMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -79,14 +77,14 @@ class UserServiceUnitTest {
     void addFail() {
         NewUserParam newUserParam
                 = new NewUserParam("user", "1234", "name", "user@gmail.com");
-        given(repository.findOne(any(String.class)))
+        given(repository.findOne(newUserParam.getUserId()))
                 .willReturn(Optional.ofNullable(userMapper.convertToDomain(newUserParam, User.class)));
 
         assertThatThrownBy(() -> userService.add(newUserParam))
                 .isInstanceOf(DuplicateUserException.class)
                 .hasMessage(DUPLICATE_USER_MESSAGE);
 
-        verify(repository).findOne(any(String.class));
+        verify(repository).findOne(newUserParam.getUserId());
     }
 
     @Test
@@ -134,12 +132,13 @@ class UserServiceUnitTest {
     @Test
     @DisplayName("인자로 받은 userId에 해당하는 사용자가 없으면 예외가 발생한다.")
     void searchFail() {
-        given(repository.findOne(anyString())).willReturn(Optional.empty());
+        String userId = "noExist";
+        given(repository.findOne(userId)).willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.search(anyString()))
+        assertThatThrownBy(() -> userService.search(userId))
                 .isInstanceOf(NoSuchUserException.class)
                 .hasMessage(NO_SUCH_USER_MESSAGE);
 
-        verify(repository).findOne(anyString());
+        verify(repository).findOne(userId);
     }
 }
