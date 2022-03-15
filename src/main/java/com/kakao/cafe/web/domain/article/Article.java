@@ -44,6 +44,10 @@ public class Article {
 		this.id = id;
 	}
 
+	public void setLocalDateTime(String localDateTime) {
+		this.localDateTime = localDateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "Article{" +
