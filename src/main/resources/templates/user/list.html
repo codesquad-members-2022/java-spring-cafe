@@ -1,24 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html long="kr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: common_header(~{::link})">
     <link href="/css/user/list.css" rel="stylesheet">
 </head>
+
 <body>
 <div class="background">
-    <nav class="navbar navbar-fixed-top header">
-        <div class="col-md-12">
-            <div class="navbar-header">
-                <a class="navbar-brand">
-                    <img src="../images/KakaoCI.png"/>
-                </a>
-
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="black-component" th:href="@{/users}">멤버 리스트</a></li>
-                <li><a class="black-component" th:onclick="|location.href='@{/user/login}'|" role="button">로그인</a></li>
-                <li><a class="black-component" th:href="@{/user/join}" >회원가입</a></li>
-            </ul>
-        </div>
+    <nav th:replace="fragments/nav :: nav(~{::section})">
+        <section>
+            <a class="navbar-brand">
+                <img src="../images/KakaoCI.png"/>
+            </a>
+        </section>
     </nav>
 
     <div class="description">
@@ -43,7 +36,8 @@
                     <tbody>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.userIndex}"></td>
-                        <td><a th:href="@{users/{userIndex}(userIndex=${user.userIndex})}" class="btn btn-success" role="button" th:text="${user.name}"></a></td>
+                        <td><a th:href="@{users/{userIndex}(userIndex=${user.userIndex})}" class="btn btn-success"
+                               role="button" th:text="${user.name}"></a></td>
                         <td th:text="${user.joinTime}"></td>
                     </tr>
                     </tbody>
