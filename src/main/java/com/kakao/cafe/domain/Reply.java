@@ -10,6 +10,9 @@ public class Reply {
     private String comment;
     private LocalDateTime createdDate;
 
+    private Reply() {
+    }
+
     public Reply(Integer articleId, String userId, String comment) {
         this(null, articleId, userId, comment, LocalDateTime.now());
     }

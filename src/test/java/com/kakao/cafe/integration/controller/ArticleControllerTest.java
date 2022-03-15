@@ -49,12 +49,16 @@ public class ArticleControllerTest {
     @Autowired
     private ArticleSetUp articleSetUp;
 
+    @Autowired
+    private UserSetUp userSetUp;
+
     @MockBean
     private HandlerInterceptor interceptor;
 
     private MockHttpSession session;
 
     private Article article;
+    private User user;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
     private SessionUser sessionOther;
@@ -88,6 +92,8 @@ public class ArticleControllerTest {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
         article = new Article("writer", "title", "contents");
+        user = new User("writer", "userPassword", "userName", "user@example.com");
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
@@ -341,5 +347,24 @@ public class ArticleControllerTest {
                 model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
             .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("댓글을 작성하고 저장한 후 해당 페이지를 새로고침한다")
+    public void createAnswerTest() throws Exception {
+        // given
+        articleSetUp.saveArticle(article);
+        userSetUp.saveUser(user);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            post("/articles/" + article.getArticleId() + "/answers")
+                .session(session)
+                .param("comment", "comment")
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/articles/" + article.getArticleId() + "/answers"));
     }
 }
