@@ -2,6 +2,7 @@ package com.kakao.cafe.unit.repository;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.config.QueryProps;
@@ -77,8 +78,7 @@ public class ReplyJdbcRepositoryTest {
     public void findByIdTest() {
         // given
         given(jdbcTemplate.queryForObject(any(String.class), any(MapSqlParameterSource.class),
-            any(RowMapper.class)))
-            .willReturn(reply);
+            any(RowMapper.class))).willReturn(reply);
 
         // when
         Optional<Reply> findReply = replyRepository.findById(reply.getReplyId());
@@ -97,8 +97,7 @@ public class ReplyJdbcRepositoryTest {
     public void findByArticleIdTest() {
         // given
         given(jdbcTemplate.query(any(String.class), any(MapSqlParameterSource.class),
-            any(RowMapper.class)))
-            .willReturn(List.of(reply));
+            any(RowMapper.class))).willReturn(List.of(reply));
 
         // when
         List<Reply> findReplies = replyRepository.findByArticleId(1);
@@ -130,6 +129,21 @@ public class ReplyJdbcRepositoryTest {
 
         // when
         replyRepository.deleteById(reply.getReplyId());
+    }
+
+    @Test
+    @DisplayName("유저 아이디와 질문 id 로 댓글 개수를 조회한다")
+    public void countByArticleIdAndUserIdTest() {
+        // given
+        given(jdbcTemplate.queryForObject(any(String.class), any(MapSqlParameterSource.class),
+            eq(Integer.class))).willReturn(1);
+
+        // when
+        Integer count = replyRepository.countByArticleIdAndNotUserId("otherId",
+            reply.getArticleId());
+
+        // then
+        then(count).isEqualTo(1);
     }
 
 }

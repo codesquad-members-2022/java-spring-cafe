@@ -20,7 +20,8 @@ public class ReplyJdbcRepository implements ReplyRepository {
     private static final String REPLY_ID_SNAKE = "reply_id";
     private static final String ARTICLE_ID_CAMEL = "articleId";
     private static final String ARTICLE_ID_SNAKE = "article_id";
-    private static final String USER_ID = "user_id";
+    private static final String USER_ID_CAMEL = "userId";
+    private static final String USER_ID_SNAKE = "user_id";
     private static final String COMMENT = "comment";
     private static final String CREATED_DATE = "created_date";
 
@@ -68,7 +69,7 @@ public class ReplyJdbcRepository implements ReplyRepository {
                     new Reply(
                         rs.getInt(REPLY_ID_SNAKE),
                         rs.getInt(ARTICLE_ID_SNAKE),
-                        rs.getString(USER_ID),
+                        rs.getString(USER_ID_SNAKE),
                         rs.getString(COMMENT),
                         rs.getObject(CREATED_DATE, LocalDateTime.class)
                     )
@@ -89,7 +90,7 @@ public class ReplyJdbcRepository implements ReplyRepository {
             (rs, rowNum) -> new Reply(
                 rs.getInt(REPLY_ID_SNAKE),
                 rs.getInt(ARTICLE_ID_SNAKE),
-                rs.getString(USER_ID),
+                rs.getString(USER_ID_SNAKE),
                 rs.getString(COMMENT),
                 rs.getObject(CREATED_DATE, LocalDateTime.class)
             )
@@ -100,5 +101,14 @@ public class ReplyJdbcRepository implements ReplyRepository {
     public void deleteById(Integer replyId) {
         String sql = queryProps.get(Query.DELETE_REPLY);
         jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(REPLY_ID_CAMEL, replyId));
+    }
+
+    @Override
+    public Integer countByArticleIdAndNotUserId(String userId, Integer articleId) {
+        String sql = queryProps.get(Query.COUNT_REPLY_BY_ARTICLE_AND_NOT_USER);
+
+        return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource()
+            .addValue(USER_ID_CAMEL, userId)
+            .addValue(ARTICLE_ID_CAMEL, articleId), Integer.class);
     }
 }

@@ -15,6 +15,7 @@ public class ArticleResponse {
     private String contents;
     private LocalDateTime createdDate;
 
+    // derived
     private Integer count;
 
     // relation
