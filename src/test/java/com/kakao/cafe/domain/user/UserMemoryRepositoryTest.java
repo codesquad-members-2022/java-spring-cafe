@@ -66,10 +66,10 @@ class UserMemoryRepositoryTest {
         String newEmail = "new_email@test.co.kr";
         User originalUser = userRepository.findByUserId(userId).get();
         User updateUser = new User(userId, newPassword, newName, newEmail);
-
-        // when
         originalUser.update(updateUser);
         userRepository.save(originalUser);
+
+        // when
         User resultUser = userRepository.findByUserId(userId).get();
 
         // then
