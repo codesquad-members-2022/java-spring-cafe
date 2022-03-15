@@ -34,11 +34,12 @@ public class UserService {
     }
 
     public UserResponseDto update(String userId, UserRequestDto userUpdateInfo) {
-        return userRepository.findUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
-                .isSameUserPassword(userUpdateInfo)
-                .updateUser(userUpdateInfo)
-                .of();
+        User user = userRepository.findUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        if (user.isSameUserPassword(userUpdateInfo)) {
+            return user.updateUser(userUpdateInfo).of();
+        }
+        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
     }
 
     public UserResponseDto findIdUser(String userId) {
