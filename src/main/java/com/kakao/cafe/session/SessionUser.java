@@ -59,4 +59,10 @@ public class SessionUser {
                 session.getAttribute(SESSION_KEY))
             .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
     }
+
+    public void checkUserId(String userId) {
+        if (!this.userId.equals(userId)) {
+            throw new InvalidRequestException(ErrorCode.INVALID_REPLY_WRITER);
+        }
+    }
 }

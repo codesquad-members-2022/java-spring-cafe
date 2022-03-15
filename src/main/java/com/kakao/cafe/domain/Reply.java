@@ -55,6 +55,20 @@ public class Reply {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Reply reply = (Reply) o;
+
+        return replyId.equals(reply.replyId);
+    }
+
+    @Override
     public String toString() {
         return "Reply{" +
             "replyId=" + replyId +
@@ -63,5 +77,10 @@ public class Reply {
             ", comment='" + comment + '\'' +
             ", createdDate=" + createdDate +
             '}';
+    }
+
+    public Reply update(String comment) {
+        this.comment = comment;
+        return this;
     }
 }
