@@ -1,10 +1,16 @@
 package com.kakao.cafe.controller.article;
 
-public class ArticleForm {
+import com.kakao.cafe.domain.Article;
 
+public class ArticleForm {
     private String title;
+
     private String text;
     private int id;
+
+    public static Article toEntity(ArticleForm form) {
+        return new Article(form.getTitle(), form.getText());
+    }
 
     public String getTitle() {
         return title;

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -31,8 +30,7 @@ public class ArticleController {
 
     @PostMapping("/new")
     public String saveArticleForm(ArticleForm form) {
-        Article article = new Article(form.getId(), form.getTitle(), form.getText());
-        articleService.join(article);
+        articleService.join(form);
         return "redirect:/";
     }
 
@@ -48,12 +46,5 @@ public class ArticleController {
         Article article = articleService.findArticle(id);
         model.addAttribute("article", article);
         return "/articles/article";
-    }
-
-    @PostConstruct
-    public void init() {
-
-        articleService.join(new Article(0, "코드스쿼드 문 열려면?", "example1"));
-        articleService.join(new Article(1, "문지기가 필요합니다. 문지기 할 사람?", "example2"));
     }
 }

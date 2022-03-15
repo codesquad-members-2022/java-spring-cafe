@@ -6,10 +6,14 @@ public class Article {
     private String title;
     private String text;
 
-    public Article(int id, String title, String text) {
-        this.id = id;
+    public Article(String title, String text) {
         this.title = title;
         this.text = text;
+    }
+
+    public Article(int id, String title, String text) {
+        this(title, text);
+        this.id = id;
     }
 
     public int getId() {

@@ -16,7 +16,8 @@ public class MemoryArticleRepository implements CafeRepository<Article, Integer>
 
     @Override
     public void save(Article article) {
-        articles.add(article);
+        Article articleWithId = new Article (articles.size() + 1, article.getTitle(), article.getText());
+        articles.add(articleWithId);
     }
 
     @Override

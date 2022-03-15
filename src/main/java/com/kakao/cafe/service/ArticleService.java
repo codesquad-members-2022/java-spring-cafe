@@ -1,9 +1,8 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.article.ArticleForm;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.article.MemoryArticleRepository;
-import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public void join(Article article) {
-        articleRepository.save(article);
+    public void join(ArticleForm form) {
+        articleRepository.save(ArticleForm.toEntity(form));
     }
 
     public List<Article> findArticles() {
