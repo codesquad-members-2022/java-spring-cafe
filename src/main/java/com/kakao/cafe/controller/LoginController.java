@@ -28,10 +28,17 @@ public class LoginController {
     }
 
     @PostMapping("/users/login")
-    public String login(@ModelAttribute UserLoginRequestDto dto, HttpServletRequest req) {
-        HttpSession session = req.getSession();
+    public String login(@ModelAttribute UserLoginRequestDto dto, HttpServletRequest request) {
+        HttpSession session = request.getSession();
         User loginUser = userService.login(dto);
         session.setAttribute("sessionUser", loginUser);
+        return "redirect:/";
+    }
+
+    @GetMapping("/users/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.invalidate();
         return "redirect:/";
     }
 
