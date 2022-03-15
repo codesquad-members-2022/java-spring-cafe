@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -36,7 +36,7 @@
         </div>
     </div>
 
-    <p class="total_num">전체 글 10명</p>
+    <p class="total_num" th:text="|전체 글 ${#lists.size(articles)}개|">전체글 n개</p>
 
     <div class="container" id="main">
         <div class="col-md-10 col-md-offset-1">
@@ -51,40 +51,15 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><a href="/posts/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="/posts/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="/posts/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="/posts/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="/posts/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="/posts/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a></td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
+                    <tr th:each="article, articleStat : ${articles}">
+                        <td>
+                            <a th:href="@{/articles/{articleId}(articleId=${articleStat.count})}"
+                               th:text="${article.title}">
+                                title
+                            </a>
+                        </td>
+                        <td th:text="${article.writer}">작성자</td>
+                        <td th:text="${#temporals.format(article.regDateTime, 'yyyy-MM-dd')}">yyyy-MM-dd</td>
                         <td>0</td>
                     </tr>
                     </tbody>
@@ -93,7 +68,7 @@
         </div>
     </div>
     <div class="post-btn-container">
-        <a class="post-write-btn btn btn-primary pull-right" href="/posts/new" role="button">글쓰기</a>
+        <a class="post-write-btn btn btn-primary pull-right" href="/articles/new" role="button">글쓰기</a>
     </div>
 </div>
 </body>

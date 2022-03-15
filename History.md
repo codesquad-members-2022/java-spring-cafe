@@ -130,3 +130,114 @@ HomeController 및 테스트 코드를 추가했다.
 - 비즈니스 로직을 수행하는 UserService를 분리했고 컨트롤러는 UserService를 의존하도록 했다. UserService는 UserRepository를 의존한다.
 
 ---
+
+# Step2
+
+- [x] 게시글 작성
+- [x] 게시글 목록
+- [x] 게시글 상세 내용
+- [ ] (선택) 사용자 정보 수정
+
+---
+
+## 2.1 createArticleForm.html 및 의존 정적 리소스 추가
+
+게시글 작성 페이지를 담당하는 createArticleForm.html 및 의존 정적 리소스를 추가했다.
+
+- 의존 정적 리소스 : createArticleForm.css 추가
+
+## 2.2 ArticleController - createForm 메서드 추가
+
+게시글 작성 페이지로 맵핑되어 글쓰기 폼의 viewName을 반환하는 createFrom 메서드를 추가했다.
+
+- createForm : `/articles/new`로 GET 요청 -> `/articles/createArticleForm`이 반환됨
+
+---
+
+## 2.3 게시글을 정의한 Article 정의
+
+게시글 도메인을 정의했다.
+
+1. 도메인 프로퍼티
+   - title : 게시글 제목
+   - content : 게시글 내용
+   - writer : 작성자
+   - regDate : 게시글 등록일 (LocalDate)
+
+2. 생성자
+   - 기본생성자
+   - title, writer
+
+3. 메서드
+   - getter, setter : 모든 프로퍼티에 대한 getter, setter
+   - toString : 디버그용으로 toString 오버라이드
+   
+4. 고민했던 부분
+   - 복수의 게시글 군에서 게시글을 식별할 무언가가 필요한데 현재로서는 요구사항에 ArrayList로 구현하라는 말이 있어서, 게시글 접근은 저장 인덱스로 하기로 하고 id와 같은 기본키는 별도로 지정하지 않았다.
+
+## 2.4 ArticleController - create 메서드 추가(기능 미완성)
+
+- 게시글 등록 폼에서 POST 요청이 들어왔을 때 맵핑되는 메서드를 추가했다.
+- 게시글의 파라미터들을 읽고, Article로 맵핑하여 생성해준다.
+- 작성자는 현재 로그인 기능이 별도로 존재하지 않으므로 임의로 지정한 사용자명을 세팅한다.
+- 날짜는 작성시점을 기준으로 LocalDate.now()를 사용한다.
+- viewName으로 "redirect:/"이 반환된다. 즉 게시글을 작성되면 홈으로 리다이렉트 된다.
+- 게시글을 실제로 저장계층에 등록하는 로직은 수행하지 않았다.
+
+---
+
+## 2.5 게시글 저장계층 ArticleRepository 생성
+
+게시글 저장 계층 ArticleRepository 정의, 테스트코드 작성
+
+1. 설계
+   - 일단 사양 변경은 고려하지 않고 바로 구현체로 생성
+   - 동시성을 고려하여 `Collections.synchronizedList`로 저장.
+   - 요구사항이 ArrayList로 구현이므로 인덱스를 기준으로 게시글을 식별한다.
+   - 조회할 때는 인덱스+1을 게시글 id로 하여 식별한다.
+
+2. 메서드
+   - `save(Article article)` : 게시글 저장
+   - `findByArticleId(Article articleId)` : articleId로 게시글을 조회한다. 실제 리스트에서 조회시는 id-1을 인덱스로 하여 조회
+     - 만약 1 이하 또는 size를 벗어나는 범위의 게시글을 조회시 `NoSuchElementException`을 throw한다.
+   - `findAll()` : 게시글 전체를 새로 리스트를 생성하여 반환함.
+
+3. 테스트 코드
+   - 위에서 정의한 예외상황을 고려하여 테스트를 작성했다.
+
+## 2.6 ArticleController - ArticleRepository 연동
+
+- create 메서드로 ArticleRepository에 실제로 게시글을 저장하도록 함.
+- 저장후 홈으로 리다이렉트 된다.
+
+## 2.7 HomeController - ArticleRepository 연동
+
+- HomeController가 ArticleRepository를 알고 있음
+- GET 방식에 의해 home 메서드 호출 시 Model에 Article 목록을 모델에 담음.
+
+## 2.8 home.html - 게시글 목록 렌더링 추가
+
+- home.html에서, model에 담긴 articles를 동적으로 렌더링하도록 함
+
+## 2.9 "/articles" 요청에 대한 맵핑 추가
+
+- "/articles" 요청시 "/"로 리다이렉트 되도록 함
+
+## 2.10 "/articles/{articleId}" 요청시 게시글 보이도록 함
+
+- "/articles/{articleId}" 접근에 대한 맵핑메서드 showArticle 추가
+- 요청시 articleId에 대한 Article을 찾아서 Model에 담음
+- "/articles/articleShow" 반환
+- 동적으로 게시글을 보이는 `/articles/articleShow.html` 작성
+
+## 2.11 home에서 게시글 이름 클릭 시 게시글로 이동할 수 있도록 함(목록 기능 구현 완료)
+
+- home.html에서, 게시글에 대한 a태그의 주솟값을 동적으로 생성하도록 했다.
+- 현재는 게시글이 스스로의 Id를 가지고 있지 않기 때문에 list의 반복 순서 기준으로 맵핑하도록 했다.
+
+## 2.12 Article의 LocalDate -> LocalDateTime
+
+- 게시글 작성일자 부분에서 현재 시각에 대한 요구사항까지 추가됨
+- 기존의 LocalDate 필드를 LocalDateTime으로 변경함
+
+---
