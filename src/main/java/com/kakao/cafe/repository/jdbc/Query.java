@@ -20,4 +20,5 @@ public enum Query {
     // reply
     INSERT_REPLY,
     SELECT_REPLY,
+    SELECT_REPLIES,
 }

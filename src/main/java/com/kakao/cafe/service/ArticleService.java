@@ -1,12 +1,14 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.session.SessionUser;
 import com.kakao.cafe.util.Mapper;
 import java.util.List;
@@ -17,9 +19,11 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
+        this.replyRepository = replyRepository;
     }
 
     public ArticleResponse write(SessionUser user, ArticleSaveRequest request) {
@@ -51,8 +55,10 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        // Article 도메인 객체를 ArticleResponse 도메인 객체로 변환
-        return Mapper.map(article, ArticleResponse.class);
+        List<Reply> replies = replyRepository.findByArticleId(articleId);
+
+        // Article 도메인 객체와 Reply 도메인 객체 컬렉션을 ArticleResponse 도메인 객체로 변환
+        return ArticleResponse.of(article, replies);
     }
 
     public ArticleResponse mapUserArticle(SessionUser user, Integer articleId) {

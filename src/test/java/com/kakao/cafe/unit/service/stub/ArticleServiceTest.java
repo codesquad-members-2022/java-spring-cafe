@@ -4,11 +4,13 @@ import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
@@ -84,12 +86,35 @@ public class ArticleServiceTest {
 
      */
 
+    private class ReplyStubRepository implements ReplyRepository {
+
+        @Override
+        public Reply save(Reply reply) {
+            return null;
+        }
+
+        @Override
+        public Optional<Reply> findById(Integer replyId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Reply> findByArticleId(Integer articleId) {
+            return null;
+        }
+
+        @Override
+        public void deleteById(Integer replyId) {
+
+        }
+    }
+
     private ArticleService articleService;
     private ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
-        articleService = new ArticleService(new ArticleStubRepository());
+        articleService = new ArticleService(new ArticleStubRepository(), new ReplyStubRepository());
 
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
