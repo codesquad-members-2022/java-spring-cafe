@@ -37,10 +37,10 @@ public class ArticleServiceTest {
 
 
         assertThatThrownBy(() -> service.createArticle(blankTitleDto))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("제목 혹은 컨텐츠가 비어있습니다.");
         assertThatThrownBy(() -> service.createArticle(blankContentDto))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("제목 혹은 컨텐츠가 비어있습니다.");
     }
 
