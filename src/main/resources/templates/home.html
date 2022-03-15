@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html long="kr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments.html::head"></head>
+<head th:replace="fragments/head :: common_header(~{::link})">
+    <link href="/css/index.css" rel="stylesheet">
+</head>
 
 <body>
 <div class="background">
