@@ -14,9 +14,5 @@ public interface UserRepository {
 
     List<User> findAll();
 
-    void clearStore();
-
-    int size();
-
     void update(User user, int index);
 }

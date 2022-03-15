@@ -1,17 +1,11 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.test.context.jdbc.Sql;
-
 import javax.sql.DataSource;
 
 import java.util.List;
@@ -19,10 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-// @JdbcTest
-// @Sql("classpath:sql/schema.sql")
 class JdbcTemplateArticleRepositoryTest {
-
     ArticleRepository articleRepository;
     @Autowired DataSource dataSource;
 
@@ -48,5 +39,13 @@ class JdbcTemplateArticleRepositoryTest {
         assertThat("게시글제목2").isEqualTo(articles.get(1).getTitle());
         assertThat("게시글제목3").isEqualTo(articles.get(2).getTitle());
         }
+
+    @Test
+    @DisplayName("게시글 인덱스가 잘 조회되는가?")
+    void findByIndexTest() {
+        assertThat("게시글제목1").isEqualTo(articleRepository.findByIndex(1).orElseThrow().getTitle());
+        assertThat("게시글제목2").isEqualTo(articleRepository.findByIndex(2).orElseThrow().getTitle());
+        assertThat("게시글제목3").isEqualTo(articleRepository.findByIndex(3).orElseThrow().getTitle());
+    }
 }
 
