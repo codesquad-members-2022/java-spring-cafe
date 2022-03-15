@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.NotFoundException;
+import com.kakao.cafe.exception.UnAuthorizationException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.web.questions.dto.ArticleDto;
 import org.springframework.stereotype.Service;
@@ -44,14 +45,14 @@ public class ArticleService {
             Article findArticle = findArticleById(articleId);
             return new ArticleDto(findArticle.getUserId(), findArticle.getTitle(), findArticle.getContents());
         }
-        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+        throw new UnAuthorizationException(UN_AUTHORIZATION_EXCEPTION);
     }
 
     public Long deleteArticle(Long articleId, User sessionUser) {
         if (isUserHasAuthorization(articleId, sessionUser)) {
             return repository.delete(articleId);
         }
-        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+        throw new UnAuthorizationException(UN_AUTHORIZATION_EXCEPTION);
     }
 
     public void updateArticle(ArticleDto dto, Long articleId, User sessionUser) {
@@ -59,16 +60,13 @@ public class ArticleService {
             Article updateArticleForm = new Article(sessionUser.getUserId(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
             updateArticleForm.setId(articleId);
             repository.update(articleId, updateArticleForm);
+            return;
         }
-        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+        throw new UnAuthorizationException(UN_AUTHORIZATION_EXCEPTION);
     }
 
     private boolean isUserHasAuthorization(Long articleId, User sessionUser) {
         Article findArticle = findArticleById(articleId);
-
-        if (!sessionUser.isOwnArticle(findArticle)) {
-            return false;
-        }
-        return true;
+        return sessionUser.isOwnArticle(findArticle);
     }
 }
