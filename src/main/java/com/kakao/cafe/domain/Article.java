@@ -1,11 +1,12 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
     private String title;
     private String writer;
-    private LocalDateTime dateTime;
+    private String dateTime;
     private String contents;
     private int index;
 
@@ -13,7 +14,7 @@ public class Article {
     public Article(String title, String writer, String contents) {
         this.title = title;
         this.writer = writer;
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.contents = contents;
     }
 
@@ -25,7 +26,7 @@ public class Article {
         return writer;
     }
 
-    public LocalDateTime getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
@@ -38,6 +39,6 @@ public class Article {
     }
 
     public void setIndex(int index) {
-        this.index = index+1;
+        this.index = index;
     }
 }

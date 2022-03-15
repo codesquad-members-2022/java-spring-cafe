@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository{
     private final List<Article> articleStore = Collections.synchronizedList(new ArrayList<>());
 
@@ -38,12 +37,10 @@ public class MemoryArticleRepository implements ArticleRepository{
         return new ArrayList<>(articleStore);
     }
 
-    @Override
     public void clearStore() {
         articleStore.clear();
     }
 
-    @Override
     public int size() {
         return articleStore.size();
     }
