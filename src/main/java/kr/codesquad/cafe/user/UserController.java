@@ -41,6 +41,7 @@ public class UserController {
             return "redirect:/users";
         } catch (Exception e) {
             model.addAttribute("message", e.getMessage());
+            model.addAttribute("temp", form);
 
             return "/users/form";
         }
