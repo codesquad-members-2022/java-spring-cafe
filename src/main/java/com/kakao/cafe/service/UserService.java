@@ -94,9 +94,6 @@ public class UserService {
         // 비밀번호가 일치하는지 확인
         user.checkPassword(request.getPassword());
 
-        System.out.println("user = " + user);
-        System.out.println("request = " + request);
-
         // User 도메인 객체를 UserResponse 객체로 변환
         return Mapper.map(user, SessionUser.class);
     }
