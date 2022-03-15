@@ -2,10 +2,12 @@ package com.kakao.cafe.web;
 
 import com.kakao.cafe.CustomLogger;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.dto.UserLoginFormDto;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
 
 import com.kakao.cafe.web.dto.UserUpdateFormDto;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +62,20 @@ public class UserController {
         log.info("update {}'s profile : {}", userId, userUpdateFormDto);
         userService.modify(userUpdateFormDto);
         return "redirect:/users";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute UserLoginFormDto userLoginFormDto,
+        HttpSession httpSession) {
+        log.info("user login attempt : {}", userLoginFormDto);
+        httpSession.setAttribute("sessionedUser", userService.login(userLoginFormDto));
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        log.info("user logout attempt");
+        httpSession.invalidate();
+        return "redirect:/";
     }
 }

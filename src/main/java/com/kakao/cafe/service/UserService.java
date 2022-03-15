@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserListDto;
+import com.kakao.cafe.web.dto.UserLoginFormDto;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
 import com.kakao.cafe.web.dto.UserUpdateFormDto;
@@ -62,5 +63,12 @@ public class UserService {
         if (!user.getPassword().equals(password)) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    public String login(UserLoginFormDto userLoginFormDto) {
+        String userId = userLoginFormDto.getUserId();
+        User user = getExistenceValidatedUser(userId);
+        validateMatchWithPreviousPassword(user, userLoginFormDto.getPassword());
+        return userId;
     }
 }
