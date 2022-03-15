@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
 }
 
 group = 'com.kakao'
@@ -9,24 +9,24 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.0'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.5.0'
-	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
-	implementation 'org.jetbrains:annotations:23.0.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.0'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.5.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.4'
+    implementation 'org.jetbrains:annotations:23.0.0'
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
-	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
-	testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+    testImplementation group: 'com.h2database', name: 'h2', version: '1.4.199'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 
-	testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
+    testImplementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.10'
 
 }
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

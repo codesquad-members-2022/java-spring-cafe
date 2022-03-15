@@ -16,8 +16,8 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public Member findById(Integer userId) {
-        return memberRepository.findById(userId).orElseThrow();
+    public Member findById(Integer id) {
+        return memberRepository.findById(id).orElseThrow();
     }
 
     public Member join(Member member) {

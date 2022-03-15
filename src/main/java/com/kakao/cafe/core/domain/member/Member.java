@@ -44,6 +44,10 @@ public class Member {
         return email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public String getNickName() {
         return nickName;
     }
@@ -61,7 +65,7 @@ public class Member {
     }
 
     public static class Builder {
-        private int id;
+        private Integer id;
         private String email;
         private String password;
         private String nickName;
@@ -87,6 +91,11 @@ public class Member {
 
         public Builder password(String password) {
             this.password = password;
+            return this;
+        }
+
+        public Builder createAt(LocalDateTime createAt) {
+            this.createAt = createAt;
             return this;
         }
 
