@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -18,7 +18,7 @@ public class UserService {
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
-    
+
     public void createUser(UserDto userDto) {
         String userId = userDto.getUserId();
         String password = userDto.getPassword();
@@ -31,8 +31,9 @@ public class UserService {
         repository.save(user);
     }
 
-    public Optional<User> findSingleUser(String userId) {
-        return repository.findByUserId(userId);
+    public User findSingleUser(String userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("일치하는 유저가 존재하지 않습니다."));
     }
 
     public List<User> findAllUsers() {

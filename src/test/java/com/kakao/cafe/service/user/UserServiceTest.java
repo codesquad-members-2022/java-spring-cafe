@@ -27,7 +27,7 @@ public class UserServiceTest {
         UserDto form = new UserDto("forky", "1111", "hello@spring.com", "퐄퐄퐄");
         service.createUser(form);
 
-        User user = service.findSingleUser("forky").get();
+        User user = service.findSingleUser("forky");
 
         assertThat(user.getUserId()).isEqualTo("forky");
         assertThat(user.getName()).isEqualTo("퐄퐄퐄");

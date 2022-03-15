@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 public class UserController {
@@ -24,11 +25,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/join")
-    public String joinForm() {
-        return "user/form";
-    }
-
     @GetMapping("/users")
     public String searchUserList(Model model) {
         List<User> users = userService.findAllUsers();
@@ -39,7 +35,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findSingleUser(userId).get();
+        User user = userService.findSingleUser(userId);
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -55,5 +51,11 @@ public class UserController {
     public String createFailed(IllegalStateException e, Model model) {
         model.addAttribute("error", e.getMessage());
         return "user/form";
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public String searchFailed(NoSuchElementException e, Model model) {
+        model.addAttribute("error", e.getMessage());
+        return "error/notfound";
     }
 }
