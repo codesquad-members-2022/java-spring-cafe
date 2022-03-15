@@ -7,7 +7,6 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.session.SessionUser;
 import com.kakao.cafe.util.Mapper;
 import java.util.List;
@@ -18,11 +17,9 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
 
-    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
     }
 
     public ArticleResponse write(SessionUser user, ArticleSaveRequest request) {
@@ -31,10 +28,6 @@ public class ArticleService {
 
         // ArticleSaveRequest DTO 객체를 Article 도메인 객체로 변환
         Article article = Mapper.map(request, Article.class);
-
-        // 회원가입하지 않은 유저 이름으로 글을 작성 시 예외 처리
-        userRepository.findByUserId(article.getWriter())
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // Article 도메인 객체를 저장소에 저장
         Article savedArticle = articleRepository.save(article);
