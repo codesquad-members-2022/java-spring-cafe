@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
@@ -64,10 +63,6 @@ public class ArticleServiceTest {
         // given
         ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
-        given(userRepository.findByUserId(any(String.class)))
-            .willReturn(
-                Optional.of(new User("userId", "userPassword", "userName", "user@example.com")));
-
         given(articleRepository.save(any(Article.class)))
             .willReturn(article);
 
@@ -77,6 +72,9 @@ public class ArticleServiceTest {
         // then
         then(savedArticle).isEqualTo(articleResponse);
     }
+
+    /*
+    유저 아이디가 존재하지 않는 경우는 불가능하므로 제거 필요
 
     @Test
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
@@ -95,6 +93,8 @@ public class ArticleServiceTest {
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
+
+     */
 
     @Test
     @DisplayName("저장소에 저장된 모든 질문을 조회한다")
