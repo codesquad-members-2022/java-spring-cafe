@@ -48,3 +48,6 @@ INSERT_REPLY: >
 
 SELECT_REPLY: >
   SELECT * FROM reply WHERE reply_id = :replyId
+
+SELECT_REPLIES: >
+  SELECT * FROM reply WHERE article_id = :articleId

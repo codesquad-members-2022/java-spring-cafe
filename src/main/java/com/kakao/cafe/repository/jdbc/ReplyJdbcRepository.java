@@ -18,7 +18,8 @@ public class ReplyJdbcRepository implements ReplyRepository {
 
     private static final String REPLY_ID_CAMEL = "replyId";
     private static final String REPLY_ID_SNAKE = "reply_id";
-    private static final String ARTICLE_ID = "article_id";
+    private static final String ARTICLE_ID_CAMEL = "articleId";
+    private static final String ARTICLE_ID_SNAKE = "article_id";
     private static final String USER_ID = "user_id";
     private static final String COMMENT = "comment";
     private static final String CREATED_DATE = "created_date";
@@ -57,12 +58,11 @@ public class ReplyJdbcRepository implements ReplyRepository {
 
         try {
             Reply reply = jdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource()
-                    .addValue(REPLY_ID_CAMEL, replyId),
+                new MapSqlParameterSource().addValue(REPLY_ID_CAMEL, replyId),
                 (rs, rowNum) ->
                     new Reply(
                         rs.getInt(REPLY_ID_SNAKE),
-                        rs.getInt(ARTICLE_ID),
+                        rs.getInt(ARTICLE_ID_SNAKE),
                         rs.getString(USER_ID),
                         rs.getString(COMMENT),
                         rs.getObject(CREATED_DATE, LocalDateTime.class)
@@ -73,13 +73,22 @@ public class ReplyJdbcRepository implements ReplyRepository {
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
-
-
     }
 
     @Override
     public List<Reply> findByArticleId(Integer articleId) {
-        return null;
+        String sql = queryProps.get(Query.SELECT_REPLIES);
+
+        return jdbcTemplate.query(sql,
+            new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId),
+            (rs, rowNum) -> new Reply(
+                rs.getInt(REPLY_ID_SNAKE),
+                rs.getInt(ARTICLE_ID_SNAKE),
+                rs.getString(USER_ID),
+                rs.getString(COMMENT),
+                rs.getObject(CREATED_DATE, LocalDateTime.class)
+            )
+        );
     }
 
     @Override

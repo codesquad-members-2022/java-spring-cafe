@@ -37,4 +37,15 @@ public class ReplyResponse {
     public String getComment() {
         return comment;
     }
+
+    @Override
+    public String toString() {
+        return "ReplyResponse{" +
+            "replyId=" + replyId +
+            ", articleId=" + articleId +
+            ", userId='" + userId + '\'' +
+            ", comment='" + comment + '\'' +
+            ", createdDate=" + createdDate +
+            '}';
+    }
 }
