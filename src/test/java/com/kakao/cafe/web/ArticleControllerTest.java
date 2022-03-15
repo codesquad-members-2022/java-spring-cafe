@@ -62,7 +62,7 @@ class ArticleControllerTest {
             .setWriter("testWriter")
             .build();
         article.setCreatedTime("testDate");
-        ArticleListDto articleListDto = new ArticleListDto(article);
+        ArticleListDto articleListDto = new ArticleListDto(article, 1);
 
         given(articleService.showAll())
             .willReturn(List.of(articleListDto));

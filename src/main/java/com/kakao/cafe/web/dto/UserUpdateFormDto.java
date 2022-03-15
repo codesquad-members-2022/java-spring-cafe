@@ -21,7 +21,7 @@ public class UserUpdateFormDto {
         return userId;
     }
 
-    public String getOldPassword() {
+    public String getPreviousPassword() {
         return oldPassword;
     }
 

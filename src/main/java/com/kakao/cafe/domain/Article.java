@@ -2,6 +2,7 @@ package com.kakao.cafe.domain;
 
 public class Article {
 
+    private int id;
     private String writer;
     private String title;
     private String contents;
@@ -11,6 +12,14 @@ public class Article {
         this.writer = articleBuilder.writer;
         this.title = articleBuilder.title;
         this.contents = articleBuilder.content;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getCreatedTime() {

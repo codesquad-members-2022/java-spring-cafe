@@ -25,9 +25,8 @@ public class ArticleService {
         List<Article> articleList = articleRepository.findAll();
         return articleList.stream()
             .map(article -> {
-                ArticleListDto articleListDto = new ArticleListDto(article);
-                articleListDto.setArticleId(articleList.indexOf(article) + 1);
-                return articleListDto;
+                int articleId = article.getId();
+                return new ArticleListDto(article, articleId);
             })
             .collect(Collectors.toList());
     }
