@@ -23,14 +23,14 @@ public class ArticleController {
 
     @GetMapping("/questions")
     public String createArticleForm() {
-        return "/article/questions";
+        return "article/questions";
     }
 
     @PostMapping("/questions")
     public String crateArticle(Article article) {
         articleService.createArticle(article);
 
-        return "redirect:/";
+        return "redirect:/article/list";
     }
 
     @GetMapping("/list")
@@ -38,7 +38,7 @@ public class ArticleController {
         List<Article> articles = articleService.findAllArticle();
         model.addAttribute("articles", articles);
 
-        return "/article/list";
+        return "article/list";
     }
 
     @GetMapping("/{articleIdx}")
@@ -46,6 +46,6 @@ public class ArticleController {
         Article foundArticle = articleService.findArticle(articleIdx);
         model.addAttribute("foundArticle", foundArticle);
 
-        return "/article/show";
+        return "article/show";
     }
 }

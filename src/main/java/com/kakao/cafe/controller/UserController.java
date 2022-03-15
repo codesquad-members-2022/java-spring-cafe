@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/create")
     public String createForm() {
-        return "/user/create";
+        return "user/create";
     }
 
     @PostMapping("/create")
@@ -37,7 +37,7 @@ public class UserController {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
 
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/{userName}")
@@ -45,6 +45,6 @@ public class UserController {
         User foundUser = userService.findUser(userName);
         model.addAttribute("foundUser", foundUser);
 
-        return "/user/profile";
+        return "user/profile";
     }           
 }
