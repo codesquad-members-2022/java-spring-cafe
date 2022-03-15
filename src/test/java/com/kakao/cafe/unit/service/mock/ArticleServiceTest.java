@@ -6,13 +6,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
@@ -37,9 +38,10 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private ReplyRepository replyRepository;
 
     private Article article;
+    private Reply reply;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
     private SessionUser sessionOther;
@@ -48,6 +50,8 @@ public class ArticleServiceTest {
     @BeforeEach
     public void setUp() {
         article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+        reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
@@ -116,6 +120,9 @@ public class ArticleServiceTest {
         // given
         given(articleRepository.findById(any()))
             .willReturn(Optional.of(article));
+
+        given(replyRepository.findByArticleId(any()))
+            .willReturn(List.of(reply));
 
         // when
         ArticleResponse findArticle = articleService.findArticle(1);

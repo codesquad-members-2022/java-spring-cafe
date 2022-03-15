@@ -59,11 +59,13 @@ public class ArticleControllerTest {
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
-            LocalDateTime.now());
+        replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
+
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents", LocalDateTime.now(),
+            List.of(replyResponse), 1);
+
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
-        replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
 
         session = new MockHttpSession();
         session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
@@ -339,6 +341,6 @@ public class ArticleControllerTest {
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/articles/1/answers"));
+            .andExpect(view().name("redirect:/"));
     }
 }
