@@ -56,7 +56,9 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/check")
-    public String verifyPassword(@PathVariable String userId, Model model) {
+    public String verifyPassword(@PathVariable String userId, Model model, HttpSession session) {
+        session.getAttribute();
+
         logger.info("GET /users/{}/check", userId);
         model.addAttribute("userId", userId);
         return "user/passwordCheck";
