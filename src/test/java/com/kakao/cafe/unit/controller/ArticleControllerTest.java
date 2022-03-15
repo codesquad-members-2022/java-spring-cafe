@@ -13,10 +13,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.ReplyResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,9 +47,13 @@ public class ArticleControllerTest {
     @MockBean
     private ArticleService articleService;
 
+    @MockBean
+    private ReplyService replyService;
+
     private MockHttpSession session;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
+    private ReplyResponse replyResponse;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -57,6 +63,7 @@ public class ArticleControllerTest {
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
+        replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
 
         session = new MockHttpSession();
         session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
@@ -315,5 +322,23 @@ public class ArticleControllerTest {
                 model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
             .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("댓글을 작성하고 저장한 후 해당 페이지를 새로고침한다")
+    public void createAnswerTest() throws Exception {
+        // given
+        given(replyService.comment(any(), any(), any()))
+            .willReturn(replyResponse);
+
+        // when
+        ResultActions actions = mockMvc.perform(post("/articles/1/answers")
+            .session(session)
+            .param("comment", "comment")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/articles/1/answers"));
     }
 }
