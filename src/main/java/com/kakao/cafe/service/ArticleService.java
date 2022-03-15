@@ -20,8 +20,8 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
-    public Optional<Article> findById(int id) {
-        return articleRepository.findByid(id);
+    public Article findById(int id) {
+        return articleRepository.findByid(id).orElseThrow(() -> new IllegalStateException("해당하는 글이 없습니다."));
     }
 
     public List<Article> getAllArticles() {

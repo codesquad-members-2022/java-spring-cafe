@@ -37,13 +37,13 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public String viewArticle(@PathVariable("articleId") int articleId, Model model) {
         Article selectedArticle;
-        Optional<Article> foundArticle = articleService.findById(articleId);
-        if (foundArticle.isPresent()) {
-            selectedArticle = foundArticle.get();
-            model.addAttribute("article", selectedArticle);
-            return "/qna/show";
+        try {
+            selectedArticle = articleService.findById(articleId);
+        } catch (IllegalStateException e) {
+            return "redirect:/";
         }
-        return null; // 잘못된 접근 페이지 리다이렉트
+        model.addAttribute("article", selectedArticle);
+        return "/qna/show";
     }
 
 

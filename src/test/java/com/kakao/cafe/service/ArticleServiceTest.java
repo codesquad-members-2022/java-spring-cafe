@@ -32,7 +32,7 @@ class ArticleServiceTest {
     void findById() {
         Article article = new Article("testTitle", "testContent", "testAuthor");
         Article savedArticle = articleService.create(article);
-        Article foundArticle = articleService.findById(savedArticle.getId()).get();
+        Article foundArticle = articleService.findById(savedArticle.getId());
 
         Assertions.assertThat(savedArticle).isEqualTo(foundArticle);
     }
