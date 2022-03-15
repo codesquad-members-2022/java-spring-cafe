@@ -12,18 +12,18 @@ public class MemoryUserRepository implements UserRepository{
     private static List<User> store = new ArrayList<>();
 
     @Override
-    public User save(User user) {
+    public int save(User user) {
         if (user.hasId()) {
             return update(user);
         }
         user.setId(store.size() + 1);
         store.add(user);
-        return user;
+        return user.getId();
     }
 
-    private User update(User user) {
+    private int update(User user) {
         store.set(user.getId() - 1, user);
-        return user;
+        return user.getId();
     }
 
     @Override
@@ -51,6 +51,5 @@ public class MemoryUserRepository implements UserRepository{
     public List<User> findAll() {
         return new ArrayList<>(store);
     }
-
 
 }

@@ -42,4 +42,16 @@ public class User {
     public boolean hasId() {
         return id > 0;
     }
+
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

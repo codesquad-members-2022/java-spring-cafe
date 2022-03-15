@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
-import com.kakao.cafe.controller.UserDto;
+import com.kakao.cafe.controller.SignUpUserDto;
+import com.kakao.cafe.controller.UpdateUserDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
@@ -19,14 +20,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    //회원가입
-    public int signUp(UserDto user) {
-        validateDuplicateData(user);
-        userRepository.save(new User(user));
-        return user.getId();
+    public int signUp(SignUpUserDto signUpDto) {
+        validateDuplicateUser(signUpDto.getUserId());
+        validateDuplicateEmail(signUpDto.getEmail());
+
+        return userRepository.save(signUpDto.toEntity());
     }
 
-    //전체 회원 조회
     public List<User> findUsers() {
         return userRepository.findAll();
     }
@@ -36,15 +36,15 @@ public class UserService {
         return user.orElseThrow();
     }
 
-    public int update(UserDto updateUserData) {
-        validateDuplicateData(updateUserData);
-        User updatedUser = userRepository.save(new User(updateUserData));
-        return updatedUser.getId();
-    }
+    public int update(UpdateUserDto updateUserData) {
+        validateDuplicateEmail(updateUserData.getEmail());
 
-    private void validateDuplicateData(UserDto updateData) {
-        validateDuplicateUser(updateData.getUserId());
-        validateDuplicateEmail(updateData.getEmail());
+        User updateTargetUser = findOne(updateUserData.getId());
+        updateTargetUser.changeEmail(updateUserData.getEmail());
+        updateTargetUser.changeName(updateUserData.getName());
+        updateTargetUser.changePassword(updateUserData.getPassword());
+
+        return userRepository.save(updateTargetUser);
     }
 
     private void validateDuplicateUser(String userId) {
