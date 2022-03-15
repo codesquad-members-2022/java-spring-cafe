@@ -11,6 +11,8 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
+    private Integer count;
+
     private Article() {
     }
 
@@ -20,11 +22,17 @@ public class Article {
 
     public Article(Integer articleId, String writer, String title, String contents,
         LocalDateTime createdDate) {
+        this(articleId, writer, title, contents, createdDate, null);
+    }
+
+    public Article(Integer articleId, String writer, String title, String contents,
+        LocalDateTime createdDate, Integer count) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
+        this.count = count;
     }
 
     public Integer getArticleId() {
@@ -45,6 +53,10 @@ public class Article {
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
+    }
+
+    public Integer getCount() {
+        return count;
     }
 
     public void setArticleId(Integer articleId) {

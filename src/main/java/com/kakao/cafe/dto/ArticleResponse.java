@@ -15,6 +15,8 @@ public class ArticleResponse {
     private String contents;
     private LocalDateTime createdDate;
 
+    private Integer count;
+
     // relation
     private List<ReplyResponse> replies;
     private Integer replyCount;
@@ -24,17 +26,18 @@ public class ArticleResponse {
 
     public ArticleResponse(Integer articleId, String writer, String title, String contents,
         LocalDateTime createdDate) {
-        this(articleId, writer, title, contents, createdDate, null, null);
+        this(articleId, writer, title, contents, createdDate, null, null, null);
     }
 
-
     public ArticleResponse(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate, List<ReplyResponse> replies, Integer replyCount) {
+        LocalDateTime createdDate, Integer count, List<ReplyResponse> replies, Integer replyCount) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
+
+        this.count = count;
 
         this.replies = replies;
         this.replyCount = replyCount;
@@ -51,6 +54,7 @@ public class ArticleResponse {
             article.getTitle(),
             article.getContents(),
             article.getCreatedDate(),
+            article.getCount(),
             responses,
             responses.size()
         );

@@ -5,7 +5,9 @@ INSERT_ARTICLE: >
   VALUES (:writer, :title, :contents, :createdDate)
 
 SELECT_ARTICLES: >
-  SELECT * FROM article
+  SELECT article.*, COUNT(reply.reply_id)  AS count FROM article
+  LEFT JOIN reply ON article.article_id = reply.article_id
+  GROUP BY article.article_id
 
 SELECT_ARTICLE: >
   SELECT * FROM article WHERE article_id = :articleId
