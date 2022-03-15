@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -28,6 +29,7 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    protected MockHttpSession session;
 
     @MockBean
     private UserService userService;
@@ -42,6 +44,8 @@ class UserControllerTest {
         String email = "test@test.co.kr";
         joinRequestDto = new UserJoinRequestDto(userId, password, name, email);
 
+        session = new MockHttpSession();
+        session.setAttribute("sessionUser", joinRequestDto.toEntity());
     }
 
     @Test
@@ -108,7 +112,8 @@ class UserControllerTest {
         String url = "/users/" + joinRequestDto.getUserId() + "/form";
 
         // when
-        mvc.perform(get(url))
+        mvc.perform(get(url)
+                        .session(session))
                 // then
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", user))
@@ -130,7 +135,8 @@ class UserControllerTest {
         //when
         mvc.perform(post(url)
                         .content(new ObjectMapper().writeValueAsString(updateRequestDto))
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .session(session))
                 // then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));
