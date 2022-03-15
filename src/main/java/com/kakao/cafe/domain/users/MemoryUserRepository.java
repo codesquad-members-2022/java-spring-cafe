@@ -1,26 +1,27 @@
 package com.kakao.cafe.domain.users;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-public class MemoryUserRepository implements UserRepository{
+public class MemoryUserRepository implements UserRepository {
 
-	Map<String, Users> users = new HashMap<>();
+	List<Users> users = new ArrayList<>();
 
 	public List<Users> findAll() {
-		Collection<Users> values = users.values();
-		return new ArrayList<>(values);
+		return users;
 	}
 
 	public void save(Users user) {
-		users.put(user.getUserId(), user);
+		users.add(user);
 	}
 
-	public Optional<Users> findByUserId(String userId) {
-		return Optional.ofNullable(users.get(userId));
+	public Users findByUserId(String userId) {
+		Users user = null;
+		try{
+			user = users.get(users.indexOf(userId));
+		}catch(IndexOutOfBoundsException e) {
+			System.out.println(e.getMessage());
+		}
+		return user;
 	}
 }

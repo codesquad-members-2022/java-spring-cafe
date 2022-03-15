@@ -6,5 +6,5 @@ import java.util.Optional;
 public interface UserRepository {
 	public List<Users> findAll();
 	public void save(Users user);
-	public Optional<Users> findByUserId = null;
+	public Users findByUserId = null;
 }
