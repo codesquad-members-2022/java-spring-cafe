@@ -1,10 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.entity.UserEntity;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Primary
 @Repository
@@ -22,7 +19,6 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
-    private final RowMapper<UserEntity> rowMapper = BeanPropertyRowMapper.newInstance(UserEntity.class);
 
     public JdbcUserRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
@@ -31,10 +27,8 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     @Override
     public List<User> findAll() {
-        List<UserEntity> entities = jdbc.query("select id, user_id, password, name, email from member",
-                Collections.emptyMap(), rowMapper);
-
-        return Collections.unmodifiableList(entities.stream().map(entity -> entity.convertToUser()).collect(Collectors.toList()));
+        return jdbc.query("select id, user_id, password, name, email from member",
+                Collections.emptyMap(), rowMapper());
     }
 
     @Override
@@ -47,13 +41,13 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
     }
 
     private Optional<User> persist(User user) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(new UserEntity(user));
-        user.setId((int) insertJdbc.executeAndReturnKey(params).longValue());
+        SqlParameterSource params = new BeanPropertySqlParameterSource(user);
+        user.setId(insertJdbc.executeAndReturnKey(params).intValue());
         return Optional.ofNullable(user);
     }
 
     private Optional<User> merge(User user) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(new UserEntity(user));
+        SqlParameterSource params = new BeanPropertySqlParameterSource(user);
         jdbc.update("update member set password = :password, name = :name, email = :email where user_id = :userId", params);
         return Optional.ofNullable(user);
     }
@@ -62,12 +56,23 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
     public Optional<User> findOne(String userId) {
         try {
             Map<String, ?> params = Collections.singletonMap("userId", userId);
-            UserEntity entity = jdbc.queryForObject(
-                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper);
+            User user = jdbc.queryForObject(
+                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper());
 
-            return Optional.ofNullable(entity.convertToUser());
+            return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    private RowMapper<User> rowMapper() {
+        return (rs, row) ->
+                new User(
+                        rs.getInt("id"),
+                        rs.getString("user_id"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
     }
 }
