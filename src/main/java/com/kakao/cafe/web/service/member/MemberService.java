@@ -4,6 +4,7 @@ import com.kakao.cafe.core.domain.member.Member;
 import com.kakao.cafe.core.repository.member.MemberRepository;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,14 +22,14 @@ public class MemberService {
     }
 
     public Member join(Member member) {
-        return memberRepository.persist(member);
+        return memberRepository.save(member);
     }
 
     public Member editProfile(ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(request.getId()).orElseThrow();
         findMember.changeNickName(request.getNickName());
         findMember.changeEmail(request.getEmail());
-        memberRepository.update(findMember);
+        memberRepository.save(findMember);
         return findMember;
     }
 

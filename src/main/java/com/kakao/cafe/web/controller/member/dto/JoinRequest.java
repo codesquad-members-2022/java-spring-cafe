@@ -29,7 +29,7 @@ public class JoinRequest {
         this.email = email;
     }
 
-    public Member toEntity(){
+    public Member toEntity() {
         return new Member(null, this.getEmail(), this.getPassword(), this.getNickName());
     }
 }
