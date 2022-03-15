@@ -32,6 +32,8 @@ public class ArticleController {
     public String writeArticle(NewArticleParam newArticleParam,
                                HttpServletRequest request) {
 
+        System.out.println("hello");
+
         logRequestInfo(request);
 
         articleService.add(newArticleParam);
@@ -59,7 +61,7 @@ public class ArticleController {
     }
 
     @ExceptionHandler({ ArticleDomainException.class })
-    private ResponseEntity<String> except(Exception ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    private ResponseEntity<String> except(ArticleDomainException ex) {
+        return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
     }
 }
