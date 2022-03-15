@@ -23,11 +23,11 @@ public class UserService {
      * @param userJoinRequest 가입할 유저 정보
      * @return 회원 가입된 유저의 id
      */
-    public Long join(UserJoinRequest userJoinRequest) {
-        User user = new User(userJoinRequest);
+    public String join(UserJoinRequest userJoinRequest) {
+        User user = userJoinRequest.toDomain();
         checkDuplicateUser(user);
         userRepository.save(user);
-        return user.getId();
+        return user.getUserId();
     }
 
     private void checkDuplicateUser(User user) {

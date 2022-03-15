@@ -37,7 +37,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("user 객체를 저장한다.")
             void it_store_user_and_return_user() {
-                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User("testuserid", "1234", "haha", "test@gmail.com");
 
                 User sut = repository.save(user);
 
@@ -60,9 +60,9 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("모든 user 객체를 리스트로 리턴한다.")
             void it_store_user_and_return_user() {
-                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User("testuserid", "1234", "haha", "test@gmail.com");
                 repository.save(user);
-                User user2 = new User(new UserJoinRequest("testuserid2", "1234", "haha2", "test@gmail.com"));
+                User user2 = new User("testuserid2", "1234", "haha2", "test@gmail.com");
                 repository.save(user2);
 
                 List<User> sut = repository.findAll();
@@ -83,7 +83,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("해당 유저의 옵셔널 객체를 리턴한다.")
             void it_return_user() {
-                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User("testuserid", "1234", "haha", "test@gmail.com");
                 repository.save(user);
 
                 Optional<User> sut = repository.findByUserId("testuserid");
@@ -98,7 +98,7 @@ class MemoryUserRepositoryTest {
             @Test
             @DisplayName("비어있는 Optional을 리턴한다")
             void it_return_user() {
-                User user = new User(new UserJoinRequest("testuserid", "1234", "haha", "test@gmail.com"));
+                User user = new User("testuserid", "1234", "haha", "test@gmail.com");
                 repository.save(user);
 
                 Optional<User> sut = repository.findByUserId("not_exist");

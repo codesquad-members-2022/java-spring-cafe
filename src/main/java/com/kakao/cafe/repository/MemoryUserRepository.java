@@ -1,33 +1,27 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private final Map<Long, User> store = new ConcurrentHashMap<>();
-    private final AtomicLong sequence = new AtomicLong();
+    private final List<User> store = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public User save(User user) {
-        user.setId(sequence.getAndIncrement());
-        store.put(user.getId(), user);
+        store.add(user);
         return user;
     }
 
     @Override
     public List<User> findAll() {
-        return new ArrayList<>(store.values());
+        return Collections.unmodifiableList(store);
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return store.values().stream()
+        return store.stream()
                 .filter(user -> user.isSameId(userId))
                 .findAny();
     }
