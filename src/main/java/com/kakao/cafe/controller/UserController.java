@@ -37,14 +37,12 @@ public class UserController {
 
     @PostMapping("/new")
     public String signUp(@ModelAttribute User user) {
-        log.info("user.getNickName={}", user.getUserId());
         userService.signUp(user);
         return "redirect:/users";
     }
 
     @GetMapping
     public String users(Model model) {
-        log.info("userlist");
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
@@ -52,7 +50,6 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String userProfile(@PathVariable String userId, Model model) {
-        log.info("userId={}", userId);
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
 
