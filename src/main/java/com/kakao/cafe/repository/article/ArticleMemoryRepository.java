@@ -1,12 +1,14 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.article.Article;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private List<Article> store = new ArrayList<>();
