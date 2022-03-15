@@ -6,7 +6,7 @@
           <table class="table table-hover">
               <thead>
                 <tr>
-                    <th>사용자 아이디</th> <th>이름</th> <th>이메일</th> <th>프로필</th>
+                    <th>사용자 아이디</th> <th>이름</th> <th>이메일</th> <th>개인정보</th>
                 </tr>
               </thead>
               <tbody>
@@ -15,7 +15,7 @@
                     <td><a href="/user/{{userId}}">{{userId}}</a></td>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
-                    <td><a href="/user/{{userId}}" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="/user/{{userId}}/form" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               {{/users}}
               </tbody>
