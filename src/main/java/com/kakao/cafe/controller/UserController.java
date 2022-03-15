@@ -6,17 +6,14 @@ import com.kakao.cafe.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Controller
+@RequestMapping("/users")
 public class UserController {
-
 
     private UserService userService;
 
@@ -25,7 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("")
     public String searchUserList(Model model) {
         List<User> users = userService.findAllUsers();
         model.addAttribute("users", users);
@@ -33,7 +30,7 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
         User user = userService.findSingleUser(userId);
         model.addAttribute("user", user);
@@ -41,7 +38,7 @@ public class UserController {
         return "user/profile";
     }
 
-    @PostMapping("/user/join")
+    @PostMapping("/join")
     public String create(UserDto userDto) {
         userService.createUser(userDto);
         return "redirect:/users";

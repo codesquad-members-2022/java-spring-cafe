@@ -67,11 +67,12 @@
 <details>
   <summary>1단계 피드백 사항</summary>
   
-- [ ] Autowired가 생략 가능한 경우, 이유에 대해 학습하기
-- [ ] eqauls, hashcode 메서드를 올바르게 사용하는 방법 학습하기
-- [ ] Optional의 `get()`??
+- [x] Autowired가 생략 가능한 경우, 이유에 대해 학습하기
+- [x] eqauls, hashcode 메서드를 올바르게 사용하는 방법 학습하기
+- [x] Optional의 `get()`
+  - get을 그냥 사용하면 값이 없을 경우 에러가 발생하기 때문에 Optional을 사용하는 의미가 없어진다. orElse, orElseThrow 등을 사용할것.
 - [ ] Dto에서 getter를 사용하지 않고 도메인 객체 만들기
-- [ ] 네이밍 신경쓰기
+- [x] 네이밍 신경쓰기
 </details>
 
 
