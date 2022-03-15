@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
+import com.kakao.cafe.exception.user.UserDomainException;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,12 +102,8 @@ public class UserController {
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
-    @ExceptionHandler({
-            IllegalArgumentException.class,
-            NoSuchElementException.class,
-            IllegalStateException.class })
-
-    private ResponseEntity<String> except(Exception ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({ UserDomainException.class })
+    private ResponseEntity<String> except(UserDomainException ex) {
+        return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
     }
 }

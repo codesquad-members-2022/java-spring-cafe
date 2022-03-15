@@ -2,8 +2,9 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
+import org.springframework.http.HttpStatus;
 
-import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
+import static com.kakao.cafe.message.UserDomainMessage.UNMATCHED_PASSWORD_MESSAGE;
 
 public class ModifiedUserParam {
 
@@ -61,7 +62,7 @@ public class ModifiedUserParam {
 
     public void isValidRequest() {
         if (!nowPassword.equals(password)) {
-            throw new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE);
+            throw new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE);
         }
     }
 

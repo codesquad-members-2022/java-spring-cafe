@@ -3,15 +3,16 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.DomainRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 
 @Service
 public class UserService {
@@ -31,23 +32,23 @@ public class UserService {
         validateDuplicateUser(user);
 
         return userRepository.save(user)
-                .orElseThrow(() -> new SaveUserException(ADD_FAIL_MESSAGE));
+                .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, ADD_FAIL_MESSAGE));
     }
     private void validateDuplicateUser(User user) {
         userRepository.findOne(user.getUserId())
                 .ifPresent(id -> {
-                    throw new DuplicateUserIdException(EXISTENT_ID_MESSAGE);
+                    throw new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE);
                 });
     }
 
     public User update(ModifiedUserParam modifiedUserParam) {
         modifiedUserParam.isValidRequest();
         return userRepository.save(modifiedUserParam.convertToUser())
-                .orElseThrow(() -> new SaveUserException(UPDATE_FAIL_MESSAGE));
+                .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
     }
 
     public User search(String userId) {
         return userRepository.findOne(userId)
-                .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+                .orElseThrow(() -> new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
     }
 }

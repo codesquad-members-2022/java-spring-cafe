@@ -1,10 +1,10 @@
 package com.kakao.cafe.exception.user;
 
-import java.util.NoSuchElementException;
+import org.springframework.http.HttpStatus;
 
-public class NoSuchUserException extends NoSuchElementException {
+public class NoSuchUserException extends UserDomainException {
 
-    public NoSuchUserException(String msg) {
-        super(msg);
+    public NoSuchUserException(HttpStatus httpStatus, String msg) {
+        super(httpStatus, msg);
     }
 }

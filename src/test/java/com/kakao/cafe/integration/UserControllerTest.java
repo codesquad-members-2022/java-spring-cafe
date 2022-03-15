@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -87,7 +87,7 @@ class UserControllerTest {
     void signUpFail(NewUserParam newUserParam) throws Exception {
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
-                        content().string(EXISTENT_ID_MESSAGE),
+                        content().string(DUPLICATE_USER_MESSAGE),
                         status().isBadRequest());
     }
     static Stream<Arguments> params4SignUpFail() {
@@ -143,7 +143,7 @@ class UserControllerTest {
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
-                        content().string(NON_EXISTENT_ID_MESSAGE),
+                        content().string(NO_SUCH_USER_MESSAGE),
                         status().isBadRequest()
                 );
     }

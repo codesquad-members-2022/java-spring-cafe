@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.service.UserService;
@@ -19,6 +19,7 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.LinkedMultiValueMap;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -82,16 +83,16 @@ public class UserControllerUnitTest {
         );
     }
 
-    @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록된 사용자가 회원가입을 요청하면 DuplicateUserException 이 발생한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
-        given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE));
 
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
-                        content().string(EXISTENT_ID_MESSAGE),
-                        status().isBadRequest())
+                        content().string(DUPLICATE_USER_MESSAGE),
+                        status().isOk())
                 .andDo(print());
 
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
@@ -150,11 +151,11 @@ public class UserControllerUnitTest {
         User user = newUserParam.convertToUser();
         String userId = user.getUserId();
 
-        given(service.search(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+        given(service.search(userId)).willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
-                        content().string(NON_EXISTENT_ID_MESSAGE),
-                        status().isBadRequest()
+                        content().string(NO_SUCH_USER_MESSAGE),
+                        status().isOk()
                 );
 
         verify(service).search(userId);
@@ -190,18 +191,18 @@ public class UserControllerUnitTest {
         );
     }
 
-    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 예외를 발생시킨다.")
+    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 UnMatchedPasswordException 을 발생시킨다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4modifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
         User user = modifiedUserParam.convertToUser();
         String userId = user.getUserId();
 
-        given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE));
+        given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
         mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
                 .andExpectAll(
                         content().string(UNMATCHED_PASSWORD_MESSAGE),
-                        status().isBadRequest()
+                        status().isOk()
                 );
 
         verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));

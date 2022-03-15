@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.NewArticleParam;
+import com.kakao.cafe.exception.article.ArticleDomainException;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +58,7 @@ public class ArticleController {
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
-    @ExceptionHandler({ RuntimeException.class })
+    @ExceptionHandler({ ArticleDomainException.class })
     private ResponseEntity<String> except(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

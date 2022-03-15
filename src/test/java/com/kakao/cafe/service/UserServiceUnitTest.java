@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.repository.DomainRepository;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Vector;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -80,8 +80,8 @@ class UserServiceUnitTest {
                 .willReturn(Optional.ofNullable(newUserParam.convertToUser()));
 
         assertThatThrownBy(() -> userService.add(newUserParam))
-                .isInstanceOf(DuplicateUserIdException.class)
-                .hasMessage(EXISTENT_ID_MESSAGE);
+                .isInstanceOf(DuplicateUserException.class)
+                .hasMessage(DUPLICATE_USER_MESSAGE);
 
         verify(repository).findOne(any(String.class));
     }
@@ -135,7 +135,7 @@ class UserServiceUnitTest {
 
         assertThatThrownBy(() -> userService.search(anyString()))
                 .isInstanceOf(NoSuchUserException.class)
-                .hasMessage(NON_EXISTENT_ID_MESSAGE);
+                .hasMessage(NO_SUCH_USER_MESSAGE);
 
         verify(repository).findOne(anyString());
     }
