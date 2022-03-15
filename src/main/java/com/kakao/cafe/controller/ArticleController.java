@@ -5,7 +5,6 @@ import com.kakao.cafe.exception.article.ArticleDomainException;
 import com.kakao.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +59,7 @@ public class ArticleController {
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
-    @ExceptionHandler({ ArticleDomainException.class })
+    @ExceptionHandler({ArticleDomainException.class})
     private ResponseEntity<String> except(ArticleDomainException ex) {
         return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
     }

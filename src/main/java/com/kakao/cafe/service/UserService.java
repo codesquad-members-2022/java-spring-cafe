@@ -34,6 +34,7 @@ public class UserService {
         return userRepository.save(user)
                 .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, ADD_FAIL_MESSAGE));
     }
+
     private void validateDuplicateUser(User user) {
         userRepository.findOne(user.getUserId())
                 .ifPresent(id -> {

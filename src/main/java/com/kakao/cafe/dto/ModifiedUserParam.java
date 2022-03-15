@@ -17,7 +17,7 @@ public class ModifiedUserParam {
     private final String email;
 
     public ModifiedUserParam(int id, String userId, String password, String nowPassword,
-                                String newPassword, String name, String email) {
+                             String newPassword, String name, String email) {
 
         this.id = id;
         this.userId = userId;

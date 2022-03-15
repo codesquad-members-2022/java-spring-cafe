@@ -12,7 +12,8 @@ public class ArticleEntity {
     private String contents;
     private LocalDate createDate;
 
-    public ArticleEntity() {}
+    public ArticleEntity() {
+    }
 
     public ArticleEntity(Article article) {
         this.id = article.getId();

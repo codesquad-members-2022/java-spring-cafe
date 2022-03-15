@@ -100,7 +100,7 @@ public class UserController {
         log.debug("{} {} {}", request.getMethod(), request.getRequestURI(), params);
     }
 
-    @ExceptionHandler({ UserDomainException.class })
+    @ExceptionHandler({UserDomainException.class})
     private ResponseEntity<String> except(UserDomainException ex) {
         return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
     }

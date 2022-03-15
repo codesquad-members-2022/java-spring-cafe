@@ -34,7 +34,7 @@ public class JdbcArticleRepository implements DomainRepository<Article, Integer>
         List<ArticleEntity> entities = jdbc.query("select id, writer, title, contents, create_date from article",
                 Collections.emptyMap(), rowMapper);
 
-        return new Vector<>(entities.stream().map(entity -> entity.convertToArticle()).collect(Collectors.toList()));
+        return Collections.unmodifiableList(entities.stream().map(entity -> entity.convertToArticle()).collect(Collectors.toList()));
     }
 
     @Override

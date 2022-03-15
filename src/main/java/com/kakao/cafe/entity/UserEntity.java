@@ -10,7 +10,8 @@ public class UserEntity {
     private String name;
     private String email;
 
-    public UserEntity() {}
+    public UserEntity() {
+    }
 
     public UserEntity(User user) {
         this.id = user.getId();
