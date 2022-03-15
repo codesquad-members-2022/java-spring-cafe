@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.time.LocalDate;
-import java.time.LocalDate;
 import java.util.*;
 
 @Primary
@@ -21,16 +20,25 @@ public class JdbcArticleRepository implements DomainRepository<Article, Integer>
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
+    private final RowMapper<Article> rowMapper;
 
     public JdbcArticleRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
         insertJdbc = new SimpleJdbcInsert(dataSource).withTableName("article").usingGeneratedKeyColumns("id");
+        rowMapper = (rs, row) ->
+                new Article(
+                        rs.getInt("id"),
+                        rs.getString("writer"),
+                        rs.getString("title"),
+                        rs.getString("contents"),
+                        rs.getObject("create_date", LocalDate.class)
+                );
     }
 
     @Override
     public List<Article> findAll() {
         return jdbc.query("select id, writer, title, contents, create_date from article",
-                Collections.emptyMap(), rowMapper());
+                Collections.emptyMap(), rowMapper);
     }
 
     @Override
@@ -45,22 +53,11 @@ public class JdbcArticleRepository implements DomainRepository<Article, Integer>
         try {
             Map<String, ?> params = Collections.singletonMap("id", id);
             Article article = jdbc.queryForObject(
-                    "select id, writer, title, contents, create_date from article where id = :id", params, rowMapper());
+                    "select id, writer, title, contents, create_date from article where id = :id", params, rowMapper);
 
             return Optional.ofNullable(article);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
-    }
-
-    private final RowMapper<Article> rowMapper() {
-        return (rs, row) ->
-                new Article(
-                        rs.getInt("id"),
-                        rs.getString("writer"),
-                        rs.getString("title"),
-                        rs.getString("contents"),
-                        rs.getObject("create_date", LocalDate.class)
-                );
     }
 }

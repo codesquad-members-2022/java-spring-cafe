@@ -19,16 +19,25 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
+    private final RowMapper<User> rowMapper;
 
     public JdbcUserRepository(DataSource dataSource) {
         jdbc = new NamedParameterJdbcTemplate(dataSource);
         insertJdbc = new SimpleJdbcInsert(dataSource).withTableName("member").usingGeneratedKeyColumns("id");
+        rowMapper = (rs, row) ->
+                new User(
+                        rs.getInt("id"),
+                        rs.getString("user_id"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
     }
 
     @Override
     public List<User> findAll() {
         return jdbc.query("select id, user_id, password, name, email from member",
-                Collections.emptyMap(), rowMapper());
+                Collections.emptyMap(), rowMapper);
     }
 
     @Override
@@ -57,22 +66,11 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
         try {
             Map<String, ?> params = Collections.singletonMap("userId", userId);
             User user = jdbc.queryForObject(
-                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper());
+                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper);
 
             return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
-    }
-
-    private RowMapper<User> rowMapper() {
-        return (rs, row) ->
-                new User(
-                        rs.getInt("id"),
-                        rs.getString("user_id"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                );
     }
 }
