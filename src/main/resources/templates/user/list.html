@@ -16,9 +16,9 @@
               <tbody>
                 <tr th:each="user : ${users}" th:onclick="|location.href='@{/users/{userId}(userId=${user.userId})}'|">
                     <th scope="row" th:text="${user.id}">1</th>
-                    <td th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.userId}">javajigi</td>
-                    <td th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}">자바지기</td>
-                    <td th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.email}">javajigi@sample.net</td>
+                    <td th:text="${user.userId}">javajigi</td>
+                    <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}">자바지기</a></td>
+                    <td th:text="${user.email}">javajigi@sample.net</td>
                     <td><a href="#" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
