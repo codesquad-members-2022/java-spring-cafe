@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
-    UserJoinRequestDto dto;
+    UserJoinRequestDto joinRequestDto;
 
     @BeforeEach
     void setUp() {
@@ -39,7 +40,7 @@ class UserControllerTest {
         String password = "password";
         String name = "suntory";
         String email = "test@test.co.kr";
-        dto = new UserJoinRequestDto(userId, password, name, email);
+        joinRequestDto = new UserJoinRequestDto(userId, password, name, email);
 
     }
 
@@ -55,7 +56,7 @@ class UserControllerTest {
     void joinTest() throws Exception {
         // when
         mvc.perform(post("/users/create")
-                        .content(new ObjectMapper().writeValueAsString(dto))
+                        .content(new ObjectMapper().writeValueAsString(joinRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 // then
                 .andExpect(status().is3xxRedirection())
@@ -66,7 +67,7 @@ class UserControllerTest {
     @DisplayName("회원 목록이 조회된다")
     void userListTest() throws Exception {
         // given
-        User user = dto.toEntity();
+        User user = joinRequestDto.toEntity();
         user.setId(0L);
 
         given(userService.findUsers()).willReturn(List.of(user));
@@ -82,28 +83,29 @@ class UserControllerTest {
     @DisplayName("유저 프로필이 조회된다")
     void userProfileTest() throws Exception {
         // given
-        User user = dto.toEntity();
+        User user = joinRequestDto.toEntity();
         user.setId(0L);
 
-        given(userService.findByUserId(dto.getUserId())).willReturn(user);
+        given(userService.findByUserId(joinRequestDto.getUserId())).willReturn(user);
 
-        String url = "/users/" + dto.getUserId();
+        String url = "/users/" + joinRequestDto.getUserId();
 
         // when
         mvc.perform(get(url))
                 // then
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/profile"))
-                .andExpect(model().attribute("user", user));
+                .andExpect(model().attribute("user", user))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     @DisplayName("회원정보 수정 페이지가 출력된다")
     void userUpdatePageTest() throws Exception {
         // given
-        User user = dto.toEntity();
-        given(userService.findByUserId(dto.getUserId())).willReturn(user);
-        String url = "/users/" + dto.getUserId() + "/form";
+        User user = joinRequestDto.toEntity();
+        given(userService.findByUserId(joinRequestDto.getUserId())).willReturn(user);
+        String url = "/users/" + joinRequestDto.getUserId() + "/form";
 
         // when
         mvc.perform(get(url))
@@ -117,13 +119,13 @@ class UserControllerTest {
     @DisplayName("회원 정보가 수정된다")
     void userUpdateTest() throws Exception {
         // given
-        String url = "/users/" + dto.getUserId() + "/update";
+        String url = "/users/" + joinRequestDto.getUserId() + "/update";
 
         String newName = "newSuntory";
         String newEmail = "new@test.co.kr";
 
         UserUpdateRequestDto updateRequestDto =
-                new UserUpdateRequestDto(dto.getUserId(), dto.getPassword(), dto.getPassword(), newName, newEmail);
+                new UserUpdateRequestDto(joinRequestDto.getUserId(), joinRequestDto.getPassword(), joinRequestDto.getPassword(), newName, newEmail);
 
         //when
         mvc.perform(post(url)
