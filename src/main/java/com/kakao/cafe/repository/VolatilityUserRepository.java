@@ -3,15 +3,12 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
 @Repository
 public class VolatilityUserRepository implements DomainRepository<User, String> {
 
-    private final Vector<User> users = new Vector<>();
+    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public List<User> findAll() {

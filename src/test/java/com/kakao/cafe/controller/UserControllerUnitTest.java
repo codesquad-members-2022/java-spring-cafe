@@ -24,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Vector;
 import java.util.stream.Stream;
 
 import static com.kakao.cafe.message.UserDomainMessage.*;
@@ -38,24 +37,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 public class UserControllerUnitTest {
 
-    final static int EXISTING_USERS_COUNT = 4;
-
     @Autowired
     MockMvc mvc;
 
     @MockBean
     UserService service;
 
-    static List<User> users = new Vector<>();
+    static List<User> users;
 
     Mapper<User> userMapper = new Mapper<>();
 
     @BeforeAll
     static void init() {
-        for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(new User(-1, "user" + (i + 1), "1234", "name" + (i + 1),
-                    "user" + (i + 1) + "@gmail.com"));
-        }
+        users = List.of(
+                new User(1, "user1", "password1", "name1", "user1@gmail.com"),
+                new User(2, "user2", "password2", "name2", "user2@gmail.com"),
+                new User(3, "user3", "password3", "name3", "user3@gmail.com"),
+                new User(4, "user4", "password4", "name4", "user4@gmail.com")
+        );
     }
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
@@ -160,7 +159,7 @@ public class UserControllerUnitTest {
         verify(service).search(userId);
     }
 
-    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하면 반영하고 사용자 목록을 출력한다.")
+    @DisplayName("회원정보 수정 요청이 들어오면 반영하고 사용자 목록을 출력한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForModifiedProfileSuccess")
     void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
@@ -191,7 +190,7 @@ public class UserControllerUnitTest {
         );
     }
 
-    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 UnMatchedPasswordException 을 발생시킨다.")
+    @DisplayName("비밀번호 일치하지 않는 회원정보 수정 요청이 오면 UnMatchedPasswordException 을 발생시킨다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForModifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {

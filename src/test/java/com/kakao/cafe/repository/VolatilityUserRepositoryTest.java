@@ -57,7 +57,7 @@ class VolatilityUserRepositoryTest {
         repository.save(user);
 
         //when
-        User modifiedUser = new User(1, "user", "4321", "newName", "user@gmail.com");
+        User modifiedUser = new User(1, "user", "4321", "newName", "newUser@gmail.com");
         repository.save(modifiedUser);
 
         //then

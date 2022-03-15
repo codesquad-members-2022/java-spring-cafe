@@ -23,10 +23,10 @@ class VolatilityArticleRepositoryTest {
     @DisplayName("전체 게시글 목록을 반환한다.")
     void findAll() {
         //given
-        Article article1 = new Article(1, "writer", "title", "contents", LocalDate.now());
+        Article article1 = new Article(1, "writer1", "title1", "contents1", LocalDate.now());
         repository.save(article1);
 
-        Article article2 = new Article(2, "writer", "title", "contents", LocalDate.now());
+        Article article2 = new Article(2, "writer2", "title2", "contents2", LocalDate.now());
         repository.save(article2);
 
         //when
