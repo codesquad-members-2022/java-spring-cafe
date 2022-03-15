@@ -7,12 +7,12 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -88,6 +88,7 @@ public class ArticleServiceTest {
     @BeforeEach
     public void setUp() {
         articleService = new ArticleService(new ArticleStubRepository(), new UserStubRepository());
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
     }
@@ -95,14 +96,13 @@ public class ArticleServiceTest {
     @Test
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
-        // given
-        UserResponse userResponse = new UserResponse(1, "userId", "userPassword", "usrName",
+        SessionUser sessionUser = new SessionUser(1, "userId", "userPassword", "usrName",
             "user@example.com");
-
+        // given
         ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
         // when
-        ArticleResponse savedArticle = articleService.write(userResponse, request);
+        ArticleResponse savedArticle = articleService.write(sessionUser, request);
 
         // then
         then(savedArticle).isEqualTo(articleResponse);
@@ -112,13 +112,13 @@ public class ArticleServiceTest {
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
         // given
-        UserResponse userResponse = new UserResponse(1, "none", "userPassword", "userName",
+        SessionUser sessionNone = new SessionUser(1, "none", "userPassword", "userName",
             "user@example.com");
 
         ArticleSaveRequest request = new ArticleSaveRequest("none", "title", "contents");
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(userResponse, request));
+        Throwable throwable = catchThrowable(() -> articleService.write(sessionNone, request));
 
         // when
         then(throwable)

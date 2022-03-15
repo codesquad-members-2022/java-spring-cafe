@@ -20,4 +20,12 @@ public class UserLoginRequest {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "UserLoginRequest{" +
+            "userId='" + userId + '\'' +
+            ", password='" + password + '\'' +
+            '}';
+    }
 }

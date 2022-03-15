@@ -31,4 +31,12 @@ public class ArticleSaveRequest {
         this.contents = contents;
     }
 
+    @Override
+    public String toString() {
+        return "ArticleSaveRequest{" +
+            "writer='" + writer + '\'' +
+            ", title='" + title + '\'' +
+            ", contents='" + contents + '\'' +
+            '}';
+    }
 }

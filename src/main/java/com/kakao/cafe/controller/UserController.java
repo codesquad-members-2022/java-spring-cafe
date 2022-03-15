@@ -3,7 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.dto.UserSaveRequest;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.util.SessionUtil;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -46,23 +46,26 @@ public class UserController {
     @PostMapping
     public String createUser(UserSaveRequest request, HttpSession session) {
         UserResponse user = userService.register(request);
-        session.setAttribute(SessionUtil.SESSION_USER, user);
+        session.setAttribute(SessionUser.SESSION_KEY, user);
         return "redirect:/users";
     }
 
     @GetMapping("/{userId}/form")
     public String formUpdateUser(@PathVariable String userId, Model model, HttpSession session) {
-        SessionUtil.checkUser(session, userId);
+        SessionUser user = SessionUser.from(session);
+        user.validate(userId);
 
-        UserResponse user = userService.findUser(userId);
-        model.addAttribute("user", user);
+        UserResponse findUser = userService.findUser(userId);
+        model.addAttribute("user", findUser);
         return "user/update_form";
     }
 
     @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, UserSaveRequest request,
         HttpSession session) {
-        UserResponse user = SessionUtil.checkUser(session, userId);
+        SessionUser user = SessionUser.from(session);
+        user.validate(userId);
+
         userService.updateUser(user, request);
         return "redirect:/users";
     }

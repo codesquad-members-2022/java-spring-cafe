@@ -9,13 +9,13 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +42,8 @@ public class ArticleServiceTest {
 
     private Article article;
     private ArticleResponse articleResponse;
-    private UserResponse userResponse;
-    private UserResponse otherResponse;
+    private SessionUser sessionUser;
+    private SessionUser sessionOther;
     private ArticleSaveRequest request;
 
     @BeforeEach
@@ -51,9 +51,9 @@ public class ArticleServiceTest {
         article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
-        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
+        sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
-        otherResponse = new UserResponse(1, "otherId", "otherPassword", "otherName",
+        sessionOther = new SessionUser(1, "otherId", "otherPassword", "otherName",
             "other@example.com");
         request = new ArticleSaveRequest("writer", "otherTitle", "otherContents");
     }
@@ -72,7 +72,7 @@ public class ArticleServiceTest {
             .willReturn(article);
 
         // when
-        ArticleResponse savedArticle = articleService.write(userResponse, request);
+        ArticleResponse savedArticle = articleService.write(sessionUser, request);
 
         // then
         then(savedArticle).isEqualTo(articleResponse);
@@ -88,7 +88,7 @@ public class ArticleServiceTest {
             .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(userResponse, request));
+        Throwable throwable = catchThrowable(() -> articleService.write(sessionUser, request));
 
         // when
         then(throwable)
@@ -148,7 +148,7 @@ public class ArticleServiceTest {
             .willReturn(Optional.of(article));
 
         // when
-        ArticleResponse findArticle = articleService.mapUserArticle(userResponse,
+        ArticleResponse findArticle = articleService.mapUserArticle(sessionUser,
             article.getArticleId());
 
         // then
@@ -167,7 +167,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.mapUserArticle(userResponse, article.getArticleId()));
+            () -> articleService.mapUserArticle(sessionUser, article.getArticleId()));
 
         // then
         then(throwable)
@@ -185,7 +185,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.mapUserArticle(otherResponse, article.getArticleId()));
+            () -> articleService.mapUserArticle(sessionOther, article.getArticleId()));
 
         // then
         then(throwable)
@@ -207,7 +207,7 @@ public class ArticleServiceTest {
             .willReturn(result);
 
         // when
-        ArticleResponse updatedArticle = articleService.updateArticle(userResponse, request,
+        ArticleResponse updatedArticle = articleService.updateArticle(sessionUser, request,
             article.getArticleId());
 
         // then
@@ -226,7 +226,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.updateArticle(userResponse, request, article.getArticleId()));
+            () -> articleService.updateArticle(sessionUser, request, article.getArticleId()));
 
         // then
         then(throwable)
@@ -243,7 +243,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.updateArticle(otherResponse, request, article.getArticleId()));
+            () -> articleService.updateArticle(sessionOther, request, article.getArticleId()));
 
         // then
         then(throwable)
@@ -259,7 +259,7 @@ public class ArticleServiceTest {
             .willReturn(Optional.of(article));
 
         // when
-        articleService.deleteArticle(userResponse, article.getArticleId());
+        articleService.deleteArticle(sessionUser, article.getArticleId());
     }
 
     @Test
@@ -271,7 +271,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.deleteArticle(userResponse, article.getArticleId()));
+            () -> articleService.deleteArticle(sessionUser, article.getArticleId()));
 
         // then
         then(throwable)
@@ -288,7 +288,7 @@ public class ArticleServiceTest {
 
         // when
         Throwable throwable = catchThrowable(
-            () -> articleService.deleteArticle(otherResponse, article.getArticleId()));
+            () -> articleService.deleteArticle(sessionOther, article.getArticleId()));
 
         // then
         then(throwable)

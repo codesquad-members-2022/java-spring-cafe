@@ -13,12 +13,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.dto.ArticleResponse;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.util.SessionUtil;
+import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +47,7 @@ public class ArticleControllerTest {
 
     private MockHttpSession session;
     private ArticleResponse articleResponse;
-    private UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -56,11 +55,11 @@ public class ArticleControllerTest {
 
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
-        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
+        sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute(SessionUtil.SESSION_USER, userResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
     }
 
     private ResultActions performGet(String url) throws Exception {

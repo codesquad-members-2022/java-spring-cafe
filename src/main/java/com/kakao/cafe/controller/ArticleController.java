@@ -2,9 +2,8 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.util.SessionUtil;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -32,7 +31,7 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String createQuestion(ArticleSaveRequest request, HttpSession session) {
-        UserResponse user = SessionUtil.getUser(session);
+        SessionUser user = SessionUser.from(session);
         articleService.write(user, request);
         return "redirect:/";
     }
@@ -54,7 +53,7 @@ public class ArticleController {
     @GetMapping("articles/{id}/form")
     public String formUpdateQuestion(@PathVariable(value = "id") Integer articleId, Model model,
         HttpSession session) {
-        UserResponse user = SessionUtil.getUser(session);
+        SessionUser user = SessionUser.from(session);
         ArticleResponse article = articleService.mapUserArticle(user, articleId);
         model.addAttribute("article", article);
         return "qna/form";
@@ -63,7 +62,7 @@ public class ArticleController {
     @PutMapping("articles/{id}")
     public String updateQuestion(@PathVariable(value = "id") Integer articleId,
         ArticleSaveRequest request, HttpSession session) {
-        UserResponse user = SessionUtil.getUser(session);
+        SessionUser user = SessionUser.from(session);
         articleService.updateArticle(user, request, articleId);
         return "redirect:/";
     }
@@ -71,7 +70,7 @@ public class ArticleController {
     @DeleteMapping("articles/{id}")
     public String deleteQuestion(@PathVariable(value = "id") Integer articleId,
         HttpSession session) {
-        UserResponse user = SessionUtil.getUser(session);
+        SessionUser user = SessionUser.from(session);
         articleService.deleteArticle(user, articleId);
         return "redirect:/";
     }

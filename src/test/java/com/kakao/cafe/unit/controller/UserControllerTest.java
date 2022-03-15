@@ -10,13 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.controller.UserController;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,17 +41,18 @@ class UserControllerTest {
 
     private MockHttpSession session;
 
-    User user;
-    UserResponse userResponse;
+    private UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
+        sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
             "user@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute("SESSION_USER", userResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
     }
 
     private ResultActions performGet(String url) throws Exception {
@@ -247,7 +248,7 @@ class UserControllerTest {
     @Test
     @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
     public void formUpdateUserSessionNotFoundTest() throws Exception {
-        session.removeAttribute("SESSION_USER");
+        session.removeAttribute(SessionUser.SESSION_KEY);
 
         // when
         ResultActions actions = mockMvc.perform(get("/users/otherId/form")
@@ -279,7 +280,7 @@ class UserControllerTest {
     @Test
     @DisplayName("유저 정보 업데이트 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
     public void updateUserSessionNotFoundTest() throws Exception {
-        session.removeAttribute("SESSION_USER");
+        session.removeAttribute(SessionUser.SESSION_KEY);
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/otherId")

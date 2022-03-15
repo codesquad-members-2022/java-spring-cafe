@@ -13,11 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
-import com.kakao.cafe.util.SessionUtil;
+import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -57,8 +56,8 @@ public class ArticleControllerTest {
 
     private Article article;
     private ArticleResponse articleResponse;
-    private UserResponse userResponse;
-    private UserResponse otherResponse;
+    private SessionUser sessionUser;
+    private SessionUser sessionOther;
 
     @Component
     public static class ArticleSetUp {
@@ -91,13 +90,13 @@ public class ArticleControllerTest {
         article = new Article("writer", "title", "contents");
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
-        userResponse = new UserResponse(1, "writer", "userPassword", "userName",
+        sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
-        otherResponse = new UserResponse(1, "otherId", "otherPassword", "otherName",
+        sessionOther = new SessionUser(1, "otherId", "otherPassword", "otherName",
             "other@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute(SessionUtil.SESSION_USER, userResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
     }
 
     @AfterEach
@@ -222,7 +221,7 @@ public class ArticleControllerTest {
     public void formUpdateArticleValidateTest() throws Exception {
         // given
         articleSetUp.saveArticle(article);
-        session.setAttribute(SessionUtil.SESSION_USER, otherResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 
         // when
         ResultActions actions = mockMvc.perform(get("/articles/1/form")
@@ -277,7 +276,7 @@ public class ArticleControllerTest {
     public void updateArticleValidateTest() throws Exception {
         // given
         articleSetUp.saveArticle(article);
-        session.setAttribute(SessionUtil.SESSION_USER, otherResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 
         // when
         ResultActions actions = mockMvc.perform(put("/articles/1")
@@ -329,7 +328,7 @@ public class ArticleControllerTest {
     public void deleteArticleValidateTest() throws Exception {
         // given
         articleSetUp.saveArticle(article);
-        session.setAttribute(SessionUtil.SESSION_USER, otherResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 
         // when
         ResultActions actions = mockMvc.perform(delete("/articles/1")
