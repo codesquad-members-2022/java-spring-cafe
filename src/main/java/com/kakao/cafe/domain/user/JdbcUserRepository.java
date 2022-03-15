@@ -59,6 +59,18 @@ public class JdbcUserRepository {
                 userUpdateDto.getEmail(), id);
     }
 
+    public User findByLoginId(String userId) {
+        String sql = "select * from user where user_id = ?";
+        User user = null;
+        try {
+            user = jdbcTemplate.query(sql, userRowMapper(), userId)
+                    .stream().findAny().orElseThrow(SQLException::new);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
             User user = new User();

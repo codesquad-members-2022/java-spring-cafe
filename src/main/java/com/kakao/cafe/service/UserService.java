@@ -36,4 +36,12 @@ public class UserService {
     public User findById(Long id) {
         return userRepository.findById(id);
     }
+
+    public User login(String userId, String password) {
+        User loginUser = userRepository.findByLoginId(userId);
+        if (loginUser.getPassword().equals(password)) {
+            return loginUser;
+        }
+        return null;
+    }
 }
