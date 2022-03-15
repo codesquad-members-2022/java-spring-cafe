@@ -29,21 +29,9 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String index(Model model, @CookieValue(value = "sessionUser", required = false) String sessionUser,
-        HttpSession session, HttpServletRequest request) {
+    public String index(Model model, HttpSession session) {
         log.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
-        session.setAttribute("name", model);
-
-        HttpSession session1 = request.getSession();
-        // session1.setAttribute();
-        session1.getId();
-
-        Object value = session.getAttribute(sessionUser);
-        if (value != null) {
-            User user = (User)value;
-            model.addAttribute("sessionUser", user);
-        }
         return "index";
     }
 

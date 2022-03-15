@@ -25,6 +25,7 @@ import com.kakao.cafe.service.UserService;
 public class UserController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private static final String SESSION_NAME = "sessionUser";
 
     private final UserService userService;
 
@@ -40,8 +41,12 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model) {
+    public String showUsers(Model model, HttpSession session) {
         logger.info("GET /users");
+        Object value = session.getAttribute(SESSION_NAME);
+        if (value == null) {
+            throw new IllegalArgumentException("[ERROR] 로그인 후 확인할 수 있습니다.");
+        }
         List<UserDto> userDtoList = userService.findAllUser();
         model.addAttribute("users", userDtoList);
         return "list";
@@ -57,9 +62,14 @@ public class UserController {
 
     @GetMapping("/users/{userId}/check")
     public String verifyPassword(@PathVariable String userId, Model model, HttpSession session) {
-        session.getAttribute();
-
         logger.info("GET /users/{}/check", userId);
+        Object value = session.getAttribute(SESSION_NAME);
+        if (value != null) {
+            User user = (User)value;
+            if (!user.isYourId(userId)) {
+                throw new IllegalArgumentException("[ERROR] 자신의 계정만 수정할 수 있습니다.");
+            }
+        }
         model.addAttribute("userId", userId);
         return "user/passwordCheck";
     }
@@ -69,7 +79,6 @@ public class UserController {
         logger.info("POST /users/{}/form", userId);
         userService.checkPasswordMatch(userId, password);
         User user = userService.findUserByUserId(userId);
-        model.addAttribute("user", user);
         return "user/updateForm";
     }
 
@@ -81,15 +90,11 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String login(String userId, String password, HttpSession session, HttpServletResponse response) {
+    public String login(String userId, String password, HttpSession session) {
         logger.info("POST /user/login");
         User user = userService.findUserByUserId(userId);
         if (user.isYourPassword(password)) {
-            String sessionUser = userId + password;
-            session.setAttribute(sessionUser, user);
-            Cookie cookie = new Cookie("sessionUser", sessionUser);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            session.setAttribute(SESSION_NAME, user);
             return "redirect:/";
         }
         return "login/login_failed";

@@ -3,7 +3,7 @@
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default content-main">
-            {{#user}}
+            {{#sessionUser}}
             <form name="question" method="post" action="/users/{{userId}}/update">
                 <input type="hidden" name="_method" value="put"/>
                 <div class="form-group">
@@ -26,7 +26,7 @@
                 <button type="submit" class="btn btn-success clearfix pull-right">회원 정보 수정</button>
                 <div class="clearfix"/>
             </form>
-            {{/user}}
+            {{/sessionUser}}
         </div>
     </div>
 </div>
