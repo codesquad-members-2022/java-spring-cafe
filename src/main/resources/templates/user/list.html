@@ -14,12 +14,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="user : ${users}" th:onclick="|location.href='@{/users/{userId}(userId=${user.userId})}'|">
+                <tr th:each="user : ${users}" >
                     <th scope="row" th:text="${user.id}">1</th>
                     <td th:text="${user.userId}">javajigi</td>
                     <td><a th:href="@{/users/{userId}(userId=${user.userId})}" th:text="${user.name}">자바지기</a></td>
                     <td th:text="${user.email}">javajigi@sample.net</td>
-                    <td><a href="#" class="btn btn-success" role="button">수정</a></td>
+                    <td><a href="#" th:href="@{/users/{userId}/update(userId=${user.userId})}" class="btn btn-success" role="button">수정</a></td>
                 </tr>
               </tbody>
           </table>
@@ -28,8 +28,8 @@
 </div>
 
 <!-- script references -->
-<script src="../js/jquery-2.2.0.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/scripts.js"></script>
-	</body>
+<script src="/js/jquery-2.2.0.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/scripts.js"></script>
+</body>
 </html>
