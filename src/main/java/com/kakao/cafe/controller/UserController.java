@@ -1,7 +1,6 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.UserJoinRequestDto;
-import com.kakao.cafe.controller.dto.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -64,18 +61,5 @@ public class UserController {
     public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequestDto dto) {
         userService.update(dto);
         return "redirect:/users";
-    }
-
-    @GetMapping("/users/login")
-    public String loginPage() {
-        return "/user/login";
-    }
-
-    @PostMapping("/users/login")
-    public String login(@ModelAttribute UserLoginRequestDto dto, HttpServletRequest req) {
-        User user = userService.login(dto);
-        HttpSession session = req.getSession();
-        session.setAttribute("sessionedUser", user);
-        return "redirect:/";
     }
 }
