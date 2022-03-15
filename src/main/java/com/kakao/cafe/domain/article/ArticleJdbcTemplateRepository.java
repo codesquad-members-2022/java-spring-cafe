@@ -1,7 +1,5 @@
 package com.kakao.cafe.domain.article;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -12,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class ArticleJdbcTemplateRepository implements ArticleRepository {
-    private static final Logger log = LoggerFactory.getLogger(ArticleJdbcTemplateRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -23,13 +20,21 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
 
     @Override
     public void save(Article article) {
-        log.info("save request: {}", article);
         MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("id", article.getId());
         params.addValue("writer", article.getWriter());
         params.addValue("title", article.getTitle());
-        params.addValue("content", article.getContents());
-        namedParameterJdbcTemplate.update("INSERT INTO article (writer, title, contents) VALUES (:writer, :title, :content)",
+        params.addValue("contents", article.getContents());
+        if (isAlreadyWritten(article)) {
+            namedParameterJdbcTemplate.update("UPDATE article SET title = :title, contents = :contents WHERE id = :id", params);
+            return;
+        }
+        namedParameterJdbcTemplate.update("INSERT INTO article (writer, title, contents) VALUES (:writer, :title, :contents)",
                 params);
+    }
+
+    private boolean isAlreadyWritten(Article article) {
+        return findById(article.getId()).isPresent();
     }
 
     @Override
