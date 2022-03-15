@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="kr" th:fragment="nav(content)" xmlns:th="http://www.thymeleaf.org">
+<html lang="kr" th:fragment="nav" xmlns:th="http://www.thymeleaf.org">
 <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
-        <div th:replace="${content}" class="navbar-header">
+        <div class="navbar-header">
+            <a th:href="@{/}">
+                <img src="../images/KakaoCI.png"/>
+            </a>
         </div>
 <!--        <div class="navbar-header">-->
 <!--            <a class="navbar-brand">-->

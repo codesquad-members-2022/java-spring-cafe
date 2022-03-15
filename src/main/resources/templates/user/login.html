@@ -6,13 +6,7 @@
 
 <body>
 <div class="background">
-    <nav th:replace="fragments/nav :: nav(~{::section})">
-        <section>
-            <a class="navbar-brand">
-                <img src="../images/KakaoCI.png"/>
-            </a>
-        </section>
-    </nav>
+    <nav th:replace="fragments/nav :: nav"></nav>
 
     <div class="container" id="main">
         <header class="post-header">
