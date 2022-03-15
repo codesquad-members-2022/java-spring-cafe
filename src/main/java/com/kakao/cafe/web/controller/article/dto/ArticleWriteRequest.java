@@ -1,7 +1,6 @@
 package com.kakao.cafe.web.controller.article.dto;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.core.repository.SequenceGenerator;
 
 import java.time.LocalDateTime;
 
