@@ -1,18 +1,19 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.domain.posts.JdbcPostRepository;
 import com.kakao.cafe.domain.posts.Post;
-import com.kakao.cafe.domain.posts.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostsService {
-    private final PostRepository postRepository;
+    private final JdbcPostRepository postRepository;
 
     @Autowired
-    public PostsService(PostRepository postRepository) {
+    public PostsService(JdbcPostRepository postRepository) {
         this.postRepository = postRepository;
     }
 

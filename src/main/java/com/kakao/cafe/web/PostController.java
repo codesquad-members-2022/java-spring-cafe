@@ -39,8 +39,7 @@ public class PostController {
     @GetMapping("/{id}")
     public String showContent(@PathVariable Long id, Model model) {
         log.info("게시글 번호 = {} 로 게시글 상세확인하기~", id);
-        Post post = postsService.findPost(id);
-        model.addAttribute("post", post);
+        model.addAttribute("post", postsService.findPost(id));
         return "qna/show";
     }
 }
