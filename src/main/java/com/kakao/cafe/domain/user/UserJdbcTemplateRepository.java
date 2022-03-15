@@ -28,7 +28,7 @@ public class UserJdbcTemplateRepository implements UserRepository {
     }
 
     private boolean isAlreadyJoin(User user) {
-        return !Objects.isNull(user.getId());
+        return findByUserId(user.getUserId()).isPresent();
     }
 
     @Override
