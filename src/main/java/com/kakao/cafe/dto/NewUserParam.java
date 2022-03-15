@@ -33,7 +33,7 @@ public class NewUserParam {
     }
 
     public User convertToUser() {
-        return new User(-1, userId, password, name, email);
+        return new User(0, userId, password, name, email);
     }
 
     @Override

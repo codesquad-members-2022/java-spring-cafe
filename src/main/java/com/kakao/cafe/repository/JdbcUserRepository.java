@@ -47,13 +47,13 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
     }
 
     private Optional<User> persist(User user) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
-        user.setId(insertJdbc.executeAndReturnKey(params).longValue());
+        SqlParameterSource params = new BeanPropertySqlParameterSource(new UserEntity(user));
+        user.setId((int) insertJdbc.executeAndReturnKey(params).longValue());
         return Optional.ofNullable(user);
     }
 
     private Optional<User> merge(User user) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(UserEntity.of(user));
+        SqlParameterSource params = new BeanPropertySqlParameterSource(new UserEntity(user));
         jdbc.update("update member set password = :password, name = :name, email = :email where user_id = :userId", params);
         return Optional.ofNullable(user);
     }

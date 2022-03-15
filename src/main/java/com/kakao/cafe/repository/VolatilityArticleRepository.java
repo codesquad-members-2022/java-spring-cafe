@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.Vector;
 
 @Repository
-public class VolatilityArticleRepository implements DomainRepository<Article, Long> {
+public class VolatilityArticleRepository implements DomainRepository<Article, Integer> {
 
     private final Vector<Article> articles = new Vector<>();
 
@@ -26,7 +26,7 @@ public class VolatilityArticleRepository implements DomainRepository<Article, Lo
     }
 
     @Override
-    public Optional<Article> findOne(Long index) {
-        return Optional.ofNullable(articles.get(index.intValue() - 1));
+    public Optional<Article> findOne(Integer index) {
+        return Optional.ofNullable(articles.get(index - 1));
     }
 }

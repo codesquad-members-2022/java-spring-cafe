@@ -1,22 +1,17 @@
 package com.kakao.cafe.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class Article {
 
-    private long id;
+    private int id;
     private final String writer;
     private final String title;
     private final String contents;
-
-    @JsonDeserialize(using = LocalDateDeserializer.class)
     private final LocalDate createDate;
 
-    public Article(long id, String writer, String title, String contents, LocalDate createDate) {
+    public Article(int id, String writer, String title, String contents, LocalDate createDate) {
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -24,11 +19,11 @@ public class Article {
         this.createDate = createDate;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

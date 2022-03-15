@@ -67,7 +67,7 @@ public class ArticleServiceUnitTest {
     @DisplayName("인자로 받은 id에 해당하는 글을 저장소에서 읽어와 반환한다.")
     void search() {
         // given
-        long id = 1;
+        int id = 1;
         Article article = new Article(id, "wrtier", "title", "contents", LocalDate.now());
         given(repository.findOne(anyLong())).willReturn(Optional.ofNullable(article));
 

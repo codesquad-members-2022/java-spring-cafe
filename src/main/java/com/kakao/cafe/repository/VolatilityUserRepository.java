@@ -33,8 +33,8 @@ public class VolatilityUserRepository implements DomainRepository<User, String> 
         return Optional.ofNullable(user);
     }
 
-    private Optional<User> merge(long index, User user) {
-        users.set((int) index - 1, user);
+    private Optional<User> merge(int index, User user) {
+        users.set(index - 1, user);
         return Optional.ofNullable(user);
     }
 

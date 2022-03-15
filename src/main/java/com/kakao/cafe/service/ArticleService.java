@@ -15,9 +15,9 @@ import static com.kakao.cafe.message.ArticleDomainMessage.*;
 @Service
 public class ArticleService {
 
-    private final DomainRepository<Article, Long> articleRepository;
+    private final DomainRepository<Article, Integer> articleRepository;
 
-    public ArticleService(DomainRepository<Article, Long> articleRepository) {
+    public ArticleService(DomainRepository<Article, Integer> articleRepository) {
         this.articleRepository = articleRepository;
     }
 
@@ -30,7 +30,7 @@ public class ArticleService {
                 .orElseThrow(() -> new DuplicateArticleException(HttpStatus.OK, DUPLICATE_ARTICLE_MESSAGE));
     }
 
-    public Article search(long id) {
+    public Article search(int id) {
         return articleRepository.findOne(id)
                 .orElseThrow(() -> new NoSuchArticleException(HttpStatus.OK, NO_SUCH_ARTICLE_MESSAGE));
     }

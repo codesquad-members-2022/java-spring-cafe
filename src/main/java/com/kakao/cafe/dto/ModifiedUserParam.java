@@ -8,7 +8,7 @@ import static com.kakao.cafe.message.UserDomainMessage.UNMATCHED_PASSWORD_MESSAG
 
 public class ModifiedUserParam {
 
-    private long id;
+    private int id;
     private final String userId;
     private final String password;
     private final String nowPassword;
@@ -16,7 +16,7 @@ public class ModifiedUserParam {
     private final String name;
     private final String email;
 
-    public ModifiedUserParam(long id, String userId, String password, String nowPassword,
+    public ModifiedUserParam(int id, String userId, String password, String nowPassword,
                                 String newPassword, String name, String email) {
 
         this.id = id;
@@ -28,7 +28,7 @@ public class ModifiedUserParam {
         this.email = email;
     }
 
-    public void setIndex(long id) {
+    public void setIndex(int id) {
         this.id = id;
     }
 

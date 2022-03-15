@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Primary
 @Repository
-public class JdbcArticleRepository implements DomainRepository<Article, Long> {
+public class JdbcArticleRepository implements DomainRepository<Article, Integer> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
@@ -39,13 +39,13 @@ public class JdbcArticleRepository implements DomainRepository<Article, Long> {
 
     @Override
     public Optional<Article> save(Article article) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(ArticleEntity.of(article));
-        article.setId(insertJdbc.executeAndReturnKey(params).longValue());
+        SqlParameterSource params = new BeanPropertySqlParameterSource(new ArticleEntity(article));
+        article.setId(insertJdbc.executeAndReturnKey(params).intValue());
         return Optional.ofNullable(article);
     }
 
     @Override
-    public Optional<Article> findOne(Long id) {
+    public Optional<Article> findOne(Integer id) {
         try {
             Map<String, ?> params = Collections.singletonMap("id", id);
             ArticleEntity entity = jdbc.queryForObject(

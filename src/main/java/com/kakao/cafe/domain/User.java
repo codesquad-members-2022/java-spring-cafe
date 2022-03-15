@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class User {
 
-    private long id;
+    private int id;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(long id, String userId, String password, String name, String email) {
+    public User(int id, String userId, String password, String name, String email) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -18,11 +18,11 @@ public class User {
         this.email = email;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
