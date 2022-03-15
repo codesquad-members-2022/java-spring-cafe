@@ -5,20 +5,20 @@ import java.util.List;
 
 public class MemoryUserRepository implements UserRepository {
 
-	List<Users> users = new ArrayList<>();
+	List<Users> usersList = new ArrayList<>();
 
 	public List<Users> findAll() {
-		return users;
+		return usersList;
 	}
 
 	public void save(Users user) {
-		users.add(user);
+		usersList.add(user);
 	}
 
 	public Users findByUserId(String userId) {
 		Users user = null;
 		try{
-			user = users.get(users.indexOf(userId));
+			user = usersList.get(usersList.indexOf(userId));
 		}catch(IndexOutOfBoundsException e) {
 			System.out.println(e.getMessage());
 		}
