@@ -11,13 +11,16 @@ SELECT_ARTICLES: >
   GROUP BY article.article_id
 
 SELECT_ARTICLE: >
-  SELECT * FROM article WHERE article_id = :articleId AND deleted = FALSE
+  SELECT * FROM article
+  WHERE article_id = :articleId AND deleted = FALSE
 
 UPDATE_ARTICLE: >
-  UPDATE article SET title = :title, contents = :contents WHERE article_id = :articleId
+  UPDATE article SET title = :title, contents = :contents
+  WHERE article_id = :articleId
 
 DELETE_ARTICLE: >
-  UPDATE article SET deleted = TRUE WHERE article_id = :articleId
+  UPDATE article SET deleted = TRUE
+  WHERE article_id = :articleId
 
 ### user ###
 
@@ -29,7 +32,8 @@ INSERT_USER: >
   VALUES (:userId, :password, :name, :email)
 
 UPDATE_USER: >
-  UPDATE `user` SET `name` = :name, email = :email WHERE user_id = :userId
+  UPDATE `user` SET `name` = :name, email = :email
+  WHERE user_id = :userId
 
 SELECT_USERS: >
   SELECT * FROM `user`
@@ -47,13 +51,17 @@ INSERT_REPLY: >
   VALUES (:articleId, :userId, :comment, :createdDate)
 
 SELECT_REPLY: >
-  SELECT * FROM reply WHERE reply_id = :replyId AND deleted = FALSE
+  SELECT * FROM reply
+  WHERE reply_id = :replyId AND deleted = FALSE
 
 SELECT_REPLIES: >
-  SELECT * FROM reply WHERE article_id = :articleId AND deleted = FALSE
+  SELECT * FROM reply
+  WHERE article_id = :articleId AND deleted = FALSE
 
 UPDATE_REPLY: >
-  UPDATE reply SET comment = :comment WHERE reply_id = :replyId
+  UPDATE reply SET comment = :comment
+  WHERE reply_id = :replyId
 
 DELETE_REPLY: >
-  UPDATE reply SET deleted = TRUE WHERE reply_id = :replyId
+  UPDATE reply SET deleted = TRUE
+  WHERE reply_id = :replyId
