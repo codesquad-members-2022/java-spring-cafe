@@ -29,8 +29,9 @@ public class ArticleController {
         logger.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
         Object value = session.getAttribute("sessionUser");
+        // 세션 유저가 존재한다면
         if (value != null) {
-            return "login_index";
+            model.addAttribute("sessionUser", value);
         }
         return "index";
     }

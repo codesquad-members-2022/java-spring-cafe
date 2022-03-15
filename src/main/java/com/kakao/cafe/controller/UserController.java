@@ -2,6 +2,8 @@ package com.kakao.cafe.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -71,5 +73,11 @@ public class UserController {
         logger.info("PUT /users/update");
         userService.update(userId, updateUser);
         return "redirect:/users";
+    }
+
+    @PostMapping("/user/login")
+    public String login(String userId, String password, HttpSession session) {
+        logger.info("POST /user/login");
+        return null;
     }
 }
