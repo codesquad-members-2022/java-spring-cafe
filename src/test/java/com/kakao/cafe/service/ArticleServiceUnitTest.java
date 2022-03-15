@@ -35,9 +35,7 @@ public class ArticleServiceUnitTest {
         List<Article> articles = List.of(
                 new Article(1, "writer1", "title1", "contents1", LocalDate.now()),
                 new Article(2, "writer2", "title2", "contents2", LocalDate.now()),
-                new Article(3, "writer3", "title3", "contents3", LocalDate.now()),
-                new Article(4, "writer4", "title4", "contents4", LocalDate.now()),
-                new Article(5, "writer5", "title5", "contents5", LocalDate.now())
+                new Article(3, "writer3", "title3", "contents3", LocalDate.now())
         );
         given(repository.findAll()).willReturn(articles);
 
@@ -55,8 +53,7 @@ public class ArticleServiceUnitTest {
         // given
         NewArticleParam newArticleParam = new NewArticleParam("writer", "title", "contents");
         Article article = newArticleParam.convertToArticle();
-        given(repository.save(article))
-                .willReturn(Optional.of(article));
+        given(repository.save(article)).willReturn(Optional.of(article));
 
         // when
         Article newArticle = articleService.add(newArticleParam);

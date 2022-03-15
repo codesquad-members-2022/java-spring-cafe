@@ -71,6 +71,7 @@ public class LoginControllerUnitTest {
                         request().sessionAttributeDoesNotExist("userInfo"),
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
                         content().encoding(StandardCharsets.UTF_8),
+                        view().name("user/login_failed"),
                         status().isOk()
                 );
 

@@ -310,7 +310,7 @@
     - [x] 비밀번호가 일치하지 않아 로그인 실패시 login_failed.html 로 이동하기
   - [x] 로그인, 로그아웃 상태에 따라 상단 메뉴 다르게 표시하기
   - [x] (선택) 개인정보 수정 기능 추가하기
-    - [x] 다른 사용자의 정보를 수정하려할 시 updateForm_failed.html 로 이동하기 (에러 페이지를 만든 후 에러 메시지를 출력한다.)
+    - [x] 다른 사용자의 정보를 수정하려할 시 error/4xx.html 로 이동하기 (에러 페이지를 만든 후 에러 메시지를 출력한다.)
   
 - ## 해야할 일
   - HttpServletRequest, log 정리하기 (ControllerAdvice 사용 X)

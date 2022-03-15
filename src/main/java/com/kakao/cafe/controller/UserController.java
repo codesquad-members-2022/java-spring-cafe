@@ -71,12 +71,12 @@ public class UserController {
 
         logRequestInfo(request);
 
-        mav.setViewName("user/updateForm");
-        mav.addObject("user", userService.search(userId));
-
         User user = (User) session.getAttribute("userInfo");
+        mav.setViewName("user/updateForm");
+        mav.addObject("user", user);
+
         if (!user.ownerOf(userId)) {
-            mav.setViewName("user/updateForm_failed");
+            mav.setViewName("error/4xx");
             mav.addObject("message", "본인 정보만 수정할 수 있습니다.");
         }
 
