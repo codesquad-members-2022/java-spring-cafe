@@ -3,13 +3,14 @@ package com.kakao.cafe.domain;
 import com.kakao.cafe.controller.ArticleForm;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Article {
     private int id;
     private String title;
     private String author;
     private String contents;
-    private String writtenTime;
+    private LocalDateTime writtenTime;
 
     public Article(ArticleForm form) {
         this.title = form.getTitle();
@@ -27,7 +28,7 @@ public class Article {
 
     public String getAuthor() { return author; }
 
-    public String getWrittenTime() { return writtenTime; }
+    public LocalDateTime getWrittenTime() { return writtenTime; }
 
     public int getId() {
         return id;
@@ -37,8 +38,12 @@ public class Article {
         this.id = id;
     }
 
-    public void setWrittenTime(String writtenTime) {
-        this.writtenTime = writtenTime;
+    public void setWrittenTime(LocalDateTime localDateTime) {
+        this.writtenTime = localDateTime;
+    }
+
+    public String getFormattedWrittenTime() {
+        return writtenTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
 

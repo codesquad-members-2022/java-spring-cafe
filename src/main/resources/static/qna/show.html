@@ -87,7 +87,7 @@
                       </div>
                       <div class="article-header-text">
                           <a href="/users/92/kimmunsu" class="article-author-name" th:text="${article.author}">Author</a>
-                          <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.writtenTime}">
+                          <a href="/questions/413" class="article-header-time" title="퍼머링크" th:text="${article.getFormattedWrittenTime()}">
                               작성시간
                               <i class="icon-link"></i>
                           </a>

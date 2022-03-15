@@ -17,9 +17,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     @Override
     public Article save(Article article) {
         article.setId(idSequence++);
-        String writtenTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        System.out.println(writtenTime);
-        article.setWrittenTime(writtenTime);
+        article.setWrittenTime(LocalDateTime.now());
         articles.add(article);
         return article;
     }
