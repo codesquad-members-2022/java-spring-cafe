@@ -8,11 +8,15 @@ import java.util.Optional;
 public interface UserRepository {
     User save(User user);
 
-    Optional<User> findById(Long id);
+    Optional<User> findByIndex(int index);
 
     Optional<User> findByUserId(String userId);
 
     List<User> findAll();
 
-    Optional<User> findByEmail(String email);
+    void clearStore();
+
+    int size();
+
+    void update(User user, int index);
 }

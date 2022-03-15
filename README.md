@@ -15,6 +15,98 @@
 - IDE : IntelliJ 2020.3.2
 
 --- 
+## Tree
+
+<details>
+<summary>Click</summary>
+
+```
+.
+├── main
+│   ├── java
+│   │   └── com
+│   │       └── kakao
+│   │           └── cafe
+│   │               ├── CafeApplication.java
+│   │               ├── controller
+│   │               │   ├── ArticleController.java
+│   │               │   ├── ExceptionController.java
+│   │               │   ├── HomeController.java
+│   │               │   └── UserController.java
+│   │               ├── domain
+│   │               │   ├── Article.java
+│   │               │   ├── User.java
+│   │               │   └── dto
+│   │               │       ├── ArticleForm.java
+│   │               │       ├── UpdateUserForm.java
+│   │               │       └── UserForm.java
+│   │               ├── repository
+│   │               │   ├── ArticleRepository.java
+│   │               │   ├── MemoryArticleRepository.java
+│   │               │   ├── MemoryUserRepository.java
+│   │               │   └── UserRepository.java
+│   │               └── service
+│   │                   ├── ArticleService.java
+│   │                   └── UserService.java
+│   └── resources
+│       ├── application.properties
+│       ├── static
+│       │   ├── css
+│       │   │   ├── bootstrap.min.css
+│       │   │   ├── page_not_found_style.css
+│       │   │   └── styles.css
+│       │   ├── favicon.ico
+│       │   ├── fonts
+│       │   │   ├── glyphicons-halflings-regular.eot
+│       │   │   ├── glyphicons-halflings-regular.svg
+│       │   │   ├── glyphicons-halflings-regular.ttf
+│       │   │   ├── glyphicons-halflings-regular.woff
+│       │   │   └── glyphicons-halflings-regular.woff2
+│       │   ├── images
+│       │   │   └── 80-text.png
+│       │   └── js
+│       │       ├── bootstrap.min.js
+│       │       ├── jquery-2.2.0.min.js
+│       │       └── scripts.js
+│       └── templates
+│           ├── error
+│           │   ├── 404.html
+│           │   ├── 4xx.html
+│           │   └── 500.html
+│           ├── fragment
+│           │   ├── head.html
+│           │   ├── nav.html
+│           │   └── subnav.html
+│           ├── index.html
+│           ├── qna
+│           │   ├── form.html
+│           │   └── show.html
+│           └── user
+│               ├── form.html
+│               ├── list.html
+│               ├── login.html
+│               ├── login_failed.html
+│               ├── profile.html
+│               └── updateForm.html
+└── test
+    └── java
+        └── com
+            └── kakao
+                └── cafe
+                    ├── CafeApplicationTests.java
+                    ├── repository
+                    │   ├── MemoryArticleRepositoryTest.java
+                    │   └── MemoryUserRepositoryTest.java
+                    └── service
+                        ├── ArticleServiceTest.java
+                        └── UserServiceTest.java
+
+
+```
+
+</details>
+
+---
 
 ## 스프링 카페 1단계 - 회원 가입 및 목록 기능
 
@@ -119,3 +211,57 @@
 ![image](https://user-images.githubusercontent.com/67811880/157054324-75ab9741-64f9-4055-9518-b3509b6b28f9.png)
 
 </details>
+
+---
+
+## 스프링 카페 2단계 - 글 쓰기 기능 구현
+
+### 학습 목표
+- Spring Boot를 이용해서 게시글 쓰기를 구현할 수 있다.
+
+### 기능 요구사항
+<details>
+<summary>Click</summary>
+
+- [x] 사용자는 게시글을 작성할 수 있어야 한다.
+
+- [x] 모든 사용자는 게시글 목록을 볼 수 있어야 한다.
+  
+- [x] 모든 사용자는 게시글 상세 내용을 볼 수 있어야 한다.
+  
+- [x] (선택) 사용자 정보를 수정할 수 있어야 한다.
+</details>
+
+### 게시글 View
+
+<details>
+<summary>Click</summary>
+
+#### 게시글 작성하기
+<img width="842" alt="image" src="https://user-images.githubusercontent.com/67811880/158018051-6ffa8aa0-1618-4a76-9c90-9753c0621cb2.png">
+
+#### 게시글 모아보기
+<img width="845" alt="image" src="https://user-images.githubusercontent.com/67811880/158018089-9fdcc472-2e3d-4783-8be0-a53726e89b54.png">
+
+#### 게시글 상세보기
+<img width="846" alt="image" src="https://user-images.githubusercontent.com/67811880/158018111-c6eaa9ce-ee62-4866-b586-2aeafb1f07e3.png">
+
+</details>
+
+### 유저 수정 View
+
+<details>
+<summary>Click</summary>
+
+#### 유저목록 보기
+<img width="844" alt="image" src="https://user-images.githubusercontent.com/67811880/158018148-9bffd980-0b97-4a9c-acfb-71b8a1ca7b2c.png">
+
+#### 유저 수정하기
+<img width="844" alt="image" src="https://user-images.githubusercontent.com/67811880/158018161-11d653e8-9850-4d74-8fdb-317c03e878d7.png">
+
+#### 유저 수정완료
+<img width="846" alt="image" src="https://user-images.githubusercontent.com/67811880/158018192-39583381-2114-423a-adfe-5d6559d64c19.png">
+
+</details>
+
+---
