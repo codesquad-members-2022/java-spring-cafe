@@ -6,18 +6,18 @@ import java.time.LocalDateTime;
 
 public class Article {
 
-    private Integer index;
+    private Long id;
     private LocalDateTime timestamp;
     private String writer;
     private String title;
     private String contents;
 
-    public Integer getIndex() {
-        return index;
+    public Long getId() {
+        return id;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getTimestamp() {

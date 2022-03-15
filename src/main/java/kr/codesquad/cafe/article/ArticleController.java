@@ -35,9 +35,9 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @GetMapping("/questions/{index}")
-    public String viewQuestion(@PathVariable("index") int index, Model model) {
-        model.addAttribute("article", service.retrieve(index));
+    @GetMapping("/questions/{id}")
+    public String viewQuestion(@PathVariable("id") long id, Model model) {
+        model.addAttribute("article", service.retrieve(id));
 
         return "qna/show";
     }
