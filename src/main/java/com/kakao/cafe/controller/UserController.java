@@ -1,7 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Member;
-import com.kakao.cafe.service.MemberService;
+import com.kakao.cafe.domain.User;
+import com.kakao.cafe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 @Controller
-public class MemberController {
-    private final MemberService memberService;
+public class UserController {
+    private final UserService userService;
 
     @Autowired
-    public MemberController(MemberService memberService) {
-        this.memberService = memberService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/user/join")
@@ -27,22 +27,22 @@ public class MemberController {
     }
 
     @PostMapping("/user/join")
-    public String create(@ModelAttribute Member member) {
-        memberService.join(member);
+    public String create(@ModelAttribute User user) {
+        userService.join(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String memberList(Model model) {
-        List<Member> members = memberService.findMembers();
-        model.addAttribute("users", members);
+        List<User> users = userService.findMembers();
+        model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/users/{userIndex}")
     public String showProfile(@PathVariable int userIndex, Model model) {
-        Member member = memberService.findOne(userIndex);
-        model.addAttribute("users",member);
+        User user = userService.findOne(userIndex);
+        model.addAttribute("users", user);
         return "user/profile";
     }
 

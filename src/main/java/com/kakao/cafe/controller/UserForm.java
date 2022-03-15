@@ -2,7 +2,7 @@ package com.kakao.cafe.controller;
 
 import java.time.LocalDateTime;
 
-public class MemberForm {
+public class UserForm {
     private String name;
     private String email;
     private String password;

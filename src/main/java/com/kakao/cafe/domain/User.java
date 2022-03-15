@@ -2,7 +2,7 @@ package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
 
-public class Member {
+public class User {
     private int userIndex;
     private String name;
     private String email;
