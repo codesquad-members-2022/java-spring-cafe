@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -43,21 +42,23 @@ public class UserService {
     }
 
     public void update(UserUpdateRequestDto dto) {
-        User user = findByUserId(dto.getUserId());
-        if (!user.isMatchPassword(dto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        String requestUserId = dto.getUserId();
+        String requestPassword = dto.getPassword();
+
+        User user = findByUserId(requestUserId);
+        user.validateUserId(requestUserId);
+        user.validatePassword(requestPassword);
         User updateUser = user.update(dto.toEntity());
         userRepository.save(updateUser);
     }
 
     public User login(UserLoginRequestDto dto) {
         String userId = dto.getUserId();
-        Optional<User> user = userRepository.findByUserId(userId);
-        if (user.isEmpty()) {
-            return null;
-        }
-        User user1 = user.get();
-        return (user1.isMatchPassword(dto.getPassword())) ? user1 : null;
+        String password = dto.getPassword();
+
+        User user = findByUserId(userId);
+        user.validatePassword(password);
+
+        return user;
     }
 }
