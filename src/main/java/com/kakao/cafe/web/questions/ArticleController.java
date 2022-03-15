@@ -13,7 +13,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -58,45 +57,27 @@ public class ArticleController {
     }
 
     @PostMapping("/{index}/delete")
-    public String deleteArticle(@PathVariable Long index, HttpServletRequest request) throws AuthenticationException {
-        if (!isOwnArticle(index, request)) {
-            log.info("delete article error : 자신의 글만 삭제 가능");
-            throw new AuthenticationException("해당 글을 삭제할 권한이 없습니다.");
-        }
-
+    public String deleteArticle(@PathVariable Long index, HttpSession session) throws AuthenticationException {
         log.info("delete article id = {}", index);
-        articleService.deleteArticle(index);
+        User sessioned_user = (User) session.getAttribute("SESSIONED_USER");
+        articleService.deleteArticle(index, sessioned_user);
         return "redirect:/";
     }
 
     @GetMapping("/{index}/update")
-    public String getArticleUpdateForm(@PathVariable Long index, HttpServletRequest request, Model model) throws AuthenticationException {
-        if (!isOwnArticle(index, request)) {
-            log.info("update article error : 자신의 글만 수정 가능");
-            throw new AuthenticationException("해당 글을 수정할 권한이 없습니다.");
-        }
-
+    public String getArticleUpdateForm(@PathVariable Long index,
+                                       HttpSession session, Model model) throws AuthenticationException {
         log.info("get profile update form");
-        model.addAttribute("article", articleService.findArticleDtoById(index));
+        User sessioned_user = (User) session.getAttribute("SESSIONED_USER");
+        model.addAttribute("article", articleService.findArticleDtoById(index, sessioned_user));
         return "/qna/updateForm";
     }
 
     @PostMapping("/{index}/update")
-    public String saveArticleUpdateForm(@Validated @ModelAttribute("article") ArticleDto dto, @PathVariable Long index, HttpSession session) {
-        articleService.updateArticle(index, dto, session.getAttribute("SESSIONED_USER"));
+    public String saveArticleUpdateForm(@Validated @ModelAttribute("article") ArticleDto dto,
+                                        @PathVariable Long index, HttpSession session) {
+        articleService.updateArticle(dto, index, (User) session.getAttribute("SESSIONED_USER"));
         log.info("save form = {}", dto.getTitle());
         return "redirect:/questions/" + index;
-    }
-
-    private boolean isOwnArticle(Long index, HttpServletRequest request) {
-        Article findArticle = articleService.findArticleById(index);
-
-        HttpSession session = request.getSession(false);
-        User sessionUser = (User) session.getAttribute("SESSIONED_USER");
-
-        if (!sessionUser.isOwnArticle(findArticle)) {
-            return false;
-        }
-        return true;
     }
 }

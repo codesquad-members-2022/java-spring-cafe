@@ -12,7 +12,8 @@ import java.util.List;
 
 @Service
 public class ArticleService {
-    public static final String ARTICLE_NOT_FOUND_EXCEPTION = "해당 게시물을 찾을 수 없습니다.";
+    private static final String ARTICLE_NOT_FOUND_EXCEPTION = "해당 게시물을 찾을 수 없습니다.";
+    private static final String UN_AUTHORIZATION_EXCEPTION = "해당 글을 수정할 권한이 없습니다.";
     private final ArticleRepository repository;
 
     public ArticleService(ArticleRepository repository) {
@@ -38,25 +39,36 @@ public class ArticleService {
         return repository.findAll();
     }
 
-    public Long deleteArticle(Long articleId) {
-        return repository.delete(articleId);
-    }
-
-    public ArticleDto findArticleDtoById(Long index) {
-        Article findArticle = findArticleById(index);
-        return new ArticleDto(findArticle.getUserId(), findArticle.getTitle(), findArticle.getContents());
-    }
-
-    public void updateArticle(Long index, ArticleDto dto, Object sessionUser) {
-        User user = (User) sessionUser;
-        Article findArticle = findArticleById(index);
-
-        if (!user.isOwnArticle(findArticle)) {
-            throw new IllegalArgumentException("해당 글을 수정할 권한이 없습니다.");
+    public ArticleDto findArticleDtoById(Long articleId, User sessionUser) {
+        if (isUserHasAuthorization(articleId, sessionUser)) {
+            Article findArticle = findArticleById(articleId);
+            return new ArticleDto(findArticle.getUserId(), findArticle.getTitle(), findArticle.getContents());
         }
+        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+    }
 
-        Article updateArticleForm = new Article(user.getUserId(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
-        updateArticleForm.setId(index);
-        repository.update(index, updateArticleForm);
+    public Long deleteArticle(Long articleId, User sessionUser) {
+        if (isUserHasAuthorization(articleId, sessionUser)) {
+            return repository.delete(articleId);
+        }
+        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+    }
+
+    public void updateArticle(ArticleDto dto, Long articleId, User sessionUser) {
+        if (isUserHasAuthorization(articleId, sessionUser)) {
+            Article updateArticleForm = new Article(sessionUser.getUserId(), dto.getTitle(), dto.getContents(), LocalDateTime.now());
+            updateArticleForm.setId(articleId);
+            repository.update(articleId, updateArticleForm);
+        }
+        throw new IllegalArgumentException(UN_AUTHORIZATION_EXCEPTION);
+    }
+
+    private boolean isUserHasAuthorization(Long articleId, User sessionUser) {
+        Article findArticle = findArticleById(articleId);
+
+        if (!sessionUser.isOwnArticle(findArticle)) {
+            return false;
+        }
+        return true;
     }
 }

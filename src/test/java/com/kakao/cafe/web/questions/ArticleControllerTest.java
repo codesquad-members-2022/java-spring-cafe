@@ -113,7 +113,7 @@ class ArticleControllerTest {
         // given : testA 유저 준비
         mySession.setAttribute("SESSIONED_USER", new User("testA", "1234", "test1", "test11111@naver.com"));
         given(mockArticleService.findArticleById(any())).willReturn(article1);
-        given(mockArticleService.deleteArticle(any())).willReturn(1L);
+        given(mockArticleService.deleteArticle(any(), any())).willReturn(1L);
 
         // when : 삭제할 글도 testA 꺼
         ResultActions requestThenResult = mockMvc.perform(post("/questions/" + article1.getId() + "/delete")
@@ -132,7 +132,7 @@ class ArticleControllerTest {
         // given
         mySession.setAttribute("SESSIONED_USER", user); // 세션에 저장된 test1 유저
         given(mockArticleService.findArticleById(any())).willReturn(article1);
-        given(mockArticleService.deleteArticle(any())).willReturn(1L);
+        given(mockArticleService.deleteArticle(any(), any())).willReturn(1L);
 
         // when 아티클1 작성 유저는 testA
         ResultActions requestThenResult = mockMvc.perform(post("/questions/" + article1.getId() + "/delete")
@@ -142,6 +142,6 @@ class ArticleControllerTest {
 
         // then
         requestThenResult.andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/questions/" + article1.getId()));
+                .andExpect(redirectedUrl("/"));
     }
 }
