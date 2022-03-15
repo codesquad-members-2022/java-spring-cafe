@@ -7,8 +7,8 @@ INSERT_ARTICLE: >
 SELECT_ARTICLES: >
   SELECT article.*, COUNT(reply.reply_id)  AS count FROM article
   LEFT JOIN reply
-    ON article.article_id = reply.article_id
-    AND (reply.deleted = FALSE OR reply.deleted IS NULL)
+    ON article.article_id = reply.article_id 
+    AND reply.deleted = FALSE
   WHERE article.deleted = FALSE
   GROUP BY article.article_id
 
