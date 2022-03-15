@@ -1,5 +1,7 @@
 package com.kakao.cafe.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,9 +25,13 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, HttpSession session) {
         logger.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
+        Object value = session.getAttribute("sessionUser");
+        if (value != null) {
+            return "login_index";
+        }
         return "index";
     }
 
