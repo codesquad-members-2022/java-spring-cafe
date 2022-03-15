@@ -1,6 +1,5 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import org.springframework.http.HttpStatus;
 
@@ -9,12 +8,12 @@ import static com.kakao.cafe.message.UserDomainMessage.UNMATCHED_PASSWORD_MESSAG
 public class ModifiedUserParam {
 
     private int id;
-    private final String userId;
-    private final String password;
-    private final String nowPassword;
-    private final String newPassword;
-    private final String name;
-    private final String email;
+    private String userId;
+    private String password;
+    private String nowPassword;
+    private String newPassword;
+    private String name;
+    private String email;
 
     public ModifiedUserParam(int id, String userId, String password, String nowPassword,
                              String newPassword, String name, String email) {
@@ -66,8 +65,8 @@ public class ModifiedUserParam {
         }
     }
 
-    public User convertToUser() {
-        return new User(id, userId, newPassword, name, email);
+    public void switchPassword() {
+        password = newPassword;
     }
 
     @Override

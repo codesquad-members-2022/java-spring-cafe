@@ -22,10 +22,10 @@ class VolatilityUserRepositoryTest {
     @DisplayName("전체 사용자 목록을 반환한다.")
     void findAll() {
         //given
-        User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
+        User user1 = new User(1, "user1", "1234", "name1", "user1@gmail.com");
         repository.save(user1);
 
-        User user2 = new User(-1, "user2", "1234", "name2", "user2@gmail.com");
+        User user2 = new User(2, "user2", "1234", "name2", "user2@gmail.com");
         repository.save(user2);
 
         //when
@@ -39,7 +39,7 @@ class VolatilityUserRepositoryTest {
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
     void persist() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
         //when
         repository.save(user);
@@ -53,7 +53,7 @@ class VolatilityUserRepositoryTest {
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
     void merge() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
         //when

@@ -22,6 +22,7 @@ import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -44,7 +45,7 @@ public class ArticleControllerTest {
     MockMvc mvc;
 
     @Autowired
-    DomainRepository<Article, Long> repository;
+    DomainRepository<Article, Integer> repository;
 
     static List<Article> articles = new Vector<>();
 

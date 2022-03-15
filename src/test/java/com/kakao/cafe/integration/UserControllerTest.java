@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.util.Mapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -45,6 +46,8 @@ class UserControllerTest {
 
     @Autowired
     DomainRepository<User, String> repository;
+
+    Mapper<User> userMapper = new Mapper<>();
 
     static List<User> users = new Vector<>();;
 
@@ -123,7 +126,7 @@ class UserControllerTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
@@ -139,7 +142,7 @@ class UserControllerTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(

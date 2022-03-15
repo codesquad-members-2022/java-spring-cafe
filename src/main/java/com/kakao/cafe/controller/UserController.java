@@ -84,11 +84,13 @@ public class UserController {
 
     @PutMapping("/{userId}/update")
     public String modifyProfile(ModifiedUserParam modifiedUserParam,
-                                HttpServletRequest request) {
+                                HttpServletRequest request,
+                                HttpSession session) {
 
         logRequestInfo(request);
 
-        userService.update(modifiedUserParam);
+        User updateUser = userService.update(modifiedUserParam);
+        session.setAttribute("userInfo", updateUser);
         return "redirect:/users";
     }
 

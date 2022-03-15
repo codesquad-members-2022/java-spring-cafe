@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class User {
@@ -10,7 +12,10 @@ public class User {
     private final String name;
     private final String email;
 
-    public User(int id, String userId, String password, String name, String email) {
+    public User(@JsonProperty("id") int id, @JsonProperty("userId") String userId,
+                @JsonProperty("password") String password, @JsonProperty("name") String name,
+                @JsonProperty("email") String email) {
+        
         this.id = id;
         this.userId = userId;
         this.password = password;

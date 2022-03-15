@@ -54,7 +54,7 @@ class VolatilityArticleRepositoryTest {
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
     void findOne() {
         //given
-        Article article = new Article(1, "wrtier", "title", "contents", LocalDate.now());
+        Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
         repository.save(article);
 
         //when

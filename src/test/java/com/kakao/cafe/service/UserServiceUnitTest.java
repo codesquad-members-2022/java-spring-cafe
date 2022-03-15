@@ -7,6 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.util.Mapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,8 @@ class UserServiceUnitTest {
     @Mock
     DomainRepository<User, String> repository;
 
+    Mapper<User> userMapper = new Mapper<>();
+
     @Test
     @DisplayName("사용자 목록을 반환한다.")
     void searchAll() {
@@ -56,7 +59,7 @@ class UserServiceUnitTest {
         // given
         NewUserParam newUserParam
                 = new NewUserParam("user", "1234", "name", "user@gmail.com");
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         given(repository.findOne(user.getUserId()))
                 .willReturn(Optional.empty());
         given(repository.save(user))
@@ -77,7 +80,7 @@ class UserServiceUnitTest {
         NewUserParam newUserParam
                 = new NewUserParam("user", "1234", "name", "user@gmail.com");
         given(repository.findOne(any(String.class)))
-                .willReturn(Optional.ofNullable(newUserParam.convertToUser()));
+                .willReturn(Optional.ofNullable(userMapper.convertToDomain(newUserParam, User.class)));
 
         assertThatThrownBy(() -> userService.add(newUserParam))
                 .isInstanceOf(DuplicateUserException.class)
@@ -93,7 +96,7 @@ class UserServiceUnitTest {
                 new ModifiedUserParam(1, "userId", "1234", "1234",
                         "4321", "name", "user@gmail.com");
 
-        User user = modifiedUserParam.convertToUser();
+        User user = userMapper.convertToDomain(modifiedUserParam, User.class);;
         given(repository.save(user)).willReturn(Optional.ofNullable(user));
 
         assertThat(userService.update(modifiedUserParam)).usingRecursiveComparison().isEqualTo(user);

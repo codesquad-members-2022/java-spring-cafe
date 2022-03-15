@@ -1,5 +1,7 @@
 package com.kakao.cafe.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -11,7 +13,10 @@ public class Article {
     private final String contents;
     private final LocalDate createDate;
 
-    public Article(int id, String writer, String title, String contents, LocalDate createDate) {
+    public Article(@JsonProperty("id") int id, @JsonProperty("writer") String writer,
+                   @JsonProperty("title") String title, @JsonProperty("contents") String contents,
+                   @JsonProperty("createDate") LocalDate createDate) {
+
         this.id = id;
         this.writer = writer;
         this.title = title;
@@ -63,6 +68,7 @@ public class Article {
                 ", writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 }

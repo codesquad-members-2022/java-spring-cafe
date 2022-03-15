@@ -7,6 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.util.Mapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import static com.kakao.cafe.message.UserDomainMessage.*;
 public class UserService {
 
     private final DomainRepository<User, String> userRepository;
+    private final Mapper<User> userMapper = new Mapper<>();
 
     public UserService(DomainRepository<User, String> userRepository) {
         this.userRepository = userRepository;
@@ -28,10 +30,10 @@ public class UserService {
     }
 
     public User add(NewUserParam newUserParam) {
-        User user = newUserParam.convertToUser();
-        validateDuplicateUser(user);
+        User newUser = userMapper.convertToDomain(newUserParam, User.class);
+        validateDuplicateUser(newUser);
 
-        return userRepository.save(user)
+        return userRepository.save(newUser)
                 .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, ADD_FAIL_MESSAGE));
     }
 
@@ -44,7 +46,10 @@ public class UserService {
 
     public User update(ModifiedUserParam modifiedUserParam) {
         modifiedUserParam.isValidRequest();
-        return userRepository.save(modifiedUserParam.convertToUser())
+        modifiedUserParam.switchPassword();
+
+        User modifiedUser = userMapper.convertToDomain(modifiedUserParam, User.class);
+        return userRepository.save(modifiedUser)
                 .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
     }
 

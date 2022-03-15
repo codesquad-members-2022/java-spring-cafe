@@ -1,13 +1,11 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.User;
-
 public class NewUserParam {
 
-    private final String userId;
-    private final String password;
-    private final String name;
-    private final String email;
+    private String userId;
+    private String password;
+    private String name;
+    private String email;
 
     public NewUserParam(String userId, String password, String name, String email) {
         this.userId = userId;
@@ -30,10 +28,6 @@ public class NewUserParam {
 
     public String getEmail() {
         return email;
-    }
-
-    public User convertToUser() {
-        return new User(0, userId, password, name, email);
     }
 
     @Override

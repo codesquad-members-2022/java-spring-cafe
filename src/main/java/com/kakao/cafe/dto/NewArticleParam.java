@@ -1,19 +1,19 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.Article;
-
 import java.time.LocalDate;
 
 public class NewArticleParam {
 
-    private final String writer;
-    private final String title;
-    private final String contents;
+    private String writer;
+    private String title;
+    private String contents;
+    private LocalDate createDate;
 
     public NewArticleParam(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createDate = LocalDate.now();
     }
 
     public String getWriter() {
@@ -28,8 +28,8 @@ public class NewArticleParam {
         return contents;
     }
 
-    public Article convertToArticle() {
-        return new Article(0, writer, title, contents, LocalDate.now());
+    public LocalDate getCreateDate() {
+        return createDate;
     }
 
     @Override
@@ -38,6 +38,7 @@ public class NewArticleParam {
                 "writer='" + writer + '\'' +
                 ", title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 }

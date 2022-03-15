@@ -1,11 +1,10 @@
 package com.kakao.cafe.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.util.Mapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,16 +18,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.kakao.cafe.message.ArticleDomainMessage.*;
+import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
@@ -48,6 +45,8 @@ public class ArticleControllerUnitTest {
 
     List<Article> articles;
 
+    Mapper<Article> articleMapper = new Mapper<>();
+
     @BeforeEach
     void setUp() {
         articles = List.of(
@@ -61,7 +60,7 @@ public class ArticleControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForWriteArticle")
     void writeArticle(NewArticleParam newArticleParam) throws Exception {
-        Article article = newArticleParam.convertToArticle();
+        Article article = articleMapper.convertToDomain(newArticleParam, Article.class);
         given(service.add(newArticleParam)).willReturn(article);
 
         mvc.perform(post("/articles/write").params(convertToMultiValueMap(newArticleParam)))
@@ -70,7 +69,7 @@ public class ArticleControllerUnitTest {
                         redirectedUrl("/")
                 );
 
-        verify(service, only()).add(ArgumentMatchers.refEq(newArticleParam));
+        verify(service).add(ArgumentMatchers.refEq(newArticleParam));
     }
 
     static Stream<Arguments> paramsForWriteArticle() {
@@ -114,13 +113,5 @@ public class ArticleControllerUnitTest {
                 );
 
         verify(service).search(id);
-    }
-
-    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.setAll(map);
-
-        return params;
     }
 }

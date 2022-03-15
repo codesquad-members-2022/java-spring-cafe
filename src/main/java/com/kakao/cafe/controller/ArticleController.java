@@ -31,8 +31,6 @@ public class ArticleController {
     public String writeArticle(NewArticleParam newArticleParam,
                                HttpServletRequest request) {
 
-        System.out.println("hello");
-
         logRequestInfo(request);
 
         articleService.add(newArticleParam);

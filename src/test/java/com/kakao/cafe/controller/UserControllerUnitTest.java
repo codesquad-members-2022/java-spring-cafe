@@ -1,7 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
@@ -9,6 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.Mapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,16 +21,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
 import static com.kakao.cafe.message.UserDomainMessage.*;
+import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,6 +48,8 @@ public class UserControllerUnitTest {
 
     static List<User> users = new Vector<>();
 
+    Mapper<User> userMapper = new Mapper<>();
+
     @BeforeAll
     static void init() {
         for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
@@ -63,7 +62,7 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void signUpSuccess(NewUserParam newUserParam) throws Exception {
-        given(service.add(newUserParam)).willReturn(newUserParam.convertToUser());
+        given(service.add(newUserParam)).willReturn(userMapper.convertToDomain(newUserParam, User.class));
 
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
@@ -128,7 +127,7 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         given(service.search(userId)).willReturn(user);
 
@@ -148,7 +147,7 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
 
         given(service.search(userId)).willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
@@ -165,7 +164,8 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4modifiedProfileSuccess")
     void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
-        User user = modifiedUserParam.convertToUser();
+        modifiedUserParam.switchPassword();
+        User user = userMapper.convertToDomain(modifiedUserParam, User.class);
         String userId = user.getUserId();
 
         given(service.update(modifiedUserParam)).willReturn(user);
@@ -195,7 +195,9 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("params4modifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
-        User user = modifiedUserParam.convertToUser();
+        modifiedUserParam.switchPassword();
+        User user = userMapper.convertToDomain(modifiedUserParam, User.class);
+
         String userId = user.getUserId();
 
         given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
@@ -219,13 +221,5 @@ public class UserControllerUnitTest {
                 Arguments.of(new ModifiedUserParam(4, "user4", "1234", "4321",
                         "4321", "name4", "user4@gmail.com"))
         );
-    }
-
-    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.setAll(map);
-
-        return params;
     }
 }

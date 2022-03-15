@@ -1,13 +1,10 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.LoginParam;
 import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

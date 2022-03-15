@@ -1,7 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
 import com.kakao.cafe.service.LoginService;
@@ -15,12 +13,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
+import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -76,13 +72,5 @@ public class LoginControllerUnitTest {
                 );
 
         verify(service).checkInfo(ArgumentMatchers.refEq(loginParam));
-    }
-
-    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.setAll(map);
-
-        return params;
     }
 }
