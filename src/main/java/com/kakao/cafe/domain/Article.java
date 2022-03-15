@@ -12,10 +12,10 @@ public class Article {
     private String contents;
     private LocalDateTime writtenTime;
 
-    public Article(ArticleForm form) {
-        this.title = form.getTitle();
-        this.contents = form.getContents();
-        this.author = form.getAuthor();
+    public Article(String title, String contents, String author) {
+        this.title = title;
+        this.contents = contents;
+        this.author = author;
     }
 
     public String getTitle() {

@@ -29,7 +29,7 @@ public class ArticleController {
 
     @PostMapping
     public String create(ArticleForm form) {
-        Article article = new Article(form);
+        Article article = new Article(form.getTitle(), form.getContents(), form.getAuthor());
         articleService.create(article);
         return "redirect:/";
     }
