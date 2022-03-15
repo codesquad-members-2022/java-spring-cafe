@@ -58,13 +58,6 @@ public class User {
         this.email = email;
     }
 
-    public void updateProfile(UserDto updateUserData) {
-        this.userId = updateUserData.getUserId();
-        this.password = updateUserData.getPassword();
-        this.name = updateUserData.getName();
-        this.email = updateUserData.getEmail();
-    }
-
     public boolean hasId() {
         return id > 0;
     }
