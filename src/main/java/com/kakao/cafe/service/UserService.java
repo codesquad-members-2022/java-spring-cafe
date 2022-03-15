@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,7 +23,9 @@ public class UserService {
     }
 
     public List<User> findUsers() {
-        return userRepository.findAll();
+        List<User> users = userRepository.findAll();
+        users.sort(Comparator.comparingInt(u -> u.getId().intValue()));
+        return users;
     }
 
     public User findOne(String userId) {

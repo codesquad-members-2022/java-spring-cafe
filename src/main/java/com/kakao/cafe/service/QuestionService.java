@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Question;
 import com.kakao.cafe.repository.QuestionRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,7 +23,9 @@ public class QuestionService {
     }
 
     public List<Question> findQuestions() {
-        return questionRepository.findAll();
+        List<Question> questions = questionRepository.findAll();
+        questions.sort(Comparator.comparingInt(q -> q.getId().intValue()));
+        return questions;
     }
 
     public Question findOne(Long id) {
