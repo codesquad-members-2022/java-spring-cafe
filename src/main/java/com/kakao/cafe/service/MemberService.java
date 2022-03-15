@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -28,8 +27,9 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    //회원 id에 해당하는 회원 name을 찾기
-    public Optional<Member> findOne(int memberId) {
-        return memberRepository.findByIndex(memberId);
+    //회원 index에 해당하는 회원 name을 찾기
+    public Member findOne(int memberId) {
+        return memberRepository.findByIndex(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회원은 존재하지 않는 회원입니다."));
     }
 }

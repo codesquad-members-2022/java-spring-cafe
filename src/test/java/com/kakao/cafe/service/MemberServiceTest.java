@@ -35,7 +35,7 @@ class MemberServiceTest {
         int saveIndex = memberService.join(member);
 
         //when
-        Member findMember = memberService.findOne(saveIndex).get();
+        Member findMember = memberService.findOne(saveIndex);
 
         //then
         assertThat(member.getName()).isEqualTo(findMember.getName());

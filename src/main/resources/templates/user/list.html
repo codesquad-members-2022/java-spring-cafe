@@ -53,7 +53,7 @@
                     <tbody>
                     <tr th:each="user : ${users}">
                         <td th:text="${user.userIndex}"></td>
-                        <td><a th:href="@{users/{name}(name=${user.name})}" class="btn btn-success" role="button" th:text="${user.name}"></a></td>
+                        <td><a th:href="@{users/{userIndex}(userIndex=${user.userIndex})}" class="btn btn-success" role="button" th:text="${user.name}"></a></td>
                         <td th:text="${user.joinTime}"></td>
                     </tr>
                     </tbody>
