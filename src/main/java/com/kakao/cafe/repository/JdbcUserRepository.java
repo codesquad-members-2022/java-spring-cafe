@@ -42,23 +42,21 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     @Override
     public Optional<User> save(User user) {
-        Optional<User> other = findOne(user.getUserId());
-        if (other.isPresent()) {
-            return merge(user);
-        }
-        return persist(user);
+        findOne(user.getUserId()).ifPresentOrElse(
+                (other) -> merge(user),
+                () -> persist(user)
+        );
+        return Optional.ofNullable(user);
     }
 
-    private Optional<User> persist(User user) {
+    private void persist(User user) {
         SqlParameterSource params = new BeanPropertySqlParameterSource(user);
         user.setId(insertJdbc.executeAndReturnKey(params).intValue());
-        return Optional.ofNullable(user);
     }
 
-    private Optional<User> merge(User user) {
+    private void merge(User user) {
         SqlParameterSource params = new BeanPropertySqlParameterSource(user);
         jdbc.update("update member set password = :password, name = :name, email = :email where user_id = :userId", params);
-        return Optional.ofNullable(user);
     }
 
     @Override
