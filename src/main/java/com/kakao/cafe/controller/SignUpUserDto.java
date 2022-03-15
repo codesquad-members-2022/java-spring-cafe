@@ -1,26 +1,19 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.controller;
 
-public class User {
+import com.kakao.cafe.domain.User;
 
-    private int id;
+public class SignUpUserDto {
+
     private String userId;
     private String password;
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
+    public SignUpUserDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUserId() {
@@ -39,7 +32,8 @@ public class User {
         return email;
     }
 
-    public boolean hasId() {
-        return id > 0;
+    public User toEntity() {
+        return new User(userId, password, name, email);
     }
+
 }

@@ -1,7 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import java.util.List;
@@ -30,9 +28,8 @@ public class UserController {
     }
 
     @PostMapping
-    public String create(UserDto requestDto) {
+    public String create(SignUpUserDto requestDto) {
         userService.signUp(requestDto);
-
         return "redirect:/users";
     }
 
@@ -59,14 +56,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/update")
-    public String update(UserDto requestDto, Model model) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            logger.info("PutMapping - id: {}", requestDto.getId());
-            logger.info("PutMapping - update user data: {}", objectMapper.writeValueAsString(requestDto));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+    public String update(UpdateUserDto requestDto, Model model) {
         userService.update(requestDto);
         return "redirect:/users";
     }
