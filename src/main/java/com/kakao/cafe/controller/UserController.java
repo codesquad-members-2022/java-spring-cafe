@@ -43,6 +43,21 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable("userId") String userId, Model model){
+        User user = userService.findSingleUser(userId);
+        model.addAttribute("user", user);
+
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}/update")
+    public String update(@PathVariable("userId") String userId, UserDto userDto) {
+        userService.updateUser(userId, userDto);
+        return "redirect:/users";
+    }
+
+
     @ExceptionHandler(IllegalStateException.class)
     public String createFailed(IllegalStateException e, Model model) {
         model.addAttribute("error", e.getMessage());

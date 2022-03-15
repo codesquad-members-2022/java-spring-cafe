@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -43,5 +44,13 @@ public class UserService {
         if (repository.findByUserId(user.getUserId()).isPresent()) {
             throw new IllegalStateException("사용자 ID가 중복됩니다.");
         }
+    }
+
+    public void updateUser(String userId, UserDto userDto) {
+        User user = findSingleUser(userId);
+
+        user.setPassword(userDto.getPassword());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
     }
 }
