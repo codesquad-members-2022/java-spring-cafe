@@ -21,6 +21,12 @@ public class Article {
         this.createdDate = createdDate;
     }
 
+    public Article update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+        return this;
+    }
+
     public boolean isTheSameId(Long id) {
         return this.id.equals(id);
     }
