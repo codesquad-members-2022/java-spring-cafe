@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.stereotype.Repository;
-
 import com.kakao.cafe.domain.Article;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
     private final List<Article> articles = new CopyOnWriteArrayList<>();
     private final AtomicInteger sequence = new AtomicInteger();
@@ -27,8 +24,8 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findById(int index) {
-        return Optional.ofNullable(articles.get(index - 1));
+    public Optional<Article> findById(int id) {
+        return Optional.ofNullable(articles.get(id - 1));
     }
 
     @Override
