@@ -1,11 +1,12 @@
-지<!DOCTYPE html>
-<html lang="kr">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/css/reset.css" rel="stylesheet">
+    <link th:href="@{/css/articles/articleForm.css}"
+            href="/css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -33,7 +34,7 @@
         <header class="post-header">
             <p class="title">글쓰기</p>
         </header>
-        <form class="submit-write" method="post" action="/articles/new">
+        <form class="submit-write" method="post" action="/articles/new" th:action="" >
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
