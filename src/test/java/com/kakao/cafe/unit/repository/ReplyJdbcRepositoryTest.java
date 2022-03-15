@@ -20,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -110,7 +111,7 @@ public class ReplyJdbcRepositoryTest {
     @DisplayName("댓글 id 가 포함된 댓글 객체를 업데이트한다")
     public void saveMergeTest() {
         // given
-        given(jdbcTemplate.update(any(String.class), any(MapSqlParameterSource.class)))
+        given(jdbcTemplate.update(any(String.class), any(BeanPropertySqlParameterSource.class)))
             .willReturn(1);
 
         // when
@@ -118,6 +119,17 @@ public class ReplyJdbcRepositoryTest {
 
         // then
         then(savedReply).isEqualTo(reply);
+    }
+
+    @Test
+    @DisplayName("댓글 id 로 댓글 객체를 삭제한다")
+    public void deleteReplyTest() {
+        // given
+        given(jdbcTemplate.update(any(String.class), any(MapSqlParameterSource.class)))
+            .willReturn(1);
+
+        // when
+        replyRepository.deleteById(reply.getReplyId());
     }
 
 }

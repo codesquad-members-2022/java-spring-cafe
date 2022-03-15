@@ -116,4 +116,50 @@ public class ReplyServiceTest {
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INVALID_REPLY_WRITER.getMessage());
     }
+
+    @Test
+    @DisplayName("댓글을 저장소에서 삭제한다")
+    public void deleteReplyTest() {
+        // given
+        given(replyRepository.findById(any()))
+            .willReturn(Optional.of(reply));
+
+        // when
+        replyService.deleteReply(sessionUser, 1);
+    }
+
+    @Test
+    @DisplayName("댓글을 삭제할 때 존재하지 않는 댓글 id 를 입력하면 예외를 반환한다")
+    public void deleteReplyNotFoundTest() {
+        // given
+        given(replyRepository.findById(any()))
+            .willThrow(new NotFoundException(ErrorCode.REPLY_NOT_FOUND));
+
+        // when
+        Throwable throwable = catchThrowable(() -> replyService.deleteReply(sessionUser, 1));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.REPLY_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("댓글을 업데이트할 때 세션 유저와 댓글을 작성한 유저가 일치하지 않을 경우 예외를 반환한다")
+    public void deleteReplyValidateTest() {
+        // given
+        SessionUser sessionOther = new SessionUser(1, "otherId", "otherPassword", "otherName",
+            "other@example.com");
+
+        given(replyRepository.findById(any()))
+            .willReturn(Optional.of(reply));
+
+        // when
+        Throwable throwable = catchThrowable(() -> replyService.deleteReply(sessionOther, 1));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_REPLY_WRITER.getMessage());
+    }
 }

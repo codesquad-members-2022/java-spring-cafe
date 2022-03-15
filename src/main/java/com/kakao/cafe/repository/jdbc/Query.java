@@ -22,4 +22,5 @@ public enum Query {
     SELECT_REPLY,
     SELECT_REPLIES,
     UPDATE_REPLY,
+    DELETE_REPLY,
 }

@@ -124,4 +124,18 @@ public class ReplyJdbcRepositoryTest {
                 then(reply.getComment()).isEqualTo("otherComment");
             });
     }
+
+    @Test
+    @DisplayName("댓글 id 로 댓글 객체를 삭제한다")
+    public void deleteReplyTest() {
+        // given
+        Reply savedReply = replyRepository.save(reply);
+
+        // when
+        replyRepository.deleteById(savedReply.getReplyId());
+        Optional<Reply> findReply = replyRepository.findById(savedReply.getReplyId());
+
+        // then
+        then(findReply).isEqualTo(Optional.empty());
+    }
 }

@@ -31,17 +31,30 @@ public class ReplyService {
 
     public ReplyResponse updateReply(SessionUser user, Integer replyId, String comment) {
         // Reply 도메인 객체를 저장소로부터 반환
-        Reply reply = replyRepository.findById(replyId)
-            .orElseThrow(() -> new NotFoundException(ErrorCode.REPLY_NOT_FOUND));
-
-        // 유저가 작성한 댓글인지 검증
-        user.checkUserId(reply.getUserId());
+        Reply reply = findUserReply(user, replyId);
 
         // Reply 도메인 객체를 업데이트한 후 저장소에 저장
         Reply savedReply = replyRepository.save(reply.update(comment));
 
         // Reply 도메인 객체를 ReplyResponse 도메인 객체로 변환
         return Mapper.map(savedReply, ReplyResponse.class);
+    }
+
+    public void deleteReply(SessionUser user, Integer replyId) {
+        findUserReply(user, replyId);
+
+        replyRepository.deleteById(replyId);
+    }
+
+    private Reply findUserReply(SessionUser user, Integer replyId) {
+        // Reply 도메인 객체를 저장소로부터 반환
+        Reply reply = replyRepository.findById(replyId)
+            .orElseThrow(() -> new NotFoundException(ErrorCode.REPLY_NOT_FOUND));
+
+        // 유저가 작성한 댓글인지 검증
+        user.checkUserId(reply.getUserId());
+
+        return reply;
     }
 
 }

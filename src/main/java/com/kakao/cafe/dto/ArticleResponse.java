@@ -72,6 +72,10 @@ public class ArticleResponse {
         return contents;
     }
 
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -98,6 +102,7 @@ public class ArticleResponse {
             ", contents='" + contents + '\'' +
             ", createdDate=" + createdDate +
             ", replies=" + replies +
+            ", replyCount=" + replyCount +
             '}';
     }
 }
