@@ -1,10 +1,12 @@
 package com.kakao.cafe.web.service.article;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.core.repository.article.ArticleRepository;
+import com.kakao.cafe.core.repository.ArticleRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
@@ -17,7 +19,7 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
-    public Article findById(int id) {
+    public Article findById(Integer id) {
         return articleRepository.findById(id).orElseThrow();
     }
 
