@@ -10,5 +10,7 @@ public interface UserRepository {
     Optional<User> findById(String id);
     Optional<User> findByName(String name);
     List<User> findAll();
+    User update(User savedUser, User newUser);
+    void delete(User user);
     void deleteAll();
 }
