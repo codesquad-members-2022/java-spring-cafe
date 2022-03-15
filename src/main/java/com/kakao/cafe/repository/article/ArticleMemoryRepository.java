@@ -11,13 +11,12 @@ import java.util.Optional;
 @Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
-    private List<Article> store = new ArrayList<>();
+    private static List<Article> store = new ArrayList<>();
 
     @Override
     public Article save(Article article) {
         article.setId(store.size() + 1L);
         store.add(article);
-
         return article;
     }
 
@@ -29,5 +28,10 @@ public class ArticleMemoryRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return Collections.unmodifiableList(store);
+    }
+
+    @Override
+    public void clear() {
+        store.clear();
     }
 }
