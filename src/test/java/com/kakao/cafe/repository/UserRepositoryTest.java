@@ -1,4 +1,4 @@
-package com.kakao.cafe.Service;
+package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -11,30 +11,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.MockRepository;
 
-class UserServiceTest {
-
+class UserRepositoryTest {
 	MockRepository userRepository;
-	UserService userService;
 
 	@BeforeEach
 	void beforeEach() {
 		userRepository = new MockRepository();
-		userService = new UserService(userRepository);
 	}
 
 	@AfterEach
 	void clearRepository() {
 		userRepository.clearList();
 	}
+
 	@Test
 	@DisplayName("회원가입한 User의 id를 반환한다.")
-	void test() {
+	void create() {
 		// given
 		User user = new User("phil", "1234", "phil", "phil@codesquad.com");
 		// when
-		String id = userService.join(user);
+		String id = userRepository.save(user);
 		// then
 		assertThat(id).isEqualTo("phil");
 	}
@@ -44,13 +41,13 @@ class UserServiceTest {
 	void findUsers() {
 		// given
 		User user1 = new User("phil", "1234", "phil", "phil@codesquad.com");
-		userService.join(user1);
+		userRepository.save(user1);
 		User user2 = new User("honux", "1234", "honux", "honux@codesquad.com");
-		userService.join(user2);
+		userRepository.save(user2);
 		User user3 = new User("crong", "1234", "crong", "crong@codesquad.com");
-		userService.join(user3);
+		userRepository.save(user3);
 		// when
-		List<User> result = userService.findUsers();
+		List<User> result = userRepository.findAll();
 		// then
 		assertThat(result.size()).isEqualTo(3);
 	}
@@ -60,13 +57,13 @@ class UserServiceTest {
 	void findByUserId() {
 		// given
 		User user1 = new User("phil", "1234", "phil", "phil@codesquad.com");
-		userService.join(user1);
+		userRepository.save(user1);
 		User user2 = new User("honux", "1234", "honux", "honux@codesquad.com");
-		userService.join(user2);
+		userRepository.save(user2);
 		User user3 = new User("crong", "1234", "crong", "crong@codesquad.com");
-		userService.join(user3);
+		userRepository.save(user3);
 		// when
-		User result = userService.findOne("honux").get();
+		User result = userRepository.findByUserId("honux").get();
 		// then
 		assertThat(result).isEqualTo(user2);
 	}
@@ -76,11 +73,11 @@ class UserServiceTest {
 	void duplicateJoin() {
 		// given
 		User user1 = new User("phil", "1234", "phil", "phil@codesquad.com");
-		userService.join(user1);
+		userRepository.save(user1);
 		User user2 = new User("phil", "1234", "phil2", "phil2@codesquad.com");
 		// then
-		Assertions.assertThrows(IllegalStateException.class, () -> userService.join(user2));
+		Assertions.assertThrows(IllegalStateException.class, () -> userRepository.save(user2));
 	}
-
 }
+
 
