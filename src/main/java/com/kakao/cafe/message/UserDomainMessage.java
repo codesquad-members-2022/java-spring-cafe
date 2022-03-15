@@ -7,4 +7,5 @@ public class UserDomainMessage {
     public static final String UNMATCHED_PASSWORD_MESSAGE = "비밀번호가 일치하지 않습니다.";
     public static final String ADD_FAIL_MESSAGE = "회원가입에 실패했습니다.";
     public static final String UPDATE_FAIL_MESSAGE = "회원정보 수정에 실패했습니다.";
+    public static final String UPDATE_ACCESS_RESTRICTION_MESSAGE = "본인 정보만 수정할 수 있습니다.";
 }

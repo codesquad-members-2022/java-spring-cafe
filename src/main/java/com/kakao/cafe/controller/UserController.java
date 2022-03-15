@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
+import static com.kakao.cafe.message.UserDomainMessage.UPDATE_ACCESS_RESTRICTION_MESSAGE;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -54,7 +56,7 @@ public class UserController {
 
         if (!user.ownerOf(userId)) {
             mav.setViewName("error/4xx");
-            mav.addObject("message", "본인 정보만 수정할 수 있습니다.");
+            mav.addObject("message", UPDATE_ACCESS_RESTRICTION_MESSAGE);
         }
 
         return mav;
