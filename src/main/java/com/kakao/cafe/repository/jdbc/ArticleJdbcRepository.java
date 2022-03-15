@@ -102,8 +102,6 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public void deleteAll() {
-        String sql = queryProps.get(Query.DELETE_ARTICLES);
-        jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 
     @Override
