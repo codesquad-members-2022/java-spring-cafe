@@ -2,6 +2,9 @@ package com.kakao.cafe.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -76,8 +79,17 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public String login(String userId, String password, HttpSession session) {
+    public String login(String userId, String password, HttpSession session, HttpServletResponse response) {
         logger.info("POST /user/login");
-        return null;
+        User user = userService.findUserByUserId(userId);
+        if (user.isYourPassword(password)) {
+            String sessionUser = userId + password;
+            Cookie cookie = new Cookie("sessionUser", sessionUser);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            session.setAttribute(sessionUser, user);
+            return "redirect:/";
+        }
+        return "login/login_failed";
     }
 }
