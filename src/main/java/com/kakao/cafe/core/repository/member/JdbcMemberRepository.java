@@ -8,6 +8,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public Member save(Member member) {
-        if (member.getId() != null) {
+        if (!member.getId().equals(Integer.MAX_VALUE)) {
             update(member);
             return member;
         }
@@ -65,7 +66,12 @@ public class JdbcMemberRepository implements MemberRepository {
 
     @Override
     public List<Member> findAll() {
-        return null;
+        String query = "SELECT * FROM members";
+        List<Member> result = jdbcTemplate.query(query, mapper);
+        if (result.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return result;
     }
 
     private static RowMapper<Member> mapper = (rs, rowNum) -> new Member.Builder()

@@ -25,11 +25,7 @@ public class JoinRequest {
         return nickName;
     }
 
-    public void enrollEmail(String email) {
-        this.email = email;
-    }
-
     public Member toEntity() {
-        return new Member(null, this.getEmail(), this.getPassword(), this.getNickName());
+        return new Member(Integer.MIN_VALUE, this.getEmail(), this.getPassword(), this.getNickName());
     }
 }

@@ -32,6 +32,13 @@ public class Member {
         this.createAt = createAt;
     }
 
+    public Member(Integer id, String email, String nickName, LocalDateTime createAt) {
+        this.id = id;
+        this.email = email;
+        this.nickName = nickName;
+        this.createAt = createAt;
+    }
+
     private LocalDateTime getSignUpDate() {
         return LocalDateTime.now();
     }
@@ -100,7 +107,7 @@ public class Member {
         }
 
         public Member build() {
-            return new Member(id);
+            return new Member(id, email, nickName, createAt);
         }
     }
 

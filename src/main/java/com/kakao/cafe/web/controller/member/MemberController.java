@@ -42,6 +42,11 @@ public class MemberController {
         return "user/profile";
     }
 
+    @GetMapping("login")
+    public String login() {
+        return "user/login";
+    }
+
     @PutMapping("{id}")
     public String editProfile(ProfileChangeRequest request) {
         memberService.editProfile(request);
