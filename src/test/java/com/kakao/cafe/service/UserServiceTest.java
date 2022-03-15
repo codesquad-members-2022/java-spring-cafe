@@ -1,9 +1,10 @@
-package com.kakao.cafe.service.user;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.repository.user.UserMemoryRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

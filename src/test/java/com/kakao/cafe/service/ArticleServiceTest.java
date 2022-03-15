@@ -1,9 +1,10 @@
-package com.kakao.cafe.service.article;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleDto;
 import com.kakao.cafe.repository.article.ArticleMemoryRepository;
 import com.kakao.cafe.repository.article.ArticleRepository;
+import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
