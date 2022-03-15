@@ -29,14 +29,14 @@ public class UserController {
     public String create(@ModelAttribute UserRegisterFormDto userRegisterFormDto) {
         log.info("sign up : {}", userRegisterFormDto);
         userService.register(userRegisterFormDto);
-        return "redirect:users";
+        return "redirect:/users";
     }
 
     @GetMapping
     public String list(Model model) {
         log.info("show user list");
         model.addAttribute("users", userService.showAll());
-        return "user/list";
+        return "/user/list";
     }
 
     @GetMapping("/{userId}")
@@ -45,18 +45,18 @@ public class UserController {
         UserProfileDto userProfileDto = userService.showOne(userId);
         model.addAttribute("userId", userProfileDto.getUserId());
         model.addAttribute("email", userProfileDto.getEmail());
-        return "user/profile";
+        return "/user/profile";
     }
 
     @GetMapping("/{userId}/form")
     public String updateForm(@PathVariable String userId, Model model) {
         log.info("show {}'s update form", userId);
         model.addAttribute("userId", userId);
-        return "user/updateForm";
+        return "/user/updateForm";
     }
 
     @PostMapping("/{userId}/update")
-    public String  update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto) {
+    public String update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto) {
         log.info("update {}'s profile : {}", userId, userUpdateFormDto);
         userService.modify(userUpdateFormDto);
         return "redirect:/users";
