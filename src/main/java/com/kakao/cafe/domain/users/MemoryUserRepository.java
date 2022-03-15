@@ -16,12 +16,13 @@ public class MemoryUserRepository implements UserRepository {
 	}
 
 	public Users findByUserId(String userId) {
-		Users user = null;
-		try{
-			user = usersList.get(usersList.indexOf(userId));
-		}catch(IndexOutOfBoundsException e) {
-			System.out.println(e.getMessage());
+		Users resultUser = new Users();
+		resultUser.setUserId(userId);
+		for (Users user : usersList) {
+			if(user.equals(resultUser)){
+				resultUser = user;
+			}
 		}
-		return user;
+		return resultUser;
 	}
 }

@@ -38,4 +38,12 @@ public class Users {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Users)){
+            return false;
+        }
+        return (this.userId.equals(((Users) obj).userId))? true: false;
+    }
 }
