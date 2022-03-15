@@ -20,16 +20,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void join(User user) {
+    public int join(User user) {
         validateUniqueNickname(user);
         validateUniqueEmail(user);
         user.checkBlankInput();
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public void update(User user, User updatedUser) {
         validateUpdatedInput(user, updatedUser);
         user.updateProfile(updatedUser.getNickname(), updatedUser.getEmail());
+        userRepository.update(user);
     }
 
     private void validateUniqueNickname(User user) {
@@ -54,6 +55,11 @@ public class UserService {
         if (!user.matchesEmail(updatedUser.getEmail())) {
             validateUniqueEmail(updatedUser);
         }
+    }
+
+    public User findById(int id) {
+        return userRepository.findById(id)
+            .orElseThrow(() -> new UserException(ErrorCode.NO_MATCH_USER));
     }
 
     public User findByNickname(String nickname) {

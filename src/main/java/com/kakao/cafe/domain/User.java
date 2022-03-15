@@ -19,6 +19,14 @@ public class User {
         this.password = password;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getNickname() {
         return nickname;
     }
@@ -29,10 +37,6 @@ public class User {
 
     public String getPassword() {
         return password;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setDate(LocalDate date) {
