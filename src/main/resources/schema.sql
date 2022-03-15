@@ -9,6 +9,7 @@ CREATE TABLE article
     title        VARCHAR(255),
     contents     VARCHAR(255),
     created_date TIMESTAMP,
+    deleted      BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (article_id)
 );
 
@@ -32,6 +33,7 @@ CREATE TABLE reply
     user_id      VARCHAR(255) NOT NULL,
     comment      VARCHAR(255),
     created_date TIMESTAMP,
+    deleted      BOOLEAN DEFAULT FALSE,
     PRIMARY KEY (reply_id),
     FOREIGN KEY (article_id) REFERENCES article (article_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES `user` (user_id) ON DELETE CASCADE

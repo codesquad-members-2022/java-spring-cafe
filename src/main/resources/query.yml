@@ -7,19 +7,17 @@ INSERT_ARTICLE: >
 SELECT_ARTICLES: >
   SELECT article.*, COUNT(reply.reply_id)  AS count FROM article
   LEFT JOIN reply ON article.article_id = reply.article_id
+  WHERE article.deleted = FALSE AND (reply.deleted = FALSE OR reply.deleted IS NULL)
   GROUP BY article.article_id
 
 SELECT_ARTICLE: >
-  SELECT * FROM article WHERE article_id = :articleId
-
-DELETE_ARTICLES: >
-  DELETE FROM article
+  SELECT * FROM article WHERE article_id = :articleId AND deleted = FALSE
 
 UPDATE_ARTICLE: >
   UPDATE article SET title = :title, contents = :contents WHERE article_id = :articleId
 
 DELETE_ARTICLE: >
-  DELETE FROM article WHERE article_id = :articleId
+  UPDATE article SET deleted = TRUE WHERE article_id = :articleId
 
 ### user ###
 
@@ -49,13 +47,13 @@ INSERT_REPLY: >
   VALUES (:articleId, :userId, :comment, :createdDate)
 
 SELECT_REPLY: >
-  SELECT * FROM reply WHERE reply_id = :replyId
+  SELECT * FROM reply WHERE reply_id = :replyId AND deleted = FALSE
 
 SELECT_REPLIES: >
-  SELECT * FROM reply WHERE article_id = :articleId
+  SELECT * FROM reply WHERE article_id = :articleId AND deleted = FALSE
 
 UPDATE_REPLY: >
   UPDATE reply SET comment = :comment WHERE reply_id = :replyId
 
 DELETE_REPLY: >
-  DELETE FROM reply WHERE reply_id = :replyId
+  UPDATE reply SET deleted = TRUE WHERE reply_id = :replyId
