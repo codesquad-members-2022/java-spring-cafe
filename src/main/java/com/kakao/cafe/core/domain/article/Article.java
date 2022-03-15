@@ -54,6 +54,11 @@ public class Article {
         return viewCount;
     }
 
+    public void edit(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
     public static class Builder {
         private Integer id;
         private String title;

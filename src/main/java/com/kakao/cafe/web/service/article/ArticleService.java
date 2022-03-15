@@ -19,6 +19,12 @@ public class ArticleService {
         articleRepository.save(article);
     }
 
+    public void update(ArticleEditRequest request) {
+        Article findArticle = articleRepository.findById(request.getId()).orElseThrow();
+        findArticle.edit(request.getTitle(), request.getContent());
+        articleRepository.update(findArticle);
+    }
+
     public Article findById(Integer id) {
         return articleRepository.findById(id).orElseThrow();
     }
