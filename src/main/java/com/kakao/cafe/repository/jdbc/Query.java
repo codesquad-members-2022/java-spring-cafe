@@ -16,4 +16,8 @@ public enum Query {
     SELECT_USERS,
     SELECT_USER,
     DELETE_USERS,
+
+    // reply
+    INSERT_REPLY,
+    SELECT_REPLY,
 }
