@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserMemoryRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -28,25 +29,22 @@ class UserServiceTest {
     @Test
     void join() {
         // given
-        User user = new User();
-        user.setEmail("abc123@gmail.com");
+        User user = new User("abc123@gmail.com","ABC","abc");
 
         // when
         String saveEmail = userService.join(user);
 
         // then
         User findUser = userService.lookForOneUserEmail(saveEmail).get();
-        assertThat(user.getEmail()).isEqualTo(findUser.getEmail());
+        assertThat(user.isSameEmail(findUser.getEmail()));
     }
 
     @Test
     void findUsers() {
         List<User> users = new ArrayList<>();
 
-        User user1 = new User();
-        User user2 = new User();
-        user1.setEmail("abc123@gmail.com");
-        user2.setEmail("def456@gmail.com");
+        User user1 = new User("abc123@gmail.com","ABC","abc");
+        User user2 = new User("def123@gmail.com","DEF","def");
 
         users.add(user1);
         users.add(user2);
@@ -61,17 +59,15 @@ class UserServiceTest {
 
     @Test
     void lookForOneUserEmail() {
-        User user = new User();
-        user.setEmail("abc123@gmail.com");
+        User user = new User("abc123@gmail.com","ABC","abc");
         userService.join(user);
 
-        assertThat(userService.lookForOneUserEmail(user.getEmail()).get()).isEqualTo(user);
+        assertThat(userService.lookForOneUserEmail(user.getEmail()).get().isSameEmail("abc123@gmail.com"));
     }
 
     @Test
     void lookForOneUserId() {
-        User user = new User();
-        user.setUserId("유저");
+        User user = new User("abc123@gmail.com","ABC","abc");
         userService.join(user);
 
         assertThat(userService.lookForOneUserId(user.getUserId()).get()).isEqualTo(user);

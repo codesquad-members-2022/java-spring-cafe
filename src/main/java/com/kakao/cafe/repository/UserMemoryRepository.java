@@ -1,8 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-
-import java.time.LocalDateTime;
 import java.util.*;
 
 public class UserMemoryRepository implements UserRepository {
@@ -10,7 +8,6 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setCreatedDate(LocalDateTime.now());
         store.add(user);
         return user;
     }
@@ -18,14 +15,14 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         return store.stream()
-                .filter(user -> user.getUserId().equals(userId))
+                .filter(user -> user.isSameUserId(userId))
                 .findAny();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         return store.stream()
-                .filter(user -> user.getEmail().equals(email))
+                .filter(user -> user.isSameEmail(email))
                 .findAny();
     }
 

@@ -6,6 +6,7 @@ public class UserForm {
     private String userId;
     private String email;
     private String passward;
+    private LocalDateTime createdDate;
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
@@ -14,8 +15,6 @@ public class UserForm {
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
-
-    private LocalDateTime createdDate;
 
     public String getUserId() {
         return userId;
