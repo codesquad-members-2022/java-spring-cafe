@@ -48,7 +48,12 @@ public class ReplyJdbcRepository implements ReplyRepository {
             if (keyHolder.getKey() != null) {
                 reply.setReplyId(keyHolder.getKey().intValue());
             }
+            return reply;
         }
+        // merge
+        String sql = queryProps.get(Query.UPDATE_REPLY);
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(reply));
+
         return reply;
     }
 

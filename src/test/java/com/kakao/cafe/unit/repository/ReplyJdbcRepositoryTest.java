@@ -91,4 +91,33 @@ public class ReplyJdbcRepositoryTest {
         });
     }
 
+    @Test
+    @DisplayName("질문 id 로 댓글 컬렉션을 조회한다")
+    public void findByArticleIdTest() {
+        // given
+        given(jdbcTemplate.query(any(String.class), any(MapSqlParameterSource.class),
+            any(RowMapper.class)))
+            .willReturn(List.of(reply));
+
+        // when
+        List<Reply> findReplies = replyRepository.findByArticleId(1);
+
+        // then
+        then(findReplies).containsExactlyElementsOf(List.of(reply));
+    }
+
+    @Test
+    @DisplayName("댓글 id 가 포함된 댓글 객체를 업데이트한다")
+    public void saveMergeTest() {
+        // given
+        given(jdbcTemplate.update(any(String.class), any(MapSqlParameterSource.class)))
+            .willReturn(1);
+
+        // when
+        Reply savedReply = replyRepository.save(reply);
+
+        // then
+        then(savedReply).isEqualTo(reply);
+    }
+
 }

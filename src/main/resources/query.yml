@@ -51,3 +51,6 @@ SELECT_REPLY: >
 
 SELECT_REPLIES: >
   SELECT * FROM reply WHERE article_id = :articleId
+
+UPDATE_REPLY: >
+  UPDATE reply SET comment = :comment WHERE reply_id = :replyId

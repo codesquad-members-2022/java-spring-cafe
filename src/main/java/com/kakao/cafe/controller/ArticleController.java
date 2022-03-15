@@ -80,12 +80,12 @@ public class ArticleController {
     }
 
     // reply
-    @PostMapping("articles/{questionId}/answers")
-    public String createAnswer(@PathVariable(value = "questionId") Integer articleId,
+    @PostMapping("articles/{id}/answers")
+    public String createAnswer(@PathVariable(value = "id") Integer articleId,
         String comment, HttpSession session) {
         SessionUser user = SessionUser.from(session);
         replyService.comment(user, articleId, comment);
-        return String.format("redirect:/articles/%d/answers", articleId);
+        return "redirect:/";
     }
 
 }
