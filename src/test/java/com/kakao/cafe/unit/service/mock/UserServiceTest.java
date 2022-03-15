@@ -6,7 +6,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.dto.UserForm;
+import com.kakao.cafe.dto.UserLoginRequest;
+import com.kakao.cafe.dto.UserResponse;
+import com.kakao.cafe.dto.UserSaveRequest;
 import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
@@ -34,22 +36,21 @@ public class UserServiceTest {
     private UserRepository userRepository;
 
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
-        user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
+        user = new User("userId", "userPassword", "userName", "user@example.com");
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
     }
 
     @Test
     @DisplayName("회원가입하면 저장소에 저장된다")
     public void registerTest() {
         // given
-        UserForm userForm = new UserForm("userId", "userPassword", "userName", "user@example.com");
+        UserSaveRequest request = new UserSaveRequest("userId", "userPassword", "userName",
+            "user@example.com");
 
         given(userRepository.save(any()))
             .willReturn(user);
@@ -58,7 +59,7 @@ public class UserServiceTest {
             .willReturn(Optional.empty());
 
         // when
-        User savedUser = userService.register(userForm);
+        UserResponse savedUser = userService.register(request);
 
         // then
         then(savedUser.getUserId()).isEqualTo("userId");
@@ -71,14 +72,15 @@ public class UserServiceTest {
     @DisplayName("유저가 회원가입할 때 이미 있는 유저 아이디면 예외를 반환한다")
     public void registerValidationTest() {
         // given
-        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("userId", "otherPassword",
+            "otherName",
             "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.register(userForm));
+        Throwable throwable = catchThrowable(() -> userService.register(request));
 
         // when, then
         then(throwable)
@@ -94,10 +96,10 @@ public class UserServiceTest {
             .willReturn(List.of(user));
 
         // when
-        List<User> users = userService.findUsers();
+        List<UserResponse> users = userService.findUsers();
 
         // then
-        then(users).containsExactlyElementsOf(List.of(user));
+        then(users).containsExactlyElementsOf(List.of(userResponse));
     }
 
     @Test
@@ -108,10 +110,10 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        User findUser = userService.findUser("userId");
+        UserResponse findUser = userService.findUser("userId");
 
         // then
-        then(findUser).isEqualTo(user);
+        then(findUser).isEqualTo(userResponse);
     }
 
     @Test
@@ -134,16 +136,10 @@ public class UserServiceTest {
     @DisplayName("변경할 유저 정보를 입력하면 저장소의 유저 정보를 변경한다")
     public void updateUserTest() {
         // given
-        UserForm userForm = new UserForm("userId", "userPassword", "otherName",
+        UserSaveRequest request = new UserSaveRequest("userId", "userPassword", "otherName",
             "other@example.com");
 
-        User changedUser = new User.Builder()
-            .userNum(1)
-            .userId("userId")
-            .password("userPassword")
-            .name("other")
-            .email("other@example.com")
-            .build();
+        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
@@ -152,11 +148,11 @@ public class UserServiceTest {
             .willReturn(changedUser);
 
         // when
-        User updatedUser = userService.updateUser(userForm);
+        UserResponse updatedUser = userService.updateUser(userResponse, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
-        then(updatedUser.getName()).isEqualTo("other");
+        then(updatedUser.getName()).isEqualTo("otherName");
         then(updatedUser.getEmail()).isEqualTo("other@example.com");
     }
 
@@ -164,14 +160,14 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
-            "other@example.com");
+        UserSaveRequest request = new UserSaveRequest("otherId", "userPassword",
+            "otherName", "other@example.com");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.empty());
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(userResponse, request));
 
         // then
         then(throwable)
@@ -180,36 +176,50 @@ public class UserServiceTest {
     }
 
     @Test
-    @DisplayName("유저 정보 변경 시 유저 아이디가 일치하지 않으면 예외를 반환한다")
-    public void updateUserIncorrectUserIdTest() {
+    @DisplayName("로그인 시 기존 유저 정보와 일치하면 유저 정보를 반환한다")
+    public void loginTest() {
         // given
-        UserForm userForm = new UserForm("otherId", "userPassword", "otherName",
-            "other@example.com");
+        UserLoginRequest request = new UserLoginRequest("userId", "userPassword");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        UserResponse user = userService.login(request);
 
         // then
-        then(throwable)
-            .isInstanceOf(InvalidRequestException.class)
-            .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
+        then(user.getUserId()).isEqualTo("userId");
     }
 
     @Test
-    @DisplayName("유저 정보 변경 시 비밀번호가 일치하지 않으면 예외를 반환한다")
-    public void updateUserIncorrectPasswordTest() {
+    @DisplayName("로그인 시 존재하지 않는 유저 로그인 정보를 입력하면 예외를 반환한다")
+    public void loginUserNotFoundTest() {
         // given
-        UserForm userForm = new UserForm("userId", "otherPassword", "otherName",
-            "other@example.com");
+        UserLoginRequest request = new UserLoginRequest("newId", "userPassword");
+
+        given(userRepository.findByUserId(any()))
+            .willReturn(Optional.empty());
+
+        // when
+        Throwable throwable = catchThrowable(() -> userService.login(request));
+
+        // then
+        then(throwable)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
+    }
+
+    @Test
+    @DisplayName("로그인 시 일치하지 않는 비밀번호를 입력하면 예외를 반환한다")
+    public void loginIncorrectUserTest() {
+        // given
+        UserLoginRequest request = new UserLoginRequest("userId", "otherPassword");
 
         given(userRepository.findByUserId(any()))
             .willReturn(Optional.of(user));
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userForm));
+        Throwable throwable = catchThrowable(() -> userService.login(request));
 
         // then
         then(throwable)

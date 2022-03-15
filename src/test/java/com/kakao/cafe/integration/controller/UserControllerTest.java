@@ -1,8 +1,5 @@
 package com.kakao.cafe.integration.controller;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -11,8 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,15 +18,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
-@ComponentScan
 @AutoConfigureMockMvc
+@Sql("classpath:/schema.sql")
 @DisplayName("UserController 통합 테스트")
 public class UserControllerTest {
 
@@ -39,31 +36,19 @@ public class UserControllerTest {
     @Autowired
     private UserSetUp userSetUp;
 
-    @Component
-    public static class UserSetUp {
-
-        @Autowired
-        private UserRepository userRepository;
-
-        public User saveUser(User user) {
-            return userRepository.save(user);
-        }
-
-        public void rollback() {
-            userRepository.deleteAll();
-        }
-    }
+    private MockHttpSession session;
 
     User user;
+    UserResponse userResponse;
 
     @BeforeEach
     public void setUp() {
-        user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
+        user = new User("userId", "userPassword", "userName", "user@example.com");
+        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
+
+        session = new MockHttpSession();
+        session.setAttribute("SESSION_USER", userResponse);
     }
 
     @AfterEach
@@ -72,9 +57,14 @@ public class UserControllerTest {
     }
 
     private ResultActions performGet(String url) throws Exception {
-        return mockMvc.perform(
-            get(url).accept(MediaType.TEXT_HTML)
-        );
+        return mockMvc.perform(get(url)
+            .accept(MediaType.TEXT_HTML));
+    }
+
+    private ResultActions performGet(String url, MockHttpSession session) throws Exception {
+        return mockMvc.perform(get(url)
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
     }
 
 
@@ -82,14 +72,14 @@ public class UserControllerTest {
     @DisplayName("모든 유저를 조회한다")
     public void listUserTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(user);
+        userSetUp.saveUser(user);
 
         // when
         ResultActions actions = performGet("/users");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("users", List.of(savedUser)))
+            .andExpect(model().attribute("users", List.of(userResponse)))
             .andExpect(view().name("user/list"));
     }
 
@@ -97,14 +87,14 @@ public class UserControllerTest {
     @DisplayName("유저 아이디로 유저를 조회한다")
     public void showUserTest() throws Exception {
         // given
-        User savedUser = userSetUp.saveUser(user);
+        userSetUp.saveUser(user);
 
         // when
         ResultActions actions = performGet("/users/userId");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", savedUser))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/profile"));
     }
 
@@ -132,12 +122,6 @@ public class UserControllerTest {
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(model().attribute("user", allOf(
-                hasProperty("userId", is("userId")),
-                hasProperty("password", is("userPassword")),
-                hasProperty("name", is("userName")),
-                hasProperty("email", is("user@example.com"))
-            )))
             .andExpect(view().name("redirect:/users"));
     }
 
@@ -150,9 +134,6 @@ public class UserControllerTest {
         // when
         ResultActions actions = mockMvc.perform(post("/users")
             .param("userId", "userId")
-            .param("password", "otherPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
             .accept(MediaType.TEXT_HTML));
 
         // then
@@ -183,11 +164,11 @@ public class UserControllerTest {
         userSetUp.saveUser(user);
 
         // when
-        ResultActions actions = performGet("/users/userId/form");
+        ResultActions actions = performGet("/users/userId/form", session);
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("user", user))
+            .andExpect(model().attribute("user", userResponse))
             .andExpect(view().name("user/update_form"));
     }
 
@@ -199,17 +180,14 @@ public class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "userPassword")
-            .param("name", "otherName")
+            .param("name", "otherPassword")
             .param("email", "other@example.com")
             .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(model().attribute("user", allOf(
-                hasProperty("name", is("otherName")),
-                hasProperty("email", is("other@example.com"))
-            )))
             .andExpect(view().name("redirect:/users"));
     }
 
@@ -217,19 +195,19 @@ public class UserControllerTest {
     @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserPasswordTest() throws Exception {
         // given
-        userSetUp.saveUser(user);
+        User other = new User("otherId", "userPassword", "otherName", "other@example.com");
+
+        userSetUp.saveUser(other);
 
         // when
-        ResultActions actions = mockMvc.perform(put("/users/otherId")
-            .param("password", "userPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+        ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .accept(MediaType.TEXT_HTML));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", ErrorCode.USER_NOT_FOUND.getHttpStatus()))
-            .andExpect(model().attribute("message", ErrorCode.USER_NOT_FOUND.getMessage()))
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
             .andExpect(view().name("error/index"));
     }
 
@@ -241,9 +219,72 @@ public class UserControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/userId")
+            .session(session)
             .param("password", "otherPassword")
-            .param("name", "otherName")
-            .param("email", "other@example.com")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
+    public void formUpdateUserSessionNotFoundTest() throws Exception {
+        session.removeAttribute("SESSION_USER");
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/otherId/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.SESSION_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.SESSION_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션과 유저 정보가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void formUpdateUserSessionIncorrectTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(get("/users/otherId/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.INCORRECT_USER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INCORRECT_USER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
+    public void updateUserSessionNotFoundTest() throws Exception {
+        session.removeAttribute("SESSION_USER");
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/otherId")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.SESSION_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.SESSION_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저 정보 업데이트 요청 시 세션과 유저 정보가 일치하지 않을 경우 에러 페이지를 출력한다")
+    public void updateUserSessionTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(put("/users/otherId")
+            .session(session)
             .accept(MediaType.TEXT_HTML));
 
         // then

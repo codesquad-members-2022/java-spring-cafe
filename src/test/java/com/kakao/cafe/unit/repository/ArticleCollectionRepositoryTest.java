@@ -19,11 +19,7 @@ public class ArticleCollectionRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = articleRepository.save(new Article.Builder()
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build());
+        article = articleRepository.save(new Article("writer", "title", "contents"));
     }
 
     @Test

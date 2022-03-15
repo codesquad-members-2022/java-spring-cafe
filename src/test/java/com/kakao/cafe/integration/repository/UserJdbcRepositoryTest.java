@@ -17,8 +17,10 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
+@Sql("classpath:/schema.sql")
 @Import(QueryProps.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("UserJdbcRepository JDBC 통합 테스트")
@@ -35,12 +37,7 @@ public class UserJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build();
+        user = new User("userId", "userPassword", "userName", "user@example.com");
     }
 
     @Test
@@ -66,12 +63,7 @@ public class UserJdbcRepositoryTest {
         // given
         userRepository.save(user);
 
-        User changedUser = new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
 
         // when
         User updatedUser = userRepository.save(changedUser);

@@ -6,13 +6,63 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
 <br/>
 <details>
-<summary> 단위/통합 테스트 결과</summary>
+<summary> API 명세</summary>
 <div markdown="1">
 <br/>
 
-![image](https://user-images.githubusercontent.com/50660684/157399780-080f719d-d030-456e-a991-f119cd529d39.png)
-![image](https://user-images.githubusercontent.com/50660684/157399988-678e26bc-d0a7-460a-b72d-48270d20a037.png)
+### User
 
+| user            | URL                 | Method | URL Params       | Data Params                                                     | Success Response                  | Error Response      |
+|:----------------|---------------------|--------|------------------|-----------------------------------------------------------------|-----------------------------------|---------------------|
+| listUsers       | /users              | GET    |                  |                                                                 | code: 200, view: user/list        |                     |
+| showUser        | /users/:userId      | GET    | `userId: string` |                                                                 | code: 200, view: user/profile     | code: 404           |
+| formCreateUser  | /users/form         | GET    |                  |                                                                 | code: 200, view: user/form        |                     |
+| createUser      | /users              | POST   |                  | `userId: string, password: string, name: string, email: string` | code: 200, redirect: /users       | code: 409 code: 500 |
+| formUpdateUser  | /users/:userId/form | GET    | `userId: string` |                                                                 | code: 200, view: user/update_form | code: 404           |
+| updateUser      | /users/:userId      | PUT    | `userId: string` | `password: string, name: string, email: string`                 | code: 200, redirect: /users       | code: 404           |
+
+### Article
+
+| article            | URL           | Method | URL Params | Data Params                                       | Success Response         | Error Response      |
+|--------------------|---------------|--------|------------|---------------------------------------------------|--------------------------|---------------------|
+| formCreateQuestion | /questions    | GET    |            |                                                   | code: 200 view: qna/form |                     |
+| createQuestion     | /questions    | POST   |            | `writer: string, title: string, contents: string` | code: 200 redirect: /    | code: 404 code: 500 |
+| listQuestions      | /             | GET    |            |                                                   | code: 200 view: qna/list |                     |
+| showQuestion       | /articles/:id | GET    | `id: int`  |                                                   | code: 200 view: qna/show | code: 404           |
+
+### Auth
+
+| auth      | URL         | Method | URL Params | Data Params                        | Success Response           | Error Response      |
+|-----------|-------------|--------|------------|------------------------------------|----------------------------|---------------------|
+| formLogin | /login/form | GET    |            |                                    | code: 200 view: form/login |                     |
+| login     | /login      | POST   |            | `userId: string, password: string` | code: 200 redirect: /users | code: 404 code: 409 |
+| logout    | /logout     | GET    |            |                                    | code: 200 redirect: /users |                     |
+
+<br/>
+</div>
+</details>
+
+<br/>
+<details>
+<summary> jacoco 리포트</summary>
+<div markdown="1">
+<br/>
+
+### Bundle
+    
+![image](https://user-images.githubusercontent.com/50660684/158010241-efdcfe5b-989d-405e-9b42-bea4ee6c3362.png)
+
+### Controller
+    
+![image](https://user-images.githubusercontent.com/50660684/158010292-4e4cbde2-7851-4735-9f7a-abcbfe2d26ee.png)
+
+### Service
+    
+![image](https://user-images.githubusercontent.com/50660684/158010308-80312217-894f-47f1-839e-d3fd101c903b.png)
+
+### Repository
+    
+![image](https://user-images.githubusercontent.com/50660684/158010331-f5e1650e-519d-46e6-b0ec-655913fc38d9.png)    
     
 <br/>
 </div>
@@ -148,3 +198,29 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 <br/>
 </div>
 </details>
+
+<br/>
+<details>
+<summary>🖖 4단계 요구사항</summary>
+<div markdown="1">
+<br/>
+
+## 스프링 카페 4단계 - DB에 저장하기
+
+- [X] 로그인과 로그아웃이 기능이 정상적으로 동작한다.
+  - 현재 상태가 로그인 상태이면 상단 메뉴에서 “로그아웃”, “개인정보수정”이 표시되어야 한다.
+  - 현재 상테가 로그인 상태가 아니라면 상단 메뉴에서 “로그인”, “회원가입”이 표시되어야 한다.
+- [X] Spring MVC에서 메소드의 인자로 HttpSession을 이용해서 로그인을 구현한다.
+  - Spring Security와 같은 별도 라이브러리 등은 사용하지 않는다.
+  - API가 아닌 템플릿 기반으로 구현한다.
+- [X] 로그인한 사용자는 자신의 정보를 수정할 수 있어야 한다.
+  - 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.
+  - 비밀번호가 일치하는 경우에만 수정 가능하다.
+  - 로그인한 사용자와 수정하는 계정의 id가 같은 경우만 수정하도록 한다.
+  - 다른 사용자의 정보를 수정하려는 경우 에러 페이지를 만든 후 에러 메시지를 출력한다.
+- [X] 권한 체크에 대한 테스트를 위해 2명 이상의 테스트 데이터를 추가한다.
+
+<br/>
+</div>
+</details>
+

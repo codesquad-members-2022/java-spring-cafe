@@ -1,8 +1,5 @@
 package com.kakao.cafe.integration.controller;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -11,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -25,12 +23,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 @SpringBootTest
 @ComponentScan
 @AutoConfigureMockMvc
+@Sql("classpath:/schema.sql")
 @DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
 
@@ -41,6 +41,7 @@ public class ArticleControllerTest {
     ArticleSetUp articleSetUp;
 
     Article article;
+    ArticleResponse articleResponse;
 
     @Component
     public static class ArticleSetUp {
@@ -68,11 +69,8 @@ public class ArticleControllerTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article.Builder()
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        article = new Article("writer", "title", "contents");
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
     }
 
     @AfterEach
@@ -101,14 +99,7 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
         // given
-        articleSetUp.saveUser(
-            new User.Builder()
-                .userId("writer")
-                .password("userPassword")
-                .name("userName")
-                .email("user@example.com")
-                .build()
-        );
+        articleSetUp.saveUser(new User("writer", "userPassword", "userName", "user@example.com"));
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
@@ -119,10 +110,6 @@ public class ArticleControllerTest {
 
         // then
         actions.andExpect(status().is3xxRedirection())
-            .andExpect(model().attribute("article", allOf(
-                hasProperty("writer", is("writer")),
-                hasProperty("title", is("title"))
-            )))
             .andExpect(view().name("redirect:/"));
     }
 
@@ -130,14 +117,14 @@ public class ArticleControllerTest {
     @DisplayName("등록된 모든 글을 화면에 출력한다")
     public void listArticlesTest() throws Exception {
         // given
-        Article savedArticle = articleSetUp.saveArticle(article);
+        articleSetUp.saveArticle(article);
 
         // when
         ResultActions actions = performGet("/");
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("articles", List.of(savedArticle)))
+            .andExpect(model().attribute("articles", List.of(articleResponse)))
             .andExpect(view().name("qna/list"));
     }
 
@@ -152,7 +139,7 @@ public class ArticleControllerTest {
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("article", savedArticle))
+            .andExpect(model().attribute("article", articleResponse))
             .andExpect(view().name("qna/show"));
     }
 

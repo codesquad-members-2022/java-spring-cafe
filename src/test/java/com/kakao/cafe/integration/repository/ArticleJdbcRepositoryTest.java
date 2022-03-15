@@ -41,11 +41,8 @@ public class ArticleJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article.Builder()
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        article = new Article("writer", "title", "contents");
+
     }
 
     @Test

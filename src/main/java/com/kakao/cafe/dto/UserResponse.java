@@ -1,10 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
-import com.kakao.cafe.exception.ErrorCode;
-import com.kakao.cafe.exception.InvalidRequestException;
-import java.util.Objects;
-
-public class User {
+public class UserResponse {
 
     private Integer userNum;
     private String userId;
@@ -12,23 +8,16 @@ public class User {
     private String name;
     private String email;
 
-    private User() {
+    private UserResponse() {
     }
 
-    public User(String userId, String password, String name, String email) {
-        this(null, userId, password, name, email);
-    }
-
-    public User(Integer userNum, String userId, String password, String name, String email) {
+    public UserResponse(Integer userNum, String userId, String password, String name,
+        String email) {
         this.userNum = userNum;
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
-    }
-
-    public Integer getUserNum() {
-        return userNum;
     }
 
     public String getUserId() {
@@ -47,22 +36,6 @@ public class User {
         return email;
     }
 
-    public void setUserNum(Integer userNum) {
-        this.userNum = userNum;
-    }
-
-    public User update(String name, String email) {
-        this.name = name;
-        this.email = email;
-        return this;
-    }
-
-    public void checkPassword(String password) {
-        if (!this.password.equals(password)) {
-            throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,14 +45,17 @@ public class User {
             return false;
         }
 
-        User user = (User) o;
+        UserResponse user = (UserResponse) o;
 
-        return Objects.equals(userId, user.userId);
+        return userId.equals(user.userId)
+            && password.equals(user.password)
+            && name.equals(user.name)
+            && email.equals(user.email);
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserResponse{" +
             "userNum=" + userNum +
             ", userId='" + userId + '\'' +
             ", password='" + password + '\'' +
@@ -87,5 +63,4 @@ public class User {
             ", email='" + email + '\'' +
             '}';
     }
-
 }

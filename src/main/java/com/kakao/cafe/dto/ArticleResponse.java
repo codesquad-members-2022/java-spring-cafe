@@ -1,9 +1,8 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.dto;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public class Article {
+public class ArticleResponse {
 
     private Integer articleId;
     private String writer;
@@ -11,14 +10,10 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
-    private Article() {
+    private ArticleResponse() {
     }
 
-    public Article(String writer, String title, String contents) {
-        this(null, writer, title, contents, LocalDateTime.now());
-    }
-
-    public Article(Integer articleId, String writer, String title, String contents,
+    public ArticleResponse(Integer articleId, String writer, String title, String contents,
         LocalDateTime createdDate) {
         this.articleId = articleId;
         this.writer = writer;
@@ -43,25 +38,6 @@ public class Article {
         return contents;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public boolean equalsId(Integer articleId) {
-        if (articleId == null) {
-            return false;
-        }
-        return Objects.equals(this.articleId, articleId);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -71,14 +47,17 @@ public class Article {
             return false;
         }
 
-        Article article = (Article) o;
+        ArticleResponse article = (ArticleResponse) o;
 
-        return Objects.equals(articleId, article.articleId);
+        return articleId.equals(article.articleId)
+            && writer.equals(article.writer)
+            && title.equals(article.title)
+            && contents.equals(article.contents);
     }
 
     @Override
     public String toString() {
-        return "Article{" +
+        return "ArticleResponse{" +
             "articleId=" + articleId +
             ", writer='" + writer + '\'' +
             ", title='" + title + '\'' +

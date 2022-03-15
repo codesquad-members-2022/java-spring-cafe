@@ -46,12 +46,7 @@ public class ArticleJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        article = new Article("writer", "title", "contents");
 
         given(queryProps.get(any()))
             .willReturn("");

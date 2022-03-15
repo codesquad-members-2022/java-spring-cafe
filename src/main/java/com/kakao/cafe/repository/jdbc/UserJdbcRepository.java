@@ -47,13 +47,13 @@ public class UserJdbcRepository implements UserRepository {
 
         return jdbcTemplate.query(sql,
             (rs, rowNum) ->
-                new User.Builder()
-                    .userNum(rowNum + 1)
-                    .userId(rs.getString(USER_ID))
-                    .password(rs.getString(PASSWORD))
-                    .name(rs.getString(NAME))
-                    .email(rs.getString(EMAIL))
-                    .build()
+                new User(
+                    rowNum + 1,
+                    rs.getString(USER_ID),
+                    rs.getString(PASSWORD),
+                    rs.getString(NAME),
+                    rs.getString(EMAIL)
+                )
         );
     }
 
@@ -66,12 +66,13 @@ public class UserJdbcRepository implements UserRepository {
                 new MapSqlParameterSource()
                     .addValue("userId", userId),
                 (rs, rowNum) ->
-                    new User.Builder()
-                        .userId(rs.getString(USER_ID))
-                        .password(rs.getString(PASSWORD))
-                        .name(rs.getString(NAME))
-                        .email(rs.getString(EMAIL))
-                        .build()
+                    new User(
+                        rowNum + 1,
+                        rs.getString(USER_ID),
+                        rs.getString(PASSWORD),
+                        rs.getString(NAME),
+                        rs.getString(EMAIL)
+                    )
             );
             return Optional.ofNullable(user);
 

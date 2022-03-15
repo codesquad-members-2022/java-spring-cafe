@@ -5,13 +5,14 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.User.Builder;
-import com.kakao.cafe.dto.ArticleForm;
+import com.kakao.cafe.dto.ArticleResponse;
+import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +24,7 @@ public class ArticleServiceTest {
 
     private static class ArticleStubRepository implements ArticleRepository {
 
-        Article article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        Article article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
 
         @Override
         public Article save(Article article) {
@@ -71,12 +67,7 @@ public class ArticleServiceTest {
             if (userId.equals("none")) {
                 throw new NotFoundException(ErrorCode.USER_NOT_FOUND);
             }
-            return Optional.of(new Builder()
-                .userId("writer")
-                .password("userPassword")
-                .name("userName")
-                .email("email@example.com")
-                .build());
+            return Optional.of(new User("userId", "userPassword", "userName", "user@example.com"));
         }
 
         @Override
@@ -86,41 +77,36 @@ public class ArticleServiceTest {
     }
 
     private ArticleService articleService;
-    private Article article;
+    ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
         articleService = new ArticleService(new ArticleStubRepository(), new UserStubRepository());
-
-        article = new Article.Builder()
-            .articleId(1)
-            .writer("writer")
-            .title("title")
-            .contents("contents")
-            .build();
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
     }
 
     @Test
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
         // given
-        ArticleForm articleForm = new ArticleForm("writer", "title", "contents");
+        ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
         // when
-        Article savedArticle = articleService.write(articleForm);
+        ArticleResponse savedArticle = articleService.write(request);
 
         // then
-        then(savedArticle).isEqualTo(article);
+        then(savedArticle).isEqualTo(articleResponse);
     }
 
     @Test
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
         // given
-        ArticleForm articleForm = new ArticleForm("none", "title", "contents");
+        ArticleSaveRequest request = new ArticleSaveRequest("none", "title", "contents");
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(articleForm));
+        Throwable throwable = catchThrowable(() -> articleService.write(request));
 
         // when
         then(throwable)
@@ -132,20 +118,20 @@ public class ArticleServiceTest {
     @DisplayName("저장소에 저장된 모든 질문을 조회한다")
     public void findArticlesTest() {
         // when
-        List<Article> articles = articleService.findArticles();
+        List<ArticleResponse> articles = articleService.findArticles();
 
         // then
-        then(articles).containsExactlyElementsOf(List.of(article));
+        then(articles).containsExactlyElementsOf(List.of(articleResponse));
     }
 
     @Test
     @DisplayName("질문 id 로 저장소에 저장된 질문을 조회한다")
     public void findArticleTest() {
         // when
-        Article findArticle = articleService.findArticle(article.getArticleId());
+        ArticleResponse findArticle = articleService.findArticle(1);
 
         // then
-        then(findArticle).isEqualTo(article);
+        then(findArticle).isEqualTo(articleResponse);
     }
 
     @Test

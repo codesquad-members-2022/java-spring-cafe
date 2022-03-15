@@ -2,7 +2,6 @@ package com.kakao.cafe.repository.jdbc;
 
 import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.Article.Builder;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,13 +54,13 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
         return jdbcTemplate.query(sql,
             (rs, rowNum) ->
-                new Article.Builder()
-                    .articleId(rs.getInt(ARTICLE_ID))
-                    .writer(rs.getString(WRITER))
-                    .title(rs.getString(TITLE))
-                    .contents(rs.getString(CONTENTS))
-                    .createdDate(rs.getObject(CREATED_DATE, LocalDateTime.class))
-                    .build()
+                new Article(
+                    rs.getInt(ARTICLE_ID),
+                    rs.getString(WRITER),
+                    rs.getString(TITLE),
+                    rs.getString(CONTENTS),
+                    rs.getObject(CREATED_DATE, LocalDateTime.class)
+                )
         );
     }
 
@@ -74,13 +73,13 @@ public class ArticleJdbcRepository implements ArticleRepository {
                 new MapSqlParameterSource()
                     .addValue(ARTICLE_ID, articleId),
                 (rs, rowNum) ->
-                    new Builder()
-                        .articleId(rs.getInt(ARTICLE_ID))
-                        .writer(rs.getString(WRITER))
-                        .title(rs.getString(TITLE))
-                        .contents(rs.getString(CONTENTS))
-                        .createdDate(rs.getObject(CREATED_DATE, LocalDateTime.class))
-                        .build()
+                    new Article(
+                        rs.getInt(ARTICLE_ID),
+                        rs.getString(WRITER),
+                        rs.getString(TITLE),
+                        rs.getString(CONTENTS),
+                        rs.getObject(CREATED_DATE, LocalDateTime.class)
+                    )
             );
             return Optional.ofNullable(article);
 

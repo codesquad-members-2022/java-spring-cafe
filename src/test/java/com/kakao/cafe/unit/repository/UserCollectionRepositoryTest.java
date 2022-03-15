@@ -22,12 +22,8 @@ class UserCollectionRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        user = userRepository.save(new User.Builder()
-            .userId("userId")
-            .password("userPassword")
-            .name("userName")
-            .email("user@example.com")
-            .build());
+        user = userRepository.save(
+            new User("userId", "userPassword", "userName", "user@example.com"));
     }
 
     @Test
@@ -64,19 +60,12 @@ class UserCollectionRepositoryTest {
     @DisplayName("유저 번호를 가지고 변경된 유저 객체를 저장한다")
     public void saveMergeTest() {
         // given
-        User changedUser = new User.Builder()
-            .userNum(1)
-            .userId("userId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User changedUser = new User(1, "userId", "userPassword", "otherName", "other@example.com");
 
         // when
         User updatedUser = userRepository.save(changedUser);
 
         // then
-        then(updatedUser.getUserNum()).isEqualTo(1);
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
         then(updatedUser.getName()).isEqualTo("otherName");
@@ -84,16 +73,10 @@ class UserCollectionRepositoryTest {
     }
 
     @Test
-    @DisplayName("등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
+    @DisplayName("유저 번호를 가지고 등록되지 않은 유저 ID 를 가진 유저 객체를 저장할 경우 예외를 반환한다")
     public void updateTest() {
         // given
-        User changedUser = new User.Builder()
-            .userNum(1)
-            .userId("otherId")
-            .password("userPassword")
-            .name("otherName")
-            .email("other@example.com")
-            .build();
+        User changedUser = new User(1, "otherId", "userPassword", "otherName", "other@example.com");
 
         // when
         Throwable throwable = catchThrowable(() -> userRepository.save(changedUser));
