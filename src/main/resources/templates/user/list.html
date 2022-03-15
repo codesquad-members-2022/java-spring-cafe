@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    {{> header}}
-    <link href="../css/user/list.css" rel="stylesheet">
+    {{> head}}
+    <link href="/css/user/list.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -20,17 +20,16 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th>ID</th>
                         <th>닉네임</th>
-
+                        <th>이메일</th>
                     </tr>
                     </thead>
 
                     <tbody>
                     {{#users}}
                     <tr>
-                        <td>{{id}}</td>
-                        <td><a href="/users/{{nickname}}">{{nickname}}</a></td>
+                        <td><a href="/user/{{nickname}}">{{nickname}}</a></td>
+                        <td>{{email}}</td>
                     </tr>
                     {{/users}}
 

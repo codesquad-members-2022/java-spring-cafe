@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="kr">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1" name="viewport">
     <link href="css/reset.css" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -13,22 +13,7 @@
 </head>
 <body>
 <div class="background">
-    <nav class="navbar navbar-fixed-top header">
-        <div class="col-md-12">
-            <div class="navbar-header">
-                <a href="index.html" class="navbar-brand">
-                    <img src="images/KakaoCI.png"/>
-                </a>
-
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/users">멤버 리스트</a></li>
-                <li><a class="black-component" role="button">로그인</a></li>
-                <li><a class="black-component" href="/" role="button">회원가입</a></li>
-            </ul>
-        </div>
-    </nav>
-
+    {{> navbar}}
     <div class="description">
         <div class="desc-container">
             <p class="desc-small">안녕하세요</p>
@@ -44,6 +29,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th>id</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일자</th>
@@ -51,55 +37,22 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {{#articles}}
                     <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
+                        <td>{{id}}</td>
+                        <td><a href="/articles/{{id}}">{{title}}</a></td>
+                        <td></td>
+                        <td>{{date}}</td>
+                        <td></td>
                     </tr>
-                    <tr>
-                        <td><a href="post/show.html">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td><a href="post/show.html">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
-                        </td>
-                        <td>닉네임 1</td>
-                        <td>2021-12-14</td>
-                        <td>0</td>
-                    </tr>
+                    {{/articles}}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <div class="post-btn-container">
-        <a class="post-write-btn" href="post/form.html" class="btn btn-primary pull-right"
+        <a class="post-write-btn" class="btn btn-primary pull-right" href="/qna/form"
            role="button">글쓰기</a>
     </div>
 </div>
@@ -132,7 +85,7 @@
       <div class="modal-footer">
           <div class="col-md-12">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>  
+      </div>
       </div>
   </div>
   </div>
@@ -174,7 +127,7 @@
       <div class="modal-footer">
           <div class="col-md-12">
           <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-      </div>  
+      </div>
       </div>
   </div>
   </div>
