@@ -28,4 +28,8 @@ public class UserService {
     public User findOne(String userId) {
         return userRepository.findByUserId(userId);
     }
+
+    public void updateUser(String userId, User user) {
+        userRepository.update(userId, user);
+    }
 }
