@@ -14,7 +14,6 @@ public class ArticleService {
 
     private final ArticleRepository repository;
 
-    @Autowired
     public ArticleService(ArticleRepository repository) {
         this.repository = repository;
     }
