@@ -41,7 +41,7 @@ class UserRepositoryTest {
         //when
         userRepository.save(user);
         //then
-        assertThat(userList).isEqualTo(userRepository.getUserList());
+        assertThat(userList).isEqualTo(userRepository.getUsers());
 
     }
 

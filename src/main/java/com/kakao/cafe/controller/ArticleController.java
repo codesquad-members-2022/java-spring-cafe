@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
-@RequestMapping("qna/")
+@RequestMapping
 public class ArticleController {
 
     private final ArticleService articleService;
@@ -24,14 +22,8 @@ public class ArticleController {
     public ArticleController(ArticleService articleService) {this.articleService = articleService;}
 
     @PostMapping("/qna/create")
-    public String createArticle(HttpServletRequest request) {
-        Article article = new Article(articleService.getRepositorySize(),
-                                      request.getParameter("writer"),
-                                      request.getParameter("title"),
-                                      request.getParameter("contents"));
-
+    public String createArticle(Article article) {
         articleService.createArticle(article);
-
         return "redirect:/";
     }
 
@@ -39,13 +31,6 @@ public class ArticleController {
     public String writeArticle(ModelAndView modelAndView) {
         modelAndView.setViewName("qna/form");
         return "qna/form";
-    }
-
-    @GetMapping("/")
-    public String mainPage(Model model) {
-        List<Article> articleList = articleService.findAllArticle();
-        model.addAttribute(articleList);
-        return "index";
     }
 
     @GetMapping("article/{articleId}")

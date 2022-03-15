@@ -22,6 +22,8 @@ public class User {
         return name;
     }
 
+    public String getPassword() { return password; }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -30,4 +32,13 @@ public class User {
         return email;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }
