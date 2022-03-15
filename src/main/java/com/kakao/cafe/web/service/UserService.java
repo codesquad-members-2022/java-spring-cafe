@@ -1,10 +1,11 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.user.User;
+import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.repository.user.UserRepository;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,8 +35,8 @@ public class UserService {
 		});
 	}
 
-	public List<User> findAllUsers() {
-		return userRepository.findAll();
+	public List<UserDto> findAllUsers() {
+		return userRepository.findAll().stream().map(UserDto::new).collect(Collectors.toList());
 	}
 
 	public Optional<User> findById(Long id) {
