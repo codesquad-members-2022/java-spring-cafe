@@ -2,29 +2,35 @@ package com.kakao.cafe.domain.user;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 public class UserJdbcTemplateRepository implements UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public UserJdbcTemplateRepository(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Override
     public void save(User user) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", user.getUserId());
+        params.addValue("password", user.getPassword());
+        params.addValue("name", user.getName());
+        params.addValue("email", user.getEmail());
         if (isAlreadyJoin(user)) {
-            jdbcTemplate.update("UPDATE USER SET user_id = ?, password = ?, name = ?, email = ? WHERE user_id = ?",
-                    user.getUserId(), user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+            namedParameterJdbcTemplate.update("UPDATE USER SET password = :password, name = :name, email = :email WHERE user_id = :userId", params);
             return;
         }
-        jdbcTemplate.update("INSERT INTO USER (user_id, password, name, email) VALUES (?, ?, ?, ?)",
-                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        namedParameterJdbcTemplate.update("INSERT INTO USER (user_id, password, name, email) VALUES (:userId, :password, :name, :email)", params);
     }
 
     private boolean isAlreadyJoin(User user) {
