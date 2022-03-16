@@ -9,7 +9,7 @@ public class Article {
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime createdTime;
+    private LocalDateTime createdTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
@@ -37,6 +37,8 @@ public class Article {
     public void setId(int id) {
         this.id = id;
     }
+
+    public void setCreatedTime(LocalDateTime createdTime) { this.createdTime = createdTime; }
 
     @Override
     public boolean equals(Object o) {
