@@ -11,7 +11,7 @@ public class ReplyResponse {
     private String userId;
     private String comment;
 
-    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = Shape.STRING)
     private LocalDateTime createdDate;
 
     private ReplyResponse() {
