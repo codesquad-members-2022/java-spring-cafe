@@ -3,13 +3,16 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
+import com.kakao.cafe.web.dto.LoginDto;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,6 +57,19 @@ public class UserService {
 
         return user;
     }
+
+    public UserResponseDto login(LoginDto loginDto) {
+        return userRepository.findById(loginDto.getUserId())
+                .filter(user -> user.isSamePassword(loginDto.getPassword()))
+                .map(UserResponseDto::new)
+                .orElse(null);
+    }
+
+    public void logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        //httpSession.removeAttribute("sessionedUser");
+    }
+
 
     private void checkDuplicateId(User user) {
         userRepository.findById(user.getUserId()).ifPresent(u -> {
