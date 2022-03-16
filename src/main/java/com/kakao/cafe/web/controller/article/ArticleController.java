@@ -49,7 +49,7 @@ public class ArticleController {
     }
 
     @GetMapping("{id}")
-    public String getArticleDetails(@PathVariable("id") int id, Model model) {
+    public String getArticleDetails(@PathVariable("id") Integer id, Model model) {
         ArticleResponse findArticle = new ArticleResponse(articleService.findById(id));
         model.addAttribute("findArticle", findArticle);
         return "article/detail";

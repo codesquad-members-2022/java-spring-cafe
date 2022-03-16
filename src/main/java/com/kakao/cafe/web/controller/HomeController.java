@@ -1,6 +1,6 @@
 package com.kakao.cafe.web.controller;
 
-import com.kakao.cafe.core.repository.member.MemberRepository;
+import com.kakao.cafe.core.repository.MemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

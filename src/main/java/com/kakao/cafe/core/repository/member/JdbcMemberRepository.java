@@ -1,6 +1,7 @@
 package com.kakao.cafe.core.repository.member;
 
 import com.kakao.cafe.core.domain.member.Member;
+import com.kakao.cafe.core.repository.MemberRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -52,9 +53,9 @@ public class JdbcMemberRepository implements MemberRepository {
     }
 
     @Override
-    public void update(Member member) {
+    public void update(Member t) {
         String query = "UPDATE members SET email=?, nick_name=? WHERE id=?";
-        jdbcTemplate.update(query, member.getEmail(), member.getNickName(), member.getId());
+        jdbcTemplate.update(query, t.getEmail(), t.getNickName(), t.getId());
     }
 
     @Override

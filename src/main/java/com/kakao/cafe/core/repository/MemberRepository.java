@@ -1,4 +1,4 @@
-package com.kakao.cafe.core.repository.member;
+package com.kakao.cafe.core.repository;
 
 import com.kakao.cafe.core.domain.member.Member;
 

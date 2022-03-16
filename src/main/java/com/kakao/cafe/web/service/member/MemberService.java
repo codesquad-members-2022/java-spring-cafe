@@ -1,10 +1,9 @@
 package com.kakao.cafe.web.service.member;
 
 import com.kakao.cafe.core.domain.member.Member;
-import com.kakao.cafe.core.repository.member.MemberRepository;
+import com.kakao.cafe.core.repository.MemberRepository;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
