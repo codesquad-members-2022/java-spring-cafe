@@ -29,7 +29,7 @@ class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("전체 사용자 목록을 반환한다.")
-    void findAll() {
+    void findAllSuccess() {
         //given
         User user1 = new User(1, "user1", "1234", "name1", "user1@gmail.com");
         repository.save(user1);
@@ -46,7 +46,7 @@ class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
-    void persist() {
+    void persistSuccess() {
         //given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
@@ -60,7 +60,7 @@ class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
-    void merge() {
+    void mergeSuccess() {
         //given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
@@ -76,7 +76,7 @@ class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("인자로 주어진 ID를 가진 사용자를 저장소에서 찾아 반환한다.")
-    void findById() {
+    void findByIdSuccess() {
         //given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);

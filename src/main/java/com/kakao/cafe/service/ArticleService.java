@@ -5,6 +5,7 @@ import com.kakao.cafe.dto.ModifiedArticleParam;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.DuplicateArticleException;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
+import com.kakao.cafe.exception.article.RemoveArticleException;
 import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
@@ -49,7 +50,7 @@ public class ArticleService {
 
     private void validateResultCount(int resultCount) {
         if (resultCount == 0) {
-            throw new RuntimeException("");
+            throw new RemoveArticleException(HttpStatus.BAD_GATEWAY, DELETE_FAIL_MESSAGE);
         }
     }
 

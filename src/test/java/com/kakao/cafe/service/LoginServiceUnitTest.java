@@ -27,7 +27,7 @@ public class LoginServiceUnitTest {
 
     @Test
     @DisplayName("파라미터로 LoginParam 이 넘어오면 이를 사용하여 해당하는 사용자 정보를 불러온다.")
-    void checkInfo() {
+    void checkInfoSuccess() {
         // given
         String userId = "userId";
         String password = "password";

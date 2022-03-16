@@ -31,9 +31,14 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
     }
 
-//    @Override
-//    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(new AuthInterceptor())
-//                .addPathPatterns("/articles/form", "/articles/write", "/articles/{id}");
-//    }
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor())
+                .addPathPatterns(
+                        "/articles/form",
+                        "/articles/write",
+                        "/articles/{id}",
+                        "/articles/{id}/remove"
+                );
+    }
 }

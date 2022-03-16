@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ModifiedArticleParam;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.ArticleDomainException;

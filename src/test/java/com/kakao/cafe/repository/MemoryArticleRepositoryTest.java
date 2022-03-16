@@ -10,18 +10,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class VolatilityArticleRepositoryTest {
+class MemoryArticleRepositoryTest {
 
-    VolatilityArticleRepository repository;
+    MemoryArticleRepository repository;
 
     @BeforeEach
     public void beforeEach() {
-        repository = new VolatilityArticleRepository();
+        repository = new MemoryArticleRepository();
     }
 
     @Test
     @DisplayName("전체 게시글 목록을 반환한다.")
-    void findAll() {
+    void findAllSuccess() {
         //given
         Article article1 = new Article(1, "writer1", "title1", "contents1", LocalDate.now());
         repository.save(article1);
@@ -38,7 +38,7 @@ class VolatilityArticleRepositoryTest {
 
     @Test
     @DisplayName("인자로 주어진 게시글을 저장소에 저장한다.")
-    void persist() {
+    void persistSuccess() {
         //given
         Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
 
@@ -51,8 +51,26 @@ class VolatilityArticleRepositoryTest {
     }
 
     @Test
+    @DisplayName("인자로 주어진 게시글을 저장소에 업데이트한다.")
+    void mergeSuccess() {
+        //given
+        LocalDate currentDate = LocalDate.now();
+
+        Article article = new Article(1, "user", "1234", "name", currentDate);
+        repository.save(article);
+
+        //when
+        Article modifiedArticle = new Article(1, "user", "1234", "name", currentDate);
+        repository.save(modifiedArticle);
+
+        //then
+        Article result = repository.findById(modifiedArticle.getId()).get();
+        assertThat(result).usingRecursiveComparison().isEqualTo(modifiedArticle);
+    }
+
+    @Test
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
-    void findById() {
+    void findByIdSuccess() {
         //given
         Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
         repository.save(article);
@@ -62,5 +80,22 @@ class VolatilityArticleRepositoryTest {
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
+    }
+
+    @Test
+    @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 삭제하고 삭제한 게시글의 개수를 반환한다.")
+    void deleteByIdSuccess() {
+        int id = 1;
+        LocalDate currentDate = LocalDate.now();
+
+        //given
+        Article article = new Article(id, "writer", "title", "contents", currentDate);
+        repository.save(article);
+
+        // when
+        int resultCount = repository.deleteById(id);
+
+        //then
+        assertThat(resultCount).isNotEqualTo(0);
     }
 }

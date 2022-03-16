@@ -5,8 +5,6 @@ import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.UserDomainException;
 import com.kakao.cafe.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

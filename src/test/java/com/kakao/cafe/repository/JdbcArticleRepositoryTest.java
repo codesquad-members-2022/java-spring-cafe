@@ -30,12 +30,14 @@ class JdbcArticleRepositoryTest {
 
     @Test
     @DisplayName("전체 게시글 목록을 반환한다.")
-    void findAll() {
+    void findAllSuccess() {
+        LocalDate currentDate = LocalDate.now();
+
         //given
-        Article article1 = new Article(1, "writer", "title", "contents", LocalDate.now());
+        Article article1 = new Article(1, "writer", "title", "contents", currentDate);
         repository.save(article1);
 
-        Article article2 = new Article(2, "writer", "title", "contents", LocalDate.now());
+        Article article2 = new Article(2, "writer", "title", "contents", currentDate);
         repository.save(article2);
 
         //when
@@ -47,9 +49,11 @@ class JdbcArticleRepositoryTest {
 
     @Test
     @DisplayName("인자로 주어진 게시글을 저장소에 저장한다.")
-    void persist() {
+    void persistSuccess() {
+        LocalDate currentDate = LocalDate.now();
+
         //given
-        Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
+        Article article = new Article(1, "writer", "title", "contents", currentDate);
 
         //when
         repository.save(article);
@@ -60,11 +64,31 @@ class JdbcArticleRepositoryTest {
     }
 
     @Test
+    @DisplayName("인자로 주어진 게시글을 저장소에 업데이트한다.")
+    void mergeSuccess() {
+        //given
+        LocalDate currentDate = LocalDate.now();
+
+        Article article = new Article(1, "user", "1234", "name", currentDate);
+        repository.save(article);
+
+        //when
+        Article modifiedArticle = new Article(1, "user", "1234", "name", currentDate);
+        repository.save(modifiedArticle);
+
+        //then
+        Article result = repository.findById(modifiedArticle.getId()).get();
+        assertThat(result).usingRecursiveComparison().isEqualTo(modifiedArticle);
+    }
+
+    @Test
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
-    void findById() {
+    void findByIdSuccess() {
+        LocalDate currentDate = LocalDate.now();
+
         //given
         int id = 1;
-        Article article = new Article(id, "writer", "title", "contents", LocalDate.now());
+        Article article = new Article(id, "writer", "title", "contents", currentDate);
         repository.save(article);
 
         //when
@@ -72,5 +96,22 @@ class JdbcArticleRepositoryTest {
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
+    }
+
+    @Test
+    @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 삭제하고 삭제한 게시글의 개수를 반환한다.")
+    void deleteByIdSuccess() {
+        int id = 1;
+        LocalDate currentDate = LocalDate.now();
+
+        //given
+        Article article = new Article(id, "writer", "title", "contents", currentDate);
+        repository.save(article);
+
+        // when
+        int resultCount = repository.deleteById(id);
+
+        //then
+        assertThat(resultCount).isNotEqualTo(0);
     }
 }

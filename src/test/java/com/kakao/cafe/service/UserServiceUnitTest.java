@@ -37,7 +37,7 @@ class UserServiceUnitTest {
 
     @Test
     @DisplayName("사용자 목록을 반환한다.")
-    void searchAll() {
+    void searchAllSuccess() {
         // given
         List<User> users = List.of(
                 new User(1, "user1", "password1", "name1", "user1@gmail.com"),
@@ -77,7 +77,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패한다.")
+    @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패하고 DuplicateUserException 예외가 발생한다.")
     void addFail() {
         NewUserParam newUserParam = new NewUserParam("user", "1234", "name", "user@gmail.com");
 
@@ -106,7 +106,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 다르면 예외가 발생한다.")
+    @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 다르면 UnMatchedPasswordException 예외가 발생한다.")
     void updateFail() {
         ModifiedUserParam modifiedUserParam =
                 new ModifiedUserParam(1, "userId", "1234", "4321",
@@ -134,7 +134,7 @@ class UserServiceUnitTest {
     }
 
     @Test
-    @DisplayName("인자로 받은 userId에 해당하는 사용자가 없으면 예외가 발생한다.")
+    @DisplayName("인자로 받은 userId에 해당하는 사용자가 없으면 NoSuchUserException 예외가 발생한다.")
     void searchFail() {
         String userId = "noExist";
         given(repository.findById(userId)).willReturn(Optional.empty());

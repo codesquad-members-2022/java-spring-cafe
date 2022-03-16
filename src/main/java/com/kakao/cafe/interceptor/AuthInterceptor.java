@@ -1,6 +1,7 @@
 package com.kakao.cafe.interceptor;
 
 import com.kakao.cafe.domain.User;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,9 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("userInfo");
+
         if (user == null) {
-            response.sendRedirect("/error/403");
+            response.sendRedirect("/users/login");
             return false;
         }
 
