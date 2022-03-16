@@ -5,12 +5,14 @@ import com.ttasjwi.cafe.controller.response.UserResponse;
 import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -19,6 +21,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public String join(UserJoinRequest userJoinRequest) {
         validateDuplicateUser(userJoinRequest);
 

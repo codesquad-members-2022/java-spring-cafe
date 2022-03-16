@@ -2,26 +2,27 @@ package com.ttasjwi.cafe.service;
 
 import com.ttasjwi.cafe.controller.request.UserJoinRequest;
 import com.ttasjwi.cafe.controller.response.UserResponse;
-import com.ttasjwi.cafe.domain.user.MemoryUserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@Transactional
 class UserServiceTest {
 
+    @Autowired
     private UserService userService;
-
-    @BeforeEach
-    void setUp() {
-        this.userService = new UserService(new MemoryUserRepository());
-    }
 
     @Test
     @DisplayName("회원가입 -> 성공")
@@ -108,34 +109,4 @@ class UserServiceTest {
                 .isInstanceOf(NoSuchElementException.class);
     }
 
-    @Test
-    @DisplayName("findAll 메서드 호출 -> 모든 사용자 List 반환")
-    void findAllTest() {
-        // given
-        UserJoinRequest userJoinRequest1 =
-                UserJoinRequest.builder()
-                        .userName("test-user1")
-                        .userEmail("test-user1@gmail.com")
-                        .password("1234")
-                        .regDate(LocalDate.now())
-                        .build();
-
-        UserJoinRequest userJoinRequest2 =
-                UserJoinRequest.builder()
-                        .userName("test-user2")
-                        .userEmail("test-user2@gmail.com")
-                        .password("1234")
-                        .regDate(LocalDate.now())
-                        .build();
-
-        userService.join(userJoinRequest1);
-        userService.join(userJoinRequest2);
-
-        // when
-        List<UserResponse> list = userService.findAll();
-        int size = list.size();
-
-        // then
-        assertThat(size).isEqualTo(2);
-    }
 }
