@@ -20,6 +20,14 @@ public class Article {
 		this.localDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT));
 	}
 
+	public Article(Long id, String writer, String title, String content, String localDateTime) {
+		this.id = id;
+		this.writer = writer;
+		this.title = title;
+		this.content = content;
+		this.localDateTime = localDateTime;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -42,10 +50,6 @@ public class Article {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public void setLocalDateTime(String localDateTime) {
-		this.localDateTime = localDateTime;
 	}
 
 	@Override
