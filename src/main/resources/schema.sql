@@ -1,3 +1,5 @@
+drop table IF EXISTS cafe_replies;
+drop table IF EXISTS cafe_articles;
 drop table IF EXISTS cafe_users;
 
 create table cafe_users
@@ -19,10 +21,26 @@ create table cafe_articles
     title varchar(200) not null,
     content varchar(255) not null,
     writing_date DATE not null,
-    cafe_user_id bigint,
-    constraint cafe_user_id
-    foreign key (cafe_user_id )
-    references cafe_users ( id )
+    cafe_users_id bigint,
+    deleted boolean default false,
+    constraint cafe_users_id
+        foreign key (cafe_users_id )
+            references cafe_users ( id )
+);
+
+create table cafe_replies
+(
+    reply_id bigint primary key auto_increment,
+    replier varchar(40) not null,
+    content varchar(255) not null,
+    writing_date DATE not null,
+    cafe_article_id bigint not null,
+    cafe_users_user_id varchar(40) not null,
+    cafe_users_id bigint not null,
+    deleted boolean default false,
+    constraint cafe_article_id
+        foreign key (cafe_article_id )
+            references cafe_articles ( article_id )
 );
 
 -- delete cafe_users;

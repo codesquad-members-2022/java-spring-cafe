@@ -107,3 +107,17 @@
   - 리소스 생성 또는 수정
 
 </details>
+
+
+<br>
+
+
+<details>
+<summary>👻 댓글</summary>
+
+- 로그인 사용자만이 게시글 접근 가능
+- 로그인 사용자만이 댓글 달기 가능
+- 답변은 게시글에 종속
+  - REPLY 접근 URL : questions/{questionId}/reply
+
+</details>

@@ -45,7 +45,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		WRITER("writer", ":writer", ":writer"),
 		TITLE("title", ":title", ":title"),
 		CONTENT("content", ":content", ":content"),
-		FK_CAFE_USER_ID("cafe_user_id", ":cafe_user_id", ":cafeUserId"),
+		FK_CAFE_USER_ID("cafe_users_id", ":cafe_users_id", ":cafeUsersId"),
 		WRITING_DATE("writing_date", ":writingDate", ":writingDate"),
 		COUNT_ALL("COUNT(*)", null, null),
 		NONE(null, null, null);
