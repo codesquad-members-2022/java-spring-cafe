@@ -57,16 +57,16 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{index}/edit")
-    public String updateArticles(@PathVariable int index, Article updateArticle, HttpServletRequest request) {
+    public String updateArticles(@PathVariable Long index, Article updateArticle, HttpServletRequest request) {
         log.info("POST /articles/{}/edit", index);
-        findSessionUser(request.getSession());
+        checkSessionUser(request.getSession());
         articleService.update(index, updateArticle);
         return "redirect:/";
     }
 
     private Article validateSessionUser(int index, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User user = findSessionUser(session);
+        User user = checkSessionUser(session);
         Article article = articleService.showArticle(index);
         if (!article.isYourWriter(user.getUserId())) {
             throw new IllegalArgumentException("[ERROR] 작성한 사용자만 수정할 수 있습니다.");
@@ -74,7 +74,7 @@ public class ArticleController {
         return article;
     }
 
-    private User findSessionUser(HttpSession session) {
+    private User checkSessionUser(HttpSession session) {
         Object value = session.getAttribute("sessionUser");
         if (value == null) {
             throw new IllegalArgumentException("[ERROR] 로그인이 필요합니다.");
