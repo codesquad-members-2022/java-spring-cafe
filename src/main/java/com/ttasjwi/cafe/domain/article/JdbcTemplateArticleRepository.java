@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class JdbcTemplateArticleRepository implements ArticleRepository{
+public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -33,7 +33,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
         Number key = jdbcInsert.executeAndReturnKey(parameters);
 
         Long articleId = key.longValue();
-        article.setArticleId(articleId);
+        article.initArticleId(articleId);
         return articleId;
     }
 
@@ -56,14 +56,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> {
-            Article article = new Article();
-            article.setArticleId(rs.getLong("article_id"));
-            article.setTitle(rs.getString("title"));
-            article.setContent(rs.getString("content"));
-            article.setWriter(rs.getString("writer"));
-            article.setRegDateTime(rs.getTimestamp("reg_date_time").toLocalDateTime());
-            return article;
-        };
+        return (rs, rowNum)
+                -> Article.builder()
+                        .articleId(rs.getLong("article_id"))
+                        .title(rs.getString("title"))
+                        .content(rs.getString("content"))
+                        .writer(rs.getString("writer"))
+                        .regDateTime(rs.getTimestamp("reg_date_time").toLocalDateTime())
+                        .build();
     }
 }

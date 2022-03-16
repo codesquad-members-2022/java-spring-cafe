@@ -1,5 +1,6 @@
 package com.ttasjwi.cafe.service;
 
+import com.ttasjwi.cafe.controller.ArticleWriteRequest;
 import com.ttasjwi.cafe.domain.article.Article;
 import com.ttasjwi.cafe.domain.article.ArticleRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Long saveArticle(Article article) {
+    public Long saveArticle(ArticleWriteRequest articleWriteRequest) {
+        Article article = articleWriteRequest.toEntity();
         articleRepository.save(article);
         return article.getArticleId();
     }

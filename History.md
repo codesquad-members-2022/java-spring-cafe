@@ -356,4 +356,17 @@ HomeController 및 테스트 코드를 추가했다.
 
 - 글 작성 URL에서 전달되는 의미가 모호한 것 같아서, "articles/write"으로 변경했다.
 
+## 3.21 Article - Setter 제거 및 글작성 요청 ArticleWriteRequest 맵핑
+
+1. setter 제거
+   - Article클래스에서 Setter를 웬만한건 다 제거했다.
+   - 아이디 초기화 해주는 부분은 setter가 필요한데 이 부분은 package-private로 지정하고 initArticleId로 생성함
+   - 생성을 한번에 하고 Builder 패턴을 적용하여 생성시 매개변수, 인자를 읽기 편하게 하였다.
+
+2. 글 작성 요청 -> ArticleWriteRequest 맵핑
+   - 가입 시, 외부에서 디폴트 작성자 및 LocalDateTime를 주입했는데 리퀘스트 생성시 자동 초기화되도록 했다.
+   - 글 작성시 바로 엔티티를 생성하지 않고 ArticleWriteRequest에 맵핑되도록 했다.
+   - Service 계층에서 ArticleWriteRequest를 기반으로 엔티티를 생성함.
+   - 이후 제어 흐름상 어떤 검증이나 중간 로직이 필요할 때, Request를 기반으로 검증하면 된다.
+
 ---

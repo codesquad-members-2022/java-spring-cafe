@@ -11,51 +11,79 @@ public class Article {
     private String writer;
     private LocalDateTime regDateTime;
 
-    public Article() {}
+    private Article(ArticleBuilder articleBuilder) {
+        this.articleId = articleBuilder.articleId;
+        this.title = articleBuilder.title;
+        this.content = articleBuilder.content;
+        this.writer = articleBuilder.writer;
+        this.regDateTime = articleBuilder.regDateTime;
+    }
 
-    public Article(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public static ArticleBuilder builder() {
+        return new ArticleBuilder();
+    }
+
+    public static class ArticleBuilder {
+        private Long articleId;
+        private String title;
+        private String content;
+        private String writer;
+        private LocalDateTime regDateTime;
+
+        private ArticleBuilder() {}
+
+        public ArticleBuilder articleId(Long articleId) {
+            this.articleId = articleId;
+            return this;
+        }
+
+        public ArticleBuilder title(String titile) {
+            this.title = titile;
+            return this;
+        }
+
+        public ArticleBuilder content(String content) {
+            this.content = content;
+            return this;
+        }
+
+        public ArticleBuilder writer(String writer) {
+            this.writer = writer;
+            return this;
+        }
+
+        public ArticleBuilder regDateTime(LocalDateTime regDateTime) {
+            this.regDateTime = regDateTime;
+            return this;
+        }
+
+        public Article build() {
+            return new Article(this);
+        }
     }
 
     public Long getArticleId() {
         return articleId;
     }
 
-    public void setArticleId(Long articleId) {
-        this.articleId = articleId;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getWriter() {
         return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public LocalDateTime getRegDateTime() {
         return regDateTime;
     }
 
-    public void setRegDateTime(LocalDateTime regDateTime) {
-        this.regDateTime = regDateTime;
+    void initArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     @Override
@@ -71,13 +99,4 @@ public class Article {
         return Objects.hash(articleId);
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "articleId=" + articleId +
-                ", title='" + title + '\'' +
-                ", writer='" + writer + '\'' +
-                ", regDateTime=" + regDateTime +
-                '}';
-    }
 }

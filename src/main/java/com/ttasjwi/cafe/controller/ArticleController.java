@@ -27,13 +27,9 @@ public class ArticleController {
     }
 
     @PostMapping("/write")
-    public String createArticle(@ModelAttribute Article article) {
-        article.setWriter("anonymous User");
-        article.setRegDateTime(LocalDateTime.now());
-
-        articleService.saveArticle(article);
-
-        log.info("New Article Created: {}", article);
+    public String createArticle(@ModelAttribute ArticleWriteRequest articleWriteRequest) {
+        articleService.saveArticle(articleWriteRequest);
+        log.info("New Article Created: {}", articleWriteRequest);
         return "redirect:/";
     }
 

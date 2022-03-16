@@ -17,7 +17,7 @@ public class MemoryArticleRepository implements ArticleRepository {
      * @return article의 생성된 아이디
      */
     public Long save(Article article) {
-        article.setArticleId(sequence.incrementAndGet());
+        article.initArticleId(sequence.incrementAndGet());
         Long articleId = article.getArticleId();
         storage.put(articleId, article);
         return articleId;

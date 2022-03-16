@@ -42,7 +42,7 @@ public class JdbcArticleRepository implements ArticleRepository{
 
             if (rs.next()) {
                 Long articleId = rs.getLong("article_id");
-                article.setArticleId(articleId);
+                article.initArticleId(articleId);
                 return articleId;
             }
             throw new SQLException("article Id 조회 실패");
@@ -72,7 +72,7 @@ public class JdbcArticleRepository implements ArticleRepository{
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                Article article = getArticleFromResultSet(rs);
+                Article article = buildArticleFromResultSet(rs);
                 return Optional.of(article);
             }
             return Optional.empty();
@@ -103,7 +103,7 @@ public class JdbcArticleRepository implements ArticleRepository{
             List<Article> articles = new ArrayList<>();
 
             while (rs.next()) {
-                Article article = getArticleFromResultSet(rs);
+                Article article = buildArticleFromResultSet(rs);
                 articles.add(article);
             }
             return articles;
@@ -118,14 +118,14 @@ public class JdbcArticleRepository implements ArticleRepository{
         return DataSourceUtils.getConnection(dataSource);
     }
 
-    private Article getArticleFromResultSet(ResultSet rs) throws SQLException {
-        Article article = new Article();
-        article.setArticleId(rs.getLong("article_id"));
-        article.setTitle(rs.getString("title"));
-        article.setContent(rs.getString("content"));
-        article.setWriter(rs.getString("writer"));
-        article.setRegDateTime(rs.getTimestamp("reg_date_time").toLocalDateTime());
-        return article;
+    private Article buildArticleFromResultSet(ResultSet rs) throws SQLException {
+        return Article.builder()
+                .articleId(rs.getLong("article_id"))
+                .title(rs.getString("title"))
+                .content(rs.getString("content"))
+                .writer(rs.getString("writer"))
+                .regDateTime(rs.getTimestamp("reg_date_time").toLocalDateTime())
+                .build();
     }
 
     private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
