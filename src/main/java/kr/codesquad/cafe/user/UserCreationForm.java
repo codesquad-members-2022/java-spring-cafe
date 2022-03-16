@@ -1,4 +1,4 @@
-package kr.codesquad.cafe.users;
+package kr.codesquad.cafe.user;
 
 public class UserCreationForm {
 

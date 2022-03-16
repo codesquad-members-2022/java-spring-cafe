@@ -36,4 +36,40 @@
 - `@EnabaleWebMvc`
   - 인터넷 상의 스프링 예제에는 `WebMvcConfigurer`의 구현체 클래스에 이 애너테이션이 붙은 경우가 자주 있다. 
   - 이 애너테이션을 사용하면 뷰 생성시 스태틱 리소스들을 제대로 불러오지 못하는 현상이 생겼다. 
-  - 스프링 부트의 스프링 MVC 자동 설정을 비활성화시키기 때문이라고 하는데, 정확한 내용은 확인이 필요하다. 
+  - 스프링 부트의 스프링 MVC 자동 설정을 비활성화시키기 때문이라고 하는데, 정확한 내용은 확인이 필요하다.
+
+## 미션 2 - 글 쓰기 기능 구현
+
+### 요구사항
+
+- [x] 사용자는 게시글을 작성할 수 있어야 한다.
+  - 게시글 작성 뷰 템플릿: /qna/form.html
+  - 요청 메서드: POST /questions
+  - 글 등록 후: 글 목록으로 이동 (redirect:/)
+  - ArticleController를 작성하여 요청 처리
+  - 전달받은 값으로 Article 객체 생성
+  - Article 객체는 ArrayList에 저장
+- [x] 모든 사용자는 게시글 목록을 볼 수 있어야 한다.
+  - 메인 페이지(/)에서 게시글 목록 조회
+  - 게시글 목록은 ArrayList를 그대로 전달
+- [x] 모든 사용자는 게시글 상세 내용을 볼 수 있어야 한다.
+  - 게시글 목록의 제목을 클릭했을 때 게시글 상세 내용 표시
+  - 요청 메서드: GET /articles/{index}
+  - 뷰 템플릿: /qna/show.html
+  - index 값은 ArrayList 내부 인덱스 + 1로 한다 (i.e. 1부터 시작한다).
+- [x] (선택) 사용자 정보를 수정할 수 있어야 한다.
+  - 변경가능: 비밀번호, 이름, 이메일 / 변경불가: 유저ID
+  - 비밀번호가 일치해야 변경 가능하다
+  - 회원정보 수정 화면
+    - 회원 목록(/users)에서 진입
+    - 요청 메서드: GET /users/{id}/form
+    - 뷰 템플릿: /users/updateForm.html (/users/form.html을 복사하여 작성할 것)
+    - 기존 정보를 input 기본값(value 속성)으로 전달
+  - 회원정보 수정
+    - 요청 메서드: PUT /users/{id}/update
+    - UserRepository에서 id가 일치하는 사용자를 조회하고 save() 메서드로 업데이트한다.
+    - 수정 후 유저 목록으로 이동 (redirect:/users)
+
+### 구현과정 
+
+- 스프링 부트 2.2 업데이트 이후로 `application.properties` 파일에 `spring.mvc.hiddenmethod.filter.enabled=true`를 추가해야 브라우저가 form의 히든값으로 put 요청을 보내는 것을 인식할 수 있다. 
