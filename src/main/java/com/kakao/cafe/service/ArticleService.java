@@ -26,7 +26,7 @@ public class ArticleService {
         return articleList.stream()
             .map(article -> {
                 int articleId = article.getId();
-                return new ArticleListDto(article, articleId);
+                return ArticleListDto.from(article, articleId);
             })
             .collect(Collectors.toList());
     }

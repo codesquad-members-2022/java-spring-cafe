@@ -9,6 +9,7 @@ import com.kakao.cafe.web.dto.UserRegisterFormDto;
 import com.kakao.cafe.web.dto.UserUpdateFormDto;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class UserService {
 
@@ -33,10 +34,10 @@ public class UserService {
 
     public List<UserListDto> showAll() {
         List<User> userList = userRepository.findAll();
-        return userList.stream()
-            .map(user -> {
-                int userNum = userList.indexOf(user);
-                return UserListDto.from(user, userNum);
+        return IntStream.range(0, userList.size())
+            .mapToObj(index -> {
+                User user = userList.get(index);
+                return UserListDto.from(user, index);
             })
             .collect(Collectors.toList());
     }

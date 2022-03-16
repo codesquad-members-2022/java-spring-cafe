@@ -6,26 +6,19 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.User.UserBuilder;
 import java.util.List;
 import javax.sql.DataSource;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+@JdbcTest
 class JdbcTemplateUserRepositoryTest {
 
     UserRepository userRepository;
-    DataSource dataSource;
 
-    @BeforeEach
-    void setup() {
-        // "sql/data.sql" 파일의 아래 SQL 문을 통해 테스트 데이터 2개 추가
-        //  INSERT INTO USERS VALUES ('ID1','PW1','NAME1','1@1.com');
-        //  INSERT INTO USERS VALUES ('ID2','PW2','NAME2','2@2.com');
-        dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-            .addScripts("classpath:sql/schema.sql", "classpath:sql/data.sql")
-            .build();
-        userRepository = new JdbcTemplateUserRepository(dataSource);
+    @Autowired
+    public JdbcTemplateUserRepositoryTest(DataSource dataSource) {
+        this.userRepository = new JdbcTemplateUserRepository(dataSource);
     }
 
     @Test
