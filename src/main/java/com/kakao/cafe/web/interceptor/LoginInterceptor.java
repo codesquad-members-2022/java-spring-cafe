@@ -1,5 +1,6 @@
 package com.kakao.cafe.web.interceptor;
 
+import com.kakao.cafe.web.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,7 +19,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
 
-        if (session == null || session.getAttribute("SESSIONED_USER") == null) {
+        if (session == null || session.getAttribute(SessionConst.SESSIONED_USER) == null) {
             log.info("로그인 하지 않은 사용자의 요청 : {}", requestURI);
             response.sendRedirect("/login?redirectURL=" + requestURI);
             return false;

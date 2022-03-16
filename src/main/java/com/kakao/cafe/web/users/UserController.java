@@ -2,6 +2,7 @@ package com.kakao.cafe.web.users;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.SessionConst;
 import com.kakao.cafe.web.validation.UserValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +87,7 @@ public class UserController {
             return "/user/updateForm";
         }
 
-        Object value = session.getAttribute("SESSIONED_USER"); // 로그인한 사용자 만 수정 가능
+        Object value = session.getAttribute(SessionConst.SESSIONED_USER); // 로그인한 사용자 만 수정 가능
 //        if(value == null) { // 세션이 없다면 예외처리
 //            throw new AuthenticationException("로그인 하지 않은 사용자 입니다.");
 //        }

@@ -13,7 +13,7 @@
 ## Step05 리뷰 내용 수정 사항
 
 - [ ] Save, Delete 시 Long 값을 반환하게 했던 이유 고민해보기
-- [ ] SESSIONED_USER 는 상수로 관리하기
+- [x] SESSIONED_USER 는 상수로 관리하기
 - [ ] sessioned_user 변수명 camelCase 로 변경 (변경을 좀 하자면요ㅠ,ㅠ 인텔리제이 자동완성...)
 - [ ] PUT 방식으로 변경해 보기
 

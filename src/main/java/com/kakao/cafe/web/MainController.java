@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
-    private static final String LOGIN_USER_KEY = "SESSIONED_USER";
     private final ArticleService articleService;
 
     public MainController(ArticleService articleService) {
@@ -27,7 +26,7 @@ public class MainController {
             return "index";
         }
 
-        User loginUser = (User) session.getAttribute(LOGIN_USER_KEY);
+        User loginUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
 
         if (loginUser == null) {
             return "index";

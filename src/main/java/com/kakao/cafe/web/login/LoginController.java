@@ -2,6 +2,7 @@ package com.kakao.cafe.web.login;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.LoginService;
+import com.kakao.cafe.web.SessionConst;
 import com.kakao.cafe.web.login.dto.LoginDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,6 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
-
-    private static final String LOGIN_USER_KEY = "SESSIONED_USER";
     private final LoginService loginService;
     private final Logger log = LoggerFactory.getLogger(LoginController.class);
 
@@ -58,7 +57,7 @@ public class LoginController {
         // 세션이 필요한 시점에 생성하도록 배치
         HttpSession session = request.getSession();
         // 세션에 회원 저장
-        session.setAttribute(LOGIN_USER_KEY, findUser);
+        session.setAttribute(SessionConst.SESSIONED_USER, findUser);
         log.info("로그인 성공 : {}", findUser);
 
         return "redirect:" + redirectURL;
