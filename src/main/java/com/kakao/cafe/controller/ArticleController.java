@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String showAllArticle(Model model) {
         log.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
         return "index";
@@ -42,14 +43,14 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{index}")
-    public String showArticles(@PathVariable int index, Model model) {
+    public String showArticle(@PathVariable int index, Model model) {
         log.info("GET /articles/{}", index);
         model.addAttribute("article", articleService.showArticle(index));
         return "qna/showQna";
     }
 
     @GetMapping("/articles/{index}/edit")
-    public String editArticles(@PathVariable int index, HttpServletRequest request, Model model) {
+    public String editArticle(@PathVariable int index, HttpServletRequest request, Model model) {
         log.info("GET /articles/{}/edit", index);
         Article article = validateSessionUser(index, request);
         model.addAttribute("article", article);
@@ -57,11 +58,18 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{index}/edit")
-    public String updateArticles(@PathVariable Long index, Article updateArticle, HttpServletRequest request) {
+    public String updateArticle(@PathVariable Long index, Article updateArticle, HttpServletRequest request) {
         log.info("POST /articles/{}/edit", index);
         checkSessionUser(request.getSession());
         articleService.update(index, updateArticle);
         return "redirect:/";
+    }
+
+    @DeleteMapping("/articles/{index}")
+    public String deleteArticle() {
+        // TODO
+
+        return null;
     }
 
     private Article validateSessionUser(int index, HttpServletRequest request) {
