@@ -13,7 +13,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-class JdbcTemplateArticleRepositorsyTest {
+class JdbcTemplateArticleRepositoryTest {
 
     @Autowired DataSource dataSource;
     private ArticleRepository repository;
