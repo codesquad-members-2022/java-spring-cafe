@@ -302,8 +302,8 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
 ### 구현 요구사항
 
-- [ ] RestController 와 AJAX로 구현한다.
-- [ ] 데이터베이스는 MySQL 8.0을 이용한다.
+- [X] RestController 와 AJAX로 구현한다.
+- [X] 데이터베이스는 MySQL 8.0을 이용한다.
 
 ### 배포 요구사항
 
@@ -314,7 +314,7 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 ### 추가 요구 사항
 
 - [X] 새로운 답변을 추가하는 기능을 AJAX로 구현한다.
-- [ ] 답변 삭제하는 기능을 AJAX로 구현한다.
+- [X] 답변 삭제하는 기능을 AJAX로 구현한다.
 
 <br/>
 </div>
