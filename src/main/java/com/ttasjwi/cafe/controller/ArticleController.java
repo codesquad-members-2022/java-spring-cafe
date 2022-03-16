@@ -21,12 +21,12 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/new")
+    @GetMapping("/write")
     public String createArticleForm() {
         return "/articles/createArticleForm";
     }
 
-    @PostMapping("/new")
+    @PostMapping("/write")
     public String createArticle(@ModelAttribute Article article) {
         article.setWriter("anonymous User");
         article.setRegDateTime(LocalDateTime.now());

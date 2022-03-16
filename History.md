@@ -352,4 +352,8 @@ HomeController 및 테스트 코드를 추가했다.
 
 - UserJoinRequest를 검증후, 엔티티 생성하도록 코드 순서를 변경했다.
 
+## 3.20 URL 변경 - "articles/new" -> "articles/write"
+
+- 글 작성 URL에서 전달되는 의미가 모호한 것 같아서, "articles/write"으로 변경했다.
+
 ---
