@@ -20,14 +20,19 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li id="postButton"><a href="/" role="button">Posts</a></li>
+                {{^currentUser}}
                 <li id="loginButton"><a href="/login" role="button">로그인</a></li>
                 <li id="joinButton"><a href="/join" role="button">회원가입</a></li>
                 <!--
                 <li><a href="#loginModal" role="button" data-toggle="modal">로그인</a></li>
                 <li><a href="#registerModal" role="button" data-toggle="modal">회원가입</a></li>
                 -->
-                <li id="logoutButton"><a href="#" role="button">로그아웃</a></li>
+                {{/currentUser}}
+                {{#currentUser}}
+                <li id="logoutButton"><form id="logoutForm" method="post" action="/logout"></form>
+                    <a href="#" role="button" onclick=submitLogout()>로그아웃</a></li>
                 <li id="modifyProfileButton"><a href="#" role="button">개인정보수정</a></li>
+                {{/currentUser}}
             </ul>
         </div>
     </div>
@@ -42,4 +47,8 @@
             activeButton.setAttribute("class", "active");
         }
     })();
+
+    function submitLogout() {
+        document.getElementById("logoutForm").submit();
+    }
 </script>

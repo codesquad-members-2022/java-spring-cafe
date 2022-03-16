@@ -41,6 +41,10 @@ public class UserService {
         session.setAttribute(CURRENT_USER, user);
     }
 
+    public void logout(HttpSession session) {
+        session.removeAttribute(CURRENT_USER);
+    }
+
     private void validatePassword(User user, String oldPassword) {
         if (findByUserId(user.getUserId()).passwordIs(oldPassword)) {
             return;
@@ -88,4 +92,5 @@ public class UserService {
         return repository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
     }
+
 }
