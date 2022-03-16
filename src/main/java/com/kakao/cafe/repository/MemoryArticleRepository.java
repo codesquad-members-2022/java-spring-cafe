@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private static final List<Article> store = Collections.synchronizedList(new ArrayList<>());
