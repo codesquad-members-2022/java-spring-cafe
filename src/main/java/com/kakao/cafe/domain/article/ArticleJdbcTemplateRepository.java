@@ -50,6 +50,12 @@ public class ArticleJdbcTemplateRepository implements ArticleRepository {
         return result.stream().findAny();
     }
 
+    @Override
+    public void deleteById(Long id) {
+        String query = "delete from article where id = " + id;
+        jdbcTemplate.update(query);
+    }
+
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             long id = rs.getLong("id");

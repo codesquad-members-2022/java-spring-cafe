@@ -35,4 +35,9 @@ public class ArticleMemoryRepository implements ArticleRepository {
     public Optional<Article> findById(Long id) {
         return articleList.stream().filter(m -> m.isTheSameId(id)).findFirst();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        articleList.remove(id.intValue());
+    }
 }
