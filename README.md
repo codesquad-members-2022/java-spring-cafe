@@ -14,6 +14,8 @@ aws ec2 배포 링크 : <http://ec2-3-38-116-172.ap-northeast-2.compute.amazonaw
 
 ### heroku
 
+`local` 프로필 및 `schema-h2.sql` 사용 (Embedded 타입 H2 연결)
+
 ```shell
 git checkout main
 git rebase <branch_name>
@@ -21,6 +23,8 @@ git push heroku main
 ```
 
 ### AWS EC2
+
+`prod` 프로필 및 `schema-mysql.sql` 사용 (EC2 인스턴스 내 mysql-server 연결)
 
 ```shell
 nohup java -Dspring.profiles.active=prod -jar cafe-0.0.1-SNAPSHOT.jar
@@ -325,7 +329,7 @@ nohup java -Dspring.profiles.active=prod -jar cafe-0.0.1-SNAPSHOT.jar
 <div markdown="1">
 <br/>
 
-## 스프링 카페 6단계 - 게시글 권한 부여
+## 스프링 카페 7단계 - 게시글 권한 부여
 
 ### 구현 요구사항
 
