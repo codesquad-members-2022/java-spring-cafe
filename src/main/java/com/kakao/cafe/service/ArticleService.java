@@ -23,7 +23,7 @@ public class ArticleService {
         return repository.save(articleDto.convertToArticle());
     }
 
-    public Article findSingleArticle(Long id) {
+    public Article findSingleArticle(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("해당 아티클이 존재하지 않습니다."));
     }

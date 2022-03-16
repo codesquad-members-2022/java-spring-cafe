@@ -15,13 +15,13 @@ public class ArticleMemoryRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        article.setId(store.size() + 1L);
+        article.setId(store.size() + 1);
         store.add(article);
         return article;
     }
 
     @Override
-    public Optional<Article> findById(Long id) {
+    public Optional<Article> findById(Integer id) {
         return store.stream().filter(article -> article.getId().equals(id)).findAny();
     }
 

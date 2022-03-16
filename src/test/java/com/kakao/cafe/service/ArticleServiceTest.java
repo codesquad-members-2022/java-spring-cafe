@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.article.ArticleDto;
 import com.kakao.cafe.repository.article.ArticleMemoryRepository;
 import com.kakao.cafe.repository.article.ArticleRepository;
-import com.kakao.cafe.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +47,7 @@ public class ArticleServiceTest {
     @Test
     @DisplayName("찾는 데이터가 없으면 예외를 던진다.")
     void notFoundException() {
-        assertThatThrownBy(() -> service.findSingleArticle(10L))
+        assertThatThrownBy(() -> service.findSingleArticle(10))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("해당 아티클이 존재하지 않습니다.");
     }
