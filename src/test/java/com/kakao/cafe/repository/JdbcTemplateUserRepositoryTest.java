@@ -1,23 +1,29 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@Transactional
+@JdbcTest
 class JdbcTemplateUserRepositoryTest {
 
-    @Autowired UserRepository userRepository;
+    @Autowired DataSource dataSource;
+    private UserRepository userRepository;
+
+    @BeforeEach
+    void setUp() {
+        userRepository = new JdbcTemplateUserRepository(dataSource);
+    }
 
     @Nested
     @DisplayName("save 메소드는")
