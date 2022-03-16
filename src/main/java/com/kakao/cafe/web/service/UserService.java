@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.service;
 
 import com.kakao.cafe.web.domain.user.User;
-import com.kakao.cafe.web.domain.user.UserDto;
+import com.kakao.cafe.web.controller.UserDto;
 import com.kakao.cafe.web.repository.user.UserRepository;
 import java.util.List;
 import java.util.Optional;

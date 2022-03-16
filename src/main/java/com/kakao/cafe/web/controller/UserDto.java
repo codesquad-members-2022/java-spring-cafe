@@ -1,4 +1,6 @@
-package com.kakao.cafe.web.domain.user;
+package com.kakao.cafe.web.controller;
+
+import com.kakao.cafe.web.domain.user.User;
 
 public class UserDto {
 
