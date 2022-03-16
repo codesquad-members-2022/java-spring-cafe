@@ -18,8 +18,9 @@ public class UserService {
     }
 
     public String join(UserJoinRequest userJoinRequest) {
+        validateDuplicateUser(userJoinRequest);
+
         User user = userJoinRequest.toEntity();
-        validateDuplicateUser(user);
         userRepository.save(user);
         return user.getUserName();
     }
@@ -33,13 +34,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private void validateDuplicateUser(User user) {
-        validateDuplicateUserName(user);
-        validateDuplicateUserEmail(user);
+    private void validateDuplicateUser(UserJoinRequest userJoinRequest) {
+        validateDuplicateUserName(userJoinRequest);
+        validateDuplicateUserEmail(userJoinRequest);
     }
 
-    private void validateDuplicateUserName(User user) {
-        String userName = user.getUserName();
+    private void validateDuplicateUserName(UserJoinRequest userJoinRequest) {
+        String userName = userJoinRequest.getUserName();
         userRepository.findByUserName(userName)
                 .ifPresent(u -> {
                             throw new IllegalStateException("중복되는 이름이 존재합니다.");
@@ -47,8 +48,8 @@ public class UserService {
                 );
     }
 
-    private void validateDuplicateUserEmail(User user) {
-        String userEmail = user.getUserEmail();
+    private void validateDuplicateUserEmail(UserJoinRequest userJoinRequest) {
+        String userEmail = userJoinRequest.getUserEmail();
         userRepository.findByUserEmail(userEmail)
                 .ifPresent(u -> {
                     throw new IllegalStateException("중복되는 이메일이 존재합니다.");
