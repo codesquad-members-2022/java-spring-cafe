@@ -23,4 +23,8 @@ public class UserResponseDto {
     public String getEmail() {
         return email;
     }
+
+    public boolean hasSameUserId(String userId) {
+        return this.userId.equals(userId);
+    }
 }

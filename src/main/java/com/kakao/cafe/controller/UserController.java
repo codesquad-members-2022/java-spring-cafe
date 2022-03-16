@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.service.UserService;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/form")
-    public String updateForm(@PathVariable String id, Model model) {
+    public String getUpdateForm(@PathVariable String id, HttpSession session, Model model) {
+        userService.validateSessionOfUser(id, session);
         model.addAttribute("user", userService.findOne(id));
 
         return "user/updateForm";
@@ -51,5 +53,20 @@ public class UserController {
         userService.update(id, userRequestDto);
 
         return "redirect:/users";
+    }
+
+    @PostMapping("/user/login")
+    public String login(String userId, String password, HttpSession session) {
+        userService.validateUser(userId, password);
+        session.setAttribute("sessionUser", userService.findOne(userId));
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/user/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/";
     }
 }
