@@ -4,6 +4,8 @@
 
 heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
+aws ec2 배포 링크 : <http://ec2-3-38-116-172.ap-northeast-2.compute.amazonaws.com:8080/>
+
 <br/>
 <details>
 <summary> API 명세</summary>
@@ -307,9 +309,9 @@ heroku 배포 링크 : <https://java-spring-cafe.herokuapp.com>
 
 ### 배포 요구사항
 
-- [ ] AWS EC2로 배포한다.
-- [ ] 배포 IP를 README에 기술한다.
-- [ ] 데이터베이스와 같은 인스턴스를 사용한다.
+- [X] AWS EC2로 배포한다.
+- [X] 배포 IP를 README에 기술한다.
+- [X] 데이터베이스와 같은 인스턴스를 사용한다.
 
 ### 추가 요구 사항
 

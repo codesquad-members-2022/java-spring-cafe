@@ -1,4 +1,4 @@
--- DDL
+-- DDL for H2
 
 DROP TABLE IF EXISTS article CASCADE;
 
