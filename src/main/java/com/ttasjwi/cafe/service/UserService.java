@@ -19,7 +19,6 @@ public class UserService {
 
     public String join(User user) {
         validateDuplicateUser(user);
-        user.setRegDate(LocalDate.now());
         userRepository.save(user);
         return user.getUserName();
     }

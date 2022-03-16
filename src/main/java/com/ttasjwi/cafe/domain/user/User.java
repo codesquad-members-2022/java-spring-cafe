@@ -10,44 +10,71 @@ public class User {
     private String password;
     private LocalDate regDate;
 
-    public User() {}
-
     public User(String userName, String userEmail, String password) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.password = password;
+        this.regDate = LocalDate.now();
+    }
+
+    private User(UserBuilder userBuilder) {
+        this.userName = userBuilder.userName;
+        this.userEmail = userBuilder.userEmail;
+        this.password = userBuilder.password;
+        this.regDate = userBuilder.regDate;
+    }
+
+    public static UserBuilder builder() {
+        return new UserBuilder();
+    }
+
+    public static class UserBuilder {
+        private String userName;
+        private String userEmail;
+        private String password;
+        private LocalDate regDate;
+
+        private UserBuilder() {}
+
+        public UserBuilder userName(String userName) {
+            this.userName = userName;
+            return this;
+        }
+
+        public UserBuilder userEmail(String userEmail) {
+            this.userEmail = userEmail;
+            return this;
+        }
+
+        public UserBuilder password(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserBuilder regDate(LocalDate regDate) {
+            this.regDate = regDate;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
     }
 
     public String getUserName() {
         return userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getUserEmail() {
         return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public LocalDate getRegDate() {
         return regDate;
-    }
-
-    public void setRegDate(LocalDate regDate) {
-        this.regDate = regDate;
     }
 
     @Override
@@ -65,10 +92,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "{" +
+        return "User{" +
                 "userName='" + userName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
-                ", password='" + password + '\'' +
                 ", regDate=" + regDate +
                 '}';
     }

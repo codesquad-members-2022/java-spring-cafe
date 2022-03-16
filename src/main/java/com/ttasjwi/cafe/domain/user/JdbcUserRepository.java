@@ -51,8 +51,8 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUserName(String userName) {
         String sql =
                 "SELECT user_name, user_email, password, reg_date\n" +
-                "FROM user\n" +
-                "WHERE user_name= ?";
+                        "FROM user\n" +
+                        "WHERE user_name= ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -66,11 +66,7 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                User user = new User();
-                user.setUserName(rs.getString("user_name"));
-                user.setUserEmail(rs.getString("user_email"));
-                user.setPassword(rs.getString("password"));
-                user.setRegDate(rs.getDate("reg_date").toLocalDate());
+                User user = buildUserFromResultSet(rs);
                 return Optional.of(user);
             }
             return Optional.empty();
@@ -85,8 +81,8 @@ public class JdbcUserRepository implements UserRepository {
     public Optional<User> findByUserEmail(String userEmail) {
         String sql =
                 "SELECT user_name, user_email, password, reg_date\n" +
-                "FROM user\n" +
-                "WHERE user_email= ?";
+                        "FROM user\n" +
+                        "WHERE user_email= ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -101,11 +97,7 @@ public class JdbcUserRepository implements UserRepository {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                User user = new User();
-                user.setUserName(rs.getString("user_name"));
-                user.setUserEmail(rs.getString("user_email"));
-                user.setPassword(rs.getString("password"));
-                user.setRegDate(rs.getDate("reg_date").toLocalDate());
+                User user = buildUserFromResultSet(rs);
                 return Optional.of(user);
             }
             return Optional.empty();
@@ -121,7 +113,7 @@ public class JdbcUserRepository implements UserRepository {
 
         String sql =
                 "SELECT user_name, user_email, password, reg_date\n" +
-                "FROM user";
+                        "FROM user";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -136,11 +128,7 @@ public class JdbcUserRepository implements UserRepository {
             List<User> users = new ArrayList<>();
 
             while (rs.next()) {
-                User user = new User();
-                user.setUserName(rs.getString("user_name"));
-                user.setUserEmail(rs.getString("user_email"));
-                user.setPassword(rs.getString("password"));
-                user.setRegDate(rs.getDate("reg_date").toLocalDate());
+                User user = buildUserFromResultSet(rs);
                 users.add(user);
             }
             return users;
@@ -153,6 +141,15 @@ public class JdbcUserRepository implements UserRepository {
 
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
+    }
+
+    private User buildUserFromResultSet(ResultSet rs) throws SQLException {
+        return User.builder()
+                .userName(rs.getString("user_name"))
+                .userEmail(rs.getString("user_email"))
+                .password(rs.getString("password"))
+                .regDate(rs.getDate("reg_date").toLocalDate())
+                .build();
     }
 
     private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {

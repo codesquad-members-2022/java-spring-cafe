@@ -324,4 +324,14 @@ HomeController 및 테스트 코드를 추가했다.
 > UNIQUE (user_name, user_email)
 - 사용자 이름, 이메일에 유니크 제약 추가
 
+## 3.15 User 클래스 - Setter 제거, Builder패턴 적용
+
+- User클래스에서 Setter를 제거했다.
+- 생성을 한번에 하고 Builder 패턴을 적용하여 생성시 매개변수, 인자를 읽기 편하게 하였다.
+- 만약 변경을 해야한다면 setter 비슷한 역할을 하는 메서드를 생성해야하는데 이는 package-private로 처리할 예정이다. (Repository)
+- 가입 시, 외부에서 LocalDate를 주입했는데 생성시 자동 초기화되도록 했다.
+
+---
+
+
 ---

@@ -64,13 +64,12 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     private RowMapper<User> userRowMapper() {
-        return (rs, rowNum) -> {
-            User user = new User();
-            user.setUserName(rs.getString("user_name"));
-            user.setUserEmail(rs.getString("user_email"));
-            user.setPassword(rs.getString("password"));
-            user.setRegDate(rs.getDate("reg_date").toLocalDate());
-            return user;
-        };
+        return (rs, rowNum)
+                -> User.builder()
+                    .userName(rs.getString("user_name"))
+                    .userEmail(rs.getString("user_email"))
+                    .password(rs.getString("password"))
+                    .regDate(rs.getDate("reg_date").toLocalDate())
+                    .build();
     }
 }

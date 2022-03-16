@@ -1,8 +1,7 @@
 package com.ttasjwi.cafe.service;
 
-import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.domain.user.MemoryUserRepository;
-import org.assertj.core.api.SoftAssertions;
+import com.ttasjwi.cafe.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class UserServiceTest {
 
@@ -25,7 +25,11 @@ class UserServiceTest {
     @DisplayName("회원가입 -> 성공")
     void joinSuccessTest() {
         // given
-        User user = new User("ttasjwi", "ttasjwi920@gmail.com", "1234");
+        User user = User.builder()
+                .userName("test-user1")
+                .userEmail("test-user1@gmail.com")
+                .password("1234")
+                .build();
 
         // when
         userService.join(user);
@@ -39,41 +43,42 @@ class UserServiceTest {
     @DisplayName("이름 중복 회원가입 -> 실패")
     void joinDuplicatedUserNameTest() {
         //given
-        User user1 = new User("ttasjwi", "ttasjwi920@gmail.com", "1234");
+        User user1 = User.builder()
+                .userName("test-user1")
+                .userEmail("test-user1@gmail.com")
+                .build();
 
-        User user2 = new User();
-        user2.setUserName(user1.getUserName());
+        User user2 = User.builder()
+                .userName(user1.getUserName())
+                .userEmail("test-user2@gmail.com")
+                .build();
+
         userService.join(user1);
 
         //when & then
-        SoftAssertions softAssertions = new SoftAssertions();
-
-        softAssertions.assertThatThrownBy(()->userService.join(user2))
-                .hasMessageContaining("중복되는 이름")
+        assertThatThrownBy(()->userService.join(user2))
                 .isInstanceOf(IllegalStateException.class);
-
-        softAssertions.assertAll();
     }
 
     @Test
     @DisplayName("이메일 중복 회원가입 -> 실패")
     void joinDuplicatedUserEmailTest() {
         //given
-        User user1 = new User("ttasjwi", "ttasjwi920@gmail.com", "1234");
+        User user1 = User.builder()
+                .userName("test-user1")
+                .userEmail("test-user1@gmail.com")
+                .build();
 
-        User user2 = new User();
-        user2.setUserName("honux");
-        user2.setUserEmail(user1.getUserEmail());
+        User user2 = User.builder()
+                .userName("test-user2")
+                .userEmail(user1.getUserEmail())
+                .build();
+
         userService.join(user1);
 
         //when & then
-        SoftAssertions softAssertions = new SoftAssertions();
-        
-        softAssertions.assertThatThrownBy(()->userService.join(user2))
-                .hasMessageContaining("중복되는 이메일")
+        assertThatThrownBy(()->userService.join(user2))
                 .isInstanceOf(IllegalStateException.class);
-        
-        softAssertions.assertAll();
     }
 
     @Test
@@ -83,12 +88,8 @@ class UserServiceTest {
         String findUserName = "spring";
 
         // when & then
-        SoftAssertions softAssertions = new SoftAssertions();
-        softAssertions.assertThatThrownBy(() -> userService.findByUserName(findUserName))
-                .hasMessageContaining("그런 회원은 존재하지 않습니다.")
+        assertThatThrownBy(() -> userService.findByUserName(findUserName))
                 .isInstanceOf(NoSuchElementException.class);
-
-        softAssertions.assertAll();
     }
 
     @Test
