@@ -1,6 +1,4 @@
-package com.ttasjwi.cafe.repository;
-
-import com.ttasjwi.cafe.domain.Article;
+package com.ttasjwi.cafe.domain.article;
 
 import java.util.List;
 import java.util.Optional;

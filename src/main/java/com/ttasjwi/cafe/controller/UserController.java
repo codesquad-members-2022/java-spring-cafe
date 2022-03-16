@@ -1,6 +1,6 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.domain.User;
+import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

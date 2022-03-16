@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.service;
 
-import com.ttasjwi.cafe.domain.User;
-import com.ttasjwi.cafe.repository.UserRepository;
+import com.ttasjwi.cafe.domain.user.User;
+import com.ttasjwi.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;

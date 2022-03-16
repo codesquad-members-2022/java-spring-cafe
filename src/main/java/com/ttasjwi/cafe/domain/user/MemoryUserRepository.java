@@ -1,6 +1,4 @@
-package com.ttasjwi.cafe.repository;
-
-import com.ttasjwi.cafe.domain.User;
+package com.ttasjwi.cafe.domain.user;
 
 import java.util.ArrayList;
 import java.util.List;

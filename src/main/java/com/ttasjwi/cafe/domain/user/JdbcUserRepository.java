@@ -1,8 +1,6 @@
-package com.ttasjwi.cafe.repository;
+package com.ttasjwi.cafe.domain.user;
 
-import com.ttasjwi.cafe.domain.User;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.sql.Date.*;
+import static java.sql.Date.valueOf;
 
 public class JdbcUserRepository implements UserRepository {
 

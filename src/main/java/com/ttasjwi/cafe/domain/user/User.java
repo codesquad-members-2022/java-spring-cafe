@@ -1,4 +1,4 @@
-package com.ttasjwi.cafe.domain;
+package com.ttasjwi.cafe.domain.user;
 
 import java.time.LocalDate;
 import java.util.Objects;

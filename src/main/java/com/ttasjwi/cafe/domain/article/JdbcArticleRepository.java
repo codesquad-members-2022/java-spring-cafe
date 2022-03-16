@@ -1,8 +1,6 @@
-package com.ttasjwi.cafe.repository;
+package com.ttasjwi.cafe.domain.article;
 
-import com.ttasjwi.cafe.domain.Article;
 import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;

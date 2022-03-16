@@ -1,6 +1,5 @@
-package com.ttasjwi.cafe.repository;
+package com.ttasjwi.cafe.domain.user;
 
-import com.ttasjwi.cafe.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;

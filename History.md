@@ -317,4 +317,7 @@ HomeController 및 테스트 코드를 추가했다.
 - JdbcTemplate 방식의 JdbcTemplateArticleRepository를 생성
 - ArticleRepository 구현체 변경 : JdbcArticleRepository -> JdbcTemplateArticleRepository
 
+## 3.13 Repository 계층을 엔티티와 같은 패키지에 둠
+- 엔티티(데이터베이스에 맞닿는 객체)의 상태 변경은 레포지토리에서 이루어지므로, 이들을 같은 패키지에서 두는게 맞다는 생각에 같은 패키지에 두었다.
+
 ---

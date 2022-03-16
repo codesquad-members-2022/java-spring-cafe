@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.service;
 
-import com.ttasjwi.cafe.domain.Article;
-import com.ttasjwi.cafe.repository.ArticleRepository;
+import com.ttasjwi.cafe.domain.article.Article;
+import com.ttasjwi.cafe.domain.article.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,5 @@
-package com.ttasjwi.cafe.repository;
+package com.ttasjwi.cafe.domain.article;
 
-import com.ttasjwi.cafe.domain.Article;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
