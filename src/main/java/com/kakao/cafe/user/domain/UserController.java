@@ -117,6 +117,7 @@ public class UserController {
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
+		logger.error("error of request user : {}", exception);
 		String requestURI = request.getRequestURI();
 		ModelAndView mav = new ModelAndView(requestURI);
 		mav.addObject("message", exception.getMessage());

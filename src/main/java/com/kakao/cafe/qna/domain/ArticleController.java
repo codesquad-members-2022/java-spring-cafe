@@ -22,14 +22,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kakao.cafe.reply.domain.ReplyService;
+
 @Controller
 @RequestMapping("/questions")
 public class ArticleController {
 	private final ArticleService articleService;
+	private final ReplyService replyService;
 	private Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
-	public ArticleController(ArticleService articleService) {
+	public ArticleController(ArticleService articleService, ReplyService replyService) {
 		this.articleService = articleService;
+		this.replyService = replyService;
 	}
 
 	@GetMapping()
@@ -63,6 +67,7 @@ public class ArticleController {
 		}
 		logger.info("request details of question: {}", id);
 		model.addAttribute("question", articleService.read(id));
+		model.addAttribute("replies", replyService.getListOfReplyByArticle(id));
 		return "qna/show";
 	}
 

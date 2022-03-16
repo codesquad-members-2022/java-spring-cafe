@@ -1,6 +1,8 @@
 package com.kakao.cafe.reply.domain;
 
+import static com.kakao.cafe.common.utils.StringValidator.*;
 import static com.kakao.cafe.common.utils.TypeConvertor.*;
+import static com.kakao.cafe.user.domain.UserDto.*;
 
 import java.time.LocalDate;
 
@@ -21,7 +23,6 @@ public class ReplyDto {
 			this.replyWritingDate = reply.getWritingDate();
 			this.userId = reply.getCafeUsersId();
 		}
-
 		public String getReplyId() {
 			return replyId;
 		}
