@@ -22,12 +22,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/new")
+    @GetMapping("/join")
     public String createForm() {
         return "/users/createUserForm";
     }
 
-    @PostMapping("/new")
+    @PostMapping("/join")
     public String create(@ModelAttribute UserJoinRequest userJoinRequest) {
         userService.join(userJoinRequest);
         log.info("User Join Success : {}", userJoinRequest);

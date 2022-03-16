@@ -22,9 +22,9 @@ class UserControllerTest {
     private UserService userService;
 
     @Test
-    @DisplayName("\"/users/new\"로 GET 요청하면 \"/users/createUserForm\" 이 반환된다.")
+    @DisplayName("\"/users/join\"으로 GET 요청하면 \"/users/createUserForm\" 이 반환된다.")
     void createFormTest() throws Exception {
-        String requestUrl = "/users/new";
+        String requestUrl = "/users/join";
 
         mockMvc.perform(get(requestUrl))
                 .andExpect(status().isOk())
@@ -32,9 +32,9 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("\"/users/new\"로 POST 요청하면 \"/users\" 로 리다이렉트 된다.")
+    @DisplayName("\"/users/join\"로 POST 요청하면 \"/users\" 로 리다이렉트 된다.")
     void createTest() throws Exception {
-        String requestUrl = "/users/new";
+        String requestUrl = "/users/join";
 
         mockMvc.perform(post(requestUrl)
                         .param("userName","ttasjwi")

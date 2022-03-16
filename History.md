@@ -344,4 +344,8 @@ HomeController 및 테스트 코드를 추가했다.
 - 회원 가입시 바로 엔티티를 생성하지 않고 UserJoinRequest에 맵핑되도록 했다.
 - Service 계층에서는 UserJoinRequest를 인자로 하여 생성하도록 했다.
 
+## 3.18 URL 변경 - "users/new" -> "user/join"
+
+- 회원 가입 URL에서 전달되는 의미가 모호한 것 같아서, "user/join"으로 변경했다.
+
 ---
