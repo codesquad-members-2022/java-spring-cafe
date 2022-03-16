@@ -5,28 +5,18 @@ import java.time.LocalDateTime;
 
 public class UserDto {
 
-    private Long id;
-    private String nickname;
+    private String userId;
     private String email;
     private LocalDateTime createdAt;
 
-    public UserDto(Long id, String nickname, String email, LocalDateTime createdAt) {
-        this.id = id;
-        this.nickname = nickname;
-        this.email = email;
-        this.createdAt = createdAt;
+    public UserDto(User user) {
+        this.userId = user.getUserId();
+        this.email = user.getEmail();
+        this.createdAt = user.getCreatedAt();
     }
 
-    public static UserDto from(User user) {
-        return new UserDto(user.getId(), user.getNickname(), user.getEmail(), user.getCreatedAt());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNickname() {
-        return nickname;
+    public String getUserId() {
+        return userId;
     }
 
     public String getEmail() {

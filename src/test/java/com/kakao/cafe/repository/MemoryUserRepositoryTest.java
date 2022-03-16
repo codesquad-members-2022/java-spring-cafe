@@ -15,75 +15,49 @@ import org.junit.jupiter.api.Test;
 @DisplayName("MemoryUserRepository 클래스")
 class MemoryUserRepositoryTest {
 
-    MemoryUserRepository repository;
-
-    @BeforeEach
-    void beforeEach() {
-        repository = new MemoryUserRepository();
-        User alreadyPresentUser = new User();
-        alreadyPresentUser.setEmail("already@present.user");
-        alreadyPresentUser.setNickname("already present user1");
-        alreadyPresentUser.setPassword("password1");
-        repository.save(alreadyPresentUser);
-    }
+    MemoryUserRepository repository = new MemoryUserRepository();
 
     @Nested
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class save_메소드는 {
 
-        private final User givenUser = new User();
+        private final User givenUser = new User(
+            "new@test.user",
+            "test user1",
+            "password1");
 
         @BeforeEach
-        void beforeEach() {
-            givenUser.setEmail("new@test.user");
-            givenUser.setNickname("test user1");
-            givenUser.setPassword("password1");
+        void setUp() {
+            repository.clear();
         }
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class User_객체가_주어지면 {
+        class 새로운_User_객체가_주어지면 {
 
             @Test
-            @DisplayName("주어진 객체를 저장하고 저장된 객체를 리턴한다")
-            void 주어진_객체를_저장하고_저장된_객체를_리턴한다() {
-                assertThat(givenUser.getId())
-                    .as("저장되지 않은 객체는 아이디가 null 이다")
-                    .isNull();
-                final User saved = repository.save(givenUser);
-                assertThat(saved.getId())
-                    .as("저장된 객체는 아이디가 추가되어 있다.")
-                    .isNotNull();
-            }
-        }
-    }
-
-    @Nested
-    @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-    class findById_메소드는 {
-
-        @Nested
-        @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class 존재하는_아이디를_입력_받으면 {
-
-            @Test
-            @DisplayName("해당 아이디를 가진 User 객체를 찾아서 리턴한다")
-            void 해당_아이디를_가진_User_객체를_찾아서_리턴한다() {
-                final Optional<User> result = repository.findById(1L);
-                assertThat(result.isPresent()).isTrue();
-                assertThat(result.get().getId()).isEqualTo(1L);
+            @DisplayName("주어진 객체를 저장하고 저장된 객체의 인덱스를 리턴한다")
+            void 주어진_객체를_저장하고_저장된_객체의_인덱스를_리턴한다() {
+                assertThat(repository.save(givenUser)).isEqualTo(0);
             }
         }
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
-        class 존재하지_않는_아이디를_입력_받으면 {
+        class 기존에_존재하는_User_객체가_주어지면 {
+
+            User updatedUser = givenUser.update("new@test.user", "updatepassword1");
+
+            @BeforeEach
+            void setUp() {
+                repository.clear();
+            }
 
             @Test
-            @DisplayName("Optional.EMPTY를 리턴한다")
-            void Optional_EMPTY를_리턴한다() {
-                final Optional<User> result = repository.findById(100L);
-                assertThat(result.isEmpty()).isTrue();
+            @DisplayName("기존에 저장되어있던 객체의 인덱스를 리턴한다")
+            void 기존에_저장되어있던_객체의_인덱스를_리턴한다() {
+                int expected = repository.save(givenUser);
+                assertThat(repository.save(updatedUser)).isEqualTo(expected);
             }
         }
     }
@@ -92,8 +66,18 @@ class MemoryUserRepositoryTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class findByEmail_메소드는 {
 
+        private final User presentUser = new User(
+            "already@present.user",
+            "present user1",
+            "password1");
         private final String presentEmail = "already@present.user";
         private final String nonPresentEmail = "new@test.user";
+
+        @BeforeEach
+        void setUp() {
+            repository.clear();
+            repository.save(presentUser);
+        }
 
         @Nested
         @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
@@ -113,8 +97,8 @@ class MemoryUserRepositoryTest {
         class 존재하지_않는_이메일을_입력_받으면 {
 
             @Test
-            @DisplayName("Optional.EMPTY를 리턴한다")
-            void Optional_EMPTY를_리턴한다() {
+            @DisplayName("결과를 반환하지 않는다")
+            void 결과를_반환하지_않는다() {
                 final Optional<User> result = repository.findByEmail(nonPresentEmail);
                 assertThat(result.isEmpty()).isTrue();
             }
@@ -125,20 +109,23 @@ class MemoryUserRepositoryTest {
     @DisplayNameGeneration(value = DisplayNameGenerator.ReplaceUnderscores.class)
     class findAll_메소드는 {
 
-        private final User givenUser = new User();
-
         @BeforeEach
-        void beforeEach() {
-            givenUser.setEmail("new@test.user");
-            givenUser.setNickname("test user1");
-            givenUser.setPassword("password1");
+        void setUp() {
+            repository.clear();
+            for (int i = 1; i <= 10; i++) {
+                String email = "test" + i + "@user.com";
+                String nickname = "test user" + i;
+                String password = "password" + i;
+                User user = new User(email, nickname, password);
+                repository.save(user);
+            }
         }
 
         @Test
         @DisplayName("가입한 회원들의 리스트를 리턴한다")
         void 가입한_회원들의_리스트를_리턴한다() {
             final List<User> result = repository.findAll();
-            assertThat(result.size()).isEqualTo(1);
+            assertThat(result.size()).isEqualTo(10);
         }
     }
 }

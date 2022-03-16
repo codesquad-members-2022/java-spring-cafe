@@ -23,7 +23,7 @@
         <div class="info-container">
             <div class="form-group">
                 <label>닉네임</label>
-                <p class="form-control">{{nickname}}</p>
+                <p class="form-control">{{userId}}</p>
             </div>
             <div class="form-group">
                 <label>이메일</label>
@@ -35,6 +35,9 @@
             </div>
         </div>
         {{/user}}
+    </div>
+    <div class="post-btn-container">
+        <a class="post-write-btn" href="/users/{{userId}}/form" class="btn btn-primary pull-right" role="button">회원정보수정</a>
     </div>
 </div>
 </body>
