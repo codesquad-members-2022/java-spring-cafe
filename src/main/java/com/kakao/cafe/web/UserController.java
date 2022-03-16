@@ -51,15 +51,17 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) {
+    public String updateForm(@PathVariable String userId, Model model, HttpSession httpSession) {
         log.info("show {}'s update form", userId);
+        validateSession(httpSession, userId);
         model.addAttribute("userId", userId);
         return "/user/updateForm";
     }
 
     @PostMapping("/{userId}/update")
-    public String update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto) {
+    public String update(@PathVariable String userId, UserUpdateFormDto userUpdateFormDto, HttpSession httpSession) {
         log.info("update {}'s profile : {}", userId, userUpdateFormDto);
+        validateSession(httpSession, userId);
         userService.modify(userUpdateFormDto);
         return "redirect:/users";
     }
@@ -68,7 +70,7 @@ public class UserController {
     public String login(@ModelAttribute UserLoginFormDto userLoginFormDto,
         HttpSession httpSession) {
         log.info("user login attempt : {}", userLoginFormDto);
-        httpSession.setAttribute("sessionedUser", userService.login(userLoginFormDto));
+        httpSession.setAttribute("sessionedUserId", userService.login(userLoginFormDto));
         return "redirect:/";
     }
 
@@ -77,5 +79,15 @@ public class UserController {
         log.info("user logout attempt");
         httpSession.invalidate();
         return "redirect:/";
+    }
+
+    private void validateSession(HttpSession httpSession, String userId) {
+        String sessionedUserId = (String) httpSession.getAttribute("sessionedUserId");
+        if (sessionedUserId == null) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        if (!sessionedUserId.equals(userId)) {
+            throw new IllegalStateException("접근 권한이 없습니다.");
+        }
     }
 }
