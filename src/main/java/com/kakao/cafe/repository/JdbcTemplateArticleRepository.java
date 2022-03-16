@@ -7,29 +7,42 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 public class JdbcTemplateArticleRepository implements ArticleRepository {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final SimpleJdbcInsert jdbcInsert;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+
     public JdbcTemplateArticleRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        jdbcInsert = new SimpleJdbcInsert(dataSource)
+            .withTableName("ARTICLES")
+            .usingGeneratedKeyColumns("id");
     }
 
     @Override
     public void save(Article article) {
-        String insertSql = "INSERT INTO ARTICLES (writer, title, contents, created_time) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(insertSql, article.getWriter(), article.getTitle(),
-            article.getContents(), currentTime());
+        article.setCreatedTime(currentTime());
+        SqlParameterSource sqlParameterSource = new BeanPropertySqlParameterSource(
+            article);
+        jdbcInsert.execute(sqlParameterSource);
     }
 
     @Override
     public Optional<Article> findById(String articleId) {
-        String selectSql = "SELECT * FROM ARTICLES WHERE id=?";
-        List<Article> resultArticles = jdbcTemplate.query(selectSql, articleRowMapper(), articleId);
+        String selectSql = "SELECT * FROM ARTICLES WHERE id=:articleId";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+            .addValue("articleId", articleId);
+        List<Article> resultArticles = jdbcTemplate.query(selectSql, sqlParameterSource,
+            articleRowMapper());
         return resultArticles.stream().findAny();
     }
 
