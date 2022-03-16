@@ -53,10 +53,9 @@ public class JdbcUserRepository {
         return jdbcTemplate.query("select * from user", userRowMapper());
     }
 
-    public void updateUser(Long id, UserUpdateDto userUpdateDto) {
-        String sql = "update user set password = ?, name = ?, email = ? where id = ?";
-        jdbcTemplate.update(sql, userUpdateDto.getPassword(), userUpdateDto.getName(),
-                userUpdateDto.getEmail(), id);
+    public void updateUser(Long id, User user) {
+        String sql = "update user set name = ?, email = ? where id = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getEmail(), id);
     }
 
     public User findByLoginId(String userId) {
