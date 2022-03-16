@@ -2,9 +2,7 @@ package com.kakao.cafe.controller;
 
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -24,8 +22,11 @@ import com.kakao.cafe.service.UserService;
 @Controller
 public class UserController {
 
-    private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private static final String SESSION_NAME = "sessionUser";
+    private static final String NO_LOGIN_STATUS = "[ERROR] 로그인 후 확인할 수 있습니다.";
+    private static final String ONLY_EDIT_OWN_ACCOUNT = "[ERROR] 자신의 계정만 수정할 수 있습니다.";
+
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -37,16 +38,13 @@ public class UserController {
     public String addUser(User user) {
         logger.info("POST /users");
         userService.save(user);
-        return "redirect:/users";
+        return "redirect:/";
     }
 
     @GetMapping("/users")
-    public String showUsers(Model model, HttpSession session) {
+    public String showUsers(Model model, HttpServletRequest request) {
         logger.info("GET /users");
-        Object value = session.getAttribute(SESSION_NAME);
-        if (value == null) {
-            throw new IllegalArgumentException("[ERROR] 로그인 후 확인할 수 있습니다.");
-        }
+        findUserFromSession(request);
         List<UserDto> userDtoList = userService.findAllUser();
         model.addAttribute("users", userDtoList);
         return "list";
@@ -61,30 +59,25 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/check")
-    public String verifyPassword(@PathVariable String userId, Model model, HttpSession session) {
+    public String verifyPassword(@PathVariable String userId, HttpServletRequest request, Model model) {
         logger.info("GET /users/{}/check", userId);
-        Object value = session.getAttribute(SESSION_NAME);
-        if (value != null) {
-            User user = (User)value;
-            if (!user.isYourId(userId)) {
-                throw new IllegalArgumentException("[ERROR] 자신의 계정만 수정할 수 있습니다.");
-            }
-        }
+        verifyValidUserAccess(userId, request);
         model.addAttribute("userId", userId);
         return "user/passwordCheck";
     }
 
     @PostMapping("/users/{userId}/form")
-    public String editMemberInformation(@PathVariable String userId, String password, Model model) {
+    public String editMemberInformation(@PathVariable String userId, String password, HttpServletRequest request) {
         logger.info("POST /users/{}/form", userId);
+        findUserFromSession(request);
         userService.checkPasswordMatch(userId, password);
-        User user = userService.findUserByUserId(userId);
         return "user/updateForm";
     }
 
     @PutMapping("/users/{userId}/update")
-    public String updateUserInformation(@PathVariable String userId, User updateUser) {
+    public String updateUserInformation(@PathVariable String userId, User updateUser, HttpServletRequest request) {
         logger.info("PUT /users/update");
+        findUserFromSession(request);
         userService.update(userId, updateUser);
         return "redirect:/users";
     }
@@ -98,5 +91,21 @@ public class UserController {
             return "redirect:/";
         }
         return "login/login_failed";
+    }
+
+    private User findUserFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object value = session.getAttribute(SESSION_NAME);
+        if (value == null) {
+            throw new IllegalArgumentException(NO_LOGIN_STATUS);
+        }
+        return (User)value;
+    }
+
+    private void verifyValidUserAccess(String userId, HttpServletRequest request) {
+        User user = findUserFromSession(request);
+        if (!user.isYourId(userId)) {
+            throw new IllegalArgumentException(ONLY_EDIT_OWN_ACCOUNT);
+        }
     }
 }
