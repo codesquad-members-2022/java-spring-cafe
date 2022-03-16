@@ -14,4 +14,10 @@ public enum Query {
     SELECT_ARTICLES,
     UPDATE_ARTICLES,
     DELETE_ARTICLE,
+
+    // reply
+    SAVE_REPLY,
+    SELECT_REPLY,
+    SELECT_REPLYS,
+    DELETE_REPLY,
 }

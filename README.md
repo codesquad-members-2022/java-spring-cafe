@@ -4,8 +4,8 @@
 
 ## Step06 ToDO-List
 
-- [ ] Reply Class 만들기
-- [ ] Reply JDBC 로 연결
+- [x] Reply Class 만들기
+- [x] Reply JDBC 로 연결
 - [ ] 답변 달기 기능 추가 (로그인 한 사용자만)
 - [ ] 답변 목록 보여주기
 - [ ] 자신이 쓴 댓글 삭제 가능
