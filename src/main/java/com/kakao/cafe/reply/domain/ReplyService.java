@@ -1,6 +1,7 @@
 package com.kakao.cafe.reply.domain;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -31,5 +32,9 @@ public class ReplyService {
 		return replies.stream()
 				.map(ReplyDto.Response::new)
 				.collect(Collectors.toUnmodifiableList());
+	}
+
+	public void remove(Long replyId) {
+		replyRepository.delete(replyId);
 	}
 }

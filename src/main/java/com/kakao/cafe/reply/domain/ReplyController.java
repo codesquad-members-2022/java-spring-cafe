@@ -14,12 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.kakao.cafe.common.utils.session.SessionUser;
 
 @Controller
 @RequestMapping("/questions/{questionId}/reply")
@@ -33,7 +36,7 @@ public class ReplyController {
 	}
 
 	@PostMapping()
-	public String sendViewForCommentOnThePost(@PathVariable Long questionId, String content, HttpSession httpSession) {
+	public String writeAComment(@PathVariable Long questionId, String content, HttpSession httpSession) {
 		isValidContent(content);
 		boolean isValid = isValidLogin(httpSession, logger);
 		if (!isValid) {
@@ -43,8 +46,30 @@ public class ReplyController {
 		replyService.leaveAComment(questionId,
 									StringEscapeUtils.escapeHtml4(content),
 									getHttpSessionAttribute(httpSession));
-		String url = String.format("%squestions/%d", REDIRECT_ROOT, questionId);
-		return url;
+		return getUrlRedirectToQuestionDetails(questionId);
+	}
+
+	@DeleteMapping("/{reply-id}")
+	public String deleteComment(@PathVariable(value = "questionId") Long questionId,
+								@PathVariable(value = "reply-id") Long replyId,
+								String replier,
+								HttpSession httpSession) {
+		boolean isValid = isValidLogin(httpSession, logger);
+		if (!isValid) {
+			return REDIRECT_LOGIN_VIEW;
+		}
+		isValidRequestAccessor(replier, httpSession);
+		logger.info("request deletion of comment: {}", replyId);
+
+		replyService.remove(replyId);
+		return getUrlRedirectToQuestionDetails(questionId);
+	}
+
+	private void isValidRequestAccessor(String replier, HttpSession httpSession) {
+		SessionUser loginInfo = (SessionUser)getHttpSessionAttribute(httpSession);
+		if (!loginInfo.isEquals(replier)) {
+			throw new IllegalArgumentException("invalid accessor for delete a comment: " + loginInfo.getUserId());
+		}
 	}
 
 	private void isValidContent(String content) {
@@ -53,12 +78,15 @@ public class ReplyController {
 		}
 	}
 
+	private String getUrlRedirectToQuestionDetails(Long questionId) {
+		return String.format("%squestions/%d", REDIRECT_ROOT, questionId);
+	}
+
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
 		logger.error("error of request reply : {}", exception);
-		String requestURI = request.getRequestURI();
-		ModelAndView mav = new ModelAndView(requestURI);
+		ModelAndView mav = new ModelAndView("common/error");
 		mav.addObject("message", toMessageLines(exception.getMessage()));
 		return mav;
 	}

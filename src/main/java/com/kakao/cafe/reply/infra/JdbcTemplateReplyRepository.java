@@ -93,9 +93,17 @@ public class JdbcTemplateReplyRepository implements ReplyRepository {
 
 	@Override
 	public List<Reply> findByArticleId(long articleId) {
-		String sql = "SELECT * FROM CAFE_REPLIES where cafe_article_id = :cafe_article_id";
+		String sql = String.format("SELECT * FROM %s where cafe_article_id = :cafe_article_id", TABLE_NAME_OF_REPLIES);
 		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("cafe_article_id", articleId);
 		return this.namedParameterJdbcTemplate.query(sql, namedParameters, articleRowMapper());
+	}
+
+	@Override
+	public void delete(Long replyId) {
+		String sql = String.format("delete from %s where reply_id = :reply_id", TABLE_NAME_OF_REPLIES);
+		logger.info(sql);
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue("reply_id", replyId);
+		this.namedParameterJdbcTemplate.update(sql, namedParameters);
 	}
 
 	private RowMapper<Reply> articleRowMapper() {
