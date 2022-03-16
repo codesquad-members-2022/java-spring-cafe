@@ -10,13 +10,6 @@ public class User {
     private String password;
     private LocalDate regDate;
 
-    public User(String userName, String userEmail, String password) {
-        this.userName = userName;
-        this.userEmail = userEmail;
-        this.password = password;
-        this.regDate = LocalDate.now();
-    }
-
     private User(UserBuilder userBuilder) {
         this.userName = userBuilder.userName;
         this.userEmail = userBuilder.userEmail;
