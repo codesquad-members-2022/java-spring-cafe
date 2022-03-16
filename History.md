@@ -374,4 +374,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 요청 맵핑은 이제 UserJoinRequest를 통해서만 이루어지므로 생성자 호출을 통한 생성이 불필요하다.
 - 빌더를 통해서만 생성할 수 있음.
 
+## 3.23 - ArticleRepositoryTest 스프링부트 연동
+
+- MemoryArticleRepositoryTest -> ArticleRepositoryTests
+- 의존관계 주입을 SpringBoot 연동으로 하여 자동으로 하도록 함
+- 테스트를 트랜잭션 단위로 함
+
 ---
