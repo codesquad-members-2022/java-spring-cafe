@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -17,7 +16,7 @@ import java.util.*;
 
 @Primary
 @Repository
-public class JdbcArticleRepository implements DomainRepository<Article, Integer> {
+public class JdbcArticleRepository implements CrudRepository<Article, Integer> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;

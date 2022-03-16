@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ class UserServiceUnitTest {
     UserService userService;
 
     @Mock
-    DomainRepository<User, String> repository;
+    CrudRepository<User, String> repository;
 
     DomainMapper<User> userMapper = new DomainMapper<>();
 

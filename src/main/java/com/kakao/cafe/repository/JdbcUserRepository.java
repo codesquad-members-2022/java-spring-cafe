@@ -15,7 +15,7 @@ import java.util.*;
 
 @Primary
 @Repository
-public class JdbcUserRepository implements DomainRepository<User, String> {
+public class JdbcUserRepository implements CrudRepository<User, String> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;

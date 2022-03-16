@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class ArticleServiceUnitTest {
     ArticleService articleService;
 
     @Mock
-    DomainRepository<Article, Integer> repository;
+    CrudRepository<Article, Integer> repository;
 
     DomainMapper<Article> articleMapper = new DomainMapper<>();
 

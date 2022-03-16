@@ -2,7 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ public class LoginServiceUnitTest {
     LoginService loginService;
 
     @Mock
-    DomainRepository<User, String> repository;
+    CrudRepository<User, String> repository;
 
     @Test
     @DisplayName("파라미터로 LoginParam 이 넘어오면 이를 사용하여 해당하는 사용자 정보를 불러온다.")

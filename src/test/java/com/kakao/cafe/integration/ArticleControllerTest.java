@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +21,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,7 @@ public class ArticleControllerTest {
     MockMvc mvc;
 
     @Autowired
-    DomainRepository<Article, Integer> repository;
+    CrudRepository<Article, Integer> repository;
 
     static List<Article> articles = new Vector<>();
 

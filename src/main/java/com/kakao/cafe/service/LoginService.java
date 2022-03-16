@@ -2,15 +2,15 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginService {
 
-    private final DomainRepository<User, String> userRepository;
+    private final CrudRepository<User, String> userRepository;
 
-    public LoginService(DomainRepository<User, String> userRepository) {
+    public LoginService(CrudRepository<User, String> userRepository) {
         this.userRepository = userRepository;
     }
 

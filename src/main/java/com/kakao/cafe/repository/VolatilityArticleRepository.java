@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class VolatilityArticleRepository implements DomainRepository<Article, Integer> {
+public class VolatilityArticleRepository implements CrudRepository<Article, Integer> {
 
     private final List<Article> articles = new CopyOnWriteArrayList<>();
 
