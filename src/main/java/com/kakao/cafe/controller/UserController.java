@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/create")
     public String createForm(Model model) {
-        model.addAttribute("UserSaveDto", new UserSaveDto());
+        model.addAttribute("userSaveDto", new UserSaveDto());
         return "user/form";
     }
 

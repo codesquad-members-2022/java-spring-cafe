@@ -2,22 +2,21 @@ package com.kakao.cafe.repository.memory;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
     private final List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         if (isExistUserId(user.getUserId())) {
             updateUser(user);
-            return;
+        } else {
+            users.add(user);
         }
-        users.add(user);
+        return user;
     }
 
     @Override
@@ -45,7 +44,7 @@ public class MemoryUserRepository implements UserRepository {
                 .anyMatch(user -> user.isEqualsEmail(email));
     }
 
-    private void updateUser(User user) {
+    public void updateUser(User user) {
         for (int i = 0; i < users.size(); i++) {
             if (user.isEqualsUserId(users.get(i).getUserId())) {
                 users.set(i, user);

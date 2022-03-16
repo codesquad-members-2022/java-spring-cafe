@@ -12,9 +12,10 @@ public class MemoryArticleRepository implements ArticleRepository {
     private final List<Article> articles = new CopyOnWriteArrayList<>();
 
     @Override
-    public void save(Article article) {
+    public Article save(Article article) {
         article.setId(articles.size() + 1);
         articles.add(article);
+        return article;
     }
 
     @Override
