@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -37,6 +38,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+// TODO: ReplyController 통합 테스트와 함께 작성 -> 분리 필요
 
 @SpringBootTest
 @ComponentScan
@@ -385,9 +388,9 @@ public class ArticleControllerTest {
 
         Article savedArticle = articleSetUp.saveArticle(article);
 
-        Reply userReply = articleSetUp.saveReply(
+        articleSetUp.saveReply(
             new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "userComment"));
-        Reply otherReply = articleSetUp.saveReply(
+        articleSetUp.saveReply(
             new Reply(savedArticle.getArticleId(), savedOther.getUserId(), "otherComment"));
 
         // when
@@ -405,7 +408,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("댓글을 작성하고 저장한 후 메인 페이지로 이동한다")
+    @DisplayName("댓글을 작성하고 저장한다")
     public void createAnswerTest() throws Exception {
         // given
         articleSetUp.saveArticle(article);
@@ -416,15 +419,18 @@ public class ArticleControllerTest {
             post("/articles/" + article.getArticleId() + "/answers")
                 .session(session)
                 .param("comment", "comment")
-                .accept(MediaType.TEXT_HTML));
+                .accept(MediaType.APPLICATION_JSON));
 
         // then
-        actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/"));
+        actions.andExpect(status().isOk())
+            .andExpect(jsonPath("$.replyId", 1).exists())
+            .andExpect(jsonPath("$.articleId", 1).exists())
+            .andExpect(jsonPath("$.userId", "writer").exists())
+            .andExpect(jsonPath("$.comment", "comment").exists());
     }
 
     @Test
-    @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제한 후 메인 페이지로 이동한다")
+    @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제한다")
     public void deleteAnswerTest() throws Exception {
         // given
         Article savedArticle = articleSetUp.saveArticle(article);
@@ -436,31 +442,31 @@ public class ArticleControllerTest {
         ResultActions actions = mockMvc.perform(
             delete("/articles/" + article.getArticleId() + "/answers/" + savedReply.getReplyId())
                 .session(session)
-                .accept(MediaType.TEXT_HTML));
+                .accept(MediaType.APPLICATION_JSON));
 
         // then
-        actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/"));
+        actions.andExpect(status().isOk())
+            .andExpect(jsonPath("$.valid", true).exists())
+            .andExpect(jsonPath("$.message", "ok").exists());
     }
 
     @Test
-    @DisplayName("세션 정보와 존재하지 않는 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    @DisplayName("세션 정보와 존재하지 않는 댓글 id 로 댓글을 삭제하면 알림창을 띄운다")
     public void deleteAnswerNotFoundTest() throws Exception {
         // when
         ResultActions actions = mockMvc.perform(
             delete("/articles/" + article.getArticleId() + "/answers/0")
                 .session(session)
-                .accept(MediaType.TEXT_HTML));
+                .accept(MediaType.APPLICATION_JSON));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", ErrorCode.REPLY_NOT_FOUND.getHttpStatus()))
-            .andExpect(model().attribute("message", ErrorCode.REPLY_NOT_FOUND.getMessage()))
-            .andExpect(view().name("error/index"));
+            .andExpect(jsonPath("$.valid", true).exists())
+            .andExpect(jsonPath("$.message", "등록되지 않은 댓글입니다.").exists());
     }
 
     @Test
-    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 댓글 id 로 댓글을 삭제하면 알림창을 띄운다")
     public void deleteAnswerValidateTest() throws Exception {
         // given
         Article savedArticle = articleSetUp.saveArticle(this.article);
@@ -474,12 +480,11 @@ public class ArticleControllerTest {
         ResultActions actions = mockMvc.perform(
             delete("/articles/" + article.getArticleId() + "/answers/" + savedReply.getReplyId())
                 .session(session)
-                .accept(MediaType.TEXT_HTML));
+                .accept(MediaType.APPLICATION_JSON));
 
         // then
         actions.andExpect(status().isOk())
-            .andExpect(model().attribute("status", ErrorCode.INVALID_REPLY_WRITER.getHttpStatus()))
-            .andExpect(model().attribute("message", ErrorCode.INVALID_REPLY_WRITER.getMessage()))
-            .andExpect(view().name("error/index"));
+            .andExpect(jsonPath("$.valid", true).exists())
+            .andExpect(jsonPath("$.message", "다른 유저의 댓글을 수정하거나 삭제할 수 없습니다.").exists());
     }
 }
