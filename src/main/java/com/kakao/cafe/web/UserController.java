@@ -38,7 +38,7 @@ public class UserController {
     public String list(Model model) {
         log.info("show user list");
         model.addAttribute("users", userService.showAll());
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/{userId}")
@@ -47,7 +47,7 @@ public class UserController {
         UserProfileDto userProfileDto = userService.showOne(userId);
         model.addAttribute("userId", userProfileDto.getUserId());
         model.addAttribute("email", userProfileDto.getEmail());
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/{userId}/form")
@@ -55,7 +55,7 @@ public class UserController {
         log.info("show {}'s update form", userId);
         validateSession(httpSession, userId);
         model.addAttribute("userId", userId);
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PostMapping("/{userId}/update")

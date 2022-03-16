@@ -32,7 +32,7 @@ public class ArticleController {
     public String list(Model model) {
         log.info("show question's list");
         model.addAttribute("questions", articleService.showAll());
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/questions/{articleId}")
@@ -43,6 +43,6 @@ public class ArticleController {
         model.addAttribute("title", articleDetailDto.getTitle());
         model.addAttribute("createdTime", articleDetailDto.getCreatedTime());
         model.addAttribute("contents", articleDetailDto.getContents());
-        return "/qna/show";
+        return "qna/show";
     }
 }
