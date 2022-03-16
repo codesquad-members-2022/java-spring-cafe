@@ -25,6 +25,7 @@ import com.kakao.cafe.repository.KeyHolderGenerator;
 public class H2ArticleRepository implements ArticleRepository {
 
     private final Logger log = LoggerFactory.getLogger(H2ArticleRepository.class);
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final KeyHolderGenerator keyHolderGenerator;
 
@@ -37,12 +38,19 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public Long save(Article article) {
-        String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
-        KeyHolder keyHolder = keyHolderGenerator.getKeyHolder();
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[] {"id"});
-        long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        log.info("key is = {}", id);
-        return id;
+        if (article.getId() == null) {
+            String sql = "INSERT INTO article (writer, title, contents, writeTime) values (:writer, :title, :contents, :writeTime)";
+            KeyHolder keyHolder = keyHolderGenerator.getKeyHolder();
+            jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder, new String[] {"id"});
+            return Objects.requireNonNull(keyHolder.getKey()).longValue();
+        }
+        return update(article);
+    }
+
+    private Long update(Article article) {
+        String sql = "UPDATE article SET title = :title, contents = :contents WHERE id = :id";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+        return article.getId();
     }
 
     @Override
