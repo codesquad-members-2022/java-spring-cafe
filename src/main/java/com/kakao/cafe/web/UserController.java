@@ -1,5 +1,6 @@
 package com.kakao.cafe.web;
 
+import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.LoginDto;
@@ -70,7 +71,7 @@ public class UserController {
 
     @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable String id, Model model, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute("sessionedUser");
+        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
         if(!isAuthorized(sessionedUser)) {
             logger.info("User not logged in tries access [{}]'s info", id);
             return "redirect:/user/login";
@@ -85,7 +86,7 @@ public class UserController {
 
     @PutMapping("/users/{id}/update")
     public String updateInfo(@PathVariable String id, UserDto userDto, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute("sessionedUser");
+        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
         if(!isAuthorized(sessionedUser)) {
             logger.info("User not logged in tries access {}'s info", id);
             return "redirect:/user/login";
@@ -111,12 +112,12 @@ public class UserController {
 
         if(loginUserOptional.isPresent()) {
             logger.info("[{}] succeded login ", loginDto.getUserId());
-            httpSession.setAttribute("sessionedUser", loginUserOptional.get());
+            httpSession.setAttribute(LoginConstants.SESSIONED_USER, loginUserOptional.get());
             return "redirect:/qna/all";
         }
 
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
-        redirectAttributes.addFlashAttribute("login_failed", "아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요.");
+        redirectAttributes.addFlashAttribute(LoginConstants.LOGIN_FAILED, "아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요.");
         logger.info("[{}] failed login", loginDto.getUserId());
         return "redirect:/user/login";
     }
