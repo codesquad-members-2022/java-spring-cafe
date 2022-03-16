@@ -2,10 +2,12 @@ package com.kakao.cafe.domain.users;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
-	List<Users> usersList = new ArrayList<>();
+	private List<Users> usersList = new ArrayList<>();
 
 	public List<Users> findAll() {
 		return usersList;
