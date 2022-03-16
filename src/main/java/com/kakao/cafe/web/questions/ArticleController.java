@@ -41,9 +41,9 @@ public class ArticleController {
             return "/qna/form";
         }
 
-        User sessioned_user = (User) session.getAttribute(SessionConst.SESSIONED_USER);
+        User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
 
-        articleService.addArticle(dto, sessioned_user);
+        articleService.addArticle(dto, sessionedUser);
         log.info("save form = {}", dto.getTitle());
         return "redirect:/";
     }
@@ -60,8 +60,8 @@ public class ArticleController {
     @PostMapping("/{index}/delete")
     public String deleteArticle(@PathVariable Long index, HttpSession session) throws AuthenticationException {
         log.info("delete article id = {}", index);
-        User sessioned_user = (User) session.getAttribute(SessionConst.SESSIONED_USER);
-        articleService.deleteArticle(index, sessioned_user);
+        User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
+        articleService.deleteArticle(index, sessionedUser);
         return "redirect:/";
     }
 
@@ -69,8 +69,8 @@ public class ArticleController {
     public String getArticleUpdateForm(@PathVariable Long index,
                                        HttpSession session, Model model) throws AuthenticationException {
         log.info("get profile update form");
-        User sessioned_user = (User) session.getAttribute(SessionConst.SESSIONED_USER);
-        model.addAttribute("article", articleService.findArticleDtoById(index, sessioned_user));
+        User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
+        model.addAttribute("article", articleService.findArticleDtoById(index, sessionedUser));
         return "/qna/updateForm";
     }
 
