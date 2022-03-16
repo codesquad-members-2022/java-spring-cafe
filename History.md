@@ -385,4 +385,9 @@ HomeController 및 테스트 코드를 추가했다.
 - 기존엔 유저 엔티티를 그대로 Model에 담아 반환했는데, UserResponse로 변환하여 반환하도록 했다.
 - response에는 순전히 getter만 두도록 했다.
 
+## 3.25 request, response 객체들을 별도로 패키지에 분리
+
+- request, response 객체가 많아져서, controller 패키지가 너무 뚱뚱해지고 있다.
+- 내부적으로 따로 분리해버렸다.
+
 ---

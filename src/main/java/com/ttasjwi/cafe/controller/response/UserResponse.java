@@ -1,4 +1,4 @@
-package com.ttasjwi.cafe.controller;
+package com.ttasjwi.cafe.controller.response;
 
 import com.ttasjwi.cafe.domain.user.User;
 

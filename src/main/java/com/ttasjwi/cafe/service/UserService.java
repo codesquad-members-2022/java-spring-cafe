@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.service;
 
-import com.ttasjwi.cafe.controller.UserJoinRequest;
-import com.ttasjwi.cafe.controller.UserResponse;
+import com.ttasjwi.cafe.controller.request.UserJoinRequest;
+import com.ttasjwi.cafe.controller.response.UserResponse;
 import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;

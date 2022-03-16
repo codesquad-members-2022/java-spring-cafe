@@ -1,7 +1,7 @@
 package com.ttasjwi.cafe.service;
 
-import com.ttasjwi.cafe.controller.UserJoinRequest;
-import com.ttasjwi.cafe.controller.UserResponse;
+import com.ttasjwi.cafe.controller.request.UserJoinRequest;
+import com.ttasjwi.cafe.controller.response.UserResponse;
 import com.ttasjwi.cafe.domain.user.MemoryUserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
