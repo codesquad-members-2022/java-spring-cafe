@@ -43,12 +43,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String viewUserProfile(@PathVariable String userId, Model model){
-        Optional<User> findedUser = userService.lookForOneUserId(userId);
-        if(findedUser.isPresent()){
-            User user = findedUser.get();
-            model.addAttribute("user",user);
-            return "user/profile";
-        }
-        return null;
+        model.addAttribute("user",userService.findOneByUserId(userId).get());
+        return "user/profile";
     }
 }
