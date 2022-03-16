@@ -34,6 +34,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -42,9 +43,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 // TODO: ReplyController 통합 테스트와 함께 작성 -> 분리 필요
 
 @SpringBootTest
+@ActiveProfiles(profiles = "local")
 @ComponentScan
 @AutoConfigureMockMvc
-@Sql("classpath:/schema-mysql.sql")
+@Sql("classpath:/schema-h2.sql")
 @DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
 

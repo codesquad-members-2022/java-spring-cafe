@@ -24,14 +24,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
+@ActiveProfiles(profiles = "local")
 @AutoConfigureMockMvc
-@Sql("classpath:/schema-mysql.sql")
+@Sql("classpath:/schema-h2.sql")
 @DisplayName("UserController 통합 테스트")
 public class UserControllerTest {
 
