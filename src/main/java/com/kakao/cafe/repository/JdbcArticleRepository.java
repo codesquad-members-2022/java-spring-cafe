@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class JdbcArticleRepository implements ArticleRepository{
@@ -41,9 +42,9 @@ public class JdbcArticleRepository implements ArticleRepository{
     }
 
     @Override
-    public Article loadOneArticle(int index) {
+    public Optional<Article> loadOneArticle(Long index) {
         List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), index);
-        return result.get(0);
+        return result.stream().findAny();
     }
 
     private RowMapper<Article> articleRowMapper(){

@@ -21,14 +21,10 @@ public class ArticleServiceIntegrationTest {
     @Test
     @DisplayName("글 저장시 올바르게 저장되는지 확인한다")
     void 작성글_저장(){
-        //given
         Article article = new Article("글쓴이","제목","내용");
         articleService.saveArticle(article);
 
-        //when
-        int index = (int)article.getId();
-        //then
-        Article findOneArticle = articleService.loadOneArticle(index);
+        Article findOneArticle = articleService.loadOneArticle(article.getId());
         assertThat(article.getTitle()).isEqualTo(findOneArticle.getTitle());
         assertThat(article.getWriter()).isEqualTo(findOneArticle.getWriter());
         assertThat(article.getContent()).isEqualTo(findOneArticle.getContent());

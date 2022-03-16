@@ -23,6 +23,6 @@ public class ArticleService {
         return articleRepository.loadAllArticles();
     }
 
-    public Article loadOneArticle(int index) { return articleRepository.loadOneArticle(index);
+    public Article loadOneArticle(Long index) { return articleRepository.loadOneArticle(index).get();
     }
 }

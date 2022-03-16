@@ -7,7 +7,7 @@ public class Article {
     private String title;
     private String content;
     private LocalDateTime createdDate;
-    private long id;
+    private Long id;
 
     public Article(String writer, String title, String content) {
         this.writer = writer;
@@ -36,7 +36,11 @@ public class Article {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isTheSameId(Long id) {
+        return this.id.equals(id);
     }
 }
