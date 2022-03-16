@@ -10,9 +10,9 @@ create table USER (
 
 create table ARTICLE (
     ID BIGINT not null AUTO_INCREMENT primary key,
-    USER_ID VARCHAR(100),
+    USER_ID VARCHAR(100) not null,
+    TITLE VARCHAR(100) not null,
     CONTENTS VARCHAR(1000),
-    TITLE VARCHAR(100),
-    CREATE_DATE DATETIME default CURRENT_TIMESTAMP,
+    CREATE_DATE DATETIME not null default CURRENT_TIMESTAMP,
     foreign key (USER_ID) references USER(USER_ID)
 );
