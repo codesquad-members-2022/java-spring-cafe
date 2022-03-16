@@ -1,10 +1,10 @@
 package com.ttasjwi.cafe.service;
 
+import com.ttasjwi.cafe.controller.UserJoinRequest;
 import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -17,7 +17,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String join(User user) {
+    public String join(UserJoinRequest userJoinRequest) {
+        User user = userJoinRequest.toEntity();
         validateDuplicateUser(user);
         userRepository.save(user);
         return user.getUserName();

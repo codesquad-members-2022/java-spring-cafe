@@ -318,9 +318,11 @@ HomeController 및 테스트 코드를 추가했다.
 - ArticleRepository 구현체 변경 : JdbcArticleRepository -> JdbcTemplateArticleRepository
 
 ## 3.13 Repository 계층을 엔티티와 같은 패키지에 둠
+
 - 엔티티(데이터베이스에 맞닿는 객체)의 상태 변경은 레포지토리에서 이루어지므로, 이들을 같은 패키지에서 두는게 맞다는 생각에 같은 패키지에 두었다.
 
 ## 3.14 User DDL 수정 - UNIQUE 제약 추가
+
 > UNIQUE (user_name, user_email)
 - 사용자 이름, 이메일에 유니크 제약 추가
 
@@ -336,5 +338,10 @@ HomeController 및 테스트 코드를 추가했다.
 - UserRepository 테스트를 스프링부트 연동으로, 의존관계를 주입하여 하도록 함
 - @Transactional 어노테이션을 통해, 테스트할 때마다 롤백되도록 함
 - 기존의 MemoryUserRepositoryTest는 제거
+
+## 3.17 회원 가입시 폼의 내용이 UserJoinRequest에 맵핑되도록 함
+
+- 회원 가입시 바로 엔티티를 생성하지 않고 UserJoinRequest에 맵핑되도록 했다.
+- Service 계층에서는 UserJoinRequest를 인자로 하여 생성하도록 했다.
 
 ---

@@ -1,11 +1,13 @@
 package com.ttasjwi.cafe.service;
 
+import com.ttasjwi.cafe.controller.UserJoinRequest;
 import com.ttasjwi.cafe.domain.user.MemoryUserRepository;
 import com.ttasjwi.cafe.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -25,38 +27,46 @@ class UserServiceTest {
     @DisplayName("회원가입 -> 성공")
     void joinSuccessTest() {
         // given
-        User user = User.builder()
-                .userName("test-user1")
-                .userEmail("test-user1@gmail.com")
-                .password("1234")
-                .build();
+        UserJoinRequest userJoinRequest =
+                UserJoinRequest.builder()
+                        .userName("test-user1")
+                        .userEmail("test-user1@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
         // when
-        userService.join(user);
-        User findUser = userService.findByUserName(user.getUserName());
+        userService.join(userJoinRequest);
+        User findUser = userService.findByUserName(userJoinRequest.getUserName());
 
         // then
-        assertThat(findUser).isEqualTo(user);
+        assertThat(findUser.getUserName()).isEqualTo(userJoinRequest.getUserName());
     }
 
     @Test
     @DisplayName("이름 중복 회원가입 -> 실패")
     void joinDuplicatedUserNameTest() {
         //given
-        User user1 = User.builder()
-                .userName("test-user1")
-                .userEmail("test-user1@gmail.com")
-                .build();
+        UserJoinRequest userJoinRequest1 =
+                UserJoinRequest.builder()
+                        .userName("test-user1")
+                        .userEmail("test-user1@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
-        User user2 = User.builder()
-                .userName(user1.getUserName())
-                .userEmail("test-user2@gmail.com")
-                .build();
+        UserJoinRequest userJoinRequest2 =
+                UserJoinRequest.builder()
+                        .userName(userJoinRequest1.getUserName())
+                        .userEmail("test-user2@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
-        userService.join(user1);
+        userService.join(userJoinRequest1);
 
         //when & then
-        assertThatThrownBy(()->userService.join(user2))
+        assertThatThrownBy(() -> userService.join(userJoinRequest2))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -64,20 +74,26 @@ class UserServiceTest {
     @DisplayName("이메일 중복 회원가입 -> 실패")
     void joinDuplicatedUserEmailTest() {
         //given
-        User user1 = User.builder()
-                .userName("test-user1")
-                .userEmail("test-user1@gmail.com")
-                .build();
+        UserJoinRequest userJoinRequest1 =
+                UserJoinRequest.builder()
+                        .userName("test-user1")
+                        .userEmail("test-user1@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
-        User user2 = User.builder()
-                .userName("test-user2")
-                .userEmail(user1.getUserEmail())
-                .build();
+        UserJoinRequest userJoinRequest2 =
+                UserJoinRequest.builder()
+                        .userName("tests-user2")
+                        .userEmail(userJoinRequest1.getUserEmail())
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
-        userService.join(user1);
+        userService.join(userJoinRequest1);
 
         //when & then
-        assertThatThrownBy(()->userService.join(user2))
+        assertThatThrownBy(() -> userService.join(userJoinRequest2))
                 .isInstanceOf(IllegalStateException.class);
     }
 
@@ -96,11 +112,24 @@ class UserServiceTest {
     @DisplayName("findAll 메서드 호출 -> 모든 사용자 List 반환")
     void findAllTest() {
         // given
-        User user1 = new User("user1", "user1@gmail.com", "1234");
-        User user2 = new User("user2", "user2@gmail.com", "5678");
+        UserJoinRequest userJoinRequest1 =
+                UserJoinRequest.builder()
+                        .userName("test-user1")
+                        .userEmail("test-user1@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
 
-        userService.join(user1);
-        userService.join(user2);
+        UserJoinRequest userJoinRequest2 =
+                UserJoinRequest.builder()
+                        .userName("test-user2")
+                        .userEmail("test-user2@gmail.com")
+                        .password("1234")
+                        .regDate(LocalDate.now())
+                        .build();
+
+        userService.join(userJoinRequest1);
+        userService.join(userJoinRequest2);
 
         // when
         List<User> list = userService.findAll();

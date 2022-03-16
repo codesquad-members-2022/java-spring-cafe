@@ -90,12 +90,4 @@ public class User {
         return Objects.hash(userName);
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "userName='" + userName + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", regDate=" + regDate +
-                '}';
-    }
 }

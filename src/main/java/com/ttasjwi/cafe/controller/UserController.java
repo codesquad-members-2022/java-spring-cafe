@@ -28,9 +28,9 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String create(@ModelAttribute User user) {
-        userService.join(user);
-        log.info("new user={}", user);
+    public String create(@ModelAttribute UserJoinRequest userJoinRequest) {
+        userService.join(userJoinRequest);
+        log.info("User Join Success : {}", userJoinRequest);
         return "redirect:/users";
     }
 
