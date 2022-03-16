@@ -89,9 +89,10 @@ class UserRepositoryTest {
     void update() {
         //given 준비
         User user = repository.findByUserId("test1");
-        UserUpdateDto dto = new UserUpdateDto("update", "updateName", "updateEmail");
+        UserUpdateDto dto = new UserUpdateDto("updateName", "updateEmail");
+        user.updateProfile(dto);
         //when 실행
-        repository.updateUser(user.getId(), dto);
+        repository.updateUser(user.getId(), user);
         User updateUser = repository.findByUserId("test1");
         //then 검증
         assertThat(updateUser.getName()).isEqualTo("updateName");
