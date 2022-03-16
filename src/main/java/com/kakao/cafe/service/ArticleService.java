@@ -38,4 +38,8 @@ public class ArticleService {
         Article updateArticle = article.update(title, contents);
         articleRepository.save(updateArticle);
     }
+
+    public void deleteById(Long id) {
+        articleRepository.deleteById(id);
+    }
 }
