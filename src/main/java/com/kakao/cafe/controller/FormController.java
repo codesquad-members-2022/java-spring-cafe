@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class FormController {
 
-    private static final String NO_LOGIN_STATUS = "[ERROR] 로그인 후 확인할 수 있습니다.";
-
     private final Logger logger = LoggerFactory.getLogger(FormController.class);
 
     @GetMapping("/form")
@@ -23,16 +21,12 @@ public class FormController {
 
     @GetMapping("/qnaForm")
     public String qnaForm(HttpServletRequest request) {
-        findUserFromSession(request);
         logger.info("GET /qnaForm");
-        return "qna/formQna";
-    }
-
-    private void findUserFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object value = session.getAttribute("sessionUser");
         if (value == null) {
-            throw new IllegalArgumentException(NO_LOGIN_STATUS);
+            return "redirect:/login";
         }
+        return "qna/formQna";
     }
 }
