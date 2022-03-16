@@ -116,7 +116,7 @@ class UserControllerTest {
     public void createUserTest() throws Exception {
         // given
         given(userService.register(any()))
-            .willReturn(userResponse);
+            .willReturn(sessionUser);
 
         // when
         ResultActions actions = mockMvc.perform(post("/users")

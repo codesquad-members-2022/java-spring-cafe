@@ -23,7 +23,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserResponse register(UserSaveRequest request) {
+    public SessionUser register(UserSaveRequest request) {
         // UserSaveRequest DTO 객체를 User 도메인 객체로 변환
         User user = Mapper.map(request, User.class);
 
@@ -34,7 +34,7 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         // User 도메인 객체를 UserResponse DTO 객체로 변환
-        return Mapper.map(savedUser, UserResponse.class);
+        return Mapper.map(savedUser, SessionUser.class);
     }
 
     public List<UserResponse> findUsers() {
