@@ -1,6 +1,6 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.domain.article.Article;
+import com.ttasjwi.cafe.controller.response.ArticleResponse;
 import com.ttasjwi.cafe.service.ArticleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,8 +19,8 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model) {
-        List<Article> articleList = articleService.findArticles();
-        model.addAttribute("articles", articleList);
+        List<ArticleResponse> articleResponses = articleService.findArticles();
+        model.addAttribute("articles", articleResponses);
         return "home";
     }
 }

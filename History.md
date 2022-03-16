@@ -390,4 +390,8 @@ HomeController 및 테스트 코드를 추가했다.
 - request, response 객체가 많아져서, controller 패키지가 너무 뚱뚱해지고 있다.
 - 내부적으로 따로 분리해버렸다.
 
+## 3.26 ArticleResponse 분리
+
+- Model에 Article 엔티티를 그대로 담지 않고, ArticleResponse로 변환하여 반환하도록 했다.
+
 ---

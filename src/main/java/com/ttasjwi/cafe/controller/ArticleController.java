@@ -1,5 +1,7 @@
 package com.ttasjwi.cafe.controller;
 
+import com.ttasjwi.cafe.controller.request.ArticleWriteRequest;
+import com.ttasjwi.cafe.controller.response.ArticleResponse;
 import com.ttasjwi.cafe.domain.article.Article;
 import com.ttasjwi.cafe.service.ArticleService;
 import org.slf4j.Logger;
@@ -7,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/articles")
@@ -35,8 +35,8 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String showArticle(@PathVariable Long articleId, Model model) {
-        Article findArticle = articleService.findOne(articleId);
-        model.addAttribute("article", findArticle);
+        ArticleResponse showArticleResponse = articleService.findOne(articleId);
+        model.addAttribute("article", showArticleResponse);
         return "/articles/articleShow";
     }
 
