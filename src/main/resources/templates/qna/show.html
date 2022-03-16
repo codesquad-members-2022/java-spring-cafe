@@ -41,6 +41,7 @@
                             <li>
                                 <form class="form-delete" action="/articles/{{article.id}}/remove" method="POST">
                                     <input type="hidden" name="_method" value="DELETE">
+                                    <input type="text" id="writer" name="writer" value={{article.writer}} style="display:none" />
                                     <button class="link-delete-article" type="submit">삭제</button>
                                 </form>
                             </li>

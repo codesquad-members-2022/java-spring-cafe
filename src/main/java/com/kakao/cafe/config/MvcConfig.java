@@ -23,6 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addViewController("/articles/form").setViewName("qna/form");
 
+        registry.addViewController("/error/401").setViewName("error/401");
         registry.addViewController("/error/403").setViewName("error/403");
     }
 
@@ -37,10 +38,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns(
                         "/articles/form",
                         "/articles/write",
-                        "/articles/{id}",
-                        "/articles/{id}/form",
-                        "/articles/{id}/update",
-                        "/articles/{id}/remove"
+                        "/articles/{id}/*"
                 );
     }
 }
