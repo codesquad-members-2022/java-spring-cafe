@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${profile}
   mustache:
     cache: false
     expose-session-attributes: true
