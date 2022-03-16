@@ -2,7 +2,6 @@ package com.ttasjwi.cafe.controller;
 
 import com.ttasjwi.cafe.controller.request.ArticleWriteRequest;
 import com.ttasjwi.cafe.controller.response.ArticleResponse;
-import com.ttasjwi.cafe.domain.article.Article;
 import com.ttasjwi.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,7 @@ public class ArticleController {
     }
 
     @GetMapping
-    public String list() {
+    public String articleList() {
         return "redirect:/";
     }
 

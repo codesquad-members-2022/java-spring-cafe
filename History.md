@@ -394,4 +394,8 @@ HomeController 및 테스트 코드를 추가했다.
 
 - Model에 Article 엔티티를 그대로 담지 않고, ArticleResponse로 변환하여 반환하도록 했다.
 
+## 3.27 ArticleController의 list메서드 -> articleList 메서드명 변경
+
+- list라는 메서드명이 모호해서, articleList로 메서드명 변경함.
+
 ---
