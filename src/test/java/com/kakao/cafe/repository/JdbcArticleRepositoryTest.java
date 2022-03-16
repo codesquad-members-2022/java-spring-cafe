@@ -55,20 +55,20 @@ class JdbcArticleRepositoryTest {
         repository.save(article);
 
         //then
-        Article result = repository.findOne(article.getId()).get();
+        Article result = repository.findById(article.getId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
     }
 
     @Test
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
-    void findOne() {
+    void findById() {
         //given
         int id = 1;
         Article article = new Article(id, "writer", "title", "contents", LocalDate.now());
         repository.save(article);
 
         //when
-        Article result = repository.findOne(id).get();
+        Article result = repository.findById(id).get();
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);

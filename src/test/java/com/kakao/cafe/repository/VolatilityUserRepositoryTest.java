@@ -45,7 +45,7 @@ class VolatilityUserRepositoryTest {
         repository.save(user);
 
         //then
-        User result = repository.findOne(user.getUserId()).get();
+        User result = repository.findById(user.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
@@ -61,19 +61,19 @@ class VolatilityUserRepositoryTest {
         repository.save(modifiedUser);
 
         //then
-        User result = repository.findOne(modifiedUser.getUserId()).get();
+        User result = repository.findById(modifiedUser.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
 
     @Test
     @DisplayName("인자로 주어진 ID를 가진 사용자를 저장소에서 찾아 반환한다.")
-    void findOne() {
+    void findById() {
         //given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
         //when
-        User result = repository.findOne(user.getUserId()).get();
+        User result = repository.findById(user.getUserId()).get();
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);

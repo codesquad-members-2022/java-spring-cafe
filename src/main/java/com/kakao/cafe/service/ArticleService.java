@@ -34,7 +34,7 @@ public class ArticleService {
     }
 
     public Article search(int id) {
-        return articleRepository.findOne(id)
+        return articleRepository.findById(id)
                 .orElseThrow(() -> new NoSuchArticleException(HttpStatus.OK, NO_SUCH_ARTICLE_MESSAGE));
     }
 }

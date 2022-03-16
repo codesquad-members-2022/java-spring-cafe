@@ -33,7 +33,7 @@ public class LoginServiceUnitTest {
         String password = "password";
         LoginParam loginParam = new LoginParam(userId, password);
         User user = new User(1, userId, password, "name", "email");
-        given(repository.findOne(userId)).willReturn(Optional.of(user));
+        given(repository.findById(userId)).willReturn(Optional.of(user));
 
         // when
         User result = loginService.checkInfo(loginParam);
@@ -41,6 +41,6 @@ public class LoginServiceUnitTest {
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
 
-        verify(repository).findOne(userId);
+        verify(repository).findById(userId);
     }
 }

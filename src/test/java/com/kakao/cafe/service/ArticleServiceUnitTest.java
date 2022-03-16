@@ -71,13 +71,13 @@ public class ArticleServiceUnitTest {
         // given
         Integer id = 1;
         Article article = new Article(id, "writer", "title", "contents", LocalDate.now());
-        given(repository.findOne(id)).willReturn(Optional.ofNullable(article));
+        given(repository.findById(id)).willReturn(Optional.ofNullable(article));
 
         // when
         Article result = articleService.search(id);
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
-        verify(repository).findOne(id);
+        verify(repository).findById(id);
     }
 }
