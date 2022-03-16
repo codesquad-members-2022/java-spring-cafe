@@ -12,7 +12,7 @@ public class Article {
     private LocalDateTime createdDate;
 
     // derived
-    private Integer count;
+    private Integer replyCount;
 
     private Article() {
     }
@@ -27,13 +27,13 @@ public class Article {
     }
 
     public Article(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate, Integer count) {
+        LocalDateTime createdDate, Integer replyCount) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
-        this.count = count;
+        this.replyCount = replyCount;
     }
 
     public Integer getArticleId() {
@@ -56,8 +56,8 @@ public class Article {
         return createdDate;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getReplyCount() {
+        return replyCount;
     }
 
     public void setArticleId(Integer articleId) {
