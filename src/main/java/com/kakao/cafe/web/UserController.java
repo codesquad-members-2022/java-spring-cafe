@@ -72,10 +72,6 @@ public class UserController {
     @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable String id, Model model, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        if(!isAuthorized(sessionedUser)) {
-            logger.info("User not logged in tries access [{}]'s info", id);
-            return "redirect:/user/login";
-        }
         checkAccessPermission(id, sessionedUser);
 
         logger.info("[{}] in updateForm for update info", id);
@@ -87,11 +83,8 @@ public class UserController {
     @PutMapping("/users/{id}/update")
     public String updateInfo(@PathVariable String id, UserDto userDto, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        if(!isAuthorized(sessionedUser)) {
-            logger.info("User not logged in tries access {}'s info", id);
-            return "redirect:/user/login";
-        }
         checkAccessPermission(id, sessionedUser);
+
         logger.info("[{}] updated info [{}]", id, userDto);
         userService.updateUserInfo(userDto);
 
@@ -127,10 +120,6 @@ public class UserController {
         userService.logout(httpSession);
 
         return "redirect:/qna/all";
-    }
-
-    private boolean isAuthorized(UserResponseDto sessionedUser) {
-        return sessionedUser != null;
     }
 
     // session정보와 pathID 확인
