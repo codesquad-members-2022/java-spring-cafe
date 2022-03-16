@@ -38,6 +38,6 @@ public class ArticleMemoryRepository implements ArticleRepository {
 
     @Override
     public void deleteById(Long id) {
-        articleList.remove(id.intValue());
+        articleList.remove(id.intValue()-1);
     }
 }
