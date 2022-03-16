@@ -42,7 +42,7 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     @Override
     public Optional<User> save(User user) {
-        findOne(user.getUserId()).ifPresentOrElse(
+        findById(user.getUserId()).ifPresentOrElse(
                 (other) -> merge(user),
                 () -> persist(user)
         );
@@ -60,15 +60,20 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
     }
 
     @Override
-    public Optional<User> findOne(String userId) {
+    public Optional<User> findById(String userId) {
         try {
-            Map<String, ?> params = Collections.singletonMap("userId", userId);
             User user = jdbc.queryForObject(
-                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper);
+                    "select id, user_id, password, name, email from member where user_id = :userId",
+                    Collections.singletonMap("userId", userId), rowMapper);
 
             return Optional.ofNullable(user);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public int deleteById(String userId) {
+        return jdbc.update("delete article where userId = :userId", Collections.singletonMap("userId", userId));
     }
 }

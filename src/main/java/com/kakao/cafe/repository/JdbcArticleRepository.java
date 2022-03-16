@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,21 +44,38 @@ public class JdbcArticleRepository implements DomainRepository<Article, Integer>
 
     @Override
     public Optional<Article> save(Article article) {
-        SqlParameterSource params = new BeanPropertySqlParameterSource(article);
-        article.setId(insertJdbc.executeAndReturnKey(params).intValue());
+        findById(article.getId()).ifPresentOrElse(
+                (other) -> merge(article),
+                () -> persist(article)
+        );
         return Optional.ofNullable(article);
     }
 
+    private void persist(Article article) {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(article);
+        article.setId(insertJdbc.executeAndReturnKey(params).intValue());
+    }
+
+    private void merge(Article article) {
+        SqlParameterSource params = new BeanPropertySqlParameterSource(article);
+        jdbc.update("update article set title = :title, contents = :contents where id = :id", params);
+    }
+
     @Override
-    public Optional<Article> findOne(Integer id) {
+    public Optional<Article> findById(Integer id) {
         try {
-            Map<String, ?> params = Collections.singletonMap("id", id);
             Article article = jdbc.queryForObject(
-                    "select id, writer, title, contents, create_date from article where id = :id", params, rowMapper);
+                    "select id, writer, title, contents, create_date from article where id = :id",
+                    Collections.singletonMap("id", id), rowMapper);
 
             return Optional.ofNullable(article);
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
+    }
+
+    @Override
+    public int deleteById(Integer id) {
+        return jdbc.update("delete article where id = :id", Collections.singletonMap("id", id));
     }
 }

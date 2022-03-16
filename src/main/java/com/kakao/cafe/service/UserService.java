@@ -38,7 +38,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        userRepository.findOne(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .ifPresent(id -> {
                     throw new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE);
                 });
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     public User search(String userId) {
-        return userRepository.findOne(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
     }
 }

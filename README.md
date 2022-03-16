@@ -124,7 +124,7 @@
   - ## 회원정보 수정
     - [x] URL 매핑을 할 때 "/users/{id}"와 같이 URL을 통해 인자를 전달하는 경우 @PathVariable 애노테이션을 활용해 인자 값을 얻을 수 있다.
     - [x] UserController의 사용자가 수정한 정보를 User 클래스에 저장한다.
-    - [x] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findOne()).
+    - [x] {id}에 해당하는 User를 DB에서 조회한다(UserRepository의 findById()).
     - [x] DB에서 조회한 User 데이터를 새로 입력받은 데이터로 업데이트한다.
     - [x] UserRepository의 save() 메소드를 사용해 업데이트한다.
   
@@ -179,7 +179,7 @@
 
         List<T> findAll();
         Optional<T> save(T obj);
-        Optional<T> findOne(V primaryKey);
+        Optional<T> findById(V primaryKey);
         void clear();
     }
     ```
@@ -207,7 +207,7 @@
     ```
   
     - VolatilityUserRepositoryImpl 클래스에서 save 메서드를 정의했습니다.
-    - findOne 메서드를 사용해 현재 save 하고자하는 User 객체가 리스트에 존재하는 지 확인한 뒤
+    - findById 메서드를 사용해 현재 save 하고자하는 User 객체가 리스트에 존재하는 지 확인한 뒤
     - 해당 결과 값에 따라 ENTITY_STATUS 를 결정합니다.
     - switch 문으로 상태에 따라 알맞은 메서드를 호출하도록 구성하였습니다.
     
@@ -219,7 +219,7 @@
   
         @Override
         public synchronized Optional<User> save(User user) {
-            Optional<User> other = findOne(user.getUserId());
+            Optional<User> other = findById(user.getUserId());
             ENTITY_STATUS status = other.isEmpty() ? TRANSIENT : DETACHED;
             User result = null;
             switch (status) {
@@ -238,7 +238,7 @@
     ```
   
     - 글쓰기 기능의 경우 같은 Repository 인터페이스를 구현했기 때문에 방식은 동일하지만
-    - id 값이 곧 index 이기 때문에 findOne 메서드를 호출하지 않고 바로 연산을 수행하도록 구현했습니다.
+    - id 값이 곧 index 이기 때문에 findById 메서드를 호출하지 않고 바로 연산을 수행하도록 구현했습니다.
 
     ```java
     public abstract class VolatilityArticleRepository implements Repository<Article, Integer> {
@@ -265,7 +265,7 @@
         }
 
         @Override
-        public Optional<Article> findOne(Integer index) {
+        public Optional<Article> findById(Integer index) {
             return Optional.ofNullable(articles.get(index - 1));
         }
 

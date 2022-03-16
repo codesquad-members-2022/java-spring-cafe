@@ -9,5 +9,7 @@ public interface DomainRepository<T, V> {
 
     Optional<T> save(T obj);
 
-    Optional<T> findOne(V primaryKey);
+    Optional<T> findById(V primaryKey);
+
+    int deleteById(V primaryKey);
 }

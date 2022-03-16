@@ -62,7 +62,7 @@ class UserServiceUnitTest {
         NewUserParam newUserParam = new NewUserParam("user", "1234", "name", "user@gmail.com");
         User user = userMapper.convertToDomain(newUserParam, User.class);
 
-        given(repository.findOne(user.getUserId()))
+        given(repository.findById(user.getUserId()))
                 .willReturn(Optional.empty());
         given(repository.save(user))
                 .willReturn(Optional.of(user));
@@ -73,7 +73,7 @@ class UserServiceUnitTest {
         // then
         assertThat(newUser).usingRecursiveComparison().isEqualTo(user);
 
-        verify(repository).findOne(user.getUserId());
+        verify(repository).findById(user.getUserId());
     }
 
     @Test
@@ -81,14 +81,14 @@ class UserServiceUnitTest {
     void addFail() {
         NewUserParam newUserParam = new NewUserParam("user", "1234", "name", "user@gmail.com");
 
-        given(repository.findOne(newUserParam.getUserId()))
+        given(repository.findById(newUserParam.getUserId()))
                 .willReturn(Optional.ofNullable(userMapper.convertToDomain(newUserParam, User.class)));
 
         assertThatThrownBy(() -> userService.add(newUserParam))
                 .isInstanceOf(DuplicateUserException.class)
                 .hasMessage(DUPLICATE_USER_MESSAGE);
 
-        verify(repository).findOne(newUserParam.getUserId());
+        verify(repository).findById(newUserParam.getUserId());
     }
 
     @Test
@@ -123,26 +123,26 @@ class UserServiceUnitTest {
         // given
         String userId = "userId";
         User user = new User(1, userId, "password", "name", "email");
-        given(repository.findOne(userId)).willReturn(Optional.ofNullable(user));
+        given(repository.findById(userId)).willReturn(Optional.ofNullable(user));
 
         // when
         User result = userService.search(userId);
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
-        verify(repository).findOne(userId);
+        verify(repository).findById(userId);
     }
 
     @Test
     @DisplayName("인자로 받은 userId에 해당하는 사용자가 없으면 예외가 발생한다.")
     void searchFail() {
         String userId = "noExist";
-        given(repository.findOne(userId)).willReturn(Optional.empty());
+        given(repository.findById(userId)).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.search(userId))
                 .isInstanceOf(NoSuchUserException.class)
                 .hasMessage(NO_SUCH_USER_MESSAGE);
 
-        verify(repository).findOne(userId);
+        verify(repository).findById(userId);
     }
 }

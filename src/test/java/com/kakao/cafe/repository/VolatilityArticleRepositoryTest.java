@@ -46,19 +46,19 @@ class VolatilityArticleRepositoryTest {
         repository.save(article);
 
         //then
-        Article result = repository.findOne(article.getId()).get();
+        Article result = repository.findById(article.getId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
     }
 
     @Test
     @DisplayName("인자로 주어진 ID를 가진 게시글을 저장소에서 찾아 반환한다.")
-    void findOne() {
+    void findById() {
         //given
         Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
         repository.save(article);
 
         //when
-        Article result = repository.findOne(article.getId()).get();
+        Article result = repository.findById(article.getId()).get();
 
         //then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
