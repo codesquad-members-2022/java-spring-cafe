@@ -17,10 +17,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql("classpath:/schema.sql")
+@ActiveProfiles(profiles = "local")
+@Sql("classpath:/schema-h2.sql")
 @Import(QueryProps.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("UserJdbcRepository JDBC 통합 테스트")
