@@ -68,7 +68,7 @@ public class ArticleControllerTest {
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(view().name("/qna/show"))
+            .andExpect(view().name("qna/show"))
             .andExpect(model().attribute("article", articleResponseDto));
     }
 }

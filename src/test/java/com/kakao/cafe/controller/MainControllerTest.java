@@ -41,7 +41,7 @@ public class MainControllerTest {
 
         // then
         resultActions.andExpect(status().isOk())
-            .andExpect(view().name("/index"))
+            .andExpect(view().name("index"))
             .andExpect(model().attribute("articles", List.of(articleResponseDto1, articleResponseDto2)));
     }
 }
