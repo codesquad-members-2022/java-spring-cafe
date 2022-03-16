@@ -31,7 +31,7 @@
                     <tr th:each="article : ${articles}">
                         <td><a th:href="@{/{id}(id=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
                         <td><a th:text="작성자"></a></td>
-                        <td><a th:text="${article.getCreatedDate()}"></a></td>
+                        <td><a th:text="${#temporals.format(article.getCreatedDate(), 'yyyy-MM-dd HH:mm')}"></a></td>
                         <td><a th:text="0"></a></td>
                     </tr>
                     </tbody>
