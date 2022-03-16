@@ -61,8 +61,8 @@ public class ArticleControllerTest {
 
         replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
 
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents", LocalDateTime.now(),
-            0, List.of(replyResponse), 1);
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
 
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
