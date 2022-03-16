@@ -1,16 +1,14 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
+import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Vector;
+import java.util.*;
 
-@org.springframework.stereotype.Repository
-public class VolatilityUserRepository implements Repository<User, String> {
+@Repository
+public class VolatilityUserRepository implements DomainRepository<User, String> {
 
-    private final Vector<User> users = new Vector<>();
+    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public List<User> findAll() {
@@ -19,20 +17,20 @@ public class VolatilityUserRepository implements Repository<User, String> {
 
     @Override
     public synchronized Optional<User> save(User user) {
-        Optional<User> other = findOne(user.getUserId());
-        if (other.isPresent()) {
-            return merge(other.get().getId(), user);
-        }
-        return persist(user);
+        findOne(user.getUserId()).ifPresentOrElse(
+                (other) -> merge(other.getId(), user),
+                () -> persist(user)
+        );
+        return Optional.ofNullable(user);
     }
-    private Optional<User> persist(User user) {
+
+    private void persist(User user) {
         user.setId(users.size() + 1);
         users.add(user);
-        return Optional.ofNullable(user);
     }
-    private Optional<User> merge(long index, User user) {
-        users.set((int)index - 1, user);
-        return Optional.ofNullable(user);
+
+    private void merge(int index, User user) {
+        users.set(index - 1, user);
     }
 
     @Override

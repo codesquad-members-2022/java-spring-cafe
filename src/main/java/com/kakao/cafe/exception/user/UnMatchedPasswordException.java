@@ -1,8 +1,10 @@
 package com.kakao.cafe.exception.user;
 
-public class UnMatchedPasswordException extends IllegalStateException {
+import org.springframework.http.HttpStatus;
 
-    public UnMatchedPasswordException(String msg) {
-        super(msg);
+public class UnMatchedPasswordException extends UserDomainException {
+
+    public UnMatchedPasswordException(HttpStatus httpStatus, String msg) {
+        super(httpStatus, msg);
     }
 }

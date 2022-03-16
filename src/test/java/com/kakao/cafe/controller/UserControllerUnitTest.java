@@ -1,14 +1,13 @@
 package com.kakao.cafe.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,18 +18,16 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
-import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
+import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -40,64 +37,71 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(UserController.class)
 public class UserControllerUnitTest {
 
-    final static int EXISTING_USERS_COUNT = 4;
-
     @Autowired
     MockMvc mvc;
 
     @MockBean
     UserService service;
 
-    static List<User> users = new Vector<>();
+    static List<User> users;
+
+    DomainMapper<User> userMapper = new DomainMapper<>();
 
     @BeforeAll
     static void init() {
-        for (int i = 0; i < EXISTING_USERS_COUNT; ++i) {
-            users.add(new User(-1,"user" + (i + 1), "1234", "name" + (i + 1),
-                            "user" + (i + 1) + "@gmail.com"));
-        }
+        users = List.of(
+                new User(1, "user1", "password1", "name1", "user1@gmail.com"),
+                new User(2, "user2", "password2", "name2", "user2@gmail.com"),
+                new User(3, "user3", "password3", "name3", "user3@gmail.com"),
+                new User(4, "user4", "password4", "name4", "user4@gmail.com")
+        );
     }
 
     @DisplayName("미등록 사용자가 회원가입을 요청하면 사용자 추가를 완료한 후 사용자 목록 페이지로 이동한다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4SignUpSuccess")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForSignUpSuccess")
     void signUpSuccess(NewUserParam newUserParam) throws Exception {
-        given(service.add(newUserParam)).willReturn(newUserParam.convertToUser());
+        given(service.add(newUserParam)).willReturn(userMapper.convertToDomain(newUserParam, User.class));
+
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );
+
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
-    static Stream<Arguments> params4SignUpSuccess() {
+
+    static Stream<Arguments> paramsForSignUpSuccess() {
         return Stream.of(
-                Arguments.of(new NewUserParam("user5", "1234","name5", "user5@gmail.com")),
-                Arguments.of(new NewUserParam("user6", "1234","name6", "user6@gmail.com")),
-                Arguments.of(new NewUserParam("user7", "1234","name7", "user7@gmail.com")),
-                Arguments.of(new NewUserParam("user8", "1234","name8", "user8@gmail.com"))
+                Arguments.of(new NewUserParam("user5", "1234", "name5", "user5@gmail.com")),
+                Arguments.of(new NewUserParam("user6", "1234", "name6", "user6@gmail.com")),
+                Arguments.of(new NewUserParam("user7", "1234", "name7", "user7@gmail.com")),
+                Arguments.of(new NewUserParam("user8", "1234", "name8", "user8@gmail.com"))
         );
     }
 
-    @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4SignUpFail")
+    @DisplayName("등록된 사용자가 회원가입을 요청하면 DuplicateUserException 이 발생한다.")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForSignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
-        given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserIdException(EXISTENT_ID_MESSAGE));
+        given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE));
+
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
-                        content().string(EXISTENT_ID_MESSAGE),
-                        status().isBadRequest())
+                        content().string(DUPLICATE_USER_MESSAGE),
+                        status().isOk())
                 .andDo(print());
 
         verify(service).add(ArgumentMatchers.refEq(newUserParam));
     }
-    static Stream<Arguments> params4SignUpFail() {
+
+    static Stream<Arguments> paramsForSignUpFail() {
         return Stream.of(
-                Arguments.of(new NewUserParam("user1", "1234","name1", "user1@gmail.com")),
-                Arguments.of(new NewUserParam("user2", "1234","name2", "user2@gmail.com")),
-                Arguments.of(new NewUserParam("user3", "1234","name3", "user3@gmail.com")),
-                Arguments.of(new NewUserParam("user4", "1234","name4", "user4@gmail.com"))
+                Arguments.of(new NewUserParam("user1", "1234", "name1", "user1@gmail.com")),
+                Arguments.of(new NewUserParam("user2", "1234", "name2", "user2@gmail.com")),
+                Arguments.of(new NewUserParam("user3", "1234", "name3", "user3@gmail.com")),
+                Arguments.of(new NewUserParam("user4", "1234", "name4", "user4@gmail.com"))
         );
     }
 
@@ -105,6 +109,7 @@ public class UserControllerUnitTest {
     @Test
     void getUsers() throws Exception {
         given(service.searchAll()).willReturn(users);
+
         mvc.perform(get("/users"))
                 .andExpectAll(
                         model().attributeExists("users"),
@@ -117,13 +122,14 @@ public class UserControllerUnitTest {
         verify(service).searchAll();
     }
 
-    @DisplayName("회원프로필을 요청하면 해당하는 유저를 출력한다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4SignUpFail")
+    @DisplayName("회원프로필을 요청하면 해당하는 사용자 정보를 출력한다.")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForSignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         given(service.search(userId)).willReturn(user);
+
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         model().attributeExists("user"),
@@ -136,28 +142,31 @@ public class UserControllerUnitTest {
         verify(service).search(userId);
     }
 
-    @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4SignUpSuccess")
+    @DisplayName("등록되지 않은 회원프로필을 요청하면 NoSuchUserException 예외가 발생한다.")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForSignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
-        given(service.search(userId)).willThrow(new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+
+        given(service.search(userId)).willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
-                        content().string(NON_EXISTENT_ID_MESSAGE),
-                        status().isBadRequest()
+                        content().string(NO_SUCH_USER_MESSAGE),
+                        status().isOk()
                 );
 
         verify(service).search(userId);
     }
 
-    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하면 반영하고 사용자 목록을 출력한다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4modifiedProfileSuccess")
+    @DisplayName("회원정보 수정 요청이 들어오면 반영하고 사용자 목록을 출력한다.")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForModifiedProfileSuccess")
     void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
-        User user = modifiedUserParam.convertToUser();
+        modifiedUserParam.switchPassword();
+        User user = userMapper.convertToDomain(modifiedUserParam, User.class);
         String userId = user.getUserId();
+
         given(service.update(modifiedUserParam)).willReturn(user);
         mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
                 .andExpectAll(
@@ -167,7 +176,8 @@ public class UserControllerUnitTest {
 
         verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
     }
-    static Stream<Arguments> params4modifiedProfileSuccess() {
+
+    static Stream<Arguments> paramsForModifiedProfileSuccess() {
         return Stream.of(
                 Arguments.of(new ModifiedUserParam(1, "user1", "1234", "1234",
                         "4321", "name1", "user1@gmail.com")),
@@ -177,25 +187,29 @@ public class UserControllerUnitTest {
                         "4321", "name3", "user3@gmail.com")),
                 Arguments.of(new ModifiedUserParam(4, "user4", "1234", "1234",
                         "4321", "name4", "user4@gmail.com"))
-                );
+        );
     }
 
-    @DisplayName("회원정보 수정 요청이 들어오면 비밀번호 일치 여부를 확인 후 일치하지 않으면 예외를 발생시킨다.")
-    @ParameterizedTest(name ="{index} {displayName} user={0}")
-    @MethodSource("params4modifiedProfileFail")
+    @DisplayName("비밀번호 일치하지 않는 회원정보 수정 요청이 오면 UnMatchedPasswordException 을 발생시킨다.")
+    @ParameterizedTest(name = "{index} {displayName} user={0}")
+    @MethodSource("paramsForModifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
-        User user = modifiedUserParam.convertToUser();
+        modifiedUserParam.switchPassword();
+        User user = userMapper.convertToDomain(modifiedUserParam, User.class);
+
         String userId = user.getUserId();
-        given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE));
+
+        given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
         mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
                 .andExpectAll(
                         content().string(UNMATCHED_PASSWORD_MESSAGE),
-                        status().isBadRequest()
+                        status().isOk()
                 );
 
         verify(service).update(ArgumentMatchers.refEq(modifiedUserParam));
     }
-    static Stream<Arguments> params4modifiedProfileFail() {
+
+    static Stream<Arguments> paramsForModifiedProfileFail() {
         return Stream.of(
                 Arguments.of(new ModifiedUserParam(1, "user1", "1234", "4321",
                         "4321", "name1", "user1@gmail.com")),
@@ -206,13 +220,5 @@ public class UserControllerUnitTest {
                 Arguments.of(new ModifiedUserParam(4, "user4", "1234", "4321",
                         "4321", "name4", "user4@gmail.com"))
         );
-    }
-
-    private MultiValueMap<String, String> convertToMultiValueMap(Object obj) {
-        Map<String, String> map = new ObjectMapper().convertValue(obj, new TypeReference<>() {});
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.setAll(map);
-
-        return params;
     }
 }

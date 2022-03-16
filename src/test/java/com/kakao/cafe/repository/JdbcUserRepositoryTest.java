@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql(scripts = { "classpath:h2_ddl.sql "})
+@Sql(scripts = {"classpath:h2_ddl.sql "})
 class JdbcUserRepositoryTest {
 
     @Autowired
@@ -48,21 +48,21 @@ class JdbcUserRepositoryTest {
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
     void persist() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
         //when
         repository.save(user);
 
         //then
         User result = repository.findOne(user.getUserId()).get();
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
     void merge() {
         //given
-        User user = new User(-1, "user", "1234", "name", "user@gmail.com");
+        User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
         //when
@@ -71,7 +71,7 @@ class JdbcUserRepositoryTest {
 
         //then
         User result = repository.findOne(modifiedUser.getUserId()).get();
-        assertThat(result).isEqualTo(modifiedUser);
+        assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
 
     @Test
@@ -85,6 +85,6 @@ class JdbcUserRepositoryTest {
         User result = repository.findOne(user.getUserId()).get();
 
         //then
-        assertThat(result).isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 }

@@ -4,7 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +14,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -26,12 +28,13 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.stream.Stream;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Deprecated
+@JdbcTest
 @SpringBootTest
 @AutoConfigureMockMvc
 class UserControllerTest {
@@ -42,7 +45,9 @@ class UserControllerTest {
     MockMvc mvc;
 
     @Autowired
-    Repository<User, String> repository;
+    DomainRepository<User, String> repository;
+
+    DomainMapper<User> userMapper = new DomainMapper<>();
 
     static List<User> users = new Vector<>();;
 
@@ -79,13 +84,13 @@ class UserControllerTest {
         );
     }
 
-    @DisplayName("등록된 사용자가 회원가입을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록된 사용자가 회원가입을 요청하면 Bad Request 를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
         mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
                 .andExpectAll(
-                        content().string(EXISTENT_ID_MESSAGE),
+                        content().string(DUPLICATE_USER_MESSAGE),
                         status().isBadRequest());
     }
     static Stream<Arguments> params4SignUpFail() {
@@ -121,7 +126,7 @@ class UserControllerTest {
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
@@ -133,15 +138,15 @@ class UserControllerTest {
                 );
     }
 
-    @DisplayName("등록되지 않은 회원프로필을 요청하면 BadRequest를 응답 받는다.")
+    @DisplayName("등록되지 않은 회원프로필을 요청하면 Bad Request 를 응답 받는다.")
     @ParameterizedTest(name ="{index} {displayName} user={0}")
     @MethodSource("params4SignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
-        User user = newUserParam.convertToUser();
+        User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
-                        content().string(NON_EXISTENT_ID_MESSAGE),
+                        content().string(NO_SUCH_USER_MESSAGE),
                         status().isBadRequest()
                 );
     }

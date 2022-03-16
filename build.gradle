@@ -17,17 +17,28 @@ jar {
 }
 
 dependencies {
+	/* Mustache */
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	/* H2 database */
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
 
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
 
+	/* AssertJ */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.22.0'
 	testImplementation 'org.junit.jupiter:junit-jupiter-params:5.4.2'
+
+	/* Jackson */
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2'
+
+	/* Aop */
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: '2.6.4'
+	runtimeOnly group: 'org.aspectj', name: 'aspectjrt', version: '1.9.8'
+	runtimeOnly group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.8'
 }
 
 test {

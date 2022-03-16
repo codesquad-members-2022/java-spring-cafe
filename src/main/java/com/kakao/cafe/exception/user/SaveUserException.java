@@ -1,8 +1,10 @@
 package com.kakao.cafe.exception.user;
 
-public class SaveUserException extends IllegalStateException {
+import org.springframework.http.HttpStatus;
 
-    public SaveUserException(String msg) {
-        super(msg);
+public class SaveUserException extends UserDomainException {
+
+    public SaveUserException(HttpStatus httpStatus, String msg) {
+        super(httpStatus, msg);
     }
 }

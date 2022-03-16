@@ -3,22 +3,25 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
-import com.kakao.cafe.exception.user.DuplicateUserIdException;
+import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
-import com.kakao.cafe.repository.Repository;
+import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.util.DomainMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.kakao.cafe.message.UserMessage.*;
+import static com.kakao.cafe.message.UserDomainMessage.*;
 
 @Service
 public class UserService {
 
-    private final Repository<User, String> userRepository;
+    private final DomainRepository<User, String> userRepository;
+    private final DomainMapper<User> userMapper = new DomainMapper<>();
 
-    public UserService(Repository<User, String> userRepository) {
+    public UserService(DomainRepository<User, String> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -27,27 +30,31 @@ public class UserService {
     }
 
     public User add(NewUserParam newUserParam) {
-        User user = newUserParam.convertToUser();
-        validateDuplicateUser(user);
+        User newUser = userMapper.convertToDomain(newUserParam, User.class);
+        validateDuplicateUser(newUser);
 
-        return userRepository.save(user)
-                .orElseThrow(() -> new SaveUserException(ADD_FAIL_MESSAGE));
+        return userRepository.save(newUser)
+                .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, ADD_FAIL_MESSAGE));
     }
+
     private void validateDuplicateUser(User user) {
         userRepository.findOne(user.getUserId())
                 .ifPresent(id -> {
-                    throw new DuplicateUserIdException(EXISTENT_ID_MESSAGE);
+                    throw new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE);
                 });
     }
 
     public User update(ModifiedUserParam modifiedUserParam) {
         modifiedUserParam.isValidRequest();
-        return userRepository.save(modifiedUserParam.convertToUser())
-                .orElseThrow(() -> new SaveUserException(UPDATE_FAIL_MESSAGE));
+        modifiedUserParam.switchPassword();
+
+        User modifiedUser = userMapper.convertToDomain(modifiedUserParam, User.class);
+        return userRepository.save(modifiedUser)
+                .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
     }
 
     public User search(String userId) {
         return userRepository.findOne(userId)
-                .orElseThrow(() -> new NoSuchUserException(NON_EXISTENT_ID_MESSAGE));
+                .orElseThrow(() -> new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
     }
 }

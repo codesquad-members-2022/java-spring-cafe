@@ -1,22 +1,22 @@
 package com.kakao.cafe.dto;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
+import org.springframework.http.HttpStatus;
 
-import static com.kakao.cafe.message.UserMessage.UNMATCHED_PASSWORD_MESSAGE;
+import static com.kakao.cafe.message.UserDomainMessage.UNMATCHED_PASSWORD_MESSAGE;
 
 public class ModifiedUserParam {
 
-    private long id;
-    private final String userId;
-    private final String password;
-    private final String nowPassword;
-    private final String newPassword;
-    private final String name;
-    private final String email;
+    private int id;
+    private String userId;
+    private String password;
+    private String nowPassword;
+    private String newPassword;
+    private String name;
+    private String email;
 
-    public ModifiedUserParam(long id, String userId, String password, String nowPassword,
-                                String newPassword, String name, String email) {
+    public ModifiedUserParam(int id, String userId, String password, String nowPassword,
+                             String newPassword, String name, String email) {
 
         this.id = id;
         this.userId = userId;
@@ -27,7 +27,7 @@ public class ModifiedUserParam {
         this.email = email;
     }
 
-    public void setIndex(long id) {
+    public void setIndex(int id) {
         this.id = id;
     }
 
@@ -61,12 +61,12 @@ public class ModifiedUserParam {
 
     public void isValidRequest() {
         if (!nowPassword.equals(password)) {
-            throw new UnMatchedPasswordException(UNMATCHED_PASSWORD_MESSAGE);
+            throw new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE);
         }
     }
 
-    public User convertToUser() {
-        return new User(id, userId, newPassword, name, email);
+    public void switchPassword() {
+        password = newPassword;
     }
 
     @Override
