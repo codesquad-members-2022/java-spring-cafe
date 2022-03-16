@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import java.time.LocalDateTime;
 
 public class ReplyResponse {
@@ -8,6 +10,8 @@ public class ReplyResponse {
     private Integer articleId;
     private String userId;
     private String comment;
+
+    @JsonFormat(shape = Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
     private ReplyResponse() {
