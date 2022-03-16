@@ -1,13 +1,11 @@
 package com.kakao.cafe.domain.user.dto;
 
 public class UserDto {
-    private int number;
     private String userId;
     private String name;
     private String email;
 
-    public UserDto(int number, String userId, String name, String email) {
-        this.number = number;
+    public UserDto(String userId, String name, String email) {
         this.userId = userId;
         this.name = name;
         this.email = email;

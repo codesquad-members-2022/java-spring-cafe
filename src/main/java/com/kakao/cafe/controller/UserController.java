@@ -19,7 +19,7 @@ import com.kakao.cafe.service.UserService;
 @Controller
 public class UserController {
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -39,7 +39,7 @@ public class UserController {
         logger.info("GET /users");
         List<UserDto> userDtoList = userService.findAllUser();
         model.addAttribute("users", userDtoList);
-        return "/list";
+        return "list";
     }
 
     @GetMapping("/users/{userId}")
@@ -47,14 +47,14 @@ public class UserController {
         logger.info("GET /users/{}", userId);
         UserProfileDto userProfileDto = userService.findUserProfileByUserId(userId);
         model.addAttribute("userProfile", userProfileDto);
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/users/{userId}/check")
     public String verifyPassword(@PathVariable String userId, Model model) {
         logger.info("GET /users/{}/check", userId);
         model.addAttribute("userId", userId);
-        return "/user/passwordCheck";
+        return "user/passwordCheck";
     }
 
     @PostMapping("/users/{userId}/form")
@@ -63,7 +63,7 @@ public class UserController {
         userService.checkPasswordMatch(userId, password);
         User user = userService.findUserByUserId(userId);
         model.addAttribute("user", user);
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/users/{userId}/update")

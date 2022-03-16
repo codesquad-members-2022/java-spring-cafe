@@ -14,21 +14,26 @@
                 </tr>
                 </thead>
                 <tbody>
-
                 {{#users}}
                 <tr>
-                    <th scope="row">{{number}}</th>
-                    <td> <a href="/users/{{userId}}"> {{userId}} </a></td>
+                    <th class="userIdx"></th>
+                    <td><a href="/users/{{userId}}"> {{userId}} </a></td>
                     <td>{{name}}</td>
                     <td>{{email}}</td>
                     <td><a href="/users/{{userId}}/check" class="btn btn-success" role="button">수정</a></td>
                 </tr>
                 {{/users}}
-
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+<script>
+    let userList = document.querySelectorAll(".userIdx");
+    let idx = 1;
+    userList.forEach((uIdx) => {
+        uIdx.innerHTML = '<th>' + idx++ + '</th>';
+    })
+</script>
 
 {{>util/footer}}

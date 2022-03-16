@@ -1,12 +1,9 @@
-package com.kakao.cafe.repository;
+package com.kakao.cafe.repository.article;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +12,11 @@ import com.kakao.cafe.domain.article.Article;
 
 class ArticleRepositoryTest {
 
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
 
     @BeforeEach
     void init() {
-        articleRepository = new ArticleRepository(new ArrayList<>());
+        articleRepository = new MemoryArticleRepository();
     }
 
     @DisplayName("정상 저장되는지 확인한다.")

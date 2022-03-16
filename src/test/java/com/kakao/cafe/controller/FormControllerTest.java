@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = IndexController.class)
-class IndexControllerTest {
+@WebMvcTest(controllers = FormController.class)
+class FormControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -20,7 +20,7 @@ class IndexControllerTest {
     void get_form() throws Exception {
         mvc.perform(get("/form"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/user/form"));
+            .andExpect(view().name("user/form"));
     }
 
     @DisplayName("/qnaForm으로 GET 요청이 오면 /qna/formQna view가 반환된다.")
@@ -28,6 +28,6 @@ class IndexControllerTest {
     void get_qnaForm() throws Exception {
         mvc.perform(get("/qnaForm"))
             .andExpect(status().isOk())
-            .andExpect(view().name("/qna/formQna"));
+            .andExpect(view().name("qna/formQna"));
     }
 }

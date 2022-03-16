@@ -1,27 +1,45 @@
 package com.kakao.cafe.domain.article;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Article {
-    private Integer id;
-    private final String writer;
+    private Long id;
+    private String writer;
     private String title;
     private String contents;
-    private String writeTime;
+    private LocalDateTime writeTime;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.writeTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
-    public Integer getId() {
+    public void writeWhenCreated(LocalDateTime writeTime) {
+        this.writeTime = writeTime;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public String getWriter() {
+        return writer;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public LocalDateTime getWriteTime() {
+        return writeTime;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 }

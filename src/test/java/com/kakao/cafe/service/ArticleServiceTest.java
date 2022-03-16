@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.article.MemoryArticleRepository;
 
-@ExtendWith(SpringExtension.class) // MockitoExtension을 포함하는 개념
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
 
     @InjectMocks
     ArticleService articleService;
 
     @Mock
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
 
     Article article1;
     Article article2;
@@ -54,26 +54,26 @@ class ArticleServiceTest {
     @Test
     void show_articles_by_index() {
         // given
-        given(articleRepository.findByIndex(0))
-            .willReturn(Optional.ofNullable(article1));
+        when(articleRepository.findById(0L))
+            .thenReturn(Optional.ofNullable(article1));
 
         // when
-        Article article = articleService.showArticle(0);
+        Article article = articleService.showArticle(0L);
 
         // then
         assertThat(article1).isEqualTo(article);
     }
 
-    @DisplayName("없는 인덱스를 전달하면 IllegalArgumentException이 발생한다.")
+    @DisplayName("없는 인덱스가 전달되어 Optional.empty가 반환되었다면 IllegalArgumentException이 발생한다.")
     @Test
     void show_articles_throw_exception() {
         // given
-        given(articleRepository.findByIndex(0))
-            .willReturn(Optional.ofNullable(article1));
+        lenient().when(articleRepository.findById(1L))
+            .thenReturn(Optional.empty());
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> {
-            articleService.showArticle(1);
+            articleService.showArticle(1L);
         });
     }
 }

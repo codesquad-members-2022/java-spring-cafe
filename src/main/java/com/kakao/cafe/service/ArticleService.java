@@ -1,11 +1,12 @@
 package com.kakao.cafe.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.article.ArticleRepository;
 
 @Service
 public class ArticleService {
@@ -17,6 +18,7 @@ public class ArticleService {
     }
 
     public void save(Article article) {
+        article.writeWhenCreated(LocalDateTime.now());
         articleRepository.save(article);
     }
 
@@ -24,8 +26,12 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
-    public Article showArticle(int index) {
-        return articleRepository.findByIndex(index)
+    public Article showArticle(long index) {
+        return articleRepository.findById(index)
             .orElseThrow(IllegalArgumentException::new);
+    }
+
+    public void clear() {
+        articleRepository.deleteAll();
     }
 }

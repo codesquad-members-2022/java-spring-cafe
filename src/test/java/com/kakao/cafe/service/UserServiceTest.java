@@ -18,7 +18,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.dto.UserDto;
 import com.kakao.cafe.domain.user.dto.UserProfileDto;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.UserRepository;
 
 @ExtendWith(SpringExtension.class)
 class UserServiceTest {
@@ -57,7 +57,7 @@ class UserServiceTest {
     @Test
     void test_find_User_By_UserId() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // when
@@ -67,12 +67,11 @@ class UserServiceTest {
         assertThat(user.getEmail()).isEqualTo("lee@naver.com");
     }
 
-
     @DisplayName("userId를 사용하여 UserProfileDto를 반환받는다.")
     @Test
     void test_find_User_By_UserId_for_UserProfileDto() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // when
@@ -86,7 +85,7 @@ class UserServiceTest {
     @Test
     void if_password_incorrect_exception_occur() {
         // given
-        given(userRepository.findByUserId("lucid"))
+        given(userRepository.findById("lucid"))
             .willReturn(Optional.of(user1));
 
         // then
