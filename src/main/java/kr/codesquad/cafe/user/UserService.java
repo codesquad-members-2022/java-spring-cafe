@@ -3,12 +3,14 @@ package kr.codesquad.cafe.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
 
+    private static final String CURRENT_USER = "currentUser";
     private final UserRepository repository;
 
     @Autowired
@@ -26,14 +28,20 @@ public class UserService {
 
     public void update(User user, String oldPassword) {
         validateUserAlreadyExists(user);
-        validateOldPassword(user, oldPassword);
+        validatePassword(user, oldPassword);
         validateNoDuplicateName(user);
         validateNoDuplicateEmail(user);
 
         repository.save(user);
     }
 
-    private void validateOldPassword(User user, String oldPassword) {
+    public void login(String userId, String password, HttpSession session) {
+        User user = findByUserId(userId);
+        validatePassword(user, password);
+        session.setAttribute(CURRENT_USER, user);
+    }
+
+    private void validatePassword(User user, String oldPassword) {
         if (findByUserId(user.getUserId()).passwordIs(oldPassword)) {
             return;
         }
