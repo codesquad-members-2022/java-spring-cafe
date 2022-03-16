@@ -18,58 +18,64 @@ class UserServiceTest {
     UserMemoryRepository userRepository;
 
     @BeforeEach
-    public void beforeEach(){
+    public void beforeEach() {
         userRepository = new UserMemoryRepository();
         userService = new UserService(userRepository);
     }
 
     @AfterEach
-    public void afterEach() { userRepository.clearStore(); }
+    public void afterEach() {
+        userRepository.clearStore();
+    }
 
     @Test
     void join() {
         // given
-        User user = new User("abc123@gmail.com","ABC","abc");
+        User user = new User("abc123@gmail.com", "ABC", "abc");
 
         // when
-        String saveEmail = userService.join(user);
+        String saveEmail = userService.join(UserForm.from(user));
 
         // then
-        User findUser = userService.findOneByEmail(saveEmail).get();
-        assertThat(user.isSameEmail(findUser.getEmail()));
+        UserForm findUser = userService.findOneByEmail(saveEmail);
+        assertThat(saveEmail).isEqualTo(findUser.getEmail());
     }
 
     @Test
-    void findUsers() {
-        List<User> users = new ArrayList<>();
+    void findAllUserForm() {
+        List<UserForm> userFormList = new ArrayList<>();
 
-        User user1 = new User("abc123@gmail.com","ABC","abc");
-        User user2 = new User("def123@gmail.com","DEF","def");
+        User user1 = new User("abc123@gmail.com", "ABC", "abc");
+        User user2 = new User("def123@gmail.com", "DEF", "def");
 
-        users.add(user1);
-        users.add(user2);
+        userFormList.add(UserForm.from(user1));
+        userFormList.add(UserForm.from(user2));
 
-        userService.join(user1);
-        userService.join(user2);
+        userService.join(UserForm.from(user1));
+        userService.join(UserForm.from(user2));
 
-        List<User> result = userService.findUsers();
+        List<UserForm> result = userService.findAllUserForm();
 
-        assertThat(result).isEqualTo(users);
+        for (int i = 0; i < result.size(); i++) {
+            assertThat(result.get(i).equals(userFormList.get(i)));
+        }
     }
 
     @Test
     void findOneByEmail() {
-        User user = new User("abc123@gmail.com","ABC","abc");
-        userService.join(user);
+        User user = new User("abc123@gmail.com", "ABC", "abc");
+        UserForm form = UserForm.from(user);
+        userService.join(UserForm.from(user));
 
-        assertThat(userService.findOneByEmail(user.getEmail()).get().isSameEmail("abc123@gmail.com"));
+        assertThat(userService.findOneByEmail(user.getEmail()).equals(form));
     }
 
     @Test
     void findOneByUserId() {
-        User user = new User("abc123@gmail.com","ABC","abc");
-        userService.join(user);
+        User user = new User("abc123@gmail.com", "ABC", "abc");
+        UserForm form = UserForm.from(user);
+        userService.join(UserForm.from(user));
 
-        assertThat(userService.findOneByUserId(user.getUserId()).get()).isEqualTo(user);
+        assertThat(userService.findOneByUserId(user.getUserId()).equals(form));
     }
 }

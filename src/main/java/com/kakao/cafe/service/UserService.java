@@ -1,11 +1,11 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class UserService {
     private final UserRepository userRepository;
@@ -14,22 +14,30 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String join(User user) {
-        validateDuplicateUser(user);
+    public String join(UserForm form){
+        validateDuplicateUser(form);
+        User user = new User(form.getEmail(), form.getUserId(), form.getPassword());
         userRepository.save(user);
         return user.getEmail();
     }
 
-    private void validateDuplicateUser(User user) {
-        userRepository.findByEmail(user.getEmail())
+    private void validateDuplicateUser(UserForm form){
+        userRepository.findByEmail(form.getEmail())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원 입니다.");
                 });
     }
 
-    public List<User> findUsers() { return userRepository.findAll(); }
+    public List<UserForm> findAllUserForm() {
+        List<User> users = userRepository.findAll();
+        List<UserForm> userFormList = new ArrayList<>();
+        for(int i = 0; i < users.size(); i++){
+            userFormList.add(UserForm.from(users.get(i)));
+        }
+        return userFormList;
+    }
 
-    public Optional<User> findOneByEmail (String email) { return userRepository.findByEmail(email); }
+    public UserForm findOneByEmail (String email) { return UserForm.from(userRepository.findByEmail(email).get()); }
 
-    public Optional<User> findOneByUserId (String userId){return userRepository.findByUserId(userId);}
+    public UserForm findOneByUserId (String userId){return UserForm.from(userRepository.findByUserId(userId).get());}
 }

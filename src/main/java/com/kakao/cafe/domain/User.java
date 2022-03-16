@@ -10,14 +10,14 @@ public class User {
     private String password;
     private LocalDateTime createdAt;
 
-    public User (String email, String userId, String password){
+    public User(String email, String userId, String password) {
         this.email = email;
         this.userId = userId;
         this.password = password;
         this.createdAt = LocalDateTime.now();
     }
 
-    public LocalDateTime getCreatedDate() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
@@ -33,11 +33,11 @@ public class User {
         return password;
     }
 
-    public boolean isSameEmail(String email){
+    public boolean isSameEmail(String email) {
         return this.email.equals(email);
     }
 
-    public boolean isSameUserId(String userId){
+    public boolean isSameUserId(String userId) {
         return this.userId.equals(userId);
     }
 }

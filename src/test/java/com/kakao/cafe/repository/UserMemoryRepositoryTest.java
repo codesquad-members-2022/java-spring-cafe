@@ -1,6 +1,5 @@
 package com.kakao.cafe.repository;
 
-import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
