@@ -38,6 +38,8 @@ public class MvcConfig implements WebMvcConfigurer {
                         "/articles/form",
                         "/articles/write",
                         "/articles/{id}",
+                        "/articles/{id}/form",
+                        "/articles/{id}/update",
                         "/articles/{id}/remove"
                 );
     }
