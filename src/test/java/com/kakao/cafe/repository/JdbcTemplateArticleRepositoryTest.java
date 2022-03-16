@@ -5,22 +5,26 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+
 import javax.sql.DataSource;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
-@SpringBootTest
+@JdbcTest
 class JdbcTemplateArticleRepositoryTest {
     ArticleRepository articleRepository;
-    @Autowired DataSource dataSource;
+    @Autowired
+    DataSource dataSource;
 
     @BeforeEach
     void init() {
         articleRepository = new JdbcTemplateArticleRepository(dataSource);
     }
+
+
 
     @Test
     @DisplayName("게시글 저장이 잘 되는가?")

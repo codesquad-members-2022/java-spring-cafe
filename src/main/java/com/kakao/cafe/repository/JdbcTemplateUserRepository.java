@@ -1,7 +1,6 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.dto.UserForm;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -70,9 +69,8 @@ public class JdbcTemplateUserRepository implements UserRepository{
     @Override
     public void update(User user, int id) {
         String sql = "update user set userid = ?, name = ?, password = ?, email = ? where id = ?";
-
-        jdbcTemplate.query(sql, userRowMapper(),
-                user.getName(),
+        jdbcTemplate.update(sql,
+                user.getUserId(),
                 user.getName(),
                 user.getPassword(),
                 user.getEmail(),
@@ -80,4 +78,15 @@ public class JdbcTemplateUserRepository implements UserRepository{
         );
 
     }
+
+    @Override
+    public void clearStore() {
+        jdbcTemplate.execute("delete from user");
+    }
+
+    @Override
+    public int size() {
+        return findAll().size();
+    }
 }
+

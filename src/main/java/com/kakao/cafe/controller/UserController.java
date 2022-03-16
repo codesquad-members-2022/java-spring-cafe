@@ -40,14 +40,14 @@ public class UserController {
 
     @GetMapping("/{index}")
     public String profile(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index - 1);
+        UserForm userForm = userService.findOneUser(index);
         model.addAttribute("user", userForm);
         return "user/profile";
     }
 
     @GetMapping("/{index}/update")
     public String createUpdateForm(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index - 1);
+        UserForm userForm = userService.findOneUser(index);
         model.addAttribute("user", userForm);
         model.addAttribute("index", index);
         return "user/updateForm";
@@ -55,7 +55,7 @@ public class UserController {
 
     @PutMapping("/{index}/update")
     public String updateUser(@PathVariable("index") int index, @Valid UpdateUserForm updateUserForm) {
-        userService.update(updateUserForm, index - 1);
+        userService.update(updateUserForm, index);
         return "redirect:/users";
     }
 }

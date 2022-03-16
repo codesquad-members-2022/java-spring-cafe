@@ -40,10 +40,12 @@ public class MemoryUserRepository implements UserRepository {
         return new ArrayList<>(userStore);
     }
 
+    @Override
     public void clearStore() {
         userStore.clear();
     }
 
+    @Override
     public int size() {
         return userStore.size();
     }
