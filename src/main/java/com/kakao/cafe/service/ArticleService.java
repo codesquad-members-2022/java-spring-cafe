@@ -39,4 +39,11 @@ public class ArticleService {
     public void clearRepository() {
         articleRepository.clear();
     }
+
+    public void deleteOne(int ArticleId, String userId) {
+        if(!findOne(ArticleId).isSameWriter(userId)) {
+            throw new ClientException(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다.");
+        }
+        articleRepository.deleteOne(ArticleId);
+    }
 }

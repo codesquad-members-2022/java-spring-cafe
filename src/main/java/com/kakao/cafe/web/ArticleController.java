@@ -10,10 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -39,9 +36,9 @@ public class ArticleController {
     @PostMapping("/write-qna")
     public String write(ArticleDto articleDto, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        String userId = sessionedUser.getUserId();
-        logger.info("[{}] writing qna{}", userId, articleDto);
-        articleService.write(userId, articleDto);
+        String sessionedUserId = sessionedUser.getUserId();
+        logger.info("[{}] writing qna{}", sessionedUserId, articleDto);
+        articleService.write(sessionedUserId, articleDto);
 
         return "redirect:/qna/all";
     }
@@ -63,5 +60,16 @@ public class ArticleController {
         logger.info("Show article{}", result);
 
         return "qna/show";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteArticle(@PathVariable int id, HttpSession httpSession) {
+        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        String sessionedUserId = sessionedUser.getUserId();
+        logger.info("[{}] delete qna{}", sessionedUserId, id);
+
+        articleService.deleteOne(id, sessionedUserId);
+
+        return "redirect:/qna/all";
     }
 }

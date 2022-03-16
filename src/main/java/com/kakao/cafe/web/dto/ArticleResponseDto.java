@@ -21,6 +21,10 @@ public class ArticleResponseDto {
         this.writtenTime = article.getWrittenTime();
     }
 
+    public boolean isSameWriter(String writer) {
+        return this.writer.equals(writer);
+    }
+
     public int getId() {
         return id;
     }

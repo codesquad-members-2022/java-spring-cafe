@@ -9,4 +9,5 @@ public interface ArticleRepository {
     Optional<Article> findById(int id);
     List<Article> findAll();
     void clear();
+    void deleteOne(int id);
 }

@@ -59,8 +59,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public void clear() {
-        String sql = "delete from cafe_user";
+        String sql = "delete from cafe_article";
         jdbcTemplate.update(sql, new MapSqlParameterSource());
+    }
+
+    @Override
+    public void deleteOne(int id) {
+        String sql = "delete from cafe_article where id = :id";
+        jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
     }
 
     private RowMapper<Article> articleRowMapper() {

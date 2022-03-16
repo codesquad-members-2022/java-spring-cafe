@@ -33,6 +33,11 @@ public class MemoryArticleRepository implements ArticleRepository {
         articles.clear();
     }
 
+    @Override
+    public void deleteOne(int id) {
+        articles.remove(id);
+    }
+
     private int generateId() {
         return articles.size() + STORAGE_KEY;
     }
