@@ -33,7 +33,7 @@ class UserRepositoryTest {
         User resultUser = userRepository.findById(userId).get();
 
         // then
-        assertThat(resultUser.getUserId()).isEqualTo(user.getUserId());
+        assertThat(resultUser.getId()).isEqualTo(user.getId());
         assertThat(resultUser.getEmail()).isEqualTo(user.getEmail());
         assertThat(resultUser.getName()).isEqualTo(user.getName());
         assertThat(resultUser.getPassword()).isEqualTo(user.getPassword());

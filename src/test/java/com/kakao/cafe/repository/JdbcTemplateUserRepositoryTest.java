@@ -34,7 +34,7 @@ class JdbcTemplateUserRepositoryTest {
         User resultUser = userRepository.findById(userId).get();
 
         // then
-        assertThat(resultUser.getUserId()).isEqualTo(userId);
+        assertThat(resultUser.getId()).isEqualTo(userId);
         assertThat(resultUser.getPassword()).isEqualTo(password);
         assertThat(resultUser.getName()).isEqualTo(name);
         assertThat(resultUser.getEmail()).isEqualTo(email);
@@ -54,7 +54,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         User resultUser = userRepository.findById("ID3").get();
-        assertThat(resultUser.getUserId()).isEqualTo("ID3");
+        assertThat(resultUser.getId()).isEqualTo("ID3");
         assertThat(resultUser.getPassword()).isEqualTo("PW3");
         assertThat(resultUser.getName()).isEqualTo("NAME3");
         assertThat(resultUser.getEmail()).isEqualTo("3@3.com");
@@ -78,7 +78,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         User resultUser = userRepository.findById("ID2").get();
-        assertThat(resultUser.getUserId()).isEqualTo("ID2");
+        assertThat(resultUser.getId()).isEqualTo("ID2");
         assertThat(resultUser.getPassword()).isEqualTo("pw2");
         assertThat(resultUser.getName()).isEqualTo("name2");
         assertThat(resultUser.getEmail()).isEqualTo("2@2.net");
@@ -96,7 +96,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         assertThat(resultUserList).hasSize(2);
-        assertThat(resultUserList.get(0).getUserId()).isEqualTo(userId1);
-        assertThat(resultUserList.get(1).getUserId()).isEqualTo(userId2);
+        assertThat(resultUserList.get(0).getId()).isEqualTo(userId1);
+        assertThat(resultUserList.get(1).getId()).isEqualTo(userId2);
     }
 }
