@@ -1,9 +1,8 @@
-package com.kakao.cafe.users.domain.controller;
+package com.kakao.cafe.users.controller;
 
-import com.kakao.cafe.users.UserService;
-import com.kakao.cafe.users.controller.UserController;
 import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.users.exception.UserDuplicatedException;
+import com.kakao.cafe.users.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -21,9 +20,9 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,9 +54,9 @@ class UserControllerTest {
         @DisplayName("모든 데이터를 정상적으로 넣으면 성공한다.")
         void join_success() throws Exception {
             // arrange
-            Long registeredId = 1L;
+
             String expectedRedirectUrl = "/users";
-            when(userService.join(any())).thenReturn(Optional.of(registeredId));
+            when(userService.join(any())).thenReturn(getUser());
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -78,7 +77,7 @@ class UserControllerTest {
         @DisplayName("중복된 userId 로 시도하면 실패하고, 회원가입 화면으로 돌아간다.")
         void join_failed() throws Exception {
             // arrange
-            when(userService.join(any())).thenThrow(new UserDuplicatedException("이미 존재하는 회원입니다."));
+            when(userService.join(any())).thenThrow(new UserDuplicatedException());
 
             // act
             ResultActions actions = mockMvc.perform(
@@ -112,7 +111,7 @@ class UserControllerTest {
             String userListViewName = "user/list";
             String usersKey = "users";
             List<User> users = getUsers();
-            when(userService.findUsers()).thenReturn(Optional.of(users));
+            when(userService.findUsers()).thenReturn(users);
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -131,7 +130,7 @@ class UserControllerTest {
         void findUsersReturnEmpty_moveToView() throws Exception {
             // arrange
             String userListViewName = "user/list";
-            when(userService.findUsers()).thenReturn(Optional.empty());
+            when(userService.findUsers()).thenReturn(Collections.emptyList());
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users"));
@@ -144,24 +143,14 @@ class UserControllerTest {
         }
 
         private List<User> getUsers() {
-            return List.of(new User.Builder()
-                            .setId(1L)
-                            .setUserId("jwkim")
-                            .setPasswd("1234")
-                            .setName("김진완")
-                            .setEmail("wlsdhks0423@naver.com")
-                            .setCreatedDate(LocalDateTime.now())
-                            .setModifiedDate(LocalDateTime.now())
-                            .build(),
-                    new User.Builder()
-                            .setId(2L)
-                            .setUserId("jay")
-                            .setPasswd("1234")
-                            .setName("김제이")
-                            .setEmail("jay@naver.com")
-                            .setCreatedDate(LocalDateTime.now())
-                            .setModifiedDate(LocalDateTime.now())
-                            .build());
+            User user1 = getIdNullUser("jwkim");
+            user1.setId(1L);
+            User user2 = getIdNullUser("jay");
+            user2.setId(2L);
+            User user3 = getIdNullUser("clad");
+            user3.setId(3L);
+
+            return List.of(user1, user2, user3);
         }
     }
 
@@ -175,7 +164,7 @@ class UserControllerTest {
             // arrange
             User user = getUser();
             Long id = user.getId();
-            when(userService.findOne(any())).thenReturn(Optional.of(user));
+            when(userService.findOne(any())).thenReturn(user);
 
             // act
             ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/" + id));
@@ -189,38 +178,28 @@ class UserControllerTest {
             assertThat(modelAndView.getModel().get("user")).isNotNull();
         }
 
-        @Test
-        @DisplayName("존재하지 않는 회원의 userId 가 path 로 들어오면 에러 메세지와 함께, 회원 목록 페이지로 이동한다.")
-        void findProfile_failed() throws Exception {
-            // arrange
-            when(userService.findOne(any())).thenReturn(Optional.empty());
+    }
 
-            // act
-            ResultActions actions = mockMvc.perform(MockMvcRequestBuilders.get("/users/1"));
+    private User getIdNullUser(String userId) {
+        LocalDateTime dateTime = LocalDateTime.MIN;
+        return new User.Builder()
+                .setUserId(userId)
+                .setPasswd("1234")
+                .setName("김진완")
+                .setEmail("wlsdhks0423@naver.com")
+                .setCreatedDate(dateTime)
+                .setModifiedDate(dateTime)
+                .build();
+    }
 
-            // assert
-            MvcResult mvcResult = actions.andExpect(status().is4xxClientError()).andReturn();
+    private User getIdNullUser() {
+        return getIdNullUser("jwkim");
+    }
 
-            ModelAndView modelAndView = mvcResult.getModelAndView();
-            Map<String, Object> model = modelAndView.getModel();
-
-            assertThat(modelAndView.getViewName()).isEqualTo("user/list");
-            assertThat(model.containsKey("errorMessage")).isTrue();
-//            assertThat(model.get("errorMessage").toString()).contains("이미 존재하는 회원입니다.");
-        }
-
-        private User getUser() {
-            return new User.Builder()
-                    .setId(1L)
-                    .setUserId("jwkim")
-                    .setPasswd("1234")
-                    .setName("김진완")
-                    .setEmail("wlsdhks0423@naver.com")
-                    .setCreatedDate(LocalDateTime.now())
-                    .setModifiedDate(LocalDateTime.now())
-                    .build();
-        }
-
+    private User getUser() {
+        User user = getIdNullUser();
+        user.setId(1L);
+        return user;
     }
 
 }

@@ -1,10 +1,14 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
+import com.kakao.cafe.users.controller.dto.UserJoinRequest;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class User {
 
-    private final Long id;
+    private Long id;
     private final String userId;
     private final String passwd;
     private final String name;
@@ -18,12 +22,70 @@ public class User {
         this.passwd = passwd;
         this.name = name;
         this.email = email;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
+        this.createdDate = getOrDefault(createdDate, LocalDateTime.now());
+        this.modifiedDate = getOrDefault(modifiedDate, LocalDateTime.now());
+
+        validateRequiredField(this);
     }
 
+    public static User createWithJoinRequest(UserJoinRequest joinRequest) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return new User(
+                null,
+                joinRequest.getUserId(),
+                joinRequest.getPasswd(),
+                joinRequest.getName(),
+                joinRequest.getEmail(),
+                now,
+                now);
+    }
+
+    // ---- public method ----
+    public boolean equalsId(Long id) {
+        return this.id.longValue() == id.longValue();
+    }
+
+    public boolean equalsUserId(String userId) {
+        return this.userId.equals(userId);
+    }
+
+    public boolean equalsPasswd(String passwd) {
+        return this.passwd.equals(passwd);
+    }
+
+    public boolean equalsName(String name) {
+        return this.name.equals(name);
+    }
+
+    public boolean equalsEmail(String email) {
+        return this.email.equals(email);
+    }
+
+    // ---- private method ----
+    private LocalDateTime getOrDefault(LocalDateTime originValue, LocalDateTime defaultValue) {
+        if (originValue == null) {
+            return defaultValue;
+        }
+        return originValue;
+    }
+
+    private void validateRequiredField(User user) {
+        if (user.getUserId() == null ||
+                user.getPasswd() == null ||
+                user.getName() == null ||
+                user.getEmail() == null ) {
+            throw new RequiredFieldNotFoundException();
+        }
+    }
+
+    // ---- getter setter ----
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserId() {
@@ -50,6 +112,21 @@ public class User {
         return modifiedDate;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId().equals(user.getId()) &&
+                getUserId().equals(user.getUserId()) &&
+                getPasswd().equals(user.getPasswd()) &&
+                getName().equals(user.getName()) &&
+                getEmail().equals(user.getEmail()) &&
+                Objects.equals(getCreatedDate(), user.getCreatedDate()) &&
+                Objects.equals(getModifiedDate(), user.getModifiedDate());
+    }
+
+    // builder
     public static class Builder {
         private Long id;
         private String userId;
