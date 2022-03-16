@@ -35,7 +35,7 @@ public class ArticleController {
     public String articles(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/articles/{articleId}")

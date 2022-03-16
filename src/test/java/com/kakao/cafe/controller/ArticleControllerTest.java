@@ -72,7 +72,7 @@ public class ArticleControllerTest {
 
         actions.andExpect(status().isOk())
                 .andExpect(model().attribute("articles", List.of(article)))
-                .andExpect(view().name("/index"));
+                .andExpect(view().name("index"));
     }
 
     @Test
