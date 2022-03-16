@@ -18,6 +18,10 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  sql:
+    init:
+      schema-locations: classpath:sql/ddl.sql
+      mode: always
 server:
   servlet:
     session:
