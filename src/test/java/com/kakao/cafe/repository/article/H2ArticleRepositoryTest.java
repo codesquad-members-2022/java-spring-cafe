@@ -45,11 +45,12 @@ class H2ArticleRepositoryTest {
         article.writeWhenCreated(LocalDateTime.now());
     }
 
-    @DisplayName("Article 저장 후 auto increment된 id 1이 반환된다.")
+    @DisplayName("Article 저장 후 auto increment되어 지정된 id가 반환된다.")
     @Test
     void article_save() {
         // given
         KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("id", 7)));
+        article = new Article("lucid", "title1", "contents1");
 
         given(keyHolderGenerator.getKeyHolder())
             .willReturn(keyHolder);

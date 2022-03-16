@@ -42,19 +42,19 @@ class ArticleControllerTest {
             .andExpect(redirectedUrl("/"));
     }
 
-    @DisplayName("/articles/{index}로 GET 요청을 하면 해당 index에 해당하는 Article로 이동한다.")
-    @Test
-    void get_article() throws Exception {
-        // given && when
-        given(articleService.showArticle(1))
-            .willReturn(makeArticle());
-
-        // then
-        mvc.perform(get("/articles/1"))
-            .andExpect(status().isOk())
-            .andExpect(model().attributeExists("article"))
-            .andExpect(view().name("qna/showQna"));
-    }
+    // @DisplayName("/articles/{index}로 GET 요청을 하면 해당 index에 해당하는 Article로 이동한다.")
+    // @Test
+    // void get_article() throws Exception {
+    //     // given && when
+    //     given(articleService.showArticle(1))
+    //         .willReturn(makeArticle());
+    //
+    //     // then
+    //     mvc.perform(get("/articles/1"))
+    //         .andExpect(status().isOk())
+    //         .andExpect(model().attributeExists("article"))
+    //         .andExpect(view().name("qna/showQna"));
+    // }
 
     private Article makeArticle() {
         Article article = new Article("writer1", "title1", "contents1");
