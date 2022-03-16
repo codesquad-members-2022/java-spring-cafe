@@ -1,20 +1,14 @@
 package com.kakao.cafe.controller;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.kakao.cafe.domain.article.Article;
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
 
 @Controller
@@ -29,7 +23,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String index(Model model, HttpSession session) {
+    public String index(Model model) {
         log.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
         return "index";
