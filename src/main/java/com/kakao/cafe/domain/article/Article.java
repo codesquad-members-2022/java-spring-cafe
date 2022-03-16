@@ -2,7 +2,7 @@ package com.kakao.cafe.domain.article;
 
 public class Article {
 
-    private Long id;
+    private Integer id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -14,11 +14,11 @@ public class Article {
         this.contents = contents;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

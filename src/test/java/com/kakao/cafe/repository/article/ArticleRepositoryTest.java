@@ -51,9 +51,9 @@ public class ArticleRepositoryTest {
         Article article1 = new Article("포키", "질문있어요1", "오늘 저녁 메뉴는 뭔가요?");
         repository.save(article1);
 
-        Article result = repository.findById(1L).get();
+        Article result = repository.findById(1).get();
 
-        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getId()).isEqualTo(1);
         assertThat(result.getWriter()).isEqualTo("포키");
         assertThat(result.getTitle()).isEqualTo("질문있어요1");
     }
