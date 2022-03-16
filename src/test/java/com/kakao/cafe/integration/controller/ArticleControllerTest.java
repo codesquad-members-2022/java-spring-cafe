@@ -44,7 +44,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @SpringBootTest
 @ComponentScan
 @AutoConfigureMockMvc
-@Sql("classpath:/schema.sql")
+@Sql("classpath:/schema-mysql.sql")
 @DisplayName("ArticleController 통합 테스트")
 public class ArticleControllerTest {
 
