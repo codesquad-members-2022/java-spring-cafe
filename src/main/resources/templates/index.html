@@ -10,7 +10,7 @@
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a th:href="@{/articles/{index}(index=${article.getId()})}" th:text="${article.title}"></a>
+                              <a th:href="@{/article/{index}(index=${article.getId()})}" th:text="${article.title}"></a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
@@ -39,7 +39,7 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
-                  <a href="qna/question" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  <a href="/article" class="btn btn-primary pull-right" role="button">질문하기</a>
               </div>
           </div>
         </div>

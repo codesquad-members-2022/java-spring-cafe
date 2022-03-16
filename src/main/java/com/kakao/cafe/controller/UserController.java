@@ -24,7 +24,7 @@ public class UserController {
         return "user/form";
     }
 
-    @PostMapping("/users/join")
+    @PostMapping("/users")
     public String create(UserForm form) {
         User user = new User(form.getUserId(), form.getPassword(), form.getName(), form.getEmail());
 

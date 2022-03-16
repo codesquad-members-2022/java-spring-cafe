@@ -18,19 +18,19 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/qna/question")
+    @GetMapping("/article")
     public String quaForm() {
         return "qna/form";
     }
 
-    @PostMapping("/qna/question")
+    @PostMapping("/article")
     public String createQuestion(ArticleForm form) {
         Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         articleService.saveArticle(article);
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
+    @GetMapping("/article/{index}")
     public String loadOneArticle(@PathVariable Long index, Model model) {
         Article article = articleService.loadOneArticle(index);
         model.addAttribute("article", article);

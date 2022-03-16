@@ -20,7 +20,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public Optional<User> findById(String userId) {
-        return store.stream().filter(user -> user.checkIfTheSameOrNot(userId)).findFirst();
+        return store.stream().filter(user -> user.isSame(userId)).findFirst();
     }
 
     @Override

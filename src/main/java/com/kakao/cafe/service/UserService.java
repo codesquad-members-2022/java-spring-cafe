@@ -23,7 +23,7 @@ public class UserService {
 
     private void validateDuplicatedUser(User user) {
         userRepository.findById(user.getUserId())
-                .ifPresent(m -> {
+                .orElseThrow(() -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
     }
