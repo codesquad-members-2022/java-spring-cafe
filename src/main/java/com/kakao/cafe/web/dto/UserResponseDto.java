@@ -14,7 +14,7 @@ public class UserResponseDto {
         this.email = user.getEmail();
     }
 
-    public boolean isSameId(String userId) {
+    public boolean hasSameId(String userId) {
         return this.userId.equals(userId);
     }
 
