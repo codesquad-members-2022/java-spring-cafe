@@ -20,8 +20,8 @@ public class ArticleService {
         this.articleRepository = articleRepository;
     }
 
-    public Article write(ArticleDto articleDto) {
-        return articleRepository.save(articleDto.toEntity());
+    public Article write(String writer, ArticleDto articleDto) {
+        return articleRepository.save(articleDto.toEntity(writer));
     }
 
     public ArticleResponseDto findOne(int id) {
