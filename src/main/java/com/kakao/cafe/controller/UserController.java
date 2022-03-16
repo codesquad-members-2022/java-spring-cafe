@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.controller.dto.UserDto;
+import com.kakao.cafe.controller.dto.UserSaveDto;
+import com.kakao.cafe.controller.dto.UserUpdateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -8,13 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.validation.Valid;
 import java.util.List;
 
 @RequestMapping("/users")
@@ -30,63 +27,50 @@ public class UserController {
 
     @GetMapping("/create")
     public String createForm(Model model) {
-        model.addAttribute("userDto", new UserDto());
+        model.addAttribute("UserSaveDto", new UserSaveDto());
         return "user/form";
     }
 
-    @PostMapping("/create")
-    public String create(@Validated UserDto userDto, BindingResult bindingResult) {
+    @PostMapping
+    public String create(@Valid UserSaveDto userSaveDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             logger.error("errors={}", bindingResult);
             return "user/form";
         }
-        User user = userDto.toEntity();
-        userService.join(user);
+        userService.save(userSaveDto);
         return "redirect:/users";
     }
 
     @GetMapping
-    public String userList(Model model) {
+    public String showUsers(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String userProfile(@PathVariable Long userId, Model model) {
+    public String showProfile(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
         return "user/profile";
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ModelAndView exception(HttpServletRequest request, HttpServletResponse response, IllegalArgumentException exception) throws IOException {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("exception", exception.getMessage());
-
-        String requestURI = request.getRequestURI();
-        if (requestURI.equals("/users/create")) {
-            UserDto userDto = changeParamsToUserDto(request);
-            modelAndView.addObject(userDto);
-            modelAndView.setViewName("user/form");
-        }
-
-        if (!modelAndView.hasView()) {
-            response.sendError(404, "페이지를 찾을 수 없습니다");
-        }
-        return modelAndView;
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User user = userService.findOne(userId);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(user);
+        model.addAttribute("userUpdateDto", userUpdateDto);
+        return "user/updateForm";
     }
 
-    private UserDto changeParamsToUserDto(HttpServletRequest request) {
-        UserDto userDto = new UserDto();
-        String id = request.getParameter("id");
-        if (id != null) {
-            userDto.setId(Long.parseLong(id));
+    @PutMapping("/{userId}")
+    public String update(@Valid UserUpdateDto userUpdateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.error("errors={}", bindingResult);
+            return "user/updateForm";
         }
-        userDto.setUserId(request.getParameter("userId"));
-        userDto.setPassword(request.getParameter("password"));
-        userDto.setName(request.getParameter("name"));
-        userDto.setEmail(request.getParameter("email"));
-        return userDto;
+        userService.update(userUpdateDto);
+        logger.info("user={}", userService.findOne(userUpdateDto.getUserId()));
+        return "redirect:/users";
     }
 }

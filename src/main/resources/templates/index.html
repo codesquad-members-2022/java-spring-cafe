@@ -10,38 +10,20 @@
        <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
           <div class="panel panel-default qna-list">
               <ul class="list">
-                  <li>
+                  <li th:each="article : ${articles}">
                       <div class="wrap">
                           <div class="main">
                               <strong class="subject">
-                                  <a href="/qna/show">국내에서 Ruby on Rails와 Play가 활성화되기 힘든 이유는 뭘까?</a>
+                                  <a th:href="@{/articles/{articleId}(articleId=${article.id})}" th:text="${article.title}">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
                               </strong>
                               <div class="auth-info">
                                   <i class="icon-add-comment"></i>
-                                  <span class="time">2016-01-15 18:47</span>
-                                  <a href="/users/profile" class="author">자바지기</a>
+                                  <span th:text="${#temporals.format(article.createDate, 'yyyy-MM-dd HH:mm')}" class="time">2016-01-05 18:47</span>
+                                  <a th:href="@{/users/{userId}(userId=${article.user.userId})}" th:text="${article.user.name}" class="author">김문수</a>
                               </div>
                               <div class="reply" title="댓글">
                                   <i class="icon-reply"></i>
-                                  <span class="point">8</span>
-                              </div>
-                          </div>
-                      </div>
-                  </li>
-                  <li>
-                      <div class="wrap">
-                          <div class="main">
-                              <strong class="subject">
-                                  <a href="/qna/show">runtime 에 reflect 발동 주체 객체가 뭔지 알 방법이 있을까요?</a>
-                              </strong>
-                              <div class="auth-info">
-                                  <i class="icon-add-comment"></i>
-                                  <span class="time">2016-01-05 18:47</span>
-                                  <a href="/users/profile" class="author">김문수</a>
-                              </div>
-                              <div class="reply" title="댓글">
-                                  <i class="icon-reply"></i>
-                                  <span class="point">12</span>
+                                  <span class="point">0</span>
                               </div>
                           </div>
                       </div>
@@ -61,7 +43,7 @@
                     </ul>
                   </div>
                   <div class="col-md-3 qna-write">
-                      <a href="/qna/form" class="btn btn-primary pull-right" role="button">질문하기</a>
+                      <a href="/questions/create" class="btn btn-primary pull-right" role="button">질문하기</a>
                   </div>
               </div>
             </div>
