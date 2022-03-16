@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
 public class MemoryUserRepository implements UserRepository{
 
     private final Map<String, User> store = new HashMap<>();
@@ -17,6 +16,13 @@ public class MemoryUserRepository implements UserRepository{
     @Override
     public User findByUserId(String userId) {
         return store.get(userId);
+    }
+
+    @Override
+    public User findById(Long id) {
+        return store.values().stream()
+                .filter(user -> user.getId().equals(id))
+                .findAny().get();
     }
 
     @Override

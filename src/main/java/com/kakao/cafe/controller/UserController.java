@@ -78,13 +78,4 @@ public class UserController {
 
         return "redirect:/users";
     }
-
-    @PostConstruct
-    public void forTest() {
-        User user1 = new User("kimkim", "123123", "김김김", "user1@example.com");
-        User user2 = new User("leelee", "456456", "이이이", "user2@example.com");
-
-        userService.signUp(user1);
-        userService.signUp(user2);
-    }
 }

@@ -46,13 +46,4 @@ public class QuestionController {
         model.addAttribute("question", question);
         return "qna/show";
     }
-
-    @PostConstruct
-    public void forTest() {
-        Question question1 = new Question("user1", "user1의 게시글", "내용1");
-        Question question2 = new Question("user2", "user2의 게시글", "내용2");
-
-        questionService.create(question1);
-        questionService.create(question2);
-    }
 }
