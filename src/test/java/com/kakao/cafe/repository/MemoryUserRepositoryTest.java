@@ -29,7 +29,7 @@ class MemoryUserRepositoryTest {
 
         //when
         repository.save(user);
-        User result = repository.findById(user.getId()-1) // index 0부터 저장
+        User result = repository.findById(user.getId()) // index 0부터 저장
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
 
         //then
