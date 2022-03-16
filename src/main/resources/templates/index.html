@@ -119,5 +119,12 @@
 -->
 
 {{> partial/footer}}
+<script>
+  let index = 1;
+  let userList = document.querySelectorAll(".point");
+  userList.forEach((item) => {
+    item.innerText = index++;
+  })
+</script>
 </body>
 </html>
