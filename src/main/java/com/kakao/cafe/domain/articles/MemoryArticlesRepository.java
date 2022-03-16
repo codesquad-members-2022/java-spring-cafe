@@ -18,6 +18,8 @@ public class MemoryArticlesRepository implements ArticlesRepository {
 	@Override
 	public void save(Articles article) {
 		articlesList.add(article);
+
+		System.out.println();
 	}
 
 	@Override
