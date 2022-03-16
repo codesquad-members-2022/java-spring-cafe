@@ -3,7 +3,11 @@ package com.kakao.cafe.reply.domain;
 import java.time.LocalDate;
 
 public class ReplyFactory {
-	public static Reply createOf(String replier, String content, Long articleId, String cafeUserId, Long cafeId) {
+	public static Reply createOf(String replier,
+								String content,
+								Long articleId,
+								String cafeUserId,
+								Long cafeId) {
 		return new Reply(replier, content, articleId, cafeUserId, cafeId);
 	}
 

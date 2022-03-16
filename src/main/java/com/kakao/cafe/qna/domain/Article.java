@@ -11,6 +11,7 @@ public class Article {
 	private String content;
 	private LocalDate writingDate;
 	private Long cafeUserId;
+	private boolean deleted;
 
 	public Article() {
 	}
@@ -22,6 +23,7 @@ public class Article {
 		article.content = content;
 		article.cafeUserId = cafeUserId;
 		article.writingDate = LocalDate.now();
+		article.deleted = false;
 		return article;
 	}
 
@@ -30,7 +32,8 @@ public class Article {
 								String title,
 								String content,
 								Long cafeUserId,
-								LocalDate writingDate) {
+								LocalDate writingDate,
+								boolean deleted) {
 		Article article = new Article();
 		article.articleId = articleId;
 		article.writer = writer;
@@ -38,6 +41,7 @@ public class Article {
 		article.content = content;
 		article.cafeUserId = cafeUserId;
 		article.writingDate = writingDate;
+		article.deleted = deleted;
 		return article;
 	}
 
@@ -88,14 +92,7 @@ public class Article {
 		return writingDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Article{" +
-			"id=" + articleId +
-			", writer='" + writer + '\'' +
-			", title='" + title + '\'' +
-			", content='" + content + '\'' +
-			", writingDate=" + writingDate +
-			'}';
+	public boolean isDeleted() {
+		return deleted;
 	}
 }

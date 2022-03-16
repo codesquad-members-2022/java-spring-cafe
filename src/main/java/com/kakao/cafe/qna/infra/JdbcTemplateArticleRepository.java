@@ -1,7 +1,6 @@
 package com.kakao.cafe.qna.infra;
 
 import static com.kakao.cafe.common.utils.sql.SqlFormatter.*;
-import static com.kakao.cafe.qna.domain.Article.*;
 import static com.kakao.cafe.qna.infra.JdbcTemplateArticleRepository.ArticleColumns.*;
 import static com.kakao.cafe.user.infra.MemoryUserRepository.*;
 
@@ -47,6 +46,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		CONTENT("content", ":content", ":content"),
 		FK_CAFE_USER_ID("cafe_users_id", ":cafe_users_id", ":cafeUsersId"),
 		WRITING_DATE("writing_date", ":writingDate", ":writingDate"),
+		IS_DELETED("deleted", ":deleted", ":deleted"),
 		COUNT_ALL("COUNT(*)", null, null),
 		NONE(null, null, null);
 
@@ -122,6 +122,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		parameters.put(CONTENT.getColumnName(), entity.getContent());
 		parameters.put(FK_CAFE_USER_ID.getColumnName(), entity.getCafeUserId());
 		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());
+		parameters.put(IS_DELETED.getColumnName(), entity.isDeleted());
 		return parameters;
 	}
 
@@ -150,7 +151,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 				rs.getString(TITLE.getColumnName()),
 				rs.getString(CONTENT.getColumnName()),
 				rs.getLong(FK_CAFE_USER_ID.getColumnName()),
-				rs.getObject(WRITING_DATE.getColumnName(), LocalDate.class));
+				rs.getObject(WRITING_DATE.getColumnName(), LocalDate.class),
+				rs.getBoolean(IS_DELETED.getColumnName()));
 			return article;
 		};
 	}
