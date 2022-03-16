@@ -133,6 +133,7 @@
 
 </div>
 </details>
+
 <details>
 <summary> 테스트 </summary>
 <div markdown="1">
@@ -145,6 +146,42 @@
 
 
 ![Imgur](https://i.imgur.com/AbvFkwH.jpg)
+
+</div>
+</details>
+
+
+</div>
+</details>
+
+# Step 3 : DB에 저장하기 & 배포
+
+<details>
+<summary> 🖼📝 Step 3 결과와 설명 </summary>
+<div markdown="1">
+
+step1, 2의 리포지토리를 DB로 구현하고 배포합니다.  
+환경 : `java11` + `spring boot` + `gradle` + `h2 DB embedded 모드` + `Heroku`  
+
+[배포 사이트](https://kukim-java-spring-cafe.herokuapp.com/)
+
+
+<details>
+<summary> View  </summary>
+<div markdown="1">
+
+![main](https://i.imgur.com/8Qab7EB.jpg)
+![users](https://i.imgur.com/zrRsgWO.jpg)
+
+</div>
+</details>
+
+
+<details>
+<summary> 테스트 </summary>
+<div markdown="1">
+
+![test](https://i.imgur.com/d8MyRqg.jpg)
 
 </div>
 </details>
