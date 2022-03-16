@@ -34,6 +34,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+// TODO: ReplyController 단위 테스트 별도의 클래스에서 작성 필요
+
 @WebMvcTest(ArticleController.class)
 @DisplayName("ArticleController 단위 테스트")
 public class ArticleControllerTest {
@@ -326,21 +328,4 @@ public class ArticleControllerTest {
             .andExpect(view().name("error/index"));
     }
 
-    @Test
-    @DisplayName("댓글을 작성하고 저장한 후 해당 페이지를 새로고침한다")
-    public void createAnswerTest() throws Exception {
-        // given
-        given(replyService.comment(any(), any(), any()))
-            .willReturn(replyResponse);
-
-        // when
-        ResultActions actions = mockMvc.perform(post("/articles/1/answers")
-            .session(session)
-            .param("comment", "comment")
-            .accept(MediaType.TEXT_HTML));
-
-        // then
-        actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/"));
-    }
 }
