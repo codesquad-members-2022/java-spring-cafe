@@ -72,21 +72,22 @@ public class DbArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public Long delete(Long id) {
         DbTemplate template = new DbTemplate(dataSource);
         String SQL = queryLoader.get(Query.DELETE_ARTICLE);
-        Long resultId = template.executeUpdate(SQL, id);
-
-        if (resultId != -1) {
-            return true;
-        }
-        return false;
+        return template.executeUpdate(SQL, id);
     }
 
     @Override
     public void update(Long id, Article article) {
         DbTemplate template = new DbTemplate(dataSource);
         String SQL = queryLoader.get(Query.UPDATE_ARTICLES);
-        Long resultId = template.executeUpdate(SQL, article.getUserId(), article.getTitle(), article.getContents(), Timestamp.valueOf(article.getLocalDateTime()), article.getId());
+        template.executeUpdate(SQL,
+                article.getUserId(),
+                article.getTitle(),
+                article.getContents(),
+                Timestamp.valueOf(article.getLocalDateTime()),
+                article.getId()
+        );
     }
 }

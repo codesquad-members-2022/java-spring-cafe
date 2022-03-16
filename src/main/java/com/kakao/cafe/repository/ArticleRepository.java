@@ -12,7 +12,7 @@ public interface ArticleRepository {
 
     List<Article> findAll();
 
-    boolean delete(Long id);
+    Long delete(Long id);
 
     void update(Long id, Article article);
 }

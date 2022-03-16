@@ -59,6 +59,18 @@ public class User {
         this.email = email;
     }
 
+    public boolean isSamePassword(String password) {
+        return this.password.equals(password);
+    }
+
+    public boolean isSameUserId(User user) {
+        return this.userId.equals(user.userId);
+    }
+
+    public boolean isOwnArticle(Article article) {
+        return this.userId.equals(article.getUserId());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,13 +93,5 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
-    }
-
-    public boolean isSamePassword(String password) {
-        return this.password.equals(password);
-    }
-
-    public boolean isSameUserId(User user) {
-        return this.userId.equals(user.userId);
     }
 }

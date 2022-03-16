@@ -5,6 +5,7 @@ import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.validation.UserValidation;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -36,12 +37,19 @@ class UserControllerTest {
     private UserValidation userValidation;
 
     private User user;
+    private MockHttpSession mySession;
 
     @BeforeEach
     public void setUp() {
+        // user
         user = new User("Shine", "1234", "Shine", "shine@naver.com");
         user.setId(1L);
+
+        // validation
         given(userValidation.supports(any())).willReturn(true);
+
+        // session
+        mySession = new MockHttpSession();
     }
 
     @Test
@@ -63,12 +71,15 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 한 사용자의 정보 보기")
     public void findUserByIdTest() throws Exception {
         // given
         given(userService.findUserById(any())).willReturn(user);
+        mySession.setAttribute("SESSIONED_USER", user);
 
         // when
         ResultActions requestThenResult = mockMvc.perform(get("/users/" + user.getUserId())
+                .session(mySession)
                 .accept(MediaType.TEXT_HTML_VALUE));
 
         // then
@@ -78,12 +89,15 @@ class UserControllerTest {
     }
 
     @Test
+    @DisplayName("로그인 한 사용자만 user 목록을 볼 수 있다.")
     public void findAllUsersTest() throws Exception {
         // given
         given(userService.findUsers()).willReturn(Arrays.asList(user));
+        mySession.setAttribute("SESSIONED_USER", user);
 
         // when
         ResultActions requestThenResult = mockMvc.perform(get("/users")
+                .session(mySession)
                 .accept(MediaType.TEXT_HTML_VALUE));
 
         // then
@@ -93,27 +107,15 @@ class UserControllerTest {
     }
 
     @Test
-    public void userProfileTest() throws Exception {
-        // given
-        given(userService.findUserById(any())).willReturn(user);
-
-        // when
-        ResultActions requestThenResult = mockMvc.perform(get("/users/" + user.getUserId())
-                .accept(MediaType.TEXT_HTML_VALUE));
-
-        // then
-        requestThenResult.andExpect(status().isOk())
-                .andExpect(model().attribute("user", user))
-                .andExpect(view().name("/user/profile"));
-    }
-
-    @Test
+    @DisplayName("로그인 한 사용자만 정보 수정 가능")
     public void updateUserFormTest() throws Exception {
         // given
         given(userService.findUserById(any())).willReturn(user);
+        mySession.setAttribute("SESSIONED_USER", user);
 
         // when
         ResultActions requestThenResult = mockMvc.perform(get("/users/" + user.getUserId() + "/form")
+                .session(mySession)
                 .accept(MediaType.TEXT_HTML_VALUE));
 
         // then
@@ -127,10 +129,10 @@ class UserControllerTest {
         // given
         User updateUser = new User("Shine", "1234", "ShineUpdate", "update@naver.com");
         MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("SESSIONED_USER", user);
         given(userService.userUpdate(any())).willReturn(true);
 
         // when
-        mockSession.setAttribute("SESSIONED_USER", user);
         ResultActions requestThenResult = mockMvc.perform(post("/users/" + user.getUserId() + "/update")
                 .session(mockSession)
                 .param("userId", "Shine")
@@ -148,12 +150,10 @@ class UserControllerTest {
     public void updateFailTest() throws Exception {
         // given
         MockHttpSession mockSession = new MockHttpSession();
+        mockSession.setAttribute("SESSIONED_USER", user);
         given(userService.userUpdate(any())).willThrow(new NotFoundException("해당 사용자를 찾을 수 없습니다"));
 
-        // when
-        mockSession.setAttribute("SESSIONED_USER", user);
-
-        // then
+        // when, then
         assertThatThrownBy(() -> mockMvc.perform(post("/users/" + user.getUserId() + "/update")
                 .session(mockSession)
                 .param("userId", "Shine")

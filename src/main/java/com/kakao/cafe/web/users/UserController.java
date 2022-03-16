@@ -87,13 +87,13 @@ public class UserController {
         }
 
         Object value = session.getAttribute("SESSIONED_USER"); // 로그인한 사용자 만 수정 가능
-        if(value == null) { // 세션이 없다면 예외처리
-            throw new AuthenticationException("로그인 하지 않은 사용자 입니다.");
-        }
+//        if(value == null) { // 세션이 없다면 예외처리
+//            throw new AuthenticationException("로그인 하지 않은 사용자 입니다.");
+//        }
 
-        User sessionUser = (User)value; // 세션이 있다면 User로 캐스팅
+        User sessionUser = (User) value; // 세션이 있다면 User로 캐스팅
 
-        if(!sessionUser.isSameUserId(user)){ // 세션유저 정보를 통해 사용자로부터 받은 user 정보와 비교
+        if (!sessionUser.isSameUserId(user)) { // 세션유저 정보를 통해 사용자로부터 받은 user 정보와 비교
             throw new AuthenticationException("다른 사용자의 정보를 수정할 수 없습니다.");
         }
         // 세션에 저장된 회원과 동일한 유저의 정보일때만
