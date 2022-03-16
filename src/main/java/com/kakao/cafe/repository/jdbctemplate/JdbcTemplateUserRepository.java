@@ -19,8 +19,16 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        jdbcTemplate.update("insert into USER(USER_ID, PASSWORD, NAME, EMAIL) values (?, ?, ?, ?)",
-                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        boolean existUserId = isExistUserId(user.getUserId());
+        if (existUserId) {
+            System.out.println("user = " + user.getPassword());
+            jdbcTemplate.update(
+                    "update USER set PASSWORD = ?, NAME = ?, EMAIL = ? where USER_ID = ?",
+                    user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
+        } else {
+            jdbcTemplate.update("insert into USER(USER_ID, PASSWORD, NAME, EMAIL) values (?, ?, ?, ?)",
+                    user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        }
         return user;
     }
 
@@ -46,10 +54,10 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            String userId = rs.getString("userId");
-            String password = rs.getString("password");
-            String name = rs.getString("name");
-            String email = rs.getString("email");
+            String userId = rs.getString("USER_ID");
+            String password = rs.getString("PASSWORD");
+            String name = rs.getString("NAME");
+            String email = rs.getString("EMAIL");
             return new User(userId, password, name, email);
         };
     }
