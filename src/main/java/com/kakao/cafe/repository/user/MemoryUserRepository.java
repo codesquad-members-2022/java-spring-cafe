@@ -15,8 +15,9 @@ public class MemoryUserRepository implements CafeRepository<User, String> {
     private List<User> store = new CopyOnWriteArrayList<>();
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         store.add(user);
+        return user;
     }
 
     @Override

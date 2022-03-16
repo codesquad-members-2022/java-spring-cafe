@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Repository
+//@Repository
 public class MemoryArticleRepository implements CafeRepository<Article, Integer> {
 
     private List<Article> articles = new CopyOnWriteArrayList<>();
 
     @Override
-    public void save(Article article) {
+    public Article save(Article article) {
         Article articleWithId = new Article (articles.size() + 1, article.getTitle(), article.getText());
         articles.add(articleWithId);
+        return articleWithId;
     }
 
     @Override

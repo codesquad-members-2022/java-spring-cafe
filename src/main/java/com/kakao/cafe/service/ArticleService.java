@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.article.ArticleForm;
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.repository.article.JdbcArticleRepository;
 import com.kakao.cafe.repository.article.MemoryArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,10 @@ import java.util.NoSuchElementException;
 @Service
 public class ArticleService {
 
-    private final MemoryArticleRepository articleRepository;
+    private final JdbcArticleRepository articleRepository;
 
     @Autowired
-    public ArticleService(MemoryArticleRepository articleRepository) {
+    public ArticleService(JdbcArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
 

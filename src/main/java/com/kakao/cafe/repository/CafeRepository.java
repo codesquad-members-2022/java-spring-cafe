@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface CafeRepository<T, V> {
 
-    void save(T t);
+    T save(T t);
 
     Optional<T> findByName(V name);
 
