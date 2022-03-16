@@ -18,18 +18,18 @@ public class ArticleForm {
 
     private String dateTime;
 
-    public ArticleForm(String title, String writer, String contents) {
-        this.title = title;
-        this.writer = writer;
-        this.contents = contents;
-        this.dateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-    }
-
     public ArticleForm(String title, String writer, String contents, String dateTime) {
         this.title = title;
         this.writer = writer;
-        this.dateTime = dateTime;
         this.contents = contents;
+        this.dateTime = checkDateTimeNull(dateTime);
+    }
+
+    private String checkDateTimeNull(String dateTime) {
+        if (dateTime == null){
+            return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+        return dateTime;
     }
 
     public String getTitle() {

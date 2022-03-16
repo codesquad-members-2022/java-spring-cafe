@@ -37,7 +37,7 @@ class UserServiceTest {
         int userIndex = userService.join(userForm);
 
         //then
-        UserForm findUser = userService.findOneUser(userIndex-1);
+        UserForm findUser = userService.findOneUser(userIndex);
         assertThat("honux").isEqualTo(findUser.getUserId());
     }
 
