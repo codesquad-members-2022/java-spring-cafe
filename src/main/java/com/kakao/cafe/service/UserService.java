@@ -13,6 +13,7 @@ import com.kakao.cafe.repository.UserRepository;
 
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
 
     @Autowired

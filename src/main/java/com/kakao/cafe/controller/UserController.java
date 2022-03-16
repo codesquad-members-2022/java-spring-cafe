@@ -26,12 +26,12 @@ public class UserController {
     public String viewUserList(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/user/form")
     public String viewUserForm() {
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("/user")
@@ -44,14 +44,14 @@ public class UserController {
     public String viewProfile(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("userProfile", user);
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/user/{nickname}/form")
     public String viewProfileForm(@PathVariable String nickname, Model model) {
         User user = userService.findByNickname(nickname);
         model.addAttribute("user", user);
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PutMapping("/user/{nickname}")

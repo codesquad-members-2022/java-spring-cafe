@@ -22,7 +22,7 @@ public class UserServiceIntegrationTest {
     UserService userService;
 
     @Test
-    @DisplayName("회원가입을 하면 회원 정보가 JdbdTemplateUserRepository에 저장된다")
+    @DisplayName("회원가입을 하면 회원 정보가 UserRepository에 저장된다")
     void join_success() {
         User user1 = new User("BC", "BC@gmail.com", "1234");
         int id = userService.join(user1);
