@@ -36,15 +36,15 @@ public class UserController {
 
     @GetMapping("/{userName}")
     public String profile(@PathVariable String userName, Model model) {
-        User user = userService.findByUserName(userName);
-        model.addAttribute("user", user);
+        UserResponse userResponse = userService.findByUserName(userName);
+        model.addAttribute("user", userResponse);
         return "/users/userProfile";
     }
 
     @GetMapping
-    public String list(Model model) {
-        List<User> list = userService.findAll();
-        model.addAttribute("users", list);
+    public String userList(Model model) {
+        List<UserResponse> userList = userService.findAll();
+        model.addAttribute("users", userList);
         return "/users/userList";
     }
 }

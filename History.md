@@ -380,4 +380,9 @@ HomeController 및 테스트 코드를 추가했다.
 - 의존관계 주입을 SpringBoot 연동으로 하여 자동으로 하도록 함
 - 테스트를 트랜잭션 단위로 함
 
+## 3.24 userList, Profile 요청 시 UserResponse로 변환하여 반환
+
+- 기존엔 유저 엔티티를 그대로 Model에 담아 반환했는데, UserResponse로 변환하여 반환하도록 했다.
+- response에는 순전히 getter만 두도록 했다.
+
 ---

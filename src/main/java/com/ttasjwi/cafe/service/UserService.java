@@ -1,12 +1,14 @@
 package com.ttasjwi.cafe.service;
 
 import com.ttasjwi.cafe.controller.UserJoinRequest;
+import com.ttasjwi.cafe.controller.UserResponse;
 import com.ttasjwi.cafe.domain.user.User;
 import com.ttasjwi.cafe.domain.user.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -25,13 +27,18 @@ public class UserService {
         return user.getUserName();
     }
 
-    public User findByUserName(String userName) {
+    public UserResponse findByUserName(String userName) {
         return userRepository.findByUserName(userName)
+                .map(UserResponse::new)
                 .orElseThrow(() -> new NoSuchElementException("그런 회원은 존재하지 않습니다."));
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                            .stream()
+                            .map(UserResponse::new)
+                            .collect(Collectors.toList());
     }
 
     private void validateDuplicateUser(UserJoinRequest userJoinRequest) {

@@ -1,8 +1,8 @@
 package com.ttasjwi.cafe.service;
 
 import com.ttasjwi.cafe.controller.UserJoinRequest;
+import com.ttasjwi.cafe.controller.UserResponse;
 import com.ttasjwi.cafe.domain.user.MemoryUserRepository;
-import com.ttasjwi.cafe.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,10 +37,10 @@ class UserServiceTest {
 
         // when
         userService.join(userJoinRequest);
-        User findUser = userService.findByUserName(userJoinRequest.getUserName());
+        UserResponse findUserResponse = userService.findByUserName(userJoinRequest.getUserName());
 
         // then
-        assertThat(findUser.getUserName()).isEqualTo(userJoinRequest.getUserName());
+        assertThat(findUserResponse.getUserName()).isEqualTo(userJoinRequest.getUserName());
     }
 
     @Test
@@ -132,7 +132,7 @@ class UserServiceTest {
         userService.join(userJoinRequest2);
 
         // when
-        List<User> list = userService.findAll();
+        List<UserResponse> list = userService.findAll();
         int size = list.size();
 
         // then
