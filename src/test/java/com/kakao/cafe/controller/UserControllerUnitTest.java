@@ -148,8 +148,8 @@ public class UserControllerUnitTest {
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
         User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
-
         given(service.search(userId)).willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
+
         mvc.perform(get("/users/" + userId))
                 .andExpectAll(
                         content().string(NO_SUCH_USER_MESSAGE),
@@ -198,8 +198,8 @@ public class UserControllerUnitTest {
         User user = userMapper.convertToDomain(modifiedUserParam, User.class);
 
         String userId = user.getUserId();
-
         given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
+
         mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
                 .andExpectAll(
                         content().string(UNMATCHED_PASSWORD_MESSAGE),

@@ -6,7 +6,9 @@
 <div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
         <div class="panel panel-default content-main">
-            <form name="question" method="post" action="/articles/write">
+            <form name="question" method="post" action="/articles/{{article.id}}/update">
+                <input type="hidden" name="_method" value="put" />
+
                 <!--
                 <div class="form-group">
                     <label for="writer">글쓴이</label>
@@ -16,6 +18,7 @@
 
                 <!-- hidden input -->
                 <input type="hidden" id="writer" name="writer" value={{userInfo.userId}} />
+                <input type="hidden" id="createDate" name="createDate" value={{article.createDate}} />
 
                 <div class="form-group">
                     <label for="title">제목</label>
