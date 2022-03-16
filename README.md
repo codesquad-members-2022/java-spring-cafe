@@ -42,6 +42,8 @@
 │   │               │       └── UserForm.java
 │   │               ├── repository
 │   │               │   ├── ArticleRepository.java
+│   │               │   ├── JdbcTemplateArticleRepository.java
+│   │               │   ├── JdbcTemplateUserRepository.java
 │   │               │   ├── MemoryArticleRepository.java
 │   │               │   ├── MemoryUserRepository.java
 │   │               │   └── UserRepository.java
@@ -50,6 +52,8 @@
 │   │                   └── UserService.java
 │   └── resources
 │       ├── application.properties
+│       ├── data.sql
+│       ├── schema.sql
 │       ├── static
 │       │   ├── css
 │       │   │   ├── bootstrap.min.css
@@ -95,13 +99,13 @@
                 └── cafe
                     ├── CafeApplicationTests.java
                     ├── repository
+                    │   ├── JdbcTemplateArticleRepositoryTest.java
+                    │   ├── JdbcTemplateUserRepositoryTest.java
                     │   ├── MemoryArticleRepositoryTest.java
                     │   └── MemoryUserRepositoryTest.java
                     └── service
                         ├── ArticleServiceTest.java
                         └── UserServiceTest.java
-
-
 ```
 
 </details>
@@ -265,3 +269,43 @@
 </details>
 
 ---
+
+## 스프링 카페 3단계 - DB에 저장하기
+
+### 학습목표
+
+- Spring Boot와 H2 DB와 연동하는 방법을 학습한다.
+- GitHub과 Heroku를 이용해 배포를 수행할 수 있다.
+
+### 프로그래밍 요구사항
+
+<details>
+<summary>Click</summary>
+
+- [x] H2 데이터베이스 연동
+  - H2 데이터베이스 의존성을 추가하고 연동한다.
+  - ORM은 사용하지 않는다.
+  - Spring JDBC를 사용한다.
+  - DB 저장 및 조회에 필요한 SQL은 직접 작성한다.
+- [x] 게시글 데이터 저장하기
+  - Article 클래스를 DB 테이블에 저장할 수 있게 구현한다.
+  - Article 테이블이 적절한 PK를 가지도록 구현한다.
+- [x] 게시글 목록 구현하기
+  - 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+- [x] 게시글 상세보기 구현하기
+  - 게시글의 세부 내용을 DB에서 가져오도록 구현한다. 
+- [x] 사용자 정보 DB에 저장
+  - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
+- [x] 배포
+  - Heroku로 배포를 진행하고 README에 배포 URL을 기술한다.
+</details>
+
+### Test
+
+<details>
+<summary>Click</summary>
+
+![image](https://user-images.githubusercontent.com/67811880/158592264-8b7496c4-5e86-4aad-9067-1c5165132447.png)
+
+</details>
+
