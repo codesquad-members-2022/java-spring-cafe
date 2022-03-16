@@ -59,6 +59,7 @@ SELECT_REPLY: >
 SELECT_REPLIES: >
   SELECT * FROM reply
   WHERE article_id = :articleId AND deleted = FALSE
+  ORDER BY reply_id DESC
 
 UPDATE_REPLY: >
   UPDATE reply SET comment = :comment

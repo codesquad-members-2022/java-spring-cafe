@@ -1,5 +1,5 @@
 <script type="text/template" id="answerTemplate">
-  <article class="article">
+  <article class="article reply">
     <div class="article-header">
       <div class="article-header-thumb">
         <img src="https://graph.facebook.com/v2.3/1324855987/picture" class="article-author-thumb"
@@ -19,7 +19,7 @@
           <a class="link-modify-article" href="#">수정</a>
         </li>
         <li>
-          <form class="delete-answer-form" action="/questions/{3}/answers/{4}" method="POST">
+          <form class="delete-answer-form" action="/articles/{3}/answers/{4}" method="POST">
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit" class="delete-answer-button">삭제</button>
           </form>

@@ -55,7 +55,7 @@
 
               <!--answers-->
               {{# replies}}
-              <article class="article" id="answer-1405">
+              <article class="article reply">
                 <div class="article-header">
                   <div class="article-header-thumb">
                     <img src="https://graph.facebook.com/v2.3/1324855987/picture"
@@ -63,9 +63,9 @@
                   </div>
                   <div class="article-header-text">
                     <a href="/users/{{&userId}}" class="article-author-name">{{userId}}</a>
-                    <a href="#answer-1434" class="article-header-time" title="퍼머링크">
+                    <div class="article-header-time">
                       {{createdDate}}
-                    </a>
+                    </div>
                   </div>
                 </div>
                 <div class="article-doc comment-doc">
@@ -78,7 +78,7 @@
                     </li>
                     <li>
                       <form class="delete-answer-form"
-                            action="/articles/{{&articleId}}/answers/{{&replyId}}" method="POST">
+                            action="/articles/{{&articleId}}/answers/{{&replyId}}" method="post">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="delete-answer-button">삭제</button>
                       </form>
@@ -111,39 +111,76 @@
 {{> components/reference}}
 </body>
 
+<!--댓글 추가-->
 {{> components/answerTemplate}}
 
 <script>
   $(".submit-write button[type=submit]").click(addAnswer);
+  const $count = $(".qna-comment-count strong");
 
   function addAnswer(e) {
     e.preventDefault();
 
     const queryString = $("textarea[name=comment]").serialize();
-
     const url = $(".submit-write").attr("action");
-    console.log("url : " + url);
 
     $.ajax({
       type: 'post',
       url: url,
       data: queryString,
       dataType: 'json',
-      error: function () {
-        console.log("failure");
+      error: function (err) {
+        console.error(err);
       },
       success: function (data, status) {
-        console.log(data);
-        var answerTemplate = $("#answerTemplate").html();
-        var template = answerTemplate.format(
+        const answerTemplate = $("#answerTemplate").html();
+        const template = answerTemplate.format(
             data.userId,
             data.createdDate,
             data.comment,
             data.articleId,
             data.replyId);
+
+        // 저장한 댓글 추가
         $(".qna-comment-slipp-articles").prepend(template);
-        $("textarea[name=contents]").val("");
+        $("textarea[name=comment]").val("");
+
+        // 댓글 수 +1
+        $count.html(parseInt($count.text()) + 1);
       },
+    });
+  }
+</script>
+
+<!--댓글 삭제-->
+<script>
+  $(".qna-comment-slipp-articles")
+  .on("click", ".delete-answer-form button[type='submit']", deleteAnswer);
+
+  function deleteAnswer(e) {
+    e.preventDefault();
+
+    const deleteBtn = $(this);
+    const url = deleteBtn.closest(".delete-answer-form").attr("action");
+
+    $.ajax({
+      type: 'delete',
+      url: url,
+      dataType: 'json',
+      error: function (err) {
+        console.error(err);
+      },
+      success: function (data, status) {
+        if (data.valid) {
+          // 삭제한 댓글 지우기
+          deleteBtn.closest("article").remove();
+
+          // 댓글 수 -1
+          $count.html(parseInt($count.text()) - 1);
+        } else {
+          alert(data.message);
+        }
+      }
     });
   }
 </script>
