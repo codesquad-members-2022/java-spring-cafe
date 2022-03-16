@@ -110,4 +110,41 @@
 
 {{> components/reference}}
 </body>
+
+{{> components/answerTemplate}}
+
+<script>
+  $(".submit-write button[type=submit]").click(addAnswer);
+
+  function addAnswer(e) {
+    e.preventDefault();
+
+    const queryString = $("textarea[name=comment]").serialize();
+
+    const url = $(".submit-write").attr("action");
+    console.log("url : " + url);
+
+    $.ajax({
+      type: 'post',
+      url: url,
+      data: queryString,
+      dataType: 'json',
+      error: function () {
+        console.log("failure");
+      },
+      success: function (data, status) {
+        console.log(data);
+        var answerTemplate = $("#answerTemplate").html();
+        var template = answerTemplate.format(
+            data.userId,
+            data.createdDate,
+            data.comment,
+            data.articleId,
+            data.replyId);
+        $(".qna-comment-slipp-articles").prepend(template);
+        $("textarea[name=contents]").val("");
+      },
+    });
+  }
+</script>
 </html>
