@@ -331,7 +331,10 @@ HomeController 및 테스트 코드를 추가했다.
 - 만약 변경을 해야한다면 setter 비슷한 역할을 하는 메서드를 생성해야하는데 이는 package-private로 처리할 예정이다. (Repository)
 - 가입 시, 외부에서 LocalDate를 주입했는데 생성시 자동 초기화되도록 했다.
 
----
+## 3.16 UserRepository 테스트 - 스프링 연동
 
+- UserRepository 테스트를 스프링부트 연동으로, 의존관계를 주입하여 하도록 함
+- @Transactional 어노테이션을 통해, 테스트할 때마다 롤백되도록 함
+- 기존의 MemoryUserRepositoryTest는 제거
 
 ---
