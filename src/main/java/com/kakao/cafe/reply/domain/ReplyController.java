@@ -25,7 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kakao.cafe.common.utils.session.SessionUser;
 
 @Controller
-@RequestMapping("/questions/{questionId}/reply")
+@RequestMapping("/questions/{question-id}/reply")
 public class ReplyController {
 	private final ReplyService replyService;
 
@@ -36,7 +36,9 @@ public class ReplyController {
 	}
 
 	@PostMapping()
-	public String writeAComment(@PathVariable Long questionId, String content, HttpSession httpSession) {
+	public String writeAComment(@PathVariable(value = "question-id") Long questionId,
+								String content,
+		 						HttpSession httpSession) {
 		isValidContent(content);
 		boolean isValid = isValidLogin(httpSession, logger);
 		if (!isValid) {
@@ -50,7 +52,7 @@ public class ReplyController {
 	}
 
 	@DeleteMapping("/{reply-id}")
-	public String deleteComment(@PathVariable(value = "questionId") Long questionId,
+	public String deleteComment(@PathVariable(value = "question-id") Long questionId,
 								@PathVariable(value = "reply-id") Long replyId,
 								String replier,
 								HttpSession httpSession) {
@@ -84,7 +86,7 @@ public class ReplyController {
 
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ModelAndView illegalArgumentException(HttpServletRequest request, IllegalArgumentException exception) {
+	public ModelAndView illegalArgumentException(IllegalArgumentException exception) {
 		logger.error("error of request reply : {}", exception);
 		ModelAndView mav = new ModelAndView("common/error");
 		mav.addObject("message", toMessageLines(exception.getMessage()));
