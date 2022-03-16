@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.kakao.cafe.domain.Article;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,17 +32,32 @@ class MemoryArticleRepositoryTest {
     }
 
     @Test
-    @DisplayName("게시글을 id로 조회하면, 해당 id를 가진 게시글을 리턴한다.")
-    void findById() {
+    @DisplayName("게시글을 존재하는 id로 조회하면, 해당 id를 가진 게시글을 리턴한다.")
+    void findById_validId() {
         //given
         Article givenArticle = new Article("Anonymous", "test title", "test content");
         int givenId = memoryArticleRepository.save(givenArticle);
 
         //when
-        Article result = memoryArticleRepository.findById(givenId);
+        Optional<Article> result = memoryArticleRepository.findById(givenId);
 
         //then
-        assertThat(result.hasSameId(givenId)).isTrue();
+        assertThat(result.isPresent()).isTrue();
+        assertThat(result.get().hasSameId(givenId)).isTrue();
+    }
+
+    @Test
+    @DisplayName("게시글을 존재하지 않는 id로 조회하면, 결과를 반환하지 않는다.")
+    void findById_invalidId() {
+        //given
+        Article givenArticle = new Article("Anonymous", "test title", "test content");
+        memoryArticleRepository.save(givenArticle);
+
+        //when
+        Optional<Article> result = memoryArticleRepository.findById(-1);
+
+        //then
+        assertThat(result.isEmpty()).isTrue();
     }
 
     @Test

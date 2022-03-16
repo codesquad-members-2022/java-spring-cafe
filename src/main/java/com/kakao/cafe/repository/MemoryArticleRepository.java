@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Article;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -19,8 +20,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Article findById(int id) {
-        return store.get(id - 1);
+    public Optional<Article> findById(int id) {
+        try {
+            return Optional.ofNullable(store.get(id - 1));
+        } catch (IndexOutOfBoundsException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

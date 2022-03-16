@@ -6,6 +6,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +25,10 @@ public class ArticleService {
     }
 
     public ArticleDto read(int id) {
-        try {
-            Article article = articleRepository.findById(id);
-            article.addViewCount();
-            return new ArticleDto(article);
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다.");
-        }
+        Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다."));
+        article.addViewCount();
+        return new ArticleDto(article);
     }
 
     public List<ArticleDto> findPosts() {
