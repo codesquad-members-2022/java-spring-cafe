@@ -1,45 +1,34 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class MemoryUserRepository implements UserRepository {
 
-    private List<User> users = Collections.synchronizedList(new ArrayList<>());
+    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     @Override
-    public synchronized User save(User user) {
-        try {
-            int index = findExistingUserId(user.getUserId());
-            if (index == -1) {
-                users.add(user);
-                return user;
-            }
+    public User save(User user) {
+        User userInformation = findByUserId(user.getUserId()).orElse(null);
 
-            users.set(index, user);
-        } catch (Exception e) {
-            return null;
+        if (userInformation == null) {
+            users.add(user);
+            return user;
         }
+
+        userInformation.update(user);
 
         return user;
     }
 
-    private int findExistingUserId(String userId) {
-        return IntStream.range(0, users.size())
-                .filter(i -> users.get(i).hasSameUserId(userId))
-                .findFirst().orElse(-1); // 해당되는 userId가 없는 경우 -1 반환
-    }
-
     @Override
     public Optional<User> findByUserId(String userId) {
-        return users.stream()
-               .filter(user -> user.hasSameUserId(userId))
-               .findAny();
+        return users.stream().filter(user -> user.hasSameUserId(userId)).findAny();
     }
 
     @Override

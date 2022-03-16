@@ -1,7 +1,7 @@
 package com.kakao.cafe.domain;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.kakao.cafe.dto.ArticleResponseDto;
+import java.time.LocalDateTime;
 
 public class Article {
 
@@ -9,20 +9,20 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
-    private String createdDate;
+    private LocalDateTime createdDate;
 
-    public Article(String writer, String title, String contents) {
+    private Article() { }
+
+    public Article(Integer id, String writer, String title, String contents, LocalDateTime createdDate) {
+        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.createdDate = createdDate;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public void setCreatedDate(Date date) {
-        this.createdDate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(date);
     }
 
     public Integer getId() {
@@ -41,8 +41,11 @@ public class Article {
         return contents;
     }
 
-    @Override
-    public String toString() {
-        return "writer = " + writer + " title = " + title + " contents = " + contents;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public ArticleResponseDto convertToDto() {
+        return new ArticleResponseDto(id, writer, title, contents, createdDate);
     }
 }
