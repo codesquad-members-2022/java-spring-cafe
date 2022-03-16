@@ -18,7 +18,7 @@ public class MemoryUserRepository{
     public User findByUserId(String userId) {
         User foundUser = null;
         for (User user: store) {
-            if(userId.equals(user.getUserId())){
+            if(user.isSameUser(userId)){
                 foundUser = user;
                 break;
             }
