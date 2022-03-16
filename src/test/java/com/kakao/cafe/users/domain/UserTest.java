@@ -1,7 +1,9 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.exception.domain.InvalidFieldLengthException;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
 import com.kakao.cafe.users.controller.dto.UserJoinRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -120,6 +122,66 @@ public class UserTest {
                         "jwkim", "1234", "김진완", "wlsdhks0423@naver.com"
                 );
             }
+        }
+
+        @Test
+        void userId_의_길이가_20_이상이면_생성에_실패한다() {
+            // arrange
+            String userIdOverLength = "a".repeat(22);
+
+            // assert
+            Assertions.assertThatThrownBy(() -> new User.Builder()
+                    .setUserId(userIdOverLength)
+                    .setPasswd("")
+                    .setName("")
+                    .setEmail("")
+                    .build())
+                    .isInstanceOf(InvalidFieldLengthException.class);
+        }
+
+        @Test
+        void passwd_의_길이가_42_이상이면_생성에_실패한다() {
+            // arrange
+            String passwdOverLength = "a".repeat(42);
+
+            // assert
+            Assertions.assertThatThrownBy(() -> new User.Builder()
+                    .setUserId("")
+                    .setPasswd(passwdOverLength)
+                    .setName("")
+                    .setEmail("")
+                    .build())
+                    .isInstanceOf(InvalidFieldLengthException.class);
+        }
+
+        @Test
+        void name_의_길이가_40_이상이면_생성에_실패한다() {
+            // arrange
+            String nameOverLength = "a".repeat(42);
+
+            // assert
+            Assertions.assertThatThrownBy(() -> new User.Builder()
+                    .setUserId("")
+                    .setPasswd("")
+                    .setName(nameOverLength)
+                    .setEmail("")
+                    .build())
+                    .isInstanceOf(InvalidFieldLengthException.class);
+        }
+
+        @Test
+        void email_의_길이가_320_이상이면_생성에_실패한다() {
+            // arrange
+            String emailOverLength = "a".repeat(322);
+
+            // assert
+            Assertions.assertThatThrownBy(() -> new User.Builder()
+                    .setUserId("")
+                    .setPasswd("")
+                    .setName("")
+                    .setEmail(emailOverLength)
+                    .build())
+                    .isInstanceOf(InvalidFieldLengthException.class);
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.controller.dto.ArticleWriteRequest;
+import com.kakao.cafe.exception.domain.InvalidFieldLengthException;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
+import com.kakao.cafe.users.domain.User;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class Article {
         this.viewCount = viewCount;
 
         validateRequiredField(this);
+        validateFieldLength(this);
     }
 
     public Article(String title, String content, LocalDateTime createdDate, LocalDateTime modifiedDate) {
@@ -67,16 +70,15 @@ public class Article {
     }
 
     // ---- private method ----
-    private LocalDateTime getOrDefault(LocalDateTime originValue, LocalDateTime defaultValue) {
-        if (originValue == null) {
-            return defaultValue;
-        }
-        return originValue;
-    }
-
     private void validateRequiredField(Article article) {
         if (article.getTitle() == null) {
             throw new RequiredFieldNotFoundException();
+        }
+    }
+
+    private void validateFieldLength(Article article) {
+        if (article.getTitle().length() > 100 ) {
+            throw new InvalidFieldLengthException();
         }
     }
 
