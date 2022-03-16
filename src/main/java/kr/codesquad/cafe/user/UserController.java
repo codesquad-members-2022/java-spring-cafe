@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.NoSuchElementException;
 
 @Controller
@@ -60,10 +61,15 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String viewUpdateForm(@PathVariable("userId") String userId, Model model) {
+    public String viewUpdateForm(@PathVariable("userId") String userId, Model model, HttpSession session) {
         try {
+            service.validateCurrentUser(userId, session);
             model.addAttribute("user", service.findByUserId(userId));
+
             return "users/updateForm";
+        } catch (IllegalStateException e) {
+
+            return "badRequest";
         } catch (NoSuchElementException e) {
 
             //noinspection SpringMVCViewInspection

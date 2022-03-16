@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    {{> partial/head}}
+    <title>잘못된 접근입니다.</title>
+    <meta id="activeButton" content="">
+</head>
+<body>
+{{> partial/navbar-top}}
+{{> partial/navbar-subnav}}
+
+<div class="container" id="main">
+    <div class="panel panel-default content-main">
+        <div class="alert alert-danger" role="alert">잘못된 접근입니다.</div>
+        <div class="media">
+            <img class="center-block" src="/images/bad-request.png" alt="에러 이미지">
+            <h1 class="text-center">"다른 사람의 정보를 수정하려고 하잖아요."</h1>
+        </div>
+    </div>
+</div>
+
+<!-- script references -->
+{{> partial/script-references}}
+</body>
+</html>

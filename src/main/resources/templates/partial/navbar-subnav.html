@@ -5,8 +5,10 @@
                data-toggle="dropdown"><i class="glyphicon glyphicon-home" style="color:#dd1111;"></i> Home <small><i
                     class="glyphicon glyphicon-chevron-down"></i></small></a>
             <ul class="nav dropdown-menu">
-                <li><a href="#"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
+                {{#currentUser}}
+                <li><a href="/users/{{userId}}"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a>
                 </li>
+                {{/currentUser}}
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
@@ -31,7 +33,7 @@
                 {{#currentUser}}
                 <li id="logoutButton"><form id="logoutForm" method="post" action="/logout"></form>
                     <a href="#" role="button" onclick=submitLogout()>로그아웃</a></li>
-                <li id="modifyProfileButton"><a href="#" role="button">개인정보수정</a></li>
+                <li id="modifyProfileButton"><a href="/users/{{userId}}/form" role="button">개인정보수정</a></li>
                 {{/currentUser}}
             </ul>
         </div>
