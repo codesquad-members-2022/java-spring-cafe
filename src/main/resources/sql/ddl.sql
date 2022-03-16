@@ -15,7 +15,7 @@ INSERT INTO USER (user_id, password, name, email) VALUES ('santori', '1234', 'ьз
 DROP TABLE IF EXISTS article;
 
 CREATE TABLE article (
-id int AUTO_INCREMENT NOT NULL,
+id int AUTO_INCREMENT PRIMARY KEY,
 writer varchar(20) NOT NULL,
 title varchar(20) NOT NULL,
 contents TEXT,
