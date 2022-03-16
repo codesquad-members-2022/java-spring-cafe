@@ -45,7 +45,7 @@ public class UserController {
 
     @PostMapping
     public String createUser(UserSaveRequest request, HttpSession session) {
-        UserResponse user = userService.register(request);
+        SessionUser user = userService.register(request);
         session.setAttribute(SessionUser.SESSION_KEY, user);
         return "redirect:/users";
     }

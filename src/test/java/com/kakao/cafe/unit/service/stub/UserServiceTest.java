@@ -77,7 +77,7 @@ public class UserServiceTest {
             "other@example.com");
 
         // when
-        UserResponse savedUser = userService.register(request);
+        SessionUser savedUser = userService.register(request);
 
         // then
         then(savedUser.getUserId()).isEqualTo("userId");
