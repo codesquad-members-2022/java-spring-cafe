@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql(scripts = {"classpath:h2_ddl.sql "})
+@Sql(scripts = {"classpath:schema.sql"})
 class JdbcUserRepositoryTest {
 
     @Autowired
@@ -31,10 +31,10 @@ class JdbcUserRepositoryTest {
     @DisplayName("전체 사용자 목록을 반환한다.")
     void findAll() {
         //given
-        User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
+        User user1 = new User(1, "user1", "1234", "name1", "user1@gmail.com");
         repository.save(user1);
 
-        User user2 = new User(-1, "user2", "1234", "name2", "user2@gmail.com");
+        User user2 = new User(2, "user2", "1234", "name2", "user2@gmail.com");
         repository.save(user2);
 
         //when
