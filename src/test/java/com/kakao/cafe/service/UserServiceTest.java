@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doNothing;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.web.dto.UserListDto;
+import com.kakao.cafe.web.dto.UserLoginFormDto;
 import com.kakao.cafe.web.dto.UserProfileDto;
 import com.kakao.cafe.web.dto.UserRegisterFormDto;
 import java.util.Arrays;
@@ -120,5 +121,48 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.showOne(userId))
             .isInstanceOf(IllegalStateException.class)
             .hasMessage("해당 ID를 가지는 회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("적절한 아이디와 패스워드를 가진 로그인 시도는 아무 예외 없이 동작한다.")
+    void 로그인_정상_동작_테스트() {
+        // given
+        UserLoginFormDto userLoginFormDto = new UserLoginFormDto("testId1", "testPw1");
+        given(userRepository.findById("testId1"))
+            .willReturn(Optional.ofNullable(user1));
+
+        // when
+        String resultId = userService.login(userLoginFormDto);
+
+        // then
+        assertThat(resultId).isEqualTo("testId1");
+    }
+
+    @Test
+    @DisplayName("부적절한 아이디로의 로그인 시도는 예외가 발생한다.")
+    void 부적절한_아이디_로그인_예외_발생_테스트() {
+        // given
+        UserLoginFormDto userLoginFormDto = new UserLoginFormDto("testId3", "testPw3");
+        given(userRepository.findById("testId3"))
+            .willReturn(Optional.empty());
+
+        // then
+        assertThatThrownBy(() -> userService.login(userLoginFormDto))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("해당 ID를 가지는 회원이 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("부적절한 비밀번호로의 로그인 시도는 예외가 발생한다.")
+    void 부적절한_비밀번호_로그인_예외_발생_테스트() {
+        // given
+        UserLoginFormDto userLoginFormDto = new UserLoginFormDto("testId1", "testPw3");
+        given(userRepository.findById("testId1"))
+            .willReturn(Optional.ofNullable(user1));
+
+        // then
+        assertThatThrownBy(() -> userService.login(userLoginFormDto))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 }
