@@ -7,9 +7,9 @@ public class Article {
     private String title;
     private String content;
     private LocalDateTime createdDate;
-    private int id;
+    private long id;
 
-    public Article(String writer, String title, String content, LocalDateTime createdDate) {
+    public Article(String writer, String title, String content) {
         this.writer = writer;
         this.title = title;
         this.content = content;
@@ -32,11 +32,11 @@ public class Article {
         return createdDate;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 }
