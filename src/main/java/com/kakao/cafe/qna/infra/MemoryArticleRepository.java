@@ -24,17 +24,17 @@ public class MemoryArticleRepository implements ArticleRepository {
 
 	@Override
 	public Article save(Article entity) {
-		Long id = entity.getId();
+		Long id = entity.getArticleId();
 		if (this.hasId(id)) {
-			data.set(getDataIdx(entity.getId()), entity);
-			logger.info("question db update : {}", entity.getId());
+			data.set(getDataIdx(entity.getArticleId()), entity);
+			logger.info("question db update : {}", entity.getArticleId());
 			return entity;
 		}
 
 		id = getNextId(data.size());  // JdbcTypeConvertor 로 메서드를 분리하고 보니, 해당 데이터를 꺼내서 보내주는게 가독성은 안 좋아 보입니다.
-		entity.setId(id);
+		entity.setArticleId(id);
 		data.add(entity);
-		logger.info("question db insert : {}", entity.getId());
+		logger.info("question db insert : {}", entity.getArticleId());
 		return entity;
 		}
 
@@ -84,6 +84,12 @@ public class MemoryArticleRepository implements ArticleRepository {
 	public List<Article> findAll() {
 		return this.data.stream()
 			.collect(toUnmodifiableList());
+	}
+
+	@Override
+	public void delete(Long id) {
+		System.out.println(this.data.get(Math.toIntExact(id)-1));
+		this.data.remove(this.data.get(Math.toIntExact(id)-1));
 	}
 
 	@Override

@@ -18,11 +18,13 @@ public class ArticleDto {
 		private final String writer;
 		private final String title;
 		private final String contents;
+		private final String userId;
 
-		public WriteRequest(String writer, String title, String contents) {
+		public WriteRequest(String writer, String title, String contents, String userId) {
 			this.writer = writer;
 			this.title = title;
 			this.contents = StringEscapeUtils.escapeHtml4(contents);
+			this.userId = userId;
 		}
 
 		public String getWriter() {
@@ -37,15 +39,22 @@ public class ArticleDto {
 			return contents;
 		}
 
+		public String getUserId() {
+			return userId;
+		}
+
 		public void isValid(Logger logger) {
-			if (isOneMoreBlank()) {
-				logger.warn("request question : {}", this);
-				throw new IllegalArgumentException(getErrorMessageWithBlank());
+			try {
+				if (isOneMoreBlank()) {
+					throw new IllegalArgumentException(getErrorMessageWithBlank());
+				}
+			} catch (IllegalArgumentException exception) {
+				logger.error("error of the request question : {}", exception);
 			}
 		}
 
 		private boolean isOneMoreBlank() {
-			return isWriterBlank() || isTitleBlank() || isContentsBlank();
+			return isWriterBlank() || isTitleBlank() || isContentsBlank() || isUserIdBlank();
 		}
 
 		private boolean isContentsBlank() {
@@ -58,6 +67,10 @@ public class ArticleDto {
 
 		private boolean isWriterBlank() {
 			return isNullOrBlank(this.writer);
+		}
+
+		private boolean isUserIdBlank() {
+			return isNullOrBlank(this.userId);
 		}
 
 		public String getErrorMessageWithBlank() {
@@ -91,6 +104,46 @@ public class ArticleDto {
 		}
 	}
 
+	public static class EditRequest {
+		private final String id;
+		private final String writer;
+		private final String title;
+		private final String contents;
+		private final String userId;
+
+		public EditRequest(String id, String writer, String title, String contents, String userId) {
+			this.id = id;
+			this.writer = writer;
+			this.title = title;
+			this.contents = contents;
+			this.userId = userId;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public Long getIdByLong() {
+			return toLongFromText(id);
+		}
+
+		public String getWriter() {
+			return writer;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getContents() {
+			return contents;
+		}
+
+		public String getUserId() {
+			return userId;
+		}
+	}
+
 	public static class WriteResponse {
 		private final String id;
 		private final String writer;
@@ -99,7 +152,7 @@ public class ArticleDto {
 		private final LocalDate writingDate;
 
 		public WriteResponse(Article article) {
-			this.id = toTextFromLong(article.getId());
+			this.id = toTextFromLong(article.getArticleId());
 			this.writer = article.getWriter();
 			this.title = article.getTitle();
 			this.contents = StringEscapeUtils.unescapeHtml4(article.getContent());

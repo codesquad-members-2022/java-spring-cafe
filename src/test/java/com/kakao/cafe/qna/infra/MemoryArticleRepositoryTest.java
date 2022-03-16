@@ -2,11 +2,9 @@ package com.kakao.cafe.qna.infra;
 
 import static com.kakao.cafe.qna.domain.ArticleServiceTest.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.kakao.cafe.qna.domain.Article;
+import com.kakao.cafe.qna.domain.ArticleFactory;
 
 class MemoryArticleRepositoryTest {
 	@Autowired
@@ -35,9 +34,9 @@ class MemoryArticleRepositoryTest {
 		Article expected = getArticle();
 		Article article = memoryArticleRepository.save(expected);
 
-		Optional<Article> actual = memoryArticleRepository.findById(article.getId());
+		Optional<Article> actual = memoryArticleRepository.findById(article.getArticleId());
 		assertThat(actual.isPresent()).isTrue();
-		assertThat(actual.get().getId()).isNotZero();
+		assertThat(actual.get().getArticleId()).isNotZero();
 	}
 
 	@Test
@@ -49,12 +48,23 @@ class MemoryArticleRepositoryTest {
 		testArticle.changeTitle(changedTitle);
 		Article actual = memoryArticleRepository.save(testArticle);
 
-		assertThat(actual.getId()).isNotZero();
+		assertThat(actual.getArticleId()).isNotZero();
 		assertThat(actual.getTitle()).isNotEqualTo(TEST_TITLE);
 	}
 
-	public Article getArticle() {
-		return new Article(TEST_WRITER, TEST_TITLE, TEST_CONTENT);
+	@Test
+	@DisplayName("글의 삭제 처리 후 삭제 됨을 확인한다.")
+	void delete_article() {
+		Article testArticle = getArticle();
+		Article expected = memoryArticleRepository.save(testArticle);
+
+		memoryArticleRepository.delete(expected.getArticleId());
+
+		Optional<Article> actual = memoryArticleRepository.findById(expected.getArticleId());
+		assertThat(actual.isEmpty()).isTrue();
 	}
 
+	public Article getArticle() {
+		return ArticleFactory.create(TEST_WRITER, TEST_TITLE, TEST_CONTENT, 1L);
+	}
 }

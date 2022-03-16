@@ -26,7 +26,7 @@ public class SqlFormatter {
 		sb.append(SQL_CONDITIONAL)
 			.append(conditioner.getColumnName())
 			.append(SQL_SUBSTITUTE)
-			.append(conditioner.getNamedParameter());
+			.append(conditioner.getUpdateParameter());
 		return sb.toString();
 	}
 

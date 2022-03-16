@@ -5,34 +5,44 @@ import static com.kakao.cafe.common.utils.StringValidator.*;
 import java.time.LocalDate;
 
 public class Article {
-	private Long id;
+	private Long articleId;
 	private String writer;
 	private String title;
 	private String content;
 	private LocalDate writingDate;
+	private Long cafeUserId;
 
-	public Article(Long id, String writer, String title, String content) {
-		this.id = id;
-		this.writer = writer;
-		this.title = title;
-		this.content = content;
-		this.writingDate = LocalDate.now();
+	public Article() {
 	}
 
-	public Article(String writer, String title, String content) {
-		this(null, writer, title, content);
+	public static Article createOf(String writer, String title, String content, Long cafeUserId) {
+		Article article = new Article();
+		article.writer = writer;
+		article.title = title;
+		article.content = content;
+		article.cafeUserId = cafeUserId;
+		article.writingDate = LocalDate.now();
+		return article;
 	}
 
-	public Article(Long id, String writer, String title, String content, LocalDate writingDate) {
-		this.id = id;
-		this.writer = writer;
-		this.title = title;
-		this.content = content;
-		this.writingDate = writingDate;
+	public static Article loadOf(Long articleId,
+								String writer,
+								String title,
+								String content,
+								Long cafeUserId,
+								LocalDate writingDate) {
+		Article article = new Article();
+		article.articleId = articleId;
+		article.writer = writer;
+		article.title = title;
+		article.content = content;
+		article.cafeUserId = cafeUserId;
+		article.writingDate = writingDate;
+		return article;
 	}
 
 	public boolean isEquals(Long id) {
-		return this.id == id;
+		return this.articleId == id;
 	}
 
 	public void changeTitle(String changedTitle) {
@@ -41,12 +51,21 @@ public class Article {
 		}
 	}
 
-	public Long getId() {
-		return id;
+	public void update(ArticleDto.EditRequest updateDto) {
+		if (!isNullOrBlank(updateDto.getTitle())) {
+			this.title = updateDto.getTitle();
+		}
+		if (!isNullOrBlank(updateDto.getContents())) {
+			this.content = updateDto.getContents();
+		}
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public Long getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(Long articleId) {
+		this.articleId = articleId;
 	}
 
 	public String getWriter() {
@@ -61,6 +80,10 @@ public class Article {
 		return content;
 	}
 
+	public Long getCafeUserId() {
+		return cafeUserId;
+	}
+
 	public LocalDate getWritingDate() {
 		return writingDate;
 	}
@@ -68,7 +91,7 @@ public class Article {
 	@Override
 	public String toString() {
 		return "Article{" +
-			"id=" + id +
+			"id=" + articleId +
 			", writer='" + writer + '\'' +
 			", title='" + title + '\'' +
 			", content='" + content + '\'' +

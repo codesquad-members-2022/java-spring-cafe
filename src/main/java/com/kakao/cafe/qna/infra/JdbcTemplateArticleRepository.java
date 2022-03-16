@@ -1,6 +1,7 @@
 package com.kakao.cafe.qna.infra;
 
 import static com.kakao.cafe.common.utils.sql.SqlFormatter.*;
+import static com.kakao.cafe.qna.domain.Article.*;
 import static com.kakao.cafe.qna.infra.JdbcTemplateArticleRepository.ArticleColumns.*;
 import static com.kakao.cafe.user.infra.MemoryUserRepository.*;
 
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kakao.cafe.common.utils.sql.SqlColumns;
 import com.kakao.cafe.qna.domain.Article;
+import com.kakao.cafe.qna.domain.ArticleFactory;
 import com.kakao.cafe.qna.domain.ArticleRepository;
 import com.kakao.cafe.user.infra.JdbcTemplateUserRepository;
 
@@ -39,10 +41,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	enum ArticleColumns implements SqlColumns {
 		ALL("*", "", ""),
-		ARTICLE_ID("article_id", ":article_id", ":id"),
+		ARTICLE_ID("article_id", ":article_id", ":articleId"),
 		WRITER("writer", ":writer", ":writer"),
 		TITLE("title", ":title", ":title"),
 		CONTENT("content", ":content", ":content"),
+		FK_CAFE_USER_ID("cafe_user_id", ":cafe_user_id", ":cafeUserId"),
 		WRITING_DATE("writing_date", ":writingDate", ":writingDate"),
 		COUNT_ALL("COUNT(*)", null, null),
 		NONE(null, null, null);
@@ -81,7 +84,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	@Override
 	public Article save(Article entity) {
-		if (!Objects.isNull(entity.getId())) {
+		if (!Objects.isNull(entity.getArticleId())) {
 			updateArticle(entity);
 			return entity;
 		}
@@ -90,14 +93,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	}
 
 	private void updateArticle(Article entity) {
-		Optional<Article> article = findById(entity.getId());
+		Optional<Article> article = findById(entity.getArticleId());
 		if (article.isPresent()) {
 			update(entity);
 		}
 	}
 
 	private void update(Article entity) {
-		String sql = getSqlOfUpdate(TABLE_NAME_OF_ARTICLE, List.of(WRITER, TITLE, CONTENT, WRITING_DATE), ARTICLE_ID);
+		String sql = getSqlOfUpdate(TABLE_NAME_OF_ARTICLE, List.of(WRITER, TITLE, CONTENT), ARTICLE_ID);
 		SqlParameterSource params = new BeanPropertySqlParameterSource(entity);
 		int update = namedParameterJdbcTemplate.update(sql, params);
 		logger.info("update user : {}", update);
@@ -109,7 +112,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 		Map<String, Object> parameters = getArticleMap(entity);
 		Number key = simpleJdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-		entity.setId(key.longValue());
+		entity.setArticleId(key.longValue());
 	}
 
 	private Map<String, Object> getArticleMap(Article entity) {
@@ -117,6 +120,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 		parameters.put(WRITER.getColumnName(), entity.getWriter());
 		parameters.put(TITLE.getColumnName(), entity.getTitle());
 		parameters.put(CONTENT.getColumnName(), entity.getContent());
+		parameters.put(FK_CAFE_USER_ID.getColumnName(), entity.getCafeUserId());
 		parameters.put(WRITING_DATE.getColumnName(), entity.getWritingDate());
 		return parameters;
 	}
@@ -141,10 +145,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
 	private RowMapper<Article> articleRowMapper() {
 		return (rs, rowNum) -> {
-			Article article = new Article(rs.getLong(ARTICLE_ID.getColumnName()),
+			Article article = ArticleFactory.create(rs.getLong(ARTICLE_ID.getColumnName()),
 				rs.getString(WRITER.getColumnName()),
 				rs.getString(TITLE.getColumnName()),
 				rs.getString(CONTENT.getColumnName()),
+				rs.getLong(FK_CAFE_USER_ID.getColumnName()),
 				rs.getObject(WRITING_DATE.getColumnName(), LocalDate.class));
 			return article;
 		};
@@ -159,5 +164,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 	@Override
 	public List<Article> findAll() {
 		return this.namedParameterJdbcTemplate.query(getSqlOfSelect(TABLE_NAME_OF_ARTICLE, List.of(ALL), NONE), articleRowMapper());
+	}
+
+	@Override
+	public void delete(Long id) {
+		String sql = String.format("DELETE FROM cafe_articles WHERE %s = %s", ARTICLE_ID.getColumnName(),
+			ARTICLE_ID.getNamedParameter());
+		final SqlParameterSource namedParameters = new MapSqlParameterSource().addValue(ARTICLE_ID.getColumnName(), id);
+		this.namedParameterJdbcTemplate.update(sql, namedParameters);
 	}
 }

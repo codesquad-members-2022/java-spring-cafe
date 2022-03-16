@@ -1,5 +1,6 @@
 package com.kakao.cafe.user.domain;
 
+import static com.kakao.cafe.user.domain.User.*;
 import static com.kakao.cafe.user.domain.UserUpdateDto.*;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kakao.cafe.common.exception.DomainNotFoundException;
 import com.kakao.cafe.main.LoginDto;
+import com.kakao.cafe.common.utils.session.SessionUser;
 
 @Service
 public class UserService {
@@ -22,12 +24,16 @@ public class UserService {
 	}
 
 	public long register(UserDto.Request userDto) {
-		if (userRepository.existByUserId(userDto.getUserId())) {
+		if (isExistByUserId(userDto.getUserId())) {
 			throw new IllegalArgumentException("이미 가입한 회원 입니다.");
 		}
-		User user = new User(userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
+		User user = UserFactory.create(userDto.getUserId(), userDto.getName(), userDto.getEmail(), userDto.getPassword());
 		User getUser = userRepository.save(user);
 		return getUser.getId();
+	}
+
+	public boolean isExistByUserId(String userId) {
+		return userRepository.existByUserId(userId);
 	}
 
 	public List<User> findUsers() {
@@ -73,7 +79,7 @@ public class UserService {
 		return false;
 	}
 
-	private User getUserByUserId(String userId) {
+	public User getUserByUserId(String userId) {
 		return userRepository.findByUserId(userId)
 			.orElseThrow(() -> {
 				throw new DomainNotFoundException("user");
@@ -91,19 +97,19 @@ public class UserService {
 		userRepository.save(user);
 	}
 
-	public boolean validateLogin(LoginDto loginDto, RedirectAttributes redirectAttributes) {
+	public SessionUser validateLogin(LoginDto loginDto, RedirectAttributes redirectAttributes) {
 		Optional<User> getUser = userRepository.findByUserId(loginDto.getUserId());
 		if (getUser.isEmpty()) {
-			return false;
+			return new SessionUser(false);
 		}
 		User user = getUser.get();
 		if (!user.isAllowedStatusOfPasswordEntry()) {
 			redirectAttributes.addFlashAttribute("notAllow", USER_MESSAGE_OF_EXCEED_PASSWORD_ENTRY);  // 낯섦
-			return false;
+			return new SessionUser(false);
 		}
 		if (user.isDifferentPassword(loginDto.getPassword())) {
-			return false;
+			return new SessionUser(false);
 		}
-		return true;
+		return SessionUser.of(user.getUserId(), user.getName());
 	}
 }

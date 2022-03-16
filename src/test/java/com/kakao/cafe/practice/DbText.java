@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kakao.cafe.qna.domain.ArticleFactory;
 import com.kakao.cafe.user.domain.User;
+import com.kakao.cafe.user.domain.UserFactory;
 
 @SpringBootTest
 @Transactional
@@ -39,8 +41,8 @@ public class DbText {
 
 	@Test
 	void for_setting_db_data() throws SQLException {
-		User user = new User("tester", "testName", "test@email.com", "1234asdf");
-		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_change) values (?,?,?,?,?,?,?)";
+		User user = UserFactory.create("tester", "testName", "test@email.com", "1234asdf");
+		String sql = "insert into cafe_users (user_id, name, email, password, created_date, last_updated_date, restricted_enter_password) values (?,?,?,?,?,?,?)";
 		PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		pstmt.setString(1, user.getUserId());
 		pstmt.setString(2, user.getName());
@@ -76,7 +78,7 @@ public class DbText {
 		while (rs.next()) {
 			long id = rs.getLong("id");
 			String name = rs.getString("name");
-			User user = new User(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
+			User user = UserFactory.create(1L,"tester", "testName", "test@email.com", "1234asdf", LocalDateTime.now(),LocalDateTime.now(), false);
 
 			soft.assertThat(user.getId()).isNotZero();
 			soft.assertThat(user.getName().length()).isGreaterThan(2);
@@ -97,14 +99,14 @@ public class DbText {
 		ResultSet rs = pstmt.executeQuery();
 
 		while (rs.next()) {
-			User user = new User(rs.getLong("id"),
+			User user = UserFactory.create(rs.getLong("id"),
 				rs.getString("user_id"),
 				rs.getString("name"),
 				rs.getString("email"),
 				rs.getString("password"),
 				rs.getObject("created_date", LocalDateTime.class),
 				rs.getObject("last_updated_date", LocalDateTime.class),
-				rs.getBoolean("restricted_change"));
+				rs.getBoolean("restricted_enter_password"));
 
 			assertThat(user.getId()).isEqualTo(id);
 			logger.info("User : {}", user);

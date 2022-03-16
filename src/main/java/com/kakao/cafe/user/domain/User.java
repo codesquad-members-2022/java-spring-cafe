@@ -2,6 +2,8 @@ package com.kakao.cafe.user.domain;
 
 import java.time.LocalDateTime;
 
+import com.kakao.cafe.qna.domain.Article;
+
 public class User {
 	public static final long USER_LIMIT_TIME = 10L;
 	private Long id;
@@ -13,33 +15,39 @@ public class User {
 	private LocalDateTime lastUpdatedDate;
 	private boolean restrictedEnterPassword;
 
-	public User(Long id,
-				String userId,
-				String password,
-				String name,
-				String email,
-				LocalDateTime createdDate,
-				LocalDateTime lastUpdatedDate,
-				boolean restrictedEnterPassword) {
-		this.id = id;
-		this.userId = userId;
-		this.password = password;
-		this.name = name;
-		this.email = email;
-		this.createdDate = createdDate;
-		this.lastUpdatedDate = lastUpdatedDate;
-		this.restrictedEnterPassword = restrictedEnterPassword;
+	private User() {
 	}
 
-	// 처음 가입시 사용되는 생성자
-	public User(String userId, String name, String email, String password) {
-		this.userId = userId;
-		this.name = name;
-		this.email = email;
-		this.password = password;
-		this.createdDate = LocalDateTime.now();
-		this.lastUpdatedDate = LocalDateTime.now();
-		this.restrictedEnterPassword = false;
+	public static User loadOf(Long id,
+								String userId,
+								String password,
+								String name,
+								String email,
+								LocalDateTime createdDate,
+								LocalDateTime lastUpdatedDate,
+								boolean restrictedEnterPassword) {
+		User user = new User();
+		user.id = id;
+		user.userId = userId;
+		user.password = password;
+		user.name = name;
+		user.email = email;
+		user.createdDate = createdDate;
+		user.lastUpdatedDate = lastUpdatedDate;
+		user.restrictedEnterPassword = restrictedEnterPassword;
+		return user;
+	}
+
+	public static User createOf(String userId, String name, String email, String password) {
+		User user = new User();
+		user.userId = userId;
+		user.name = name;
+		user.email = email;
+		user.password = password;
+		user.createdDate = LocalDateTime.now();
+		user.lastUpdatedDate = LocalDateTime.now();
+		user.restrictedEnterPassword = false;
+		return user;
 	}
 
 	public boolean hasId(Long id) {
@@ -97,6 +105,10 @@ public class User {
 
 	private boolean isPassedLimitTime() {
 		return LocalDateTime.now().isAfter(this.lastUpdatedDate.plusMinutes(USER_LIMIT_TIME));
+	}
+
+	public boolean isWriter(Article article) {
+		return this.id == article.getCafeUserId();
 	}
 
 	public Long getId() {

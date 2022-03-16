@@ -18,9 +18,12 @@ create table cafe_articles
     writer varchar(40) not null,
     title varchar(200) not null,
     content varchar(255) not null,
-    writing_date DATE not null
+    writing_date DATE not null,
+    cafe_user_id bigint,
+    constraint cafe_user_id
+    foreign key (cafe_user_id )
+    references cafe_users ( id )
 );
-
 
 -- delete cafe_users;
 -- alter table cafe_users alter column id restart with 1;
