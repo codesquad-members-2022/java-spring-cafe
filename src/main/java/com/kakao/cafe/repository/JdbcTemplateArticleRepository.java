@@ -52,7 +52,8 @@ public class JdbcTemplateArticleRepository implements ArticleRepository{
             Article article = new Article(
                     rs.getString("title"),
                     rs.getString("writer"),
-                    rs.getString("contents")
+                    rs.getString("contents"),
+                    rs.getString("datetime")
             );
             article.setIndex(rs.getInt("index"));
             return article;

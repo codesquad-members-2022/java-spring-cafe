@@ -18,6 +18,13 @@ public class Article {
         this.contents = contents;
     }
 
+    public Article(String title, String writer, String contents, String dateTime) {
+        this.title = title;
+        this.writer = writer;
+        this.dateTime = dateTime;
+        this.contents = contents;
+    }
+
     public String getTitle() {
         return title;
     }
