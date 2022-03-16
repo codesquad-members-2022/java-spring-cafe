@@ -26,7 +26,8 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String save(ArticleSaveRequestDto requestDto) {
+    public String save(ArticleSaveRequestDto requestDto, HttpSession session) {
+        validateWriter(requestDto, session);
         articleService.save(requestDto);
         return "redirect:/";
     }
@@ -66,6 +67,14 @@ public class ArticleController {
         Object sessionUser = session.getAttribute("sessionUser");
         if (sessionUser == null || !((User) sessionUser).getUserId().equals(writer)) {
             throw new IllegalArgumentException("본인이 작성한 글만 수정 가능합니다");
+        }
+    }
+
+    private void validateWriter(ArticleSaveRequestDto requestDto, HttpSession session) {
+        Object sessionUser = session.getAttribute("sessionUser");
+        User user = (User) sessionUser;
+        if (!user.getUserId().equals(requestDto.getWriter())) {
+            throw new IllegalArgumentException("글쓴이와 현재 유저 아이디가 다릅니다.");
         }
     }
 }
