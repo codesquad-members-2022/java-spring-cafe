@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class ArticleControllerUnitTest {
 
     List<Article> articles;
 
-    Mapper<Article> articleMapper = new Mapper<>();
+    DomainMapper<Article> articleMapper = new DomainMapper<>();
 
     @BeforeEach
     void setUp() {

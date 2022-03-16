@@ -3,7 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.repository.DomainRepository;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ public class ArticleServiceUnitTest {
     @Mock
     DomainRepository<Article, Integer> repository;
 
-    Mapper<Article> articleMapper = new Mapper<>();
+    DomainMapper<Article> articleMapper = new DomainMapper<>();
 
     @Test
     @DisplayName("질문 글 목록을 반환한다.")

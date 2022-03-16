@@ -7,7 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ public class UserControllerUnitTest {
 
     static List<User> users;
 
-    Mapper<User> userMapper = new Mapper<>();
+    DomainMapper<User> userMapper = new DomainMapper<>();
 
     @BeforeAll
     static void init() {

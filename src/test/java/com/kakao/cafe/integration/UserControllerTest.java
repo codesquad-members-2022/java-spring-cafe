@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.repository.DomainRepository;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +47,7 @@ class UserControllerTest {
     @Autowired
     DomainRepository<User, String> repository;
 
-    Mapper<User> userMapper = new Mapper<>();
+    DomainMapper<User> userMapper = new DomainMapper<>();
 
     static List<User> users = new Vector<>();;
 

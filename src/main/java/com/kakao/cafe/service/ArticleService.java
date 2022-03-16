@@ -5,7 +5,7 @@ import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.DuplicateArticleException;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
 import com.kakao.cafe.repository.DomainRepository;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import static com.kakao.cafe.message.ArticleDomainMessage.*;
 public class ArticleService {
 
     private final DomainRepository<Article, Integer> articleRepository;
-    private final Mapper<Article> articleMapper = new Mapper<>();
+    private final DomainMapper<Article> articleMapper = new DomainMapper<>();
 
     public ArticleService(DomainRepository<Article, Integer> articleRepository) {
         this.articleRepository = articleRepository;

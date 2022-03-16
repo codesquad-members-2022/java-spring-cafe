@@ -7,7 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.UnMatchedPasswordException;
 import com.kakao.cafe.repository.DomainRepository;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +33,7 @@ class UserServiceUnitTest {
     @Mock
     DomainRepository<User, String> repository;
 
-    Mapper<User> userMapper = new Mapper<>();
+    DomainMapper<User> userMapper = new DomainMapper<>();
 
     @Test
     @DisplayName("사용자 목록을 반환한다.")

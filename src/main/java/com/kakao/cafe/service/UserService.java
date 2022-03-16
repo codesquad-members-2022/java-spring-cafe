@@ -7,7 +7,7 @@ import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
 import com.kakao.cafe.repository.DomainRepository;
-import com.kakao.cafe.util.Mapper;
+import com.kakao.cafe.util.DomainMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ import static com.kakao.cafe.message.UserDomainMessage.*;
 public class UserService {
 
     private final DomainRepository<User, String> userRepository;
-    private final Mapper<User> userMapper = new Mapper<>();
+    private final DomainMapper<User> userMapper = new DomainMapper<>();
 
     public UserService(DomainRepository<User, String> userRepository) {
         this.userRepository = userRepository;
