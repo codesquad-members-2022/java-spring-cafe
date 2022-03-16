@@ -1,39 +1,19 @@
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <title>kakao Java Web Programming</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="/css/reset.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <div th:replace="~{/fragment/header :: headerFragment}"></div>
     <link href="/css/post/form.css" rel="stylesheet">
 </head>
 <body>
 <div class="background">
-    <nav class="navbar navbar-fixed-top header">
-        <div class="col-md-12">
-            <div class="navbar-header">
-                <a href="../index.html" class="navbar-brand">
-                    <img src="/images/KakaoCI.png" />
-                </a>
-
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="/users/list">멤버 리스트</a></li>
-                <li><a class="black-component" href="/users/login" role="button">로그인</a></li>
-                <li><a class="black-component" href="/users/form" role="button">회원가입</a></li>
-            </ul>
-        </div>
+    <nav class="navbar navbar-fixed-top header" th:replace="~{/fragment/navigation :: navigationFragment}">
     </nav>
 
     <div class="container" id="main">
         <header class="post-header">
             <p class="title">글쓰기</p>
         </header>
-        <form class="submit-write" method="get" action="../index.html ">
+        <form class="submit-write" method="post" action="/questions">
             <div class="text-box">
                 <div class="comment-writer-container">
                     <p class="post-title">제목</p>
