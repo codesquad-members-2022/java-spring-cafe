@@ -44,11 +44,11 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{index}/update")
-    public String createUpdateForm(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index);
+    @GetMapping("/{userId}/update")
+    public String createUpdateForm(@PathVariable("userId") String userId, Model model) {
+        UserForm userForm = userService.findByUserId(userId);
         model.addAttribute("user", userForm);
-        model.addAttribute("index", index);
+        model.addAttribute("index", userId);
         return "user/updateForm";
     }
 

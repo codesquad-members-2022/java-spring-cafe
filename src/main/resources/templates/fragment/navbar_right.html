@@ -7,8 +7,8 @@
         <li><a th:if="${session.isEmpty()}" th:href="@{/login}" role="button">로그인</a></li>
         <li><a th:if="${session.isEmpty()}" th:href="@{/users/join}" role="button">회원가입</a></li>
         <li><a th:href="@{/questions}" role="button">질문하기</a></li>
-        <!--                <li><a th:href="@{/}" role="button">로그아웃</a></li>-->
-        <!--                <li><a th:href="@{/}" role="button">개인정보수정</a></li>-->
+        <li><a th:unless="${session.isEmpty()}" th:text="${session.get('sessionedUser').userId}+'님의 정보수정'"
+               th:href="@{/users/{userId}/update(userId=${session.get('sessionedUser').userId})}" role="button"></a></li>
     </ul>
 </div>
 </html>

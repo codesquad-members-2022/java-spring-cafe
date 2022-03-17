@@ -30,7 +30,7 @@
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
                     <td><a th:href="@{users/{index}(index=${user.id})}" class="btn btn-success" role="button">프로필 보기</a><td>
-                    <td><a th:href="@{users/{index}/update(index=${user.id})}" class="btn btn-success" role="button">수정하기</a><td>
+                    <td><a th:href="@{users/{index}/update(index=${user.userId})}" class="btn btn-success" role="button">수정하기</a><td>
                 </tr>
                 </tbody>
             </table>

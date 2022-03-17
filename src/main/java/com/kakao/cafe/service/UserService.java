@@ -54,4 +54,10 @@ public class UserService{
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
     }
+
+    public UserForm findByUserId(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
+        return new UserForm(user.getUserId(), user.getName(), user.getPassword(), user.getEmail());
+    }
 }
