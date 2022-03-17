@@ -1,21 +1,19 @@
 package com.kakao.cafe.entity;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Article {
 
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime dateOfIssue;
+    private LocalDateTime dateOfIssue;
     private int id;
 
     public Article(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
-        this.dateOfIssue = LocalDateTime.now();
     }
 
     public String getWriter() {
@@ -30,8 +28,12 @@ public class Article {
         return contents;
     }
 
-    public String getDateOfIssue() {
-        return this.dateOfIssue.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    public LocalDateTime getDate() {
+        return dateOfIssue;
+    }
+
+    public void setDate(LocalDateTime dateOfIssue) {
+        this.dateOfIssue = dateOfIssue;
     }
 
     public int getId() {

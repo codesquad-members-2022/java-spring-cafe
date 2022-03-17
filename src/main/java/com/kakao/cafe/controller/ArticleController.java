@@ -28,7 +28,7 @@ public class ArticleController {
     public String registerQuestions(@ModelAttribute Article article) {
         log.info("질문 작성 시도");
         articleService.registerArticle(article);
-        log.info("{} 가 {} 질문을 작성했습니다. (작성시간 : {})", article.getWriter(), article.getTitle(), article.getDateOfIssue());
+        log.info("{} 가 {} 질문을 작성했습니다. (작성시간 : {})", article.getWriter(), article.getTitle(), article.getDate());
         log.debug("작성 글={}", article);
         return "redirect:/";
     }
