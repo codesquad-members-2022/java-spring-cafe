@@ -6,16 +6,21 @@ import com.kakao.cafe.repository.article.ArticleMemoryRepository;
 import com.kakao.cafe.repository.article.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@SpringBootTest
 public class ArticleServiceTest {
 
-    ArticleRepository repository = new ArticleMemoryRepository();
-    ArticleService service = new ArticleService(repository);
+    @Autowired
+    ArticleRepository repository;
+    @Autowired
+    ArticleService service;
 
     @Test
     @DisplayName("아티클 Dto를 넘기면 아티클을 저장한다.")
