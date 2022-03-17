@@ -20,7 +20,7 @@ public class ArticleWriteRequest {
         this.regDateTime = LocalDateTime.now();
     }
 
-    public ArticleWriteRequest(ArticleWriteRequestBuilder articleWriteRequestBuilder) {
+    private ArticleWriteRequest(ArticleWriteRequestBuilder articleWriteRequestBuilder) {
         this.title = articleWriteRequestBuilder.title;
         this.content = articleWriteRequestBuilder.content;
         this.writer = articleWriteRequestBuilder.writer;

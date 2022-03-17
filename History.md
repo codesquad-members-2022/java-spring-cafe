@@ -404,4 +404,9 @@ HomeController 및 테스트 코드를 추가했다.
 - 테스트는 트랜잭션 단위로 진행된다.
 - list를 얻어오는 테스트는 단순히 값들을 전부 가져오는 것이고 테스트가 불필요할 것 같아서 제거했다. size를 통해 테스트하는 것은 메모리에서는 예측 가능하지, DB 연동 상황 등에서는 항상 성공한다는 것도 보장되지 않는다.
 
+## 3.29 ArticleWriteRequest의 생성자 접근레벨 수정
+
+- `ArticleWriteRequest(ArticleWriteRequestBuilder articleWriteRequestBuilder)`가 public으로 열려있어서, 게시글 작성 요청맵핑 시 ArticleWriteRequest 생성자를 특정하지 못 하는 문제가 있었다.
+- private로 접근 제어자 레벨을 낮춰서 게시글 작성을 다시 정상적으로 진행할 수 있도록 했다.
+
 ---
