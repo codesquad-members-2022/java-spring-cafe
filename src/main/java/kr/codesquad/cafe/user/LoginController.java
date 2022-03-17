@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -27,10 +28,15 @@ public class LoginController {
         try {
             userService.login(userId, password, session);
 
-            return "redirect:/";
+            return "redirect:" + getDestination(session);
         } catch (Exception e) {
             return "users/login_failed";
         }
+    }
+
+    private String getDestination(HttpSession session) {
+        return (String) Optional.ofNullable(session.getAttribute("destinationAfterLogin"))
+                .orElse("/");
     }
 
     @PostMapping("/logout")
