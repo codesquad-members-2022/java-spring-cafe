@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <div th:replace="~{/fragment/header :: headerFragment}"></div>
-    <link href="/css/index.css" rel="stylesheet">
+    <link th:href="@{/css/index.css}" rel="stylesheet">
 </head>
 <body>
 <div class="background">
