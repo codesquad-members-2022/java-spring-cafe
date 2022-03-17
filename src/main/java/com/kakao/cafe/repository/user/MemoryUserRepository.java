@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Repository
+//@Repository
 public class MemoryUserRepository implements CafeRepository<User, String> {
 
     private List<User> store = new CopyOnWriteArrayList<>();
