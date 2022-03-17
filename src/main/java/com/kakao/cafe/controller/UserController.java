@@ -68,8 +68,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/update")
-    public String userUpdate(@PathVariable String userId, @ModelAttribute UserRequestDto userUpdateInfo) {
-        UserResponseDto updateUser = userService.update(userId, userUpdateInfo);
+    public String userUpdate(@ModelAttribute UserRequestDto userRequestDto) {
+        UserResponseDto updateUser = userService.update(userRequestDto);
         log.debug("변경 후 유저 정보={}", updateUser);
         log.info("유저 정보 변경 성공");
         return "redirect:/users/list";

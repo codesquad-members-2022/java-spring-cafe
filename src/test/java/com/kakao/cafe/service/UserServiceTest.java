@@ -78,10 +78,10 @@ class UserServiceTest {
         // given
         userA = new User("emailA", "userIdA", "nameA", "pawA");
         userRepository.userSave(userA);
-        UserRequestDto requestDto = new UserRequestDto("changeName", "changeEmail", "pawB");
+        UserRequestDto requestDto = new UserRequestDto("userIdA", "changeName", "changeEmail", "pawB");
         // when
         assertThatThrownBy(() -> {
-            userService.update("userIdA", requestDto);
+            userService.update(requestDto);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("비밀번호가 일치하지 않습니다.");
     }
