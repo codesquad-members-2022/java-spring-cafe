@@ -81,6 +81,7 @@
                                       </li>
                                       <li>
                                           <form class="delete-answer-form" action="/questions/413/answers/1405"
+                                                th:action="@{/questions/{questionId}/replies/{id}(questionId=${article.id}, id=${reply.id})}"
                                                 method="POST">
                                               <input type="hidden" name="_method" value="DELETE">
                                               <button type="submit" class="delete-answer-button">삭제</button>
