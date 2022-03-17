@@ -1,6 +1,7 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.user.User;
+import org.h2.jdbc.JdbcSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -33,7 +34,14 @@ public class UserJdbcRepository implements UserRepository {
         params.put("email", user.getEmail());
         params.put("name", user.getName());
 
-        jdbcInsert.execute(params);
+
+        Optional<User> existingData = findByUserId(user.getUserId());
+        if (existingData.isPresent()) {
+            jdbcTemplate.update("update users set password=? , email=?, name=? where userId=?", user.getPassword(), user.getEmail(), user.getName(), user.getUserId());
+        }else{
+            jdbcInsert.execute(params);
+        }
+
         return user;
     }
 
