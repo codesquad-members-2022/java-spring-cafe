@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <div th:replace="~{/fragment/header :: headerFragment}"></div>
-    <link href="/css/index.css" rel="stylesheet">
+    <div th:replace="~{fragment/header :: headerFragment}"></div>
+    <link th:href="@{/css/index.css}" rel="stylesheet">
 </head>
 <body>
 <div class="background">
-    <nav class="navbar navbar-fixed-top header" th:replace="~{/fragment/navigation :: navigationFragment}">
+    <nav class="navbar navbar-fixed-top header" th:replace="~{fragment/navigation :: navigationFragment}">
     </nav>
 
     <div class="description">
@@ -31,7 +31,7 @@
                     <tr th:each="article : ${articles}">
                         <td><a th:href="@{/{id}(id=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
                         <td><a th:text="작성자"></a></td>
-                        <td><a th:text="${article.getCreatedDate()}"></a></td>
+                        <td><a th:text="${#temporals.format(article.getCreatedDate(), 'yyyy-MM-dd HH:mm')}"></a></td>
                         <td><a th:text="0"></a></td>
                     </tr>
                     </tbody>
@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="post-btn-container">
-      <a href="/questions" class="btn btn-primary pull-right post-write-btn" role="button">글쓰기</a>
+      <a th:href="@{/questions}" class="btn btn-primary pull-right post-write-btn" role="button">글쓰기</a>
     </div>
 </div>
 	</body>
