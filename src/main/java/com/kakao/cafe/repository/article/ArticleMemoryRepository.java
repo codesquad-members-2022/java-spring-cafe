@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class ArticleMemoryRepository implements ArticleRepository {
 
     private static List<Article> store = new ArrayList<>();
@@ -28,10 +28,5 @@ public class ArticleMemoryRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return Collections.unmodifiableList(store);
-    }
-
-    @Override
-    public void clear() {
-        store.clear();
     }
 }

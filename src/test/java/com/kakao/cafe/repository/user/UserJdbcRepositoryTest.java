@@ -14,11 +14,6 @@ public class UserRepositoryTest {
 
     UserRepository repository = new UserMemoryRepository();
 
-    @BeforeEach
-    void clear() {
-        repository.clear();
-    }
-
     @Test
     @DisplayName("데이터를 저장한다.")
     void save() {
