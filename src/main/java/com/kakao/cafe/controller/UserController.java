@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public String signUp(NewUserParam newUserParam) {
         userService.add(newUserParam);
         return "redirect:/users";

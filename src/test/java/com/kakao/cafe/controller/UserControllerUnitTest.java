@@ -65,7 +65,7 @@ public class UserControllerUnitTest {
         given(service.add(newUserParam)).willReturn(userMapper.convertToDomain(newUserParam, User.class));
 
         // when
-        mvc.perform(post("/users/register")
+        mvc.perform(post("/users")
                         .params(convertToMultiValueMap(newUserParam)))
 
                 // then
@@ -94,7 +94,7 @@ public class UserControllerUnitTest {
         given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE));
 
         // when
-        mvc.perform(post("/users/register")
+        mvc.perform(post("/users")
                         .params(convertToMultiValueMap(newUserParam)))
 
                 // then
