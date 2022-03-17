@@ -4,7 +4,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ModifiedArticleParam;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.RemoveArticleException;
-import com.kakao.cafe.exception.user.SaveUserException;
+import com.kakao.cafe.exception.article.SaveArticleException;
 import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -18,8 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.kakao.cafe.message.ArticleDomainMessage.DELETE_FAIL_MESSAGE;
-import static com.kakao.cafe.message.UserDomainMessage.UPDATE_FAIL_MESSAGE;
+import static com.kakao.cafe.message.ArticleDomainMessage.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.BDDMockito.given;
@@ -93,7 +92,7 @@ public class ArticleServiceUnitTest {
     }
 
     @Test
-    @DisplayName("게시글 수정 요청에 따른 저장소에 반영이 실패하면 SaveUserException 예외가 발생한다.")
+    @DisplayName("게시글 수정 요청에 따른 저장소에 반영이 실패하면 SaveArticleException 예외가 발생한다.")
     void updateFail() {
         // given
         Integer id = 1;
@@ -107,7 +106,7 @@ public class ArticleServiceUnitTest {
 
         // when, then
         assertThatThrownBy(() -> articleService.update(modifiedArticleParam))
-                .isInstanceOf(SaveUserException.class)
+                .isInstanceOf(SaveArticleException.class)
                 .hasMessage(UPDATE_FAIL_MESSAGE);
 
         verify(repository).save(updatedArticle);
@@ -139,7 +138,7 @@ public class ArticleServiceUnitTest {
         // when, then
         assertThatThrownBy(() -> articleService.remove(id))
                 .isInstanceOf(RemoveArticleException.class)
-                .hasMessage(DELETE_FAIL_MESSAGE);
+                .hasMessage(REMOVE_FAIL_MESSAGE);
 
         verify(repository).deleteById(id);
     }

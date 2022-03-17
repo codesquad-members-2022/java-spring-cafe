@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.DuplicateArticleException;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
 import com.kakao.cafe.exception.article.RemoveArticleException;
-import com.kakao.cafe.exception.user.SaveUserException;
+import com.kakao.cafe.exception.article.SaveArticleException;
 import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.kakao.cafe.message.ArticleDomainMessage.*;
-import static com.kakao.cafe.message.UserDomainMessage.UPDATE_FAIL_MESSAGE;
 
 @Service
 public class ArticleService {
@@ -40,7 +39,7 @@ public class ArticleService {
     public Article update(ModifiedArticleParam modifiedArticleParam) {
         Article article = articleMapper.convertToDomain(modifiedArticleParam, Article.class);
         return articleRepository.save(article)
-                .orElseThrow(() -> new SaveUserException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
+                .orElseThrow(() -> new SaveArticleException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
     }
 
     public void remove(int id) {
@@ -50,7 +49,7 @@ public class ArticleService {
 
     private void validateResultCount(int resultCount) {
         if (resultCount == 0) {
-            throw new RemoveArticleException(HttpStatus.BAD_GATEWAY, DELETE_FAIL_MESSAGE);
+            throw new RemoveArticleException(HttpStatus.BAD_GATEWAY, REMOVE_FAIL_MESSAGE);
         }
     }
 
