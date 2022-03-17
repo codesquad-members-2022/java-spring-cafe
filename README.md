@@ -352,4 +352,5 @@
   - 게시글 삭제하기 (`@DeleteMapping을 사용해 매핑하고 구현한다.`)
     - [x] 로그인 사용자와 글쓴이의 사용자 아이디가 같은 경우에만 정상 기능한다.
     - [x] 그렇지 않고 자신이 작성한 글을 삭제하려 할 시 "error/403.html" 페이지로 이동한다.
-    
+
+- heroku 배포링크 - <https://naneun-spring-cafe.herokuapp.com>
