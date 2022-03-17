@@ -55,9 +55,19 @@ public class UserService{
         }
     }
 
-    public UserForm findByUserId(String userId) {
-        User user = userRepository.findByUserId(userId)
+    public UserForm validateLoginUser(String userId, Object value) {
+        User compareUser = (User) value;
+        User loginUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
-        return new UserForm(user.getUserId(), user.getName(), user.getPassword(), user.getEmail());
+        return getLoginUserForm(compareUser, loginUser);
+    }
+
+    private UserForm getLoginUserForm(User compareUser, User loginUser) {
+        if (loginUser.getId() == compareUser.getId()) {
+            UserForm loginUserForm = new UserForm(loginUser.getUserId(), loginUser.getName(), loginUser.getPassword(), loginUser.getEmail());
+            loginUserForm.setId(loginUser.getId());
+            return loginUserForm;
+        }
+        throw new IllegalStateException("개인정보(id)가 일치하지 않습니다.");
     }
 }

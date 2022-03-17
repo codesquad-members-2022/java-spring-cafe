@@ -7,6 +7,8 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -44,17 +46,20 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{userId}/update")
-    public String createUpdateForm(@PathVariable("userId") String userId, Model model) {
-        UserForm userForm = userService.findByUserId(userId);
-        model.addAttribute("user", userForm);
-        model.addAttribute("index", userId);
-        return "user/updateForm";
+    @PutMapping("/{id}/update")
+    public String updateUser(@PathVariable("id") int id, @Valid UpdateUserForm updateUserForm) {
+        userService.update(updateUserForm, id);
+        return "redirect:/users";
     }
 
-    @PutMapping("/{index}/update")
-    public String updateUser(@PathVariable("index") int index, @Valid UpdateUserForm updateUserForm) {
-        userService.update(updateUserForm, index);
-        return "redirect:/users";
+    @GetMapping("/{userId}/update")
+    public String createUpdateFormByLoginUser(@PathVariable("userId") String userId, HttpSession session, Model model) {
+        Object value = session.getAttribute("sessionedUser");
+        if (value != null) {
+            UserForm loginUserForm = userService.validateLoginUser(userId, value);
+            model.addAttribute("user", loginUserForm);
+            return "user/updateForm";
+        }
+        return "redirect:/";
     }
 }

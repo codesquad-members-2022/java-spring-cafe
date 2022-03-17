@@ -15,7 +15,7 @@
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default">
             <div class="panel panel-default content-main">
-                <form name="question" method="post" th:action="@{/users/{index}/update(index=${index})}">
+                <form name="question" method="post" th:action="@{/users/{id}/update(id=${user.id})}">
                     <input type="hidden" name="_method" value="put"/>
                     <div class="form-group">
                         <span>사용자 아이디 :</span>
