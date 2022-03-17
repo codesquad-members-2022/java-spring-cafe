@@ -24,9 +24,10 @@ public class UserService {
 
     private void validateDuplicatedUser(User user) {
         userRepository.findById(user.getUserId())
-                .orElseThrow(() -> {
+                .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+
     }
 
     public List<User> findUsers() {
