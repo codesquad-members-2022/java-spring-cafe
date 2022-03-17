@@ -5,14 +5,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Article {
 
-    private Integer id;
-    private String userId;
+    private final Integer id;
+    private final String userId;
     private String title;
     private String content;
     private AtomicInteger viewCount;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
 
     public Article(String userId, String title, String content) {
+        this.id = null;
         this.userId = userId;
         this.title = title;
         this.content = content;
