@@ -15,7 +15,7 @@
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                              <a href="user/profile.html" class="author" th:text="${article.writer}"></a>
+                              <a th:href="@{/users/{userId}(userId=${article.writer})}" class="author" th:text="${article.writer}"></a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
