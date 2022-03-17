@@ -3,6 +3,7 @@ package com.kakao.cafe.web.questions;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.web.validation.ArticleValidation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -31,6 +32,9 @@ class ArticleControllerTest {
 
     @MockBean
     private ArticleService mockArticleService;
+
+    @MockBean
+    private ReplyService replyService;
 
     @MockBean
     private ArticleValidation articleValidation;
