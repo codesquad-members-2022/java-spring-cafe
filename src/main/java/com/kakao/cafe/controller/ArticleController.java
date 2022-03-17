@@ -58,7 +58,9 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}")
     public String showArticle(@PathVariable int articleId, Model model) {
         Article article = articleService.findOne(articleId);
+        String lineSeparator = System.lineSeparator();
         model.addAttribute("article", article);
+        model.addAttribute("lineSeparator", lineSeparator);
         return "qna/show";
     }
 

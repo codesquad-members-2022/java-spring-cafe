@@ -1,26 +1,27 @@
 package com.kakao.cafe.domain;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Article {
     private Integer id;
     private User user;
     private String title;
-    private List<String> contents;
+    private String content;
     private LocalDateTime createDate;
 
-//    게시글을 등록할 때 사용하는 생성자
-    public Article(User user, String title, List<String> contents) {
-        this(null, user, title, contents, LocalDateTime.now());
+    public Article(User user, String title, String content) {
+        this(null, user, title, content, LocalDateTime.now());
     }
 
-//    게시글을 데이터베이스에서 조회할 때 사용하는 생성자
-    public Article(Integer id, User user, String title, List<String> contents, LocalDateTime createDate) {
+    public Article(Integer id, Article article) {
+        this(id, article.getUser(), article.getTitle(), article.getContent(), article.getCreateDate());
+    }
+
+    public Article(Integer id, User user, String title, String content, LocalDateTime createDate) {
         this.id = id;
         this.user = user;
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.createDate = createDate;
     }
 
@@ -32,10 +33,6 @@ public class Article {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -44,8 +41,8 @@ public class Article {
         return title;
     }
 
-    public List<String> getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 
     public LocalDateTime getCreateDate() {

@@ -11,9 +11,10 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        article.setId(articles.size() + 1);
-        articles.add(article);
-        return article;
+        int articleId = articles.size() + 1;
+        Article saveArticle = new Article(articleId, article);
+        articles.add(saveArticle);
+        return saveArticle;
     }
 
     @Override
