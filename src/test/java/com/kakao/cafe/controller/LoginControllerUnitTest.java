@@ -2,6 +2,7 @@ package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
+import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.service.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,12 +11,14 @@ import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.nio.charset.StandardCharsets;
 
+import static com.kakao.cafe.message.UserDomainMessage.NO_SUCH_USER_MESSAGE;
 import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -44,6 +47,7 @@ public class LoginControllerUnitTest {
         // given
         LoginParam loginParam = new LoginParam("userId", "password");
         User user = new User(1, "userId", "password", "name", "email");
+
         given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
 
         // when
@@ -60,12 +64,13 @@ public class LoginControllerUnitTest {
         verify(service).checkInfo(ArgumentMatchers.refEq(loginParam));
     }
 
-    @DisplayName("로그인 요청 정보의 비밀번호와 실제 사용자의 비밀번호가 일치하지 않으면 user/login_failed.html 을 읽어온다.")
+    @DisplayName("로그인 요청 정보의 비밀번호와 실제 사용자의 비밀번호가 일치하지 않으면 user/login_failed.html 으로 응답한다.")
     @Test
     void loginFail() throws Exception {
         // given
         LoginParam loginParam = new LoginParam("userId", "Inconsistency");
         User user = new User(1, "userId", "password", "name", "email");
+
         given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
 
         // when
@@ -78,6 +83,28 @@ public class LoginControllerUnitTest {
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
                         content().encoding(StandardCharsets.UTF_8),
                         view().name("user/login_failed"),
+                        status().isOk()
+                );
+
+        verify(service).checkInfo(ArgumentMatchers.refEq(loginParam));
+    }
+
+    @DisplayName("로그인 요청에 해당하는 사용자 아이디가 존재하지 않으면 않으면 NoSuchUserException 예외가 발생한다.")
+    @Test
+    void loginFail2() throws Exception {
+        // given
+        LoginParam loginParam = new LoginParam("userId", "Inconsistency");
+
+        given(service.checkInfo(ArgumentMatchers.refEq(loginParam)))
+                .willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
+
+        // when
+        mvc.perform(post("/login")
+                        .params(convertToMultiValueMap(loginParam)).session(session))
+
+                // then
+                .andExpectAll(
+                        content().string(NO_SUCH_USER_MESSAGE),
                         status().isOk()
                 );
 

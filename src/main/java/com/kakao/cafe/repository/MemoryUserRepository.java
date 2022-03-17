@@ -41,7 +41,7 @@ public class MemoryUserRepository implements CrudRepository<User, String> {
 
     @Override
     public int deleteById(String userId) {
-        /* In memory version, I can't think of a good way.. 😂 */
+        /* In memory version, I can't find a good way.. 😂 */
         return 0;
     }
 }
