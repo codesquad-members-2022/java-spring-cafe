@@ -17,6 +17,22 @@ public class User {
         this.password = password;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public boolean isSameUserId(String userId) {
         return this.userId.equals(userId);
     }
@@ -27,13 +43,6 @@ public class User {
 
     public boolean isSameUserPassword(UserRequestDto requestDto) {
         return this.password.equals(requestDto.getPassword());
-    }
-
-    public User updateUser(UserRequestDto requestDto) {
-        this.email = requestDto.getUserEmail();
-        this.name = requestDto.getUserName();
-        this.password = requestDto.getPassword();
-        return this;
     }
 
     public UserResponseDto of() {
