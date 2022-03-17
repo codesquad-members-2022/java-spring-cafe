@@ -30,5 +30,9 @@ public class UserDto {
         return name;
     }
 
+    public User convertToUser() {
+        return new User(userId, password, email, name);
+    }
+
 
 }
