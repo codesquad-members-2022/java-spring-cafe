@@ -52,6 +52,7 @@ class UserServiceUnitTest {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(users);
+
         verify(repository).findAll();
     }
 
@@ -79,12 +80,16 @@ class UserServiceUnitTest {
     @Test
     @DisplayName("사용자 목록에 존재하는 ID의 가입 요청이 오면 사용자 등록에 실패하고 DuplicateUserException 예외가 발생한다.")
     void addFail() {
+        // given
         NewUserParam newUserParam = new NewUserParam("user", "1234", "name", "user@gmail.com");
 
         given(repository.findById(newUserParam.getUserId()))
                 .willReturn(Optional.ofNullable(userMapper.convertToDomain(newUserParam, User.class)));
 
+        // when
         assertThatThrownBy(() -> userService.add(newUserParam))
+
+                // then
                 .isInstanceOf(DuplicateUserException.class)
                 .hasMessage(DUPLICATE_USER_MESSAGE);
 
@@ -94,6 +99,7 @@ class UserServiceUnitTest {
     @Test
     @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 같으면 저장소에 반영한다.")
     void updateSuccess() {
+        // given
         ModifiedUserParam modifiedUserParam = new ModifiedUserParam(1, "userId", "1234",
                 "1234", "4321", "name", "user@gmail.com");
 
@@ -101,18 +107,27 @@ class UserServiceUnitTest {
 
         given(repository.save(user)).willReturn(Optional.ofNullable(user));
 
-        assertThat(userService.update(modifiedUserParam)).usingRecursiveComparison().isEqualTo(user);
+        // when
+        User result = userService.update(modifiedUserParam);
+
+        // then
+        assertThat(result).usingRecursiveComparison().isEqualTo(user);
+
         verify(repository).save(user);
     }
 
     @Test
     @DisplayName("사용자 정보 수정 요청이 오면 현재 비밀번호와 입력된 비밀번호를 비교 후 다르면 UnMatchedPasswordException 예외가 발생한다.")
     void updateFail() {
+        // given
         ModifiedUserParam modifiedUserParam =
                 new ModifiedUserParam(1, "userId", "1234", "4321",
                         "4321", "name", "user@gmail.com");
 
+        // when
         assertThatThrownBy(() -> userService.update(modifiedUserParam))
+
+                // then
                 .isInstanceOf(UnMatchedPasswordException.class)
                 .hasMessage(UNMATCHED_PASSWORD_MESSAGE);
     }
@@ -123,6 +138,7 @@ class UserServiceUnitTest {
         // given
         String userId = "userId";
         User user = new User(1, userId, "password", "name", "email");
+
         given(repository.findById(userId)).willReturn(Optional.ofNullable(user));
 
         // when
@@ -130,16 +146,21 @@ class UserServiceUnitTest {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
+
         verify(repository).findById(userId);
     }
 
     @Test
     @DisplayName("인자로 받은 userId에 해당하는 사용자가 없으면 NoSuchUserException 예외가 발생한다.")
     void searchFail() {
+        // given
         String userId = "noExist";
         given(repository.findById(userId)).willReturn(Optional.empty());
 
+        // when
         assertThatThrownBy(() -> userService.search(userId))
+
+                // then
                 .isInstanceOf(NoSuchUserException.class)
                 .hasMessage(NO_SUCH_USER_MESSAGE);
 

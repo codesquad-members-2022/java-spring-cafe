@@ -33,6 +33,7 @@ public class LoginServiceUnitTest {
         String password = "password";
         LoginParam loginParam = new LoginParam(userId, password);
         User user = new User(1, userId, password, "name", "email");
+
         given(repository.findById(userId)).willReturn(Optional.of(user));
 
         // when

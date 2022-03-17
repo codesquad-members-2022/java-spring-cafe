@@ -21,30 +21,30 @@ class MemoryUserRepositoryTest {
     @Test
     @DisplayName("전체 사용자 목록을 반환한다.")
     void findAllSuccess() {
-        //given
+        // given
         User user1 = new User(1, "user1", "1234", "name1", "user1@gmail.com");
         repository.save(user1);
 
         User user2 = new User(2, "user2", "1234", "name2", "user2@gmail.com");
         repository.save(user2);
 
-        //when
+        // when
         List<User> users = repository.findAll();
 
-        //then
+        // then
         assertThat(users.size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
     void persistSuccess() {
-        //given
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
-        //when
+        // when
         repository.save(user);
 
-        //then
+        // then
         User result = repository.findById(user.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
@@ -52,15 +52,15 @@ class MemoryUserRepositoryTest {
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
     void mergeSuccess() {
-        //given
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
-        //when
+        // when
         User modifiedUser = new User(1, "user", "4321", "newName", "newUser@gmail.com");
         repository.save(modifiedUser);
 
-        //then
+        // then
         User result = repository.findById(modifiedUser.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
@@ -68,14 +68,14 @@ class MemoryUserRepositoryTest {
     @Test
     @DisplayName("인자로 주어진 ID를 가진 사용자를 저장소에서 찾아 반환한다.")
     void findByIdSuccess() {
-        //given
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
-        //when
+        // when
         User result = repository.findById(user.getUserId()).get();
 
-        //then
+        // then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 }

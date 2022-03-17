@@ -51,6 +51,7 @@ public class ArticleServiceUnitTest {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(articles);
+
         verify(repository).findAll();
     }
 
@@ -67,6 +68,7 @@ public class ArticleServiceUnitTest {
 
         // then
         assertThat(newArticle).usingRecursiveComparison().isEqualTo(article);
+
         verify(repository).save(article);
     }
 
@@ -88,6 +90,7 @@ public class ArticleServiceUnitTest {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(updatedArticle);
+
         verify(repository).save(updatedArticle);
     }
 
@@ -104,8 +107,10 @@ public class ArticleServiceUnitTest {
         Article updatedArticle = articleMapper.convertToDomain(modifiedArticleParam, Article.class);
         given(repository.save(updatedArticle)).willReturn(Optional.empty());
 
-        // when, then
+        // when
         assertThatThrownBy(() -> articleService.update(modifiedArticleParam))
+
+                // then
                 .isInstanceOf(SaveArticleException.class)
                 .hasMessage(UPDATE_FAIL_MESSAGE);
 
@@ -125,6 +130,7 @@ public class ArticleServiceUnitTest {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(article);
+
         verify(repository).findById(id);
     }
 
@@ -135,8 +141,10 @@ public class ArticleServiceUnitTest {
         int id = 1;
         given(repository.deleteById(id)).willReturn(0);
 
-        // when, then
+        // when
         assertThatThrownBy(() -> articleService.remove(id))
+
+                // then
                 .isInstanceOf(RemoveArticleException.class)
                 .hasMessage(REMOVE_FAIL_MESSAGE);
 
