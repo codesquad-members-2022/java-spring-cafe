@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class UserMemoryRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
@@ -28,10 +28,5 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return Collections.unmodifiableList(store);
-    }
-
-    @Override
-    public void clear() {
-        store.clear();
     }
 }
