@@ -1,6 +1,5 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.dto.LoginForm;
 import com.kakao.cafe.service.LoginService;
 import org.springframework.stereotype.Controller;

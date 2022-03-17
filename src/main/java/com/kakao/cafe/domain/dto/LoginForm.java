@@ -1,6 +1,8 @@
 package com.kakao.cafe.domain.dto;
 
-public class LoginForm {
+import java.io.Serializable;
+
+public class LoginForm implements Serializable {
     private String userId;
     private String password;
     private int id;
