@@ -21,12 +21,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/join")
+    @GetMapping("/user/form")
     public String createForm() {
         return "user/form";
     }
 
-    @PostMapping("/user/join")
+    @PostMapping("/users")
     public String create(@ModelAttribute User user) {
         userService.join(user);
         return "redirect:/users";
