@@ -87,4 +87,18 @@ public class Reply {
 	public boolean isDeleted() {
 		return deleted;
 	}
+
+	@Override
+	public String toString() {
+		return "Reply{" +
+			"replyId=" + replyId +
+			", replier='" + replier + '\'' +
+			", content='" + content + '\'' +
+			", writingDate=" + writingDate +
+			", articleId=" + articleId +
+			", cafeUsersId='" + cafeUsersId + '\'' +
+			", cafeId=" + cafeId +
+			", deleted=" + deleted +
+			'}';
+	}
 }
