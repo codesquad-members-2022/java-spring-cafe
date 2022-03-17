@@ -61,15 +61,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String viewUpdateForm(@PathVariable("userId") String userId, Model model, HttpSession session) {
+    public String viewUpdateForm(@PathVariable("userId") String userId, Model model) {
         try {
-            service.validateCurrentUser(userId, session);
             model.addAttribute("user", service.findByUserId(userId));
 
             return "users/updateForm";
-        } catch (IllegalStateException e) {
-
-            return "badRequest";
         } catch (NoSuchElementException e) {
 
             //noinspection SpringMVCViewInspection
