@@ -5,36 +5,42 @@ import static org.assertj.core.api.Assertions.*;
 import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.controller.dto.PostingRequestDto;
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.MemoryArticleRepository;
+import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.assertj.core.api.ThrowableAssert.ThrowingCallable;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+@SpringBootTest
+@Transactional
 class ArticleServiceTest {
 
-    private final MemoryArticleRepository articleRepository = new MemoryArticleRepository();
-    private final ArticleService articleService = new ArticleService(articleRepository);
+    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
 
-    @BeforeEach
-    void setUp() {
-        articleRepository.clear();
+    @Autowired
+    public ArticleServiceTest(ArticleRepository articleRepository,
+        ArticleService articleService) {
+        this.articleRepository = articleRepository;
+        this.articleService = articleService;
     }
 
     @Test
-    @DisplayName("게시글을 저장하면, 게시글을 ArrayList에 저장하고 id를 리턴한다.")
+    @DisplayName("게시글을 저장하고, 저장된 게시글의 id를 리턴한다.")
     void posting() {
         //given
         PostingRequestDto validPostingRequestDto =
             new PostingRequestDto("test title", "test content");
 
         //when
-        int postedIndex = articleService.posting(validPostingRequestDto);
+        int savedArticleCount = articleService.posting(validPostingRequestDto);
 
         //then
-        assertThat(postedIndex).isEqualTo(1);
+        assertThat(savedArticleCount).isEqualTo(4);
     }
 
     @Test
@@ -70,17 +76,11 @@ class ArticleServiceTest {
     @DisplayName("게시글을 전부 조회하면, 저장된 게시글 전부를 List에 담아 리턴한다.")
     void findPosts() {
         //given
-        for (int i = 1; i <= 10; i++) {
-            String title = "test title" + i;
-            String content = "test content" + i;
-            Article article = new Article("Anonymous", title, content);
-            articleRepository.save(article);
-        }
 
         //when
         List<ArticleDto> posts = articleService.findPosts();
 
         //then
-        assertThat(posts.size()).isEqualTo(10);
+        assertThat(posts.size()).isEqualTo(3);
     }
 }
