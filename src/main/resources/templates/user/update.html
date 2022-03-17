@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragment.html::head"></head>
+<head th:replace="fragment :: head"></head>
 <body>
-<nav th:replace="/fragment.html::main-nav" ></nav>
-<div th:replace="/fragment.html::sub-nav"></div>
-
+<nav th:replace="fragment :: main-nav" ></nav>
+<div th:replace="fragment :: sub-nav"></div>
 <div class="container" id="main">
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default content-main">
