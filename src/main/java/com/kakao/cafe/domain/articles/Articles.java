@@ -1,11 +1,22 @@
 package com.kakao.cafe.domain.articles;
 
+import java.time.LocalDateTime;
+
 public class Articles {
 
-	private int articleId;
-	private String writer;
+	private long articleId;
 	private String title;
 	private String contents;
+	private String writer;
+	private LocalDateTime createdDate;
+
+	public long getArticleId() {
+		return articleId;
+	}
+
+	public void setArticleId(long articleId) {
+		this.articleId = articleId;
+	}
 
 	public String getWriter() {
 		return writer;
@@ -29,5 +40,13 @@ public class Articles {
 
 	public void setContents(String contents) {
 		this.contents = contents;
+	}
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
 	}
 }

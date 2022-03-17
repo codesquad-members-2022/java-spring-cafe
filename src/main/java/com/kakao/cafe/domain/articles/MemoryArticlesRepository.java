@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.articles;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +13,14 @@ public class MemoryArticlesRepository implements ArticlesRepository {
 
 	@Override
 	public List<Articles> findAll() {
-		return null;
+		return articlesList;
 	}
 
 	@Override
 	public void save(Articles article) {
+		article.setArticleId((long) (articlesList.size() + 1));
+		article.setCreatedDate(LocalDateTime.now());
 		articlesList.add(article);
-
-		System.out.println();
 	}
 
 	@Override

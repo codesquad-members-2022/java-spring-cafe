@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.articles.Articles;
 import com.kakao.cafe.domain.users.Users;
 import com.kakao.cafe.service.articles.ArticlesService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -25,5 +26,11 @@ public class ArticleController {
 	public String save(Articles articles) {
 		articlesService.save(articles);
 		return "redirect:/";
+	}
+
+	@GetMapping("/")
+	public String list(Model model) {
+		model.addAttribute("articlesList", articlesService.list());
+		return "index";
 	}
 }

@@ -38,7 +38,7 @@ ___
 |--------|-----------------------|-----------|
 | GET    | /articles             | 게시글작성 페이지 |
 | POST   | /articles             | 게시글작성 기능  |
-| GET    | /articles/list        | 게시글목록     |
+| GET    | /                     | 게시글목록     |
 | GET    | /articles/{articleId} | 게시글 상세내용  |
 | POST   | /users/{userId}       | 회원프로필 수정  |
 
