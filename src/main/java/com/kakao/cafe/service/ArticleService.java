@@ -5,6 +5,7 @@ import com.kakao.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ArticleService {
@@ -23,6 +24,7 @@ public class ArticleService {
         return articleRepository.loadAllArticles();
     }
 
-    public Article loadOneArticle(Long index) { return articleRepository.loadOneArticle(index).get();
+    public Article loadOneArticle(Long index) {
+        return articleRepository.loadOneArticle(index).orElseThrow(()-> new NoSuchElementException("해당하는 글이 존재하지 않습니다"));
     }
 }
