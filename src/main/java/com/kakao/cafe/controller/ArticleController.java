@@ -35,10 +35,9 @@ public class ArticleController {
 	}
 
 	@GetMapping("/articles/{articleId}")
-	public String detail(Model model, @PathVariable long articleId) {
+	public String detail(@PathVariable long articleId, Model model) {
 		Articles article = articlesService.findByArticleId(articleId);
 		model.addAttribute("article", article);
-		System.out.println();
 		return "qna/show";
 	}
 }

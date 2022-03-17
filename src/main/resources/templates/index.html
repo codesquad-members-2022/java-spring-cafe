@@ -11,7 +11,7 @@
                     <div class="wrap">
                         <div class="main">
                             <strong class="subject">
-                                <a href="#" th:utext="${article.title}">title</a>
+                                <a th:href="@{/articles/{articleId}(articleId=${article.articleId})}" th:text="${article.title}">title</a>
                             </strong>
                             <div class="auth-info">
                                 <i class="icon-add-comment"></i>
