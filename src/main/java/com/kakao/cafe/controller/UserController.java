@@ -7,8 +7,6 @@ import com.kakao.cafe.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -58,15 +56,5 @@ public class UserController {
     public String updateUser(@PathVariable("index") int index, @Valid UpdateUserForm updateUserForm) {
         userService.update(updateUserForm, index);
         return "redirect:/users";
-    }
-
-    @GetMapping("/login")
-    public String loginForm(){
-        return "user/login";
-    }
-
-    @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
-        return "redirect:/";
     }
 }
