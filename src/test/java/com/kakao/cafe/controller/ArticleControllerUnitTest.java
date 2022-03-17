@@ -64,19 +64,26 @@ public class ArticleControllerUnitTest {
         );
     }
 
+    /*
+        write
+     */
     @DisplayName("로그인한 클라이언트의 글쓰기 요청이 오면 등록 후 질문 글 목록 ('/') 으로 리다이렉트한다.")
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForWriteArticle")
     void writeArticleSuccess(NewArticleParam newArticleParam) throws Exception {
+        // given
         Article article = articleMapper.convertToDomain(newArticleParam, Article.class);
         given(service.add(newArticleParam)).willReturn(article);
 
         session.setAttribute("userInfo",
                 new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
+        // when
         mvc.perform(post("/articles/write")
                         .params(convertToMultiValueMap(newArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/")
@@ -88,12 +95,14 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인하지 않은 클라이언트의 글쓰기 요청이 오면 로그인 화면 ('/users/login') 으로 리다이렉트한다.")
     @Test
     void writeArticleFailNotLogin() throws Exception {
+        // given
         NewArticleParam newArticleParam = new NewArticleParam("writer", "title", "contents");
-        Article article = articleMapper.convertToDomain(newArticleParam, Article.class);
-        given(service.add(newArticleParam)).willReturn(article);
 
+        // when
         mvc.perform(post("/articles/write").params(convertToMultiValueMap(newArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users/login")
@@ -108,9 +117,13 @@ public class ArticleControllerUnitTest {
         );
     }
 
+    /*
+        getDetail
+     */
     @DisplayName("로그인한 클라이언트의 글 상세 보기 요청이 오고 파라미터 값인 id 에 해당하는 글을 찾아 'qna/show' 에서 출력한다.")
     @Test
     void getDetailSuccess() throws Exception {
+        // given
         int id = 1;
         Article article = articles.get(id - 1);
         given(service.search(id)).willReturn(article);
@@ -118,7 +131,11 @@ public class ArticleControllerUnitTest {
         session.setAttribute("userInfo",
                 new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
-        mvc.perform(get("/articles/" + id).session(session))
+        // when
+        mvc.perform(get("/articles/" + id)
+                        .session(session))
+
+                // then
                 .andExpectAll(
                         model().attributeExists("article"),
                         model().attribute("article", article),
@@ -134,13 +151,18 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 글 상세 보기 요청이 오고 PathVariable 값인 id 으로 해당하는 글이 존재하지 않으면 NoSuchArticleException 예외가 발생한다.")
     @Test
     void getDetailFail() throws Exception {
+        // given
         int id = 4;
         given(service.search(id)).willThrow(new NoSuchArticleException(HttpStatus.OK, NO_SUCH_ARTICLE_MESSAGE));
 
         session.setAttribute("userInfo",
                 new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
-        mvc.perform(get("/articles/" + id).session(session))
+        // when
+        mvc.perform(get("/articles/" + id)
+                        .session(session))
+
+                // then
                 .andExpectAll(
                         content().string(NO_SUCH_ARTICLE_MESSAGE),
                         status().isOk()
@@ -155,6 +177,7 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 자기 게시글 수정 요청이 도착하면 변경 사항을 반영 후 질문 글 목록 ('/') 으로 리다이렉트한다.")
     @Test
     void modifyArticleSuccess() throws Exception {
+        // given
         int id = 1;
         LocalDate currentDate = LocalDate.now();
         ModifiedArticleParam modifiedArticleParam
@@ -166,8 +189,11 @@ public class ArticleControllerUnitTest {
         session.setAttribute("userInfo",
                 new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
+        // when
         mvc.perform(put("/articles/" + id + "/update").params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/")
@@ -179,19 +205,26 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 자기 게시글 수정 요청이 도착했지만 정상적으로 처리되지 않았을 경우 SaveArticleException 예외가 발생한다.")
     @Test
     void modifyArticleFail() throws Exception {
+        // given
         int id = 4;
         LocalDate currentDate = LocalDate.now();
         ModifiedArticleParam modifiedArticleParam
                 = new ModifiedArticleParam(4, "writer", "title", "contents", currentDate);
 
         Article article = articleMapper.convertToDomain(modifiedArticleParam, Article.class);
-        given(service.update(ArgumentMatchers.refEq(modifiedArticleParam))).willThrow(new SaveArticleException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
+
+        given(service.update(ArgumentMatchers.refEq(modifiedArticleParam)))
+                .willThrow(new SaveArticleException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
 
         session.setAttribute("userInfo",
                 new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
-        mvc.perform(put("/articles/" + id + "/update").params(convertToMultiValueMap(modifiedArticleParam))
+        // when
+        mvc.perform(put("/articles/" + id + "/update")
+                        .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         content().string(UPDATE_FAIL_MESSAGE),
                         status().isBadGateway()
@@ -203,19 +236,21 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 수정 요청이 오면 '/error/403' 로 리다이렉트한다.")
     @Test
     void modifyArticleFail2() throws Exception {
+        // given
         int id = 3;
         LocalDate currentDate = LocalDate.now();
         ModifiedArticleParam modifiedArticleParam
                 = new ModifiedArticleParam(3, "otherUser", "title", "contents", currentDate);
 
-        Article article = articleMapper.convertToDomain(modifiedArticleParam, Article.class);
-        given(service.update(ArgumentMatchers.refEq(modifiedArticleParam))).willReturn(article);
-
         session.setAttribute("userInfo",
                 new User(1, "user", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
-        mvc.perform(put("/articles/" + id + "/update").params(convertToMultiValueMap(modifiedArticleParam))
+        // when
+        mvc.perform(put("/articles/" + id + "/update")
+                        .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/error/403")
@@ -225,15 +260,18 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인하지 않은 클라이언트의 게시글 수정 요청이 도착하면 로그인 화면 ('users/login') 으로 리다이렉트한다.")
     @Test
     void modifyArticleFailNotLogin() throws Exception {
+        // given
         int id = 1;
         LocalDate currentDate = LocalDate.now();
         ModifiedArticleParam modifiedArticleParam
                 = new ModifiedArticleParam(1, "writer", "title", "contents", currentDate);
 
-        given(service.update(ArgumentMatchers.refEq(modifiedArticleParam))).willThrow(new SaveArticleException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
-
-        mvc.perform(put("/articles/" + id + "/update").params(convertToMultiValueMap(modifiedArticleParam))
+        // when
+        mvc.perform(put("/articles/" + id + "/update")
+                        .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users/login")
@@ -246,15 +284,19 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 자기 게시글 삭제 요청이 도착하면 삭제 후 질문 글 목록 ('/') 으로 리다이렉트한다.")
     @Test
     void deleteArticleSuccess() throws Exception {
+        // given
         int articleId = 1;
         String writer = "writer";
         doNothing().when(service).remove(articleId);
 
         session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
+        // when
         mvc.perform(delete("/articles/" + articleId + "/remove")
                         .param("writer", writer)
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/")
@@ -266,15 +308,19 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 자기 게시글 삭제 요청이 도착했지만 정상적으로 처리되지 않았을 경우 RemoveArticleException 예외가 발생한다.")
     @Test
     void deleteArticleFail() throws Exception {
+        // given
         int articleId = 1;
         String writer = "writer";
         doThrow(new RemoveArticleException(HttpStatus.BAD_GATEWAY, REMOVE_FAIL_MESSAGE)).when(service).remove(articleId);
 
         session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
+        // when
         mvc.perform(delete("/articles/" + articleId + "/remove")
                         .param("writer", writer)
                         .session(session))
+
+                // then
                 .andExpectAll(
                         content().string(REMOVE_FAIL_MESSAGE),
                         status().isBadGateway()
@@ -286,12 +332,16 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 삭제 요청이 오면 '/error/403' 로 리다이렉트한다.")
     @Test
     void deleteArticleFail2() throws Exception {
+        // given
         int articleId = 1;
         session.setAttribute("userInfo", new User(1, "writer", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
+        // when
         mvc.perform(delete("/articles/" + articleId + "/remove")
                         .param("writer", "otherWriter")
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/error/403")
@@ -301,12 +351,16 @@ public class ArticleControllerUnitTest {
     @DisplayName("로그인하지 않은 클라이언트의 게시글 삭제 요청이 도착하면 로그인 화면 ('users/login') 으로 리다이렉트한다.")
     @Test
     void deleteArticleFailNotLogin() throws Exception {
+        // given
         int articleId = 1;
         doNothing().when(service).remove(articleId);
 
+        // when
         mvc.perform(delete("/articles/" + articleId + "/remove")
                         .param("writer", "writer")
                         .session(session))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users/login")

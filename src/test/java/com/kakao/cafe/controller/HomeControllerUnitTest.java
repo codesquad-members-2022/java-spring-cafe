@@ -45,9 +45,13 @@ public class HomeControllerUnitTest {
     @DisplayName("'/' 로 요청이 들어오면 질문 글 목록 (qna/list.html) 페이지로 이동한다.")
     @Test
     void getArticles() throws Exception {
+        // given
         given(service.searchAll()).willReturn(articles);
 
+        // when
         mvc.perform(get("/"))
+
+                // then
                 .andExpectAll(
                         model().attributeExists("articles"),
                         model().attribute("articles", articles),
