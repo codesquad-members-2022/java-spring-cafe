@@ -2,6 +2,7 @@ package com.kakao.cafe.repository.jdbctemplate;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,6 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public User save(User user) {
         boolean existUserId = isExistUserId(user.getUserId());
         if (existUserId) {
-            System.out.println("user = " + user.getPassword());
             jdbcTemplate.update(
                     "update USER set PASSWORD = ?, NAME = ?, EMAIL = ? where USER_ID = ?",
                     user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
@@ -34,7 +34,11 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public User findByUserId(String userId) {
-        return jdbcTemplate.queryForObject("select * from USER where USER_ID = ?", userRowMapper(), userId);
+        try {
+            return jdbcTemplate.queryForObject("select * from USER where USER_ID = ?", userRowMapper(), userId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("사용자가 존재하지 않습니다.");
+        }
     }
 
     @Override

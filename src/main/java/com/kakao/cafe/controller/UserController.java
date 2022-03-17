@@ -70,7 +70,6 @@ public class UserController {
             return "user/updateForm";
         }
         userService.update(userUpdateDto);
-        logger.info("user={}", userService.findOne(userUpdateDto.getUserId()));
         return "redirect:/users";
     }
 }
