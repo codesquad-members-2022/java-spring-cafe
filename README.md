@@ -331,8 +331,10 @@
 
 - [x] 로그인과 로그아웃이 기능이 정상적으로 동작한다.
 - [x] 현재 상태가 로그인 상태이면 상단 메뉴에서 “로그아웃”, “개인정보수정”이 표시되어야 한다.
-- [x] 현재 상테가 로그인 상태가 아니라면 상단 메뉴에서 “로그인”, “회원가입”이 표시되어야 한다.
-
+    <img width="783" alt="image" src="https://user-images.githubusercontent.com/67811880/158857171-e33faf58-07ca-43a7-85c6-987f54918da9.png">
+- [x] 현재 상태가 로그인 상태가 아니라면 상단 메뉴에서 “로그인”, “회원가입”이 표시되어야 한다.
+    <img width="785" alt="image" src="https://user-images.githubusercontent.com/67811880/158856974-1cf6f3c6-b56b-4cc3-a93a-a03476a58602.png">
+  
 </details>
 
 
@@ -353,7 +355,9 @@
 <summary>Click</summary>
 
 - [x] 로그인한 사용자는 자신의 정보를 수정할 수 있어야 한다.
+  <img width="779" alt="image" src="https://user-images.githubusercontent.com/67811880/158857698-9c9957df-8cce-45e2-8531-4f64d4b27822.png">
 - [x] 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.
+  <img width="786" alt="image" src="https://user-images.githubusercontent.com/67811880/158857565-8aef9946-1df7-42f4-8895-e9909415323c.png">
 - [x] 비밀번호가 일치하는 경우에만 수정 가능하다.
 
 </details>
