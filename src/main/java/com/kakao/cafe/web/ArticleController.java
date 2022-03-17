@@ -79,7 +79,9 @@ public class ArticleController {
     public String updateForm(@PathVariable Integer id, HttpSession httpSession, Model model) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
         logger.info("[{}] request updateForm qna{}", sessionedUser.getUserId(), id);
+
         ArticleResponseDto result = articleService.findOne(id);
+        checkAccessPermission(result, sessionedUser);
 
         model.addAttribute("article", result);
         return "qna/update_form";
