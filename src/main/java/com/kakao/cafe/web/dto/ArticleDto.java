@@ -25,8 +25,12 @@ public class ArticleDto {
         return contents;
     }
 
-    public Article toEntity(String writer) {
-        return new Article(writer, this.title, this.contents);
+    public Article toEntityWithWriter(String writer) {
+        return new Article(null, writer, this.title, this.contents);
+    }
+
+    public Article toUpdateEntity(Integer articleId, String writer) {
+        return new Article(articleId, writer, this.title, this.contents);
     }
 
     @Override

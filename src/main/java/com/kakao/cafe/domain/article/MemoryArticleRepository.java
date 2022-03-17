@@ -13,13 +13,15 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        article.setId(generateId());
+        if(!article.hasId()) {
+            article.setId(generateId());
+        }
         articles.put(article.getId(), article);
         return article;
     }
 
     @Override
-    public Optional<Article> findById(int id) {
+    public Optional<Article> findById(Integer id) {
         return Optional.ofNullable(articles.get(id));
     }
 
@@ -34,7 +36,7 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteOne(int id) {
+    public void deleteOne(Integer id) {
         articles.remove(id);
     }
 

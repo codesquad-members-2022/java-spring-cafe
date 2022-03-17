@@ -27,18 +27,14 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        String sql = "insert into cafe_article (writer, title, contents, writtenTime) values (:writer, :title, :contents, :writtenTime);";
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
-
-        article.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
-
-        return article;
+        if(!article.hasId()) {
+            return insert(article);
+        }
+        return update(article);
     }
 
     @Override
-    public Optional<Article> findById(int id) {
+    public Optional<Article> findById(Integer id) {
         String sql = "select id, writer, title, contents, writtenTime from cafe_article where id = :id";
         try {
             Article article = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("id", id), articleRowMapper());
@@ -64,7 +60,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteOne(int id) {
+    public void deleteOne(Integer id) {
         String sql = "delete from cafe_article where id = :id";
         jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
     }
@@ -76,4 +72,18 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
                     rs.getString("contents"),
                     rs.getObject("writtenTime", LocalDateTime.class));
         }
+
+    private Article insert(Article article) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "insert into cafe_article (writer, title, contents, writtenTime) values (:writer, :title, :contents, :writtenTime);";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
+        article.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
+        return article;
+    }
+
+    private Article update(Article article) {
+        String sql = "update cafe_article set title = :title, contents = :contents where id = :id";
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+        return article;
+    }
 }
