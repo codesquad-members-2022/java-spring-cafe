@@ -34,5 +34,5 @@ CREATE TABLE reply
     contents          CLOB,
     local_date_time   TIMESTAMP,
     PRIMARY KEY (id),
-    FOREIGN KEY (parent_article_id) REFERENCES article (id) ON DELETE CASCADE
+    CONSTRAINT reply_pk FOREIGN KEY (parent_article_id) REFERENCES article (id) ON DELETE CASCADE
 );
