@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Configuration;
 public class SpringConfig {
 
     @Bean
-    public UserService userService(){
+    public UserService userService() {
         return new UserService(userRepository());
     }
 
     @Bean
-    public UserRepository userRepository() { return new UserMemoryRepository(); }
+    public UserRepository userRepository() {
+        return new UserMemoryRepository();
+    }
 
 }

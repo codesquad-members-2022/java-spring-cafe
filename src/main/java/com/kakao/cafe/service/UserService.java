@@ -14,14 +14,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public String join(UserForm form){
+    public User join(UserForm form) {
         validateDuplicateUser(form);
         User user = new User(form.getEmail(), form.getUserId(), form.getPassword());
-        userRepository.save(user);
-        return user.getEmail();
+        return userRepository.save(user);
     }
 
-    private void validateDuplicateUser(UserForm form){
+    private void validateDuplicateUser(UserForm form) {
         userRepository.findByEmail(form.getEmail())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원 입니다.");
@@ -31,13 +30,17 @@ public class UserService {
     public List<UserForm> findAllUserForm() {
         List<User> users = userRepository.findAll();
         List<UserForm> userFormList = new ArrayList<>();
-        for(int i = 0; i < users.size(); i++){
+        for (int i = 0; i < users.size(); i++) {
             userFormList.add(UserForm.from(users.get(i)));
         }
         return userFormList;
     }
 
-    public UserForm findOneByEmail (String email) { return UserForm.from(userRepository.findByEmail(email).get()); }
+    public UserForm findOneByEmail(String email) {
+        return UserForm.from(userRepository.findByEmail(email).get());
+    }
 
-    public UserForm findOneByUserId (String userId){return UserForm.from(userRepository.findByUserId(userId).get());}
+    public UserForm findOneByUserId(String userId) {
+        return UserForm.from(userRepository.findByUserId(userId).get());
+    }
 }

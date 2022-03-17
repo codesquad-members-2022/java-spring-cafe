@@ -1,21 +1,24 @@
 package com.kakao.cafe.service;
-
 import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserMemoryRepository;
+import com.kakao.cafe.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     UserService userService;
-    UserMemoryRepository userRepository;
+    UserRepository userRepository;
 
     @BeforeEach
     public void beforeEach() {
@@ -34,11 +37,12 @@ class UserServiceTest {
         User user = new User("abc123@gmail.com", "ABC", "abc");
 
         // when
-        String saveEmail = userService.join(UserForm.from(user));
+        User saveUser = userService.join(UserForm.from(user));
 
         // then
-        UserForm findUser = userService.findOneByEmail(saveEmail);
-        assertThat(saveEmail).isEqualTo(findUser.getEmail());
+        UserForm findUser = userService.findOneByEmail(user.getEmail());
+
+        assertThat(UserForm.from(saveUser)).isEqualTo(findUser);
     }
 
     @Test
