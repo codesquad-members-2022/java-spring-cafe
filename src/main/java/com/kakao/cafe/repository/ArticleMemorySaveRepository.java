@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.entity.Article;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,6 +16,7 @@ public class ArticleMemorySaveRepository implements ArticleRepository {
     public Article articleSave(Article article) {
         int id = articleStore.size() + 1;
         article.setId(id);
+        article.setDate(LocalDateTime.now());
         articleStore.add(article);
         return article;
     }
