@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.LoginForm;
 import com.kakao.cafe.repository.JdbcTemplateUserRepository;
 import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
@@ -32,8 +33,8 @@ class LoginServiceTest {
     @Test
     @DisplayName("로그인에 성공한 경우 해당 유저를 잘 반환하는가")
     void login() {
-        User user = loginService.login("user1", "123123a");
-        assertThat("user1").isEqualTo(user.getUserId());
+        LoginForm loginForm = loginService.login("user1", "123123a");
+        assertThat("user1").isEqualTo(loginForm.getUserId());
     }
 
     @Test

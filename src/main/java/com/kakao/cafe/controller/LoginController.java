@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.dto.LoginForm;
 import com.kakao.cafe.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,8 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(String userId, String password, HttpSession session){
-        User loginUser = loginService.login(userId, password);
-        session.setAttribute("sessionedUser", loginUser);
+        LoginForm loginForm = loginService.login(userId, password);
+        session.setAttribute("sessionedUser", loginForm);
         return "redirect:/";
     }
 
