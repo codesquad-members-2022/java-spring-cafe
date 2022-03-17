@@ -20,12 +20,7 @@ public class UserService {
     }
 
     public void createUser(UserDto userDto) {
-        String userId = userDto.getUserId();
-        String password = userDto.getPassword();
-        String email = userDto.getEmail();
-        String name = userDto.getName();
-
-        User user = new User(userId, password, email, name);
+        User user = userDto.convertToUser();
 
         isDuplicatedUser(user);
         repository.save(user);
@@ -47,10 +42,6 @@ public class UserService {
     }
 
     public void updateUser(String userId, UserDto userDto) {
-        User user = findSingleUser(userId);
-
-        user.setPassword(userDto.getPassword());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
+        repository.save(userDto.convertToUser());
     }
 }
