@@ -12,6 +12,4 @@ public interface ArticleRepository {
     Optional<Article> findById(Integer id);
 
     List<Article> findAll();
-
-    void clear();
 }
