@@ -5,7 +5,7 @@ import com.kakao.cafe.domain.Question;
 import java.util.List;
 
 public interface QuestionRepository {
-    Question findById(Long Id);
+    Question findById(Long id);
     List<Question> findAll();
     Question save(Question question);
 }

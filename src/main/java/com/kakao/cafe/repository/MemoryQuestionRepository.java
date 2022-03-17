@@ -8,15 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Repository
 public class MemoryQuestionRepository implements QuestionRepository {
 
     private final HashMap<Long, Question> store = new HashMap<>();
     private static long sequence = 0L;
 
     @Override
-    public Question findById(Long Id) {
-        return store.get(Id);
+    public Question findById(Long id) {
+        return store.get(id);
     }
 
     @Override

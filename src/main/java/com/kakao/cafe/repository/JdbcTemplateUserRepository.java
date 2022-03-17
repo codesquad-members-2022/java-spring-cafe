@@ -67,7 +67,9 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public void update(String userId, User updateParam) {
-
+        User savedUser = findByUserId(userId);
+        jdbcTemplate.update("update userTbl set password = ?, name = ?, email = ? where id = ?",
+        updateParam.getPassword(), updateParam.getName(), updateParam.getEmail(), savedUser.getId());
     }
 
     @Override
