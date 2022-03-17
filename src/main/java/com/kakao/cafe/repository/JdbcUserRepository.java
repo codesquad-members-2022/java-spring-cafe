@@ -2,7 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -61,15 +61,11 @@ public class JdbcUserRepository implements CrudRepository<User, String> {
 
     @Override
     public Optional<User> findById(String userId) {
-        try {
-            User user = jdbc.queryForObject(
-                    "select id, user_id, password, name, email from member where user_id = :userId",
-                    Collections.singletonMap("userId", userId), rowMapper);
+        User user = DataAccessUtils.singleResult(jdbc.query(
+                "select id, user_id, password, name, email from member where user_id = :userId",
+                Collections.singletonMap("userId", userId), rowMapper));
 
-            return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(user);
     }
 
     @Override

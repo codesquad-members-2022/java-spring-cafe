@@ -2,7 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -62,15 +62,11 @@ public class JdbcArticleRepository implements CrudRepository<Article, Integer> {
 
     @Override
     public Optional<Article> findById(Integer id) {
-        try {
-            Article article = jdbc.queryForObject(
-                    "select id, writer, title, contents, create_date from article where id = :id",
-                    Collections.singletonMap("id", id), rowMapper);
+        Article article = DataAccessUtils.singleResult(jdbc.query(
+                "select id, writer, title, contents, create_date from article where id = :id",
+                Collections.singletonMap("id", id), rowMapper));
 
-            return Optional.ofNullable(article);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(article);
     }
 
     @Override
