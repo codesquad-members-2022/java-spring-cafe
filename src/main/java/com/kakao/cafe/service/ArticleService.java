@@ -6,7 +6,6 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.ArticleRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +27,7 @@ public class ArticleService {
         Article article = articleRepository.findById(id)
             .orElseThrow(() -> new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다."));
         article.addViewCount();
+        articleRepository.save(article);
         return new ArticleDto(article);
     }
 

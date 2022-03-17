@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.stereotype.Repository;
 
 public class MemoryArticleRepository implements ArticleRepository {
 
@@ -13,9 +12,12 @@ public class MemoryArticleRepository implements ArticleRepository {
 
     @Override
     public int save(Article article) {
-        Article newArticle = new Article(nextId(), article);
-        store.add(newArticle);
-        return store.size();
+        if (article.isNewArticle()) {
+            Article newArticle = new Article(nextId(), article);
+            store.add(newArticle);
+            return store.size();
+        }
+        return article.getId();
     }
 
     @Override

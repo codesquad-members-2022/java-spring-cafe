@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Article {
 
-    private int id;
+    private Integer id;
     private String userId;
     private String title;
     private String content;
@@ -20,16 +20,30 @@ public class Article {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Article(int id, Article article) {
-        this(article.userId, article.title, article.content);
+    public Article(Integer id, Article article) {
         this.id = id;
+        this.userId = article.userId;
+        this.title = article.title;
+        this.content = article.content;
+        this.viewCount = article.viewCount;
+        this.createdAt = article.createdAt;
+    }
+
+    public Article(Integer id, String userId, String title, String content,
+        AtomicInteger viewCount, LocalDateTime createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+        this.viewCount = viewCount;
+        this.createdAt = createdAt;
     }
 
     public void addViewCount() {
         this.viewCount.getAndIncrement();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -55,5 +69,9 @@ public class Article {
 
     public boolean hasSameId(int id) {
         return this.id == id;
+    }
+
+    public boolean isNewArticle() {
+        return this.id == null;
     }
 }

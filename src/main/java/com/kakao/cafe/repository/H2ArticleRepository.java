@@ -1,10 +1,13 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -26,6 +29,13 @@ public class H2ArticleRepository implements ArticleRepository {
 
     @Override
     public int save(Article article) {
+        if (article.isNewArticle()) {
+            return insert(article);
+        }
+        return update(article);
+    }
+
+    private int insert(Article article) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ID", article.getId());
         parameters.put("USER_ID", article.getUserId());
@@ -35,6 +45,22 @@ public class H2ArticleRepository implements ArticleRepository {
         parameters.put("CREATED_AT", article.getCreatedAt());
 
         return (int) simpleJdbcInsert.executeAndReturnKey(parameters);
+    }
+
+    private int update(Article article) {
+        String sql = "MERGE INTO ARTICLE KEY(ID) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(con -> {
+            PreparedStatement pstmt = con.prepareStatement(sql, new String[]{"ID"});
+            pstmt.setInt(1, article.getId());
+            pstmt.setString(2, article.getUserId());
+            pstmt.setString(3, article.getTitle());
+            pstmt.setString(4, article.getContent());
+            pstmt.setInt(5, article.getViewCount());
+            pstmt.setTimestamp(6, Timestamp.valueOf(article.getCreatedAt()));
+            return pstmt;
+        });
+
+        return article.getId();
     }
 
     @Override
@@ -53,9 +79,12 @@ public class H2ArticleRepository implements ArticleRepository {
     private RowMapper<Article> rowMapper() {
         return ((rs, rowNum) -> {
             Article article = new Article(
+                rs.getInt("ID"),
                 rs.getString("USER_ID"),
                 rs.getString("TITLE"),
-                rs.getString("CONTENT"));
+                rs.getString("CONTENT"),
+                new AtomicInteger(rs.getInt("VIEW_COUNT")),
+                rs.getTimestamp("CREATED_AT").toLocalDateTime());
             return new Article(rs.getInt("ID"), article);
         });
     }
