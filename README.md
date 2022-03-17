@@ -27,11 +27,13 @@
 │   │   └── com
 │   │       └── kakao
 │   │           └── cafe
+│   │               ├── AppConfig.java
 │   │               ├── CafeApplication.java
 │   │               ├── controller
 │   │               │   ├── ArticleController.java
 │   │               │   ├── ExceptionController.java
 │   │               │   ├── HomeController.java
+│   │               │   ├── LoginController.java
 │   │               │   └── UserController.java
 │   │               ├── domain
 │   │               │   ├── Article.java
@@ -49,6 +51,7 @@
 │   │               │   └── UserRepository.java
 │   │               └── service
 │   │                   ├── ArticleService.java
+│   │                   ├── LoginService.java
 │   │                   └── UserService.java
 │   └── resources
 │       ├── application.properties
@@ -80,6 +83,7 @@
 │           ├── fragment
 │           │   ├── head.html
 │           │   ├── nav.html
+│           │   ├── navbar_right.html
 │           │   └── subnav.html
 │           ├── index.html
 │           ├── qna
@@ -105,7 +109,9 @@
                     │   └── MemoryUserRepositoryTest.java
                     └── service
                         ├── ArticleServiceTest.java
+                        ├── LoginServiceTest.java
                         └── UserServiceTest.java
+
 ```
 
 </details>
@@ -309,3 +315,54 @@
 
 </details>
 
+--- 
+
+## 스프링 카페 4단계 - 로그인 구현
+
+### 학습목표
+
+- HTTP 쿠키와 세션의 동작원리를 이해한다.
+- 스프링 부트로 로그인을 구현할 수 있다.
+
+### 기능 요구 사항
+
+<details>
+<summary>Click</summary>
+
+- [x] 로그인과 로그아웃이 기능이 정상적으로 동작한다.
+- [x] 현재 상태가 로그인 상태이면 상단 메뉴에서 “로그아웃”, “개인정보수정”이 표시되어야 한다.
+- [x] 현재 상테가 로그인 상태가 아니라면 상단 메뉴에서 “로그인”, “회원가입”이 표시되어야 한다.
+
+</details>
+
+
+### 프로그래밍 요구사항
+
+<details>
+<summary>Click</summary>
+
+- [x] Spring MVC에서 메소드의 인자로 HttpSession을 이용해서 로그인을 구현한다.
+- [x] Spring Security와 같은 별도 라이브러리 등은 사용하지 않는다.
+- [x] API가 아닌 템플릿 기반으로 구현한다.
+
+</details>
+
+### 추가 요구 사항 - (선택) 개인정보 수정 기능 추가
+
+<details>
+<summary>Click</summary>
+
+- [x] 로그인한 사용자는 자신의 정보를 수정할 수 있어야 한다.
+- [x] 이름, 이메일만 수정할 수 있으며, 사용자 아이디는 수정할 수 없다.
+- [x] 비밀번호가 일치하는 경우에만 수정 가능하다.
+
+</details>
+
+### Test
+
+<details>
+<summary>Click</summary>
+
+![image](https://user-images.githubusercontent.com/67811880/158849872-0289acc4-b1c2-450f-a76f-c4d7c787dcd8.png)
+
+</details>
