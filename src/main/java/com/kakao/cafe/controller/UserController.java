@@ -65,14 +65,14 @@ public class UserController {
         String password = request.getParameter("password");
         if (userService.isCorrectIdAndPw(userId, password)) {
             HttpSession session = request.getSession();
-            session.setAttribute(userId, userService.findOne(userId));
+            session.setAttribute("userCookie", userService.findOne(userId));
 
             return "redirect:/";
         }
         return "/user/login";
     }
 
-    @PostMapping("/user/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         session.invalidate();
