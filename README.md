@@ -95,6 +95,13 @@
   - README에 배포 URL을 기술한다.
   - https://astraum-spring-cafe.herokuapp.com/
 
+### 전단계 피드백 반영
+
+- [x] UserService::validateNotNull을 제거한다
+- [ ] User 중복에 대한 검증에 Validator를 사용하고 UserService의 책임과 분리한다.
+  - Validator에 대해 학습한다. 
+  - 중복에 대한 검증을 Repository 또는 DB 쪽에서 처리하는 방법을 찾아본다. 
+
 ### 구현과정
 
 - 인텔리제이에서 실행했을 때에는 문제가 없는데 Heroku에서는 문제가 되는 경우가 있다.
