@@ -1,11 +1,11 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.domain.articles.Articles;
-import com.kakao.cafe.domain.users.Users;
 import com.kakao.cafe.service.articles.ArticlesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -22,7 +22,7 @@ public class ArticleController {
 		return "qna/form";
 	}
 
-	@PostMapping(path = "/articles")
+	@PostMapping("/articles")
 	public String save(Articles articles) {
 		articlesService.save(articles);
 		return "redirect:/";
@@ -32,5 +32,13 @@ public class ArticleController {
 	public String list(Model model) {
 		model.addAttribute("articlesList", articlesService.list());
 		return "index";
+	}
+
+	@GetMapping("/articles/{articleId}")
+	public String detail(Model model, @PathVariable long articleId) {
+		Articles article = articlesService.findByArticleId(articleId);
+		model.addAttribute("article", article);
+		System.out.println();
+		return "qna/show";
 	}
 }

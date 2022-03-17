@@ -3,7 +3,6 @@ package com.kakao.cafe.domain.articles;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,7 +23,10 @@ public class MemoryArticlesRepository implements ArticlesRepository {
 	}
 
 	@Override
-	public Optional<Articles> findByArticleId(int articleId) {
-		return Optional.empty();
+	public Articles findByArticleId(long articleId) {
+		return articlesList.stream()
+			.filter(article -> articleId == article.getArticleId())
+			.findAny()
+			.orElseThrow();
 	}
 }
