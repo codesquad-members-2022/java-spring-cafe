@@ -44,21 +44,21 @@ public class UserService {
     private void validateUserUpdateDto(UserUpdateDto userUpdateDto) {
         User findUser = userRepository.findByUserId(userUpdateDto.getUserId());
         if (findUser.isNotEqualsPassword(userUpdateDto.getCurrentPassword())) {
-            throw new IllegalArgumentException("비밀번호가 다릅니다.");
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
     }
 
     private void validateUserId(String userId) {
         boolean isExistUserId = userRepository.isExistUserId(userId);
         if (isExistUserId) {
-            throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
+            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
         }
     }
 
     private void validateEmail(String email) {
         boolean isExistEmail = userRepository.isExistEmail(email);
         if (isExistEmail) {
-            throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
     }
 }
