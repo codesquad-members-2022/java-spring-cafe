@@ -13,12 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.dto.ArticleResponse;
-import com.kakao.cafe.dto.ReplyResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,8 +32,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-// TODO: ReplyController 단위 테스트 별도의 클래스에서 작성 필요
-
 @WebMvcTest(ArticleController.class)
 @DisplayName("ArticleController 단위 테스트")
 public class ArticleControllerTest {
@@ -49,19 +45,13 @@ public class ArticleControllerTest {
     @MockBean
     private ArticleService articleService;
 
-    @MockBean
-    private ReplyService replyService;
-
     private MockHttpSession session;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
-    private ReplyResponse replyResponse;
 
     @BeforeEach
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
-
-        replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
 
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
