@@ -25,10 +25,8 @@ public class ArticleService {
         return articleRepository.findAllArticle();
     }
 
-    public Optional<Article> findArticle(long articleIdx) {
-        Article foundArticle = articleRepository.findArticle(articleIdx)
+    public Article findArticle(long articleIdx) {
+        return articleRepository.findArticle(articleIdx)
                 .orElseThrow(() -> new IllegalStateException("찾을 수 없는 질문입니다."));
-
-        return Optional.ofNullable(foundArticle);
     }
 }
