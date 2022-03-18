@@ -18,6 +18,7 @@ public class ArticleRepository {
             "UPDATE ARTICLE SET WRITER_NAME=?, TITLE=?, CONTENTS=? WHERE ID=?";
     private static final String SQL_FIND_ARTICLE = "SELECT * FROM ARTICLE WHERE ID = ?";
     private static final String SQL_FIND_ARTICLE_ALL = "SELECT * FROM ARTICLE";
+    private static final String SQL_DELETE_ARTICLE = "DELETE FROM ARTICLE WHERE ID=?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -55,5 +56,9 @@ public class ArticleRepository {
 
             return article;
         });
+    }
+
+    public void deleteById(long id) {
+        jdbcTemplate.update(SQL_DELETE_ARTICLE, id);
     }
 }

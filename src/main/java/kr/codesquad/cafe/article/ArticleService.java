@@ -32,4 +32,8 @@ public class ArticleService {
     public List<Article> retrieveAll() {
         return repository.findAll();
     }
+
+    public void deleteById(long id) {
+        repository.deleteById(id);
+    }
 }

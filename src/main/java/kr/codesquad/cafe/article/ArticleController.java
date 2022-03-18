@@ -4,10 +4,7 @@ import kr.codesquad.cafe.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -72,5 +69,19 @@ public class ArticleController {
         service.update(article);
 
         return "redirect:/questions/{id}";
+    }
+
+    @DeleteMapping("/questions/{id}")
+    public String deleteArticle(@PathVariable("id") long id, HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        String writerUserId = service.retrieve(id).getWriterUserId();
+
+        if (!currentUser.userIdIs(writerUserId)) {
+            return "redirect:/badRequest";
+        }
+
+        service.deleteById(id);
+
+        return "redirect:/";
     }
 }
