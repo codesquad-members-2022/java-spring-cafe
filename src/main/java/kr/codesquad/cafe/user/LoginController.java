@@ -28,15 +28,23 @@ public class LoginController {
         try {
             userService.login(userId, password, session);
 
-            return "redirect:" + getDestination(session);
+            String destination = getDestination(session);
+            return "redirect:" + destination;
         } catch (Exception e) {
             return "users/login_failed";
         }
     }
 
     private String getDestination(HttpSession session) {
-        return (String) Optional.ofNullable(session.getAttribute("destinationAfterLogin"))
-                .orElse("/");
+        String destination = (String) session.getAttribute("destinationAfterLogin");
+
+        if (destination == null) {
+            return "/";
+        }
+
+        session.removeAttribute("destinationAfterLogin");
+
+        return destination;
     }
 
     @PostMapping("/logout")
