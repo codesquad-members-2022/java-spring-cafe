@@ -40,19 +40,20 @@ public class ArticleService {
         articleRepository.clear();
     }
 
-    public void deleteOne(Integer articleId, String userId) {
-        checkAuthorized(articleId, userId);
-        articleRepository.deleteOne(articleId);
+    public boolean deleteOne(Integer articleId, String writer) {
+        checkAuthorized(articleId, writer);
+        boolean deleted = articleRepository.deleteOne(articleId);
+        return deleted;
     }
 
-    public Article updateOne(String userId, String writer, Integer articleId, ArticleDto articleDto) {
-        checkAuthorized(articleId, writer);
-        return articleRepository.save(articleDto.toUpdateEntity(articleId, writer));
+    public Article updateOne(String userId, Integer articleId, ArticleDto articleDto) {
+        checkAuthorized(articleId, userId);
+        return articleRepository.save(articleDto.toUpdateEntity(articleId, userId));
     }
 
     private void checkAuthorized(Integer articleId, String writer) {
         if(!findOne(articleId).isSameWriter(writer)) {
-            throw new ClientException(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다.");
+            throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
     }
 }

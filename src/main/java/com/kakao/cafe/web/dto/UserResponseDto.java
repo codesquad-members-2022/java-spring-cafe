@@ -18,9 +18,6 @@ public class UserResponseDto {
         return this.userId.equals(userId);
     }
 
-    public boolean hasSameName(String name) {
-        return this.name.equals(name);
-    }
     public String getUserId() {
         return userId;
     }

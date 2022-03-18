@@ -9,5 +9,5 @@ public interface ArticleRepository {
     Optional<Article> findById(Integer id);
     List<Article> findAll();
     void clear();
-    void deleteOne(Integer id);
+    boolean deleteOne(Integer id);
 }

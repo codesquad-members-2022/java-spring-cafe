@@ -29,7 +29,7 @@ class JdbcTemplateArticleRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        article = new Article("writer","title","contents");
+        article = new Article(null,"writer","title","contents");
     }
 
     @Test

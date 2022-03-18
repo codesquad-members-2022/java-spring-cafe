@@ -38,9 +38,9 @@ public class ArticleController {
     @PostMapping("/write-qna")
     public String write(ArticleDto articleDto, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        String sessionedUserName = sessionedUser.getName();
-        logger.info("[{}] writing qna{}", sessionedUserName, articleDto);
-        articleService.write(sessionedUserName, articleDto);
+        String sessionedUserUserId = sessionedUser.getUserId();
+        logger.info("[{}] writing qna{}", sessionedUserUserId, articleDto);
+        articleService.write(sessionedUserUserId, articleDto);
 
         return "redirect:/qna/all";
     }
@@ -67,10 +67,10 @@ public class ArticleController {
     @DeleteMapping("/delete/{id}")
     public String deleteArticle(@PathVariable Integer id, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        String sessionedUserName = sessionedUser.getName();
-        logger.info("[{}] delete qna{}", sessionedUserName, id);
+        String sessionedUserUserId = sessionedUser.getUserId();
 
-        articleService.deleteOne(id, sessionedUserName);
+        articleService.deleteOne(id, sessionedUserUserId);
+        logger.info("[{}] delete qna{}", sessionedUserUserId, id);
 
         return "redirect:/qna/all";
     }
@@ -90,7 +90,7 @@ public class ArticleController {
     @PutMapping("/update/{id}")
     public String updateArticle(@PathVariable Integer id, ArticleDto articleDto, HttpSession httpSession) {
         UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        articleService.updateOne(sessionedUser.getUserId(), sessionedUser.getName(), id, articleDto);
+        articleService.updateOne(sessionedUser.getUserId(), id, articleDto);
 
         return "redirect:/qna/show/" + id;
     }
@@ -99,7 +99,7 @@ public class ArticleController {
     private void checkAccessPermission(ArticleResponseDto articleResponseDto, UserResponseDto sessionedUser) {
         String writer = articleResponseDto.getWriter();
         Integer id = articleResponseDto.getId();
-        if(!sessionedUser.hasSameName(writer)){
+        if(!sessionedUser.hasSameId(writer)){
             logger.info("[{}] tries access [{}]'s article[{}]", sessionedUser.getUserId(), writer, id);
             throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }

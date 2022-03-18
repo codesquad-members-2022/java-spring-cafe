@@ -60,9 +60,13 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteOne(Integer id) {
+    public boolean deleteOne(Integer id) {
         String sql = "delete from cafe_article where id = :id";
-        jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
+        int result = jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
+        if(result == 1) {
+            return true;
+        }
+        return false;
     }
 
     private RowMapper<Article> articleRowMapper() {

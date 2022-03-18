@@ -36,8 +36,9 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void deleteOne(Integer id) {
-        articles.remove(id);
+    public boolean deleteOne(Integer id) {
+        Optional<Article> removed = Optional.ofNullable(articles.remove(id));
+        return removed.isPresent();
     }
 
     private int generateId() {

@@ -45,8 +45,8 @@ class ArticleServiceTest {
     void writeTest() {
 
         given(articleRepository.save(any())).willReturn(article);
-
-        Article actual = articleService.write(new ArticleDto("writer", "title", "contents"));
+        String writer = "userName";
+        Article actual = articleService.write(writer, new ArticleDto("title", "contents"));
 
         assertThat(actual).isEqualTo(article);
         assertThat(actual.getTitle()).isEqualTo("title");
