@@ -28,31 +28,31 @@ class UserServiceTest {
     @Test
     void join() {
         // given
-        User user = new User(new UserForm("sampleId", "sampleName", "sample@email.com"));
+        User user = new User("sampleId", "sampleName", "sample@email.com");
 
         // when
         userService.join(user);
 
         //then
-        assertThat(userService.findById(user.getUserId())).isPresent();
+        assertThat(userService.findById(user.getUserId())).isEqualTo(user);
 
 
     }
 
     @Test
     void findById() {
-        User user = new User(new UserForm("sampleId", "sampleName", "sample@email.com"));
+        User user = new User("sampleId", "sampleName", "sample@email.com");
         userService.join(user);
 
-        assertThat(userService.findById(user.getUserId()).get()).isEqualTo(user);
+        assertThat(userService.findById(user.getUserId())).isEqualTo(user);
     }
 
     @Test
     void getAllUsers() {
         List<User> users = new ArrayList<>();
 
-        User userOne = new User(new UserForm("sampleIdOne", "sampleNameOne", "sampleOne@email.com"));
-        User userTwo = new User(new UserForm("sampleIdTwo", "sampleNameTwo", "sampleTwo@email.com"));
+        User userOne = new User("sampleIdOne", "sampleNameOne", "sampleOne@email.com");
+        User userTwo = new User("sampleIdTwo", "sampleNameTwo", "sampleTwo@email.com");
 
         users.add(userOne);
         users.add(userTwo);
