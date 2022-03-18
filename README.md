@@ -2,6 +2,11 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+## Step07 ToDO-List
+
+- [ ] Ajax 로 댓글 추가하기
+- [ ] Ajax 로 댓글 삭제하기
+
 ## Step06 ToDO-List
 
 - [x] Reply Class 만들기
