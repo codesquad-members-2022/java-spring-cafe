@@ -13,7 +13,8 @@ import java.util.Optional;
 @Repository
 public class UserRepository {
 
-    private static final String SQL_SAVE_USER = "INSERT INTO CAFE_USER VALUES (?, ?, ?, ?)";
+    private static final String SQL_SAVE_USER =
+            "MERGE INTO CAFE_USER (USERID, PASSWORD, NAME, EMAIL) VALUES (?, ?, ?, ?)";
     private static final String SQL_FIND_USER_BY = "SELECT * FROM CAFE_USER WHERE %s = ?";
     private static final String SQL_FIND_USER_BY_USERID = String.format(SQL_FIND_USER_BY, "USERID");
     private static final String SQL_FIND_USER_BY_NAME = String.format(SQL_FIND_USER_BY, "NAME");
