@@ -133,36 +133,6 @@ public class ArticleServiceTest {
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
 
-    private static class ReplyStubRepository implements ReplyRepository {
-
-        Reply reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
-
-        @Override
-        public Reply save(Reply reply) {
-            return null;
-        }
-
-        @Override
-        public Optional<Reply> findById(Integer replyId) {
-            return Optional.empty();
-        }
-
-        @Override
-        public List<Reply> findByArticleId(Integer articleId) {
-            return List.of(reply);
-        }
-
-        @Override
-        public void deleteById(Integer replyId) {
-
-        }
-
-        @Override
-        public Integer countByArticleIdAndNotUserId(String userId, Integer articleId) {
-            return null;
-        }
-    }
-
     private static class ArticleStubRepository implements ArticleRepository {
 
         Article article = Article.createWithoutReplyCount(1, "writer", "title", "contents",
@@ -194,6 +164,36 @@ public class ArticleServiceTest {
         @Override
         public void deleteById(Integer articleId) {
 
+        }
+    }
+
+    private static class ReplyStubRepository implements ReplyRepository {
+
+        Reply reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
+
+        @Override
+        public Reply save(Reply reply) {
+            return null;
+        }
+
+        @Override
+        public Optional<Reply> findById(Integer replyId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Reply> findByArticleId(Integer articleId) {
+            return List.of(reply);
+        }
+
+        @Override
+        public void deleteById(Integer replyId) {
+
+        }
+
+        @Override
+        public Integer countByArticleIdAndNotUserId(String userId, Integer articleId) {
+            return null;
         }
     }
 

@@ -23,38 +23,6 @@ import org.junit.jupiter.api.Test;
 @DisplayName("UserService stub 단위 테스트")
 public class UserServiceTest {
 
-    private static class UserStubRepository implements UserRepository {
-
-        private final User user = User.createWithInput("userId", "userPassword", "userName",
-            "user@example.com");
-
-        @Override
-        public User save(User user) {
-            if (user.getUserId().equals("newId")) {
-                return this.user;
-            }
-            if (user.getUserId().equals("dupId")) {
-                throw new DuplicateException(ErrorCode.DUPLICATE_USER);
-            }
-            return user;
-        }
-
-        @Override
-        public List<User> findAll() {
-            return List.of(user);
-        }
-
-        @Override
-        public Optional<User> findByUserId(String userId) {
-            return userId == null || userId.equals("newId") ? Optional.empty() : Optional.of(user);
-        }
-
-        @Override
-        public void deleteAll() {
-
-        }
-    }
-
     private UserService userService;
     private UserResponse userResponse;
     private SessionUser sessionUser;
@@ -226,6 +194,38 @@ public class UserServiceTest {
         then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INCORRECT_USER.getMessage());
+    }
+
+    private static class UserStubRepository implements UserRepository {
+
+        private final User user = User.createWithInput("userId", "userPassword", "userName",
+            "user@example.com");
+
+        @Override
+        public User save(User user) {
+            if (user.getUserId().equals("newId")) {
+                return this.user;
+            }
+            if (user.getUserId().equals("dupId")) {
+                throw new DuplicateException(ErrorCode.DUPLICATE_USER);
+            }
+            return user;
+        }
+
+        @Override
+        public List<User> findAll() {
+            return List.of(user);
+        }
+
+        @Override
+        public Optional<User> findByUserId(String userId) {
+            return userId == null || userId.equals("newId") ? Optional.empty() : Optional.of(user);
+        }
+
+        @Override
+        public void deleteAll() {
+
+        }
     }
 
 }

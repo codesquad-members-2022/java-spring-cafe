@@ -27,6 +27,10 @@ public class Reply {
         return replyId;
     }
 
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
+    }
+
     public Integer getArticleId() {
         return articleId;
     }
@@ -41,10 +45,6 @@ public class Reply {
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
-    }
-
-    public void setReplyId(Integer replyId) {
-        this.replyId = replyId;
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {

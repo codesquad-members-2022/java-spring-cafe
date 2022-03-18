@@ -29,13 +29,12 @@ import org.springframework.test.context.jdbc.Sql;
 public class UserJdbcRepositoryTest {
 
     private final UserJdbcRepository userRepository;
+    User user;
 
     @Autowired
     public UserJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate, QueryProps queryProps) {
         this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
     }
-
-    User user;
 
     @BeforeEach
     public void setUp() {
