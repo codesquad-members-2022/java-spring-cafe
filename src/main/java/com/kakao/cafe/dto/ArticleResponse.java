@@ -2,7 +2,6 @@ package com.kakao.cafe.dto;
 
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.domain.Reply;
-import com.kakao.cafe.util.Mapper;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,12 +18,14 @@ public class ArticleResponse {
     private List<ReplyResponse> replies;
     private Integer replyCount;
 
-    private ArticleResponse() {
+    public ArticleResponse(Integer articleId, String writer, String title, String contents,
+        LocalDateTime createdDate) {
+        this(articleId, writer, title, contents, createdDate, 0);
     }
 
     public ArticleResponse(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate) {
-        this(articleId, writer, title, contents, createdDate, List.of(), 0);
+        LocalDateTime createdDate, Integer replyCount) {
+        this(articleId, writer, title, contents, createdDate, List.of(), replyCount);
     }
 
     public ArticleResponse(Integer articleId, String writer, String title, String contents,
@@ -41,7 +42,7 @@ public class ArticleResponse {
 
     public static ArticleResponse of(Article article, List<Reply> replies) {
         List<ReplyResponse> responses = replies.stream()
-            .map(reply -> Mapper.map(reply, ReplyResponse.class))
+            .map(ReplyResponse::from)
             .collect(Collectors.toList());
 
         return new ArticleResponse(
@@ -52,6 +53,17 @@ public class ArticleResponse {
             article.getCreatedDate(),
             responses,
             responses.size()
+        );
+    }
+
+    public static ArticleResponse from(Article article) {
+        return new ArticleResponse(
+            article.getArticleId(),
+            article.getWriter(),
+            article.getTitle(),
+            article.getContents(),
+            article.getCreatedDate(),
+            article.getReplyCount()
         );
     }
 

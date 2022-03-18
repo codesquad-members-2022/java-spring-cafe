@@ -1,18 +1,21 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.Article;
+
 public class ArticleSaveRequest {
 
     private String writer;
     private String title;
     private String contents;
 
-    private ArticleSaveRequest() {
-    }
-
     public ArticleSaveRequest(String writer, String title, String contents) {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+    }
+
+    public Article toEntity() {
+        return new Article(writer, title, contents);
     }
 
     public String getWriter() {

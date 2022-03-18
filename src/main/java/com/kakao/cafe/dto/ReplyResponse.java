@@ -2,6 +2,7 @@ package com.kakao.cafe.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
+import com.kakao.cafe.domain.Reply;
 import java.time.LocalDateTime;
 
 public class ReplyResponse {
@@ -14,9 +15,6 @@ public class ReplyResponse {
     @JsonFormat(shape = Shape.STRING)
     private LocalDateTime createdDate;
 
-    private ReplyResponse() {
-    }
-
     public ReplyResponse(Integer replyId, Integer articleId, String userId, String comment,
         LocalDateTime createdDate) {
         this.replyId = replyId;
@@ -24,6 +22,16 @@ public class ReplyResponse {
         this.userId = userId;
         this.comment = comment;
         this.createdDate = createdDate;
+    }
+
+    public static ReplyResponse from(Reply reply) {
+        return new ReplyResponse(
+            reply.getReplyId(),
+            reply.getArticleId(),
+            reply.getUserId(),
+            reply.getComment(),
+            reply.getCreatedDate()
+        );
     }
 
     public Integer getReplyId() {

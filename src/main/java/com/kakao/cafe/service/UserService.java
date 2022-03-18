@@ -9,7 +9,6 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.session.SessionUser;
-import com.kakao.cafe.util.Mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class UserService {
 
     public SessionUser register(UserSaveRequest request) {
         // UserSaveRequest DTO 객체를 User 도메인 객체로 변환
-        User user = Mapper.map(request, User.class);
+        User user = request.toEntity();
 
         // 중복된 userId 가 있는지 확인
         validateUserId(user.getUserId());
@@ -34,7 +33,7 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         // User 도메인 객체를 UserResponse DTO 객체로 변환
-        return Mapper.map(savedUser, SessionUser.class);
+        return SessionUser.from(savedUser);
     }
 
     public List<UserResponse> findUsers() {
@@ -44,7 +43,7 @@ public class UserService {
         // List<User> 도메인 객체를 List<UserResponse> DTO 객체로 반환
 
         return users.stream()
-            .map(user -> Mapper.map(user, UserResponse.class))
+            .map(UserResponse::from)
             .collect(Collectors.toList());
     }
 
@@ -54,7 +53,7 @@ public class UserService {
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
 
         // User 도메인 객체를 UserResponse DTO 객체로 변환
-        return Mapper.map(user, UserResponse.class);
+        return UserResponse.from(user);
     }
 
     private void validateUserId(String userId) {
@@ -67,7 +66,7 @@ public class UserService {
 
     public UserResponse updateUser(SessionUser session, UserSaveRequest request) {
         // UserResponse 객체를 User 객체로 변환
-        User user = Mapper.map(session, User.class);
+        User user = session.toEntity();
 
         // session 에서 반환된 객체를 검증
         user.checkPassword(request.getPassword());
@@ -83,7 +82,7 @@ public class UserService {
         User savedUser = userRepository.save(updatedUser);
 
         // User 도메인 객체를 UserResponse 객체로 변환
-        return Mapper.map(savedUser, UserResponse.class);
+        return UserResponse.from(savedUser);
     }
 
     public SessionUser login(UserLoginRequest request) {
@@ -95,6 +94,6 @@ public class UserService {
         user.checkPassword(request.getPassword());
 
         // User 도메인 객체를 UserResponse 객체로 변환
-        return Mapper.map(user, SessionUser.class);
+        return SessionUser.from(user);
     }
 }

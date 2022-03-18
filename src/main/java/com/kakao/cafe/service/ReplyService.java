@@ -6,7 +6,6 @@ import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.session.SessionUser;
-import com.kakao.cafe.util.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +25,7 @@ public class ReplyService {
         Reply savedReply = replyRepository.save(reply);
 
         // Reply 도메인 객체를 ReplyResponse 도메인 객체로 변환
-        return Mapper.map(savedReply, ReplyResponse.class);
+        return ReplyResponse.from(savedReply);
     }
 
     public ReplyResponse updateReply(SessionUser user, Integer replyId, String comment) {
@@ -37,7 +36,7 @@ public class ReplyService {
         Reply savedReply = replyRepository.save(reply.update(comment));
 
         // Reply 도메인 객체를 ReplyResponse 도메인 객체로 변환
-        return Mapper.map(savedReply, ReplyResponse.class);
+        return ReplyResponse.from(reply);
     }
 
     public void deleteReply(SessionUser user, Integer replyId) {

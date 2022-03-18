@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.User;
+
 public class UserSaveRequest {
 
     private String userId;
@@ -7,14 +9,15 @@ public class UserSaveRequest {
     private String name;
     private String email;
 
-    private UserSaveRequest() {
-    }
-
     public UserSaveRequest(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public User toEntity() {
+        return new User(userId, password, name, email);
     }
 
     public String getUserId() {

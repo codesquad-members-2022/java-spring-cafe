@@ -14,9 +14,6 @@ public class Article {
     // derived
     private Integer replyCount;
 
-    private Article() {
-    }
-
     public Article(String writer, String title, String contents) {
         this(null, writer, title, contents, LocalDateTime.now());
     }
@@ -75,7 +72,7 @@ public class Article {
         return Objects.equals(this.articleId, articleId);
     }
 
-    public boolean checkWriter(String userId) {
+    public boolean equalsUserId(String userId) {
         return writer.equals(userId);
     }
 

@@ -1,5 +1,6 @@
 package com.kakao.cafe.session;
 
+import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
@@ -16,9 +17,6 @@ public class SessionUser {
     private String name;
     private String email;
 
-    private SessionUser() {
-    }
-
     public SessionUser(Integer userNum, String userId, String password, String name,
         String email) {
         this.userNum = userNum;
@@ -32,6 +30,20 @@ public class SessionUser {
         return (SessionUser) Optional.ofNullable(
                 session.getAttribute(SESSION_KEY))
             .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
+    }
+
+    public static SessionUser from(User user) {
+        return new SessionUser(
+            user.getUserNum(),
+            user.getUserId(),
+            user.getPassword(),
+            user.getName(),
+            user.getEmail()
+        );
+    }
+
+    public User toEntity() {
+        return new User(userNum, userId, password, name, email);
     }
 
     public Integer getUserNum() {
