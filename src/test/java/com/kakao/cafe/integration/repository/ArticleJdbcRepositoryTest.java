@@ -8,6 +8,7 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.GeneratedKeyHolderFactory;
 import com.kakao.cafe.repository.jdbc.KeyHolderFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,6 +96,44 @@ public class ArticleJdbcRepositoryTest {
 
         // then
         then(findArticle).isEqualTo(Optional.empty());
+    }
+
+    @Test
+    @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트한다")
+    public void saveMergeTest() {
+        // given
+        articleRepository.save(article);
+
+        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents",
+            LocalDateTime.now());
+
+        // when
+        articleRepository.save(changedArticle);
+        Optional<Article> findArticle = articleRepository.findById(changedArticle.getArticleId());
+
+        // then
+        then(findArticle)
+            .hasValueSatisfying(article -> {
+                then(article.getArticleId()).isEqualTo(1);
+                then(article.getWriter()).isEqualTo("writer");
+                then(article.getTitle()).isEqualTo("otherTitle");
+                then(article.getContents()).isEqualTo("otherContents");
+            });
+    }
+
+    @Test
+    @DisplayName("질문 id 로 질문 객체를 삭제한다")
+    public void deleteByArticleIdTest() {
+        // given
+        articleRepository.save(article);
+
+        // when
+        articleRepository.deleteById(article.getArticleId());
+        Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
+
+        // then
+        then(findArticle).isEqualTo(Optional.empty());
+
     }
 
 }

@@ -17,7 +17,8 @@ import org.springframework.stereotype.Repository;
 public class ArticleJdbcRepository implements ArticleRepository {
 
     // 데이터베이스 내 필드명
-    private static final String ARTICLE_ID = "article_id";
+    private static final String ARTICLE_ID_CAMEL = "articleId";
+    private static final String ARTICLE_ID_SNAKE = "article_id";
     private static final String WRITER = "writer";
     private static final String TITLE = "title";
     private static final String CONTENTS = "contents";
@@ -36,15 +37,23 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        String sql = queryProps.get(Query.INSERT_ARTICLE);
-        KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
+        if (article.getArticleId() == null) {
+            // persist
+            String sql = queryProps.get(Query.INSERT_ARTICLE);
+            KeyHolder keyHolder = keyHolderFactory.newKeyHolder();
 
-        article.setCreatedDate(LocalDateTime.now());
-        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
+            article.setCreatedDate(LocalDateTime.now());
+            jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article), keyHolder);
 
-        if (keyHolder.getKey() != null) {
-            article.setArticleId(keyHolder.getKey().intValue());
+            if (keyHolder.getKey() != null) {
+                article.setArticleId(keyHolder.getKey().intValue());
+            }
+            return article;
         }
+        // merge
+        String sql = queryProps.get(Query.UPDATE_ARTICLE);
+        jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(article));
+
         return article;
     }
 
@@ -55,7 +64,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         return jdbcTemplate.query(sql,
             (rs, rowNum) ->
                 new Article(
-                    rs.getInt(ARTICLE_ID),
+                    rs.getInt(ARTICLE_ID_SNAKE),
                     rs.getString(WRITER),
                     rs.getString(TITLE),
                     rs.getString(CONTENTS),
@@ -71,10 +80,10 @@ public class ArticleJdbcRepository implements ArticleRepository {
         try {
             Article article = jdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource()
-                    .addValue(ARTICLE_ID, articleId),
+                    .addValue(ARTICLE_ID_CAMEL, articleId),
                 (rs, rowNum) ->
                     new Article(
-                        rs.getInt(ARTICLE_ID),
+                        rs.getInt(ARTICLE_ID_SNAKE),
                         rs.getString(WRITER),
                         rs.getString(TITLE),
                         rs.getString(CONTENTS),
@@ -92,7 +101,12 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public void deleteAll() {
         String sql = queryProps.get(Query.DELETE_ARTICLES);
-
         jdbcTemplate.update(sql, new MapSqlParameterSource());
+    }
+
+    @Override
+    public void deleteById(Integer articleId) {
+        String sql = queryProps.get(Query.DELETE_ARTICLE);
+        jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId));
     }
 }

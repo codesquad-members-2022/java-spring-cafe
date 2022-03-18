@@ -12,6 +12,7 @@ import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,11 @@ public class ArticleServiceTest {
         public void deleteAll() {
 
         }
+
+        @Override
+        public void deleteById(Integer articleId) {
+
+        }
     }
 
     private static class UserStubRepository implements UserRepository {
@@ -77,11 +83,12 @@ public class ArticleServiceTest {
     }
 
     private ArticleService articleService;
-    ArticleResponse articleResponse;
+    private ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
         articleService = new ArticleService(new ArticleStubRepository(), new UserStubRepository());
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
     }
@@ -89,11 +96,13 @@ public class ArticleServiceTest {
     @Test
     @DisplayName("질문을 작성한 후 저장소에 저장한다")
     public void writeTest() {
+        SessionUser sessionUser = new SessionUser(1, "userId", "userPassword", "usrName",
+            "user@example.com");
         // given
         ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
         // when
-        ArticleResponse savedArticle = articleService.write(request);
+        ArticleResponse savedArticle = articleService.write(sessionUser, request);
 
         // then
         then(savedArticle).isEqualTo(articleResponse);
@@ -103,10 +112,13 @@ public class ArticleServiceTest {
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
         // given
+        SessionUser sessionNone = new SessionUser(1, "none", "userPassword", "userName",
+            "user@example.com");
+
         ArticleSaveRequest request = new ArticleSaveRequest("none", "title", "contents");
 
         // when
-        Throwable throwable = catchThrowable(() -> articleService.write(request));
+        Throwable throwable = catchThrowable(() -> articleService.write(sessionNone, request));
 
         // when
         then(throwable)
@@ -145,5 +157,8 @@ public class ArticleServiceTest {
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.ARTICLE_NOT_FOUND.getMessage());
     }
+
+    // TODO: ArticleService 에서 mapUserArticle, updateUserArticle, deleteUserArticle stub 테스트 필요
+    // (mock 테스트는 진행 완료)
 
 }

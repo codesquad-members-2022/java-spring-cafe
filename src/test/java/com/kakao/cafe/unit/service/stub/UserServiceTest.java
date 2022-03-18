@@ -13,6 +13,7 @@ import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,15 +56,16 @@ public class UserServiceTest {
     }
 
     private UserService userService;
-    User user;
-    UserResponse userResponse;
+    private UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
     public void setUp() {
         userService = new UserService(new UserStubRepository());
 
-        user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
+        sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
             "user@example.com");
     }
 
@@ -140,7 +142,7 @@ public class UserServiceTest {
             "other@example.com");
 
         // when
-        UserResponse updatedUser = userService.updateUser(userResponse, request);
+        UserResponse updatedUser = userService.updateUser(sessionUser, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -152,14 +154,14 @@ public class UserServiceTest {
     @DisplayName("유저 정보 변경 시 변경할 유저가 존재하지 않으면 예외를 반환한다")
     public void updateUserNotFoundTest() {
         // given
-        UserResponse otherResponse = new UserResponse(1, "newId", "userPassword", "userName",
+        SessionUser sessionOther = new SessionUser(1, "newId", "userPassword", "userName",
             "user@example.com");
 
         UserSaveRequest request = new UserSaveRequest("newId", "userPassword", "otherName",
             "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(otherResponse, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(sessionOther, request));
 
         // then
         then(throwable)
@@ -175,7 +177,7 @@ public class UserServiceTest {
             "otherName", "other@example.com");
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userResponse, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(sessionUser, request));
 
         // then
         then(throwable)
@@ -190,10 +192,10 @@ public class UserServiceTest {
         UserLoginRequest request = new UserLoginRequest("userId", "userPassword");
 
         // when
-        UserResponse user = userService.login(request);
+        SessionUser sessionUser = userService.login(request);
 
         // then
-        then(user.getUserId()).isEqualTo("userId");
+        then(sessionUser.getUserId()).isEqualTo("userId");
     }
 
     @Test

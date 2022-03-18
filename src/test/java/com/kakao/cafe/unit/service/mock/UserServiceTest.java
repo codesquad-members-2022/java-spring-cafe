@@ -15,6 +15,7 @@ import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,13 +36,16 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    User user;
-    UserResponse userResponse;
+    private User user;
+    private UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
     public void setUp() {
         user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+            "user@example.com");
+        sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
             "user@example.com");
     }
 
@@ -148,7 +152,7 @@ public class UserServiceTest {
             .willReturn(changedUser);
 
         // when
-        UserResponse updatedUser = userService.updateUser(userResponse, request);
+        UserResponse updatedUser = userService.updateUser(sessionUser, request);
 
         then(updatedUser.getUserId()).isEqualTo("userId");
         then(updatedUser.getPassword()).isEqualTo("userPassword");
@@ -167,7 +171,7 @@ public class UserServiceTest {
             .willReturn(Optional.empty());
 
         // when
-        Throwable throwable = catchThrowable(() -> userService.updateUser(userResponse, request));
+        Throwable throwable = catchThrowable(() -> userService.updateUser(sessionUser, request));
 
         // then
         then(throwable)
@@ -185,7 +189,7 @@ public class UserServiceTest {
             .willReturn(Optional.of(user));
 
         // when
-        UserResponse user = userService.login(request);
+        SessionUser user = userService.login(request);
 
         // then
         then(user.getUserId()).isEqualTo("userId");

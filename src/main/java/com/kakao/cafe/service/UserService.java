@@ -8,6 +8,7 @@ import com.kakao.cafe.exception.DuplicateException;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.session.SessionUser;
 import com.kakao.cafe.util.Mapper;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,9 +65,9 @@ public class UserService {
             });
     }
 
-    public UserResponse updateUser(UserResponse userResponse, UserSaveRequest request) {
+    public UserResponse updateUser(SessionUser session, UserSaveRequest request) {
         // UserResponse 객체를 User 객체로 변환
-        User user = Mapper.map(userResponse, User.class);
+        User user = Mapper.map(session, User.class);
 
         // session 에서 반환된 객체를 검증
         user.checkPassword(request.getPassword());
@@ -85,7 +86,7 @@ public class UserService {
         return Mapper.map(savedUser, UserResponse.class);
     }
 
-    public UserResponse login(UserLoginRequest request) {
+    public SessionUser login(UserLoginRequest request) {
         // User 도메인 객체를 저장소에서 반환
         User user = userRepository.findByUserId(request.getUserId())
             .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
@@ -94,6 +95,6 @@ public class UserService {
         user.checkPassword(request.getPassword());
 
         // User 도메인 객체를 UserResponse 객체로 변환
-        return Mapper.map(user, UserResponse.class);
+        return Mapper.map(user, SessionUser.class);
     }
 }

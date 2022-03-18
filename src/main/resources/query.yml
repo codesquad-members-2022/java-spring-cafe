@@ -8,10 +8,16 @@ SELECT_ARTICLES: >
   SELECT * FROM article
 
 SELECT_ARTICLE: >
-  SELECT * FROM article WHERE article_id = :article_id
+  SELECT * FROM article WHERE article_id = :articleId
 
 DELETE_ARTICLES: >
   DELETE FROM article
+
+UPDATE_ARTICLE: >
+  UPDATE article SET title = :title, contents = :contents WHERE article_id = :articleId
+
+DELETE_ARTICLE: >
+  DELETE FROM article WHERE article_id = :articleId
 
 ### user ###
 

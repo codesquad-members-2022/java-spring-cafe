@@ -3,11 +3,19 @@ package com.kakao.cafe.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class MvcConfig extends WebMvcConfigurationSupport {
+public class MvcConfig implements WebMvcConfigurer {
+
+    private final HandlerInterceptor authInterceptor;
+
+    public MvcConfig(HandlerInterceptor handlerInterceptor) {
+        this.authInterceptor = handlerInterceptor;
+    }
 
     // https://imbf.github.io/spring/2020/05/03/Spring-HiddenHttpMethodFilter.html
     @Bean
@@ -21,6 +29,14 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/**")
             .addResourceLocations("classpath:/static/")
             .setCachePeriod(20);
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        registry.addInterceptor(authInterceptor)
+            .addPathPatterns("/questions/**", "/articles/**")
+            .excludePathPatterns();
     }
 
 }

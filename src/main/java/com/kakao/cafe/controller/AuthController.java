@@ -1,8 +1,8 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserLoginRequest;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.session.SessionUser;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
-
-    private static final String SESSION_USER = "SESSION_USER";
 
     private final UserService userService;
 
@@ -26,14 +24,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(UserLoginRequest request, HttpSession session) {
-        UserResponse user = userService.login(request);
-        session.setAttribute(SESSION_USER, user);
+        SessionUser user = userService.login(request);
+        session.setAttribute(SessionUser.SESSION_KEY, user);
         return "redirect:/users";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute(SESSION_USER);
+        session.removeAttribute(SessionUser.SESSION_KEY);
         return "redirect:/users";
     }
 

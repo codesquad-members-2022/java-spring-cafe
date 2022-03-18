@@ -1,5 +1,7 @@
 package com.kakao.cafe.integration.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -10,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,11 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,19 +41,26 @@ public class UserControllerTest {
     @Autowired
     private UserSetUp userSetUp;
 
-    private MockHttpSession session;
+    @MockBean
+    private HandlerInterceptor interceptor;
 
-    User user;
-    UserResponse userResponse;
+    private MockHttpSession session;
+    private User user;
+    private UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        given(interceptor.preHandle(any(), any(), any())).willReturn(true);
+
         user = new User("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
+        sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
+            "user@example.com");
 
         session = new MockHttpSession();
-        session.setAttribute("SESSION_USER", userResponse);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
     }
 
     @AfterEach
@@ -233,7 +245,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("유저 정보 업데이트 폼 페이지 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
     public void formUpdateUserSessionNotFoundTest() throws Exception {
-        session.removeAttribute("SESSION_USER");
+        session.removeAttribute(SessionUser.SESSION_KEY);
 
         // when
         ResultActions actions = mockMvc.perform(get("/users/otherId/form")
@@ -265,7 +277,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("유저 정보 업데이트 요청 시 세션이 존재하지 않으면 에러 페이지를 출력한다.")
     public void updateUserSessionNotFoundTest() throws Exception {
-        session.removeAttribute("SESSION_USER");
+        session.removeAttribute(SessionUser.SESSION_KEY);
 
         // when
         ResultActions actions = mockMvc.perform(put("/users/otherId")

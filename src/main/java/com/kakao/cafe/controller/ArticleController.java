@@ -3,15 +3,20 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.session.SessionUser;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 public class ArticleController {
+
 
     private final ArticleService articleService;
 
@@ -25,8 +30,9 @@ public class ArticleController {
     }
 
     @PostMapping("/questions")
-    public String createQuestion(ArticleSaveRequest request) {
-        articleService.write(request);
+    public String createQuestion(ArticleSaveRequest request, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        articleService.write(user, request);
         return "redirect:/";
     }
 
@@ -42,6 +48,31 @@ public class ArticleController {
         ArticleResponse article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";
+    }
+
+    @GetMapping("articles/{id}/form")
+    public String formUpdateQuestion(@PathVariable(value = "id") Integer articleId, Model model,
+        HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        ArticleResponse article = articleService.mapUserArticle(user, articleId);
+        model.addAttribute("article", article);
+        return "qna/form";
+    }
+
+    @PutMapping("articles/{id}")
+    public String updateQuestion(@PathVariable(value = "id") Integer articleId,
+        ArticleSaveRequest request, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        articleService.updateArticle(user, request, articleId);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("articles/{id}")
+    public String deleteQuestion(@PathVariable(value = "id") Integer articleId,
+        HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        articleService.deleteArticle(user, articleId);
+        return "redirect:/";
     }
 
 }

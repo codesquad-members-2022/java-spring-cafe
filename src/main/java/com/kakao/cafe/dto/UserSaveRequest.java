@@ -37,4 +37,13 @@ public class UserSaveRequest {
         this.userId = userId;
     }
 
+    @Override
+    public String toString() {
+        return "UserSaveRequest{" +
+            "userId='" + userId + '\'' +
+            ", password='" + password + '\'' +
+            ", name='" + name + '\'' +
+            ", email='" + email + '\'' +
+            '}';
+    }
 }

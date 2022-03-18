@@ -34,4 +34,8 @@ public class ArticleCollectionRepository implements ArticleRepository {
     public void deleteAll() {
         articles = new ArrayList<>();
     }
+
+    @Override
+    public void deleteById(Integer articleId) {
+    }
 }

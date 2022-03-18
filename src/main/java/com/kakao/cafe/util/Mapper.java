@@ -39,6 +39,7 @@ public class Mapper {
     private static <T> T mapToTarget(Map<String, Object> sourceMap, Class<T> type)
         throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<T> constructor = type.getDeclaredConstructor();
+
         constructor.setAccessible(true);
         T instance = constructor.newInstance();
 
@@ -46,7 +47,10 @@ public class Mapper {
 
         for (Field field : targetFields) {
             field.setAccessible(true);
-            field.set(instance, sourceMap.get(field.getName()));
+
+            if (sourceMap.get(field.getName()) != null) {
+                field.set(instance, sourceMap.get(field.getName()));
+            }
         }
         return instance;
     }

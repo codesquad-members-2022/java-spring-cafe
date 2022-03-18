@@ -16,7 +16,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserJdbcRepository implements UserRepository {
 
-    private static final String USER_ID = "user_id";
+    private static final String USER_ID_CAMEL = "userId";
+    private static final String USER_ID_SNAKE = "user_id";
     private static final String PASSWORD = "password";
     private static final String NAME = "name";
     private static final String EMAIL = "email";
@@ -49,7 +50,7 @@ public class UserJdbcRepository implements UserRepository {
             (rs, rowNum) ->
                 new User(
                     rowNum + 1,
-                    rs.getString(USER_ID),
+                    rs.getString(USER_ID_SNAKE),
                     rs.getString(PASSWORD),
                     rs.getString(NAME),
                     rs.getString(EMAIL)
@@ -64,11 +65,11 @@ public class UserJdbcRepository implements UserRepository {
         try {
             User user = jdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource()
-                    .addValue("userId", userId),
+                    .addValue(USER_ID_CAMEL, userId),
                 (rs, rowNum) ->
                     new User(
                         rowNum + 1,
-                        rs.getString(USER_ID),
+                        rs.getString(USER_ID_SNAKE),
                         rs.getString(PASSWORD),
                         rs.getString(NAME),
                         rs.getString(EMAIL)

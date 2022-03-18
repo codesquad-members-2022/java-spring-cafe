@@ -8,6 +8,7 @@ import com.kakao.cafe.config.QueryProps;
 import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.repository.jdbc.ArticleJdbcRepository;
 import com.kakao.cafe.repository.jdbc.KeyHolderFactory;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -54,7 +55,7 @@ public class ArticleJdbcRepositoryTest {
 
     @Test
     @DisplayName("질문 객체를 저장소에 저장한다")
-    public void test() {
+    public void savePersistTest() {
         // given
         KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("articleId", 1)));
 
@@ -117,6 +118,36 @@ public class ArticleJdbcRepositoryTest {
 
         // then
         then(findArticle).isEqualTo(Optional.empty());
+    }
+
+    @Test
+    @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트한다")
+    public void saveMergeTest() {
+        // given
+        Article article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+
+        given(jdbcTemplate.update(any(String.class), any(BeanPropertySqlParameterSource.class)))
+            .willReturn(1);
+
+        // when
+        Article savedArticle = articleRepository.save(article);
+
+        // then
+        then(savedArticle.getArticleId()).isEqualTo(1);
+        then(savedArticle.getWriter()).isEqualTo("writer");
+        then(savedArticle.getTitle()).isEqualTo("title");
+        then(savedArticle.getContents()).isEqualTo("contents");
+    }
+
+    @Test
+    @DisplayName("질문 id 로 질문 객체를 삭제한다")
+    public void deleteByArticleIdTest() {
+        // given
+        given(jdbcTemplate.update(any(String.class), any(MapSqlParameterSource.class)))
+            .willReturn(1);
+
+        // when
+        articleRepository.deleteById(any(Integer.class));
     }
 
 }

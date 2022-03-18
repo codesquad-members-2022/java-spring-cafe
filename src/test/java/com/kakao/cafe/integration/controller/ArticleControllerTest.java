@@ -1,7 +1,11 @@
 package com.kakao.cafe.integration.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -12,6 +16,8 @@ import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.session.SessionUser;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,12 +26,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
 @ComponentScan
@@ -35,13 +44,20 @@ import org.springframework.test.web.servlet.ResultActions;
 public class ArticleControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ArticleSetUp articleSetUp;
+    private ArticleSetUp articleSetUp;
 
-    Article article;
-    ArticleResponse articleResponse;
+    @MockBean
+    private HandlerInterceptor interceptor;
+
+    private MockHttpSession session;
+
+    private Article article;
+    private ArticleResponse articleResponse;
+    private SessionUser sessionUser;
+    private SessionUser sessionOther;
 
     @Component
     public static class ArticleSetUp {
@@ -68,9 +84,19 @@ public class ArticleControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
+        given(interceptor.preHandle(any(), any(), any())).willReturn(true);
+
         article = new Article("writer", "title", "contents");
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents", null);
+        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+            LocalDateTime.now());
+        sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
+            "user@example.com");
+        sessionOther = new SessionUser(1, "otherId", "otherPassword", "otherName",
+            "other@example.com");
+
+        session = new MockHttpSession();
+        session.setAttribute(SessionUser.SESSION_KEY, sessionUser);
     }
 
     @AfterEach
@@ -103,6 +129,7 @@ public class ArticleControllerTest {
 
         // when
         ResultActions actions = mockMvc.perform(post("/questions")
+            .session(session)
             .param("writer", "writer")
             .param("title", "title")
             .param("contents", "contents")
@@ -156,4 +183,163 @@ public class ArticleControllerTest {
             .andExpect(view().name("error/index"));
     }
 
+    @Test
+    @DisplayName("세션 정보와 질문 id 로 유저의 질문을 조회하고 변경 폼으로 이동한다")
+    public void formUpdateArticleTest() throws Exception {
+        // given
+        Article savedArticle = articleSetUp.saveArticle(article);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            get("/articles/" + savedArticle.getArticleId() + "/form")
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("article", articleResponse))
+            .andExpect(view().name("qna/form"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 존재하지 않는 질문 id 로 유저의 질문을 조회하면 에러페이지로 이동한다")
+    public void formUpdateArticleNotFoundTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(get("/articles/0/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.ARTICLE_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("다른 세션 정보와 질문 id 로 유저의 질문을 조회하면 에러페이지로 이동한다")
+    public void formUpdateArticleValidateTest() throws Exception {
+        // given
+        articleSetUp.saveArticle(article);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
+
+        // when
+        ResultActions actions = mockMvc.perform(get("/articles/1/form")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(
+                model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("세션 정보, 질문 변경 사항과 질문 id 로 유저의 질문을 업데이트하고 첫 페이지로 이동한다")
+    public void updateArticleTest() throws Exception {
+        // given
+        Article savedArticle = articleSetUp.saveArticle(article);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/articles/" + savedArticle.getArticleId())
+            .session(session)
+            .param("title", "otherTitle")
+            .param("contents", "otherContents")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("세션 정보, 질문 변경 사항과 존재하지 않는 질문 id 로 유저의 질문 업데이트 시 에러 페이지로 이동한다")
+    public void updateArticleNotFoundTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(put("/articles/0")
+            .session(session)
+            .param("title", "otherTitle")
+            .param("contents", "otherContents")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.ARTICLE_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("다른 유저의 세션 정보, 질문 변경 사항과 질문 id 로 유저의 질문 업데이트 시 에러 페이지로 이동한다")
+    public void updateArticleValidateTest() throws Exception {
+        // given
+        articleSetUp.saveArticle(article);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
+
+        // when
+        ResultActions actions = mockMvc.perform(put("/articles/1")
+            .session(session)
+            .param("title", "otherTitle")
+            .param("contents", "otherContents")
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(
+                model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 질문 id 로 유저의 질문을 삭제하고 첫 페이지로 이동한다")
+    public void deleteArticleTest() throws Exception {
+        // when
+        Article savedArticle = articleSetUp.saveArticle(this.article);
+
+        ResultActions actions = mockMvc.perform(delete("/articles/" + savedArticle.getArticleId())
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 존재하지 않는 질문 id 로 유저의 질문을 삭제하면 에러 페이지로 이동한다")
+    public void deleteArticleNotFoundTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(delete("/articles/0")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.ARTICLE_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.ARTICLE_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 존재하지 않는 질문 id 로 유저의 질문을 삭제하면 에러 페이지로 이동한다")
+    public void deleteArticleValidateTest() throws Exception {
+        // given
+        articleSetUp.saveArticle(article);
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
+
+        // when
+        ResultActions actions = mockMvc.perform(delete("/articles/1")
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(
+                model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
 }

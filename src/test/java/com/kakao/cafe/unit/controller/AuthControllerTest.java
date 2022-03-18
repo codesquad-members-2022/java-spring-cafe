@@ -9,13 +9,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.controller.AuthController;
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserLoginRequest;
-import com.kakao.cafe.dto.UserResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.session.SessionUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,13 +35,11 @@ public class AuthControllerTest {
     @MockBean
     private UserService userService;
 
-    User user;
-    UserResponse userResponse;
+    private SessionUser sessionUser;
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "userPassword", "userName", "user@example.com");
-        userResponse = new UserResponse(1, "userId", "userPassword", "userName",
+        sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
             "user@example.com");
     }
 
@@ -63,7 +60,7 @@ public class AuthControllerTest {
     public void loginTest() throws Exception {
         // given
         given(userService.login(any(UserLoginRequest.class)))
-            .willReturn(userResponse);
+            .willReturn(sessionUser);
 
         // when
         ResultActions actions = mockMvc.perform(post("/login")
