@@ -32,6 +32,7 @@ import org.springframework.test.context.jdbc.Sql;
 public class ArticleJdbcRepositoryTest {
 
     private final ArticleJdbcRepository articleRepository;
+    private Article article;
 
     @Autowired
     public ArticleJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
@@ -39,8 +40,6 @@ public class ArticleJdbcRepositoryTest {
         this.articleRepository = new ArticleJdbcRepository(jdbcTemplate, keyHolderFactory,
             queryProps);
     }
-
-    private Article article;
 
     @BeforeEach
     public void setUp() {

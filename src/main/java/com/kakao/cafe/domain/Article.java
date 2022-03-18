@@ -40,6 +40,10 @@ public class Article {
         return articleId;
     }
 
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
     public String getWriter() {
         return writer;
     }
@@ -56,16 +60,12 @@ public class Article {
         return createdDate;
     }
 
-    public Integer getReplyCount() {
-        return replyCount;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
     }
 
     public boolean equalsId(Integer articleId) {

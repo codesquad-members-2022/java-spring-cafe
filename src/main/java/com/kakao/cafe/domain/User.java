@@ -31,6 +31,10 @@ public class User {
         return userNum;
     }
 
+    public void setUserNum(Integer userNum) {
+        this.userNum = userNum;
+    }
+
     public String getUserId() {
         return userId;
     }
@@ -45,10 +49,6 @@ public class User {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setUserNum(Integer userNum) {
-        this.userNum = userNum;
     }
 
     public User update(String name, String email) {

@@ -68,37 +68,6 @@ public class ArticleControllerTest {
     private SessionUser sessionUser;
     private SessionUser sessionOther;
 
-    @Component
-    public static class ArticleSetUp {
-
-        private final ArticleRepository articleRepository;
-        private final UserRepository userRepository;
-        private final ReplyRepository replyRepository;
-
-        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository,
-            ReplyRepository replyRepository) {
-            this.articleRepository = articleRepository;
-            this.userRepository = userRepository;
-            this.replyRepository = replyRepository;
-        }
-
-        public User saveUser(User user) {
-            return userRepository.save(user);
-        }
-
-        public Article saveArticle(Article article) {
-            return articleRepository.save(article);
-        }
-
-        public Reply saveReply(Reply reply) {
-            return replyRepository.save(reply);
-        }
-
-        public void rollback() {
-            articleRepository.deleteAll();
-        }
-    }
-
     @BeforeEach
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
@@ -488,5 +457,36 @@ public class ArticleControllerTest {
         actions.andExpect(status().isOk())
             .andExpect(jsonPath("$.valid", true).exists())
             .andExpect(jsonPath("$.message", "다른 유저의 댓글을 수정하거나 삭제할 수 없습니다.").exists());
+    }
+
+    @Component
+    public static class ArticleSetUp {
+
+        private final ArticleRepository articleRepository;
+        private final UserRepository userRepository;
+        private final ReplyRepository replyRepository;
+
+        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository,
+            ReplyRepository replyRepository) {
+            this.articleRepository = articleRepository;
+            this.userRepository = userRepository;
+            this.replyRepository = replyRepository;
+        }
+
+        public User saveUser(User user) {
+            return userRepository.save(user);
+        }
+
+        public Article saveArticle(Article article) {
+            return articleRepository.save(article);
+        }
+
+        public Reply saveReply(Reply reply) {
+            return replyRepository.save(reply);
+        }
+
+        public void rollback() {
+            articleRepository.deleteAll();
+        }
     }
 }

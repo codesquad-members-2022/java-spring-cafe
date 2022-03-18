@@ -28,6 +28,12 @@ public class SessionUser {
         this.email = email;
     }
 
+    public static SessionUser from(HttpSession session) {
+        return (SessionUser) Optional.ofNullable(
+                session.getAttribute(SESSION_KEY))
+            .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
+    }
+
     public Integer getUserNum() {
         return userNum;
     }
@@ -52,12 +58,6 @@ public class SessionUser {
         if (!this.userId.equals(userId)) {
             throw new InvalidRequestException(ErrorCode.INCORRECT_USER);
         }
-    }
-
-    public static SessionUser from(HttpSession session) {
-        return (SessionUser) Optional.ofNullable(
-                session.getAttribute(SESSION_KEY))
-            .orElseThrow(() -> new NotFoundException(ErrorCode.SESSION_NOT_FOUND));
     }
 
     public void checkUserId(String userId) {

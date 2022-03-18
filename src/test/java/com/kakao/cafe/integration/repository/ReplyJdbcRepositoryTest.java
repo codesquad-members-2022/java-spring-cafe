@@ -37,6 +37,9 @@ public class ReplyJdbcRepositoryTest {
     private final ArticleJdbcRepository articleRepository;
     private final ReplyJdbcRepository replyRepository;
     private final UserJdbcRepository userRepository;
+    private Article article;
+    private Reply reply;
+    private User user;
 
     @Autowired
     public ReplyJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
@@ -46,10 +49,6 @@ public class ReplyJdbcRepositoryTest {
         this.replyRepository = new ReplyJdbcRepository(jdbcTemplate, keyHolderFactory, queryProps);
         this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
     }
-
-    private Article article;
-    private Reply reply;
-    private User user;
 
     @BeforeEach
     public void setUp() {

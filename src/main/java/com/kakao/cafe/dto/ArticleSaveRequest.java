@@ -9,8 +9,18 @@ public class ArticleSaveRequest {
     private ArticleSaveRequest() {
     }
 
+    public ArticleSaveRequest(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+    }
+
     public String getWriter() {
         return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -19,16 +29,6 @@ public class ArticleSaveRequest {
 
     public String getContents() {
         return contents;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
-
-    public ArticleSaveRequest(String writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
     }
 
     @Override

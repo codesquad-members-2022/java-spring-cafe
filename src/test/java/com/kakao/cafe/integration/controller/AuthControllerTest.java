@@ -27,13 +27,11 @@ import org.springframework.test.web.servlet.ResultActions;
 @DisplayName("AuthController 통합 테스트")
 public class AuthControllerTest {
 
+    User user;
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private UserSetUp userSetUp;
-
-    User user;
 
     @BeforeEach
     public void setUp() {
