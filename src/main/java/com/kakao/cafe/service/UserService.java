@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.UserJoinRequestDto;
+import com.kakao.cafe.controller.dto.UserLoginRequestDto;
 import com.kakao.cafe.controller.dto.UserUpdateRequestDto;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
@@ -41,11 +42,23 @@ public class UserService {
     }
 
     public void update(UserUpdateRequestDto dto) {
-        User user = findByUserId(dto.getUserId());
-        if (!user.isMatchPassword(dto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        String requestUserId = dto.getUserId();
+        String requestPassword = dto.getPassword();
+
+        User user = findByUserId(requestUserId);
+        user.validateUserId(requestUserId);
+        user.validatePassword(requestPassword);
         User updateUser = user.update(dto.toEntity());
         userRepository.save(updateUser);
+    }
+
+    public User login(UserLoginRequestDto dto) {
+        String userId = dto.getUserId();
+        String password = dto.getPassword();
+
+        User user = findByUserId(userId);
+        user.validatePassword(password);
+
+        return user;
     }
 }

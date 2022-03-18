@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -51,15 +53,25 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updatePage(@PathVariable String userId, Model model) {
+    public String updatePage(@PathVariable String userId, Model model, HttpServletRequest request) {
         User user = userService.findByUserId(userId);
+        validateSessionUser(userId, request);
         model.addAttribute("user", user);
         return "user/updateForm";
     }
 
     @PostMapping("/users/{userId}/update")
-    public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequestDto dto) {
+    public String update(@PathVariable String userId, @ModelAttribute UserUpdateRequestDto dto, HttpServletRequest request) {
+        validateSessionUser(userId, request);
         userService.update(dto);
         return "redirect:/users";
+    }
+
+    private void validateSessionUser(String userId, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Object sessionUser = session.getAttribute("sessionUser");
+        if (sessionUser == null || !((User) sessionUser).getUserId().equals(userId)) {
+            throw new IllegalArgumentException("현재 로그인된 사용자만 수정 가능합니다");
+        }
     }
 }

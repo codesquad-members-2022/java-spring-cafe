@@ -1,5 +1,5 @@
 CREATE TABLE article (
-id int(10) AUTO_INCREMENT NOT NULL,
+id int AUTO_INCREMENT NOT NULL,
 writer varchar(20) NOT NULL,
 title varchar(20) NOT NULL,
 contents TEXT,
