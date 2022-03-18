@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String createForm() {
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("/signup")
@@ -44,6 +44,6 @@ public class UserController {
     public String profile(@PathVariable String name, Model model) {
         User user = userService.findUser(name);
         model.addAttribute("user", user);
-        return "/user/profile";
+        return "user/profile";
     }
 }

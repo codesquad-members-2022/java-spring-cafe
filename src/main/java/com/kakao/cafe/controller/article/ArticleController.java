@@ -45,6 +45,6 @@ public class ArticleController {
     public String article(@PathVariable Integer id, Model model) {
         Article article = articleService.findArticle(id);
         model.addAttribute("article", article);
-        return "/articles/article";
+        return "articles/article";
     }
 }
