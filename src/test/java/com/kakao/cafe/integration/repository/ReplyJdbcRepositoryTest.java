@@ -59,10 +59,12 @@ public class ReplyJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("댓글 객체를 저장소에 저장한다")
+    @DisplayName("댓글 객체를 저장소에 저장하고, 저장소에서 조회해 확인한다")
     public void savePersistTest() {
-        // when
+        // given
         Reply savedReply = replyRepository.save(reply);
+
+        // when
         Optional<Reply> findReply = replyRepository.findById(savedReply.getReplyId());
 
         // then
@@ -104,7 +106,7 @@ public class ReplyJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("댓글 id 가 포함된 댓글 객체를 업데이트한다")
+    @DisplayName("업데이트된 댓글 id 가 포함된 댓글 객체를 저장하고, 저장소에서 조회해 확인한다")
     public void saveMergeTest() {
         // given
         Reply savedReply = replyRepository.save(reply);
@@ -112,8 +114,9 @@ public class ReplyJdbcRepositoryTest {
         Reply changedReply = new Reply(savedReply.getReplyId(), savedReply.getArticleId(),
             savedReply.getUserId(), "otherComment", LocalDateTime.now());
 
-        // when
         replyRepository.save(changedReply);
+
+        // when
         Optional<Reply> findReply = replyRepository.findById(savedReply.getReplyId());
 
         // then
@@ -126,13 +129,14 @@ public class ReplyJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("댓글 id 로 댓글 객체를 삭제한다")
+    @DisplayName("댓글 id 로 댓글을 삭제하고, 저장소에서 조회해 확인한다")
     public void deleteReplyTest() {
         // given
         Reply savedReply = replyRepository.save(reply);
 
-        // when
         replyRepository.deleteById(savedReply.getReplyId());
+
+        // when
         Optional<Reply> findReply = replyRepository.findById(savedReply.getReplyId());
 
         // then
