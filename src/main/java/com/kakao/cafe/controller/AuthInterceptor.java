@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.session.SessionUser;
+import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,16 +22,19 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         HttpSession session = request.getSession();
         if (session == null) {
-            response.sendRedirect("/login/form");
-            return false;
+            return redirectLoginForm(response);
         }
 
         SessionUser user = (SessionUser) session.getAttribute(SessionUser.SESSION_KEY);
         if (user == null) {
-            response.sendRedirect("/login/form");
-            return false;
+            return redirectLoginForm(response);
         }
         return true;
+    }
+
+    private boolean redirectLoginForm(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/login/form");
+        return false;
     }
 
 }

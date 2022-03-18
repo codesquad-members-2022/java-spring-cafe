@@ -8,6 +8,7 @@ import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -45,17 +46,7 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         String sql = queryProps.get(Query.SELECT_USERS);
-
-        return jdbcTemplate.query(sql,
-            (rs, rowNum) ->
-                new User(
-                    rowNum + 1,
-                    rs.getString(USER_ID_SNAKE),
-                    rs.getString(PASSWORD),
-                    rs.getString(NAME),
-                    rs.getString(EMAIL)
-                )
-        );
+        return jdbcTemplate.query(sql, getUserRowMapper());
     }
 
     @Override
@@ -64,16 +55,8 @@ public class UserJdbcRepository implements UserRepository {
 
         try {
             User user = jdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource()
-                    .addValue(USER_ID_CAMEL, userId),
-                (rs, rowNum) ->
-                    new User(
-                        rowNum + 1,
-                        rs.getString(USER_ID_SNAKE),
-                        rs.getString(PASSWORD),
-                        rs.getString(NAME),
-                        rs.getString(EMAIL)
-                    )
+                new MapSqlParameterSource().addValue(USER_ID_CAMEL, userId),
+                getUserRowMapper()
             );
             return Optional.ofNullable(user);
 
@@ -86,7 +69,6 @@ public class UserJdbcRepository implements UserRepository {
     @Override
     public void deleteAll() {
         String sql = queryProps.get(Query.DELETE_USERS);
-
         jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 
@@ -97,7 +79,18 @@ public class UserJdbcRepository implements UserRepository {
         if (count == null) {
             throw new InternalOperationException(ErrorCode.INTERNAL_ERROR);
         }
-
         return count;
     }
+
+    private RowMapper<User> getUserRowMapper() {
+        return (rs, rowNum) ->
+            new User(
+                rowNum + 1,
+                rs.getString(USER_ID_SNAKE),
+                rs.getString(PASSWORD),
+                rs.getString(NAME),
+                rs.getString(EMAIL)
+            );
+    }
+
 }

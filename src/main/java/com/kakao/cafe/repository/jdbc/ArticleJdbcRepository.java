@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -61,18 +62,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         String sql = queryProps.get(Query.SELECT_ARTICLES);
-
-        return jdbcTemplate.query(sql,
-            (rs, rowNum) ->
-                new Article(
-                    rs.getInt(ARTICLE_ID_SNAKE),
-                    rs.getString(WRITER),
-                    rs.getString(TITLE),
-                    rs.getString(CONTENTS),
-                    rs.getObject(CREATED_DATE, LocalDateTime.class),
-                    rs.getInt(REPLY_COUNT)
-                )
-        );
+        return jdbcTemplate.query(sql, getArticleRowMapper(true));
     }
 
     @Override
@@ -81,16 +71,8 @@ public class ArticleJdbcRepository implements ArticleRepository {
 
         try {
             Article article = jdbcTemplate.queryForObject(sql,
-                new MapSqlParameterSource()
-                    .addValue(ARTICLE_ID_CAMEL, articleId),
-                (rs, rowNum) ->
-                    new Article(
-                        rs.getInt(ARTICLE_ID_SNAKE),
-                        rs.getString(WRITER),
-                        rs.getString(TITLE),
-                        rs.getString(CONTENTS),
-                        rs.getObject(CREATED_DATE, LocalDateTime.class)
-                    )
+                new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId),
+                getArticleRowMapper(false)
             );
             return Optional.ofNullable(article);
 
@@ -109,4 +91,17 @@ public class ArticleJdbcRepository implements ArticleRepository {
         String sql = queryProps.get(Query.DELETE_ARTICLE);
         jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId));
     }
+
+    private RowMapper<Article> getArticleRowMapper(boolean count) {
+        return (rs, rowNum) ->
+            new Article(
+                rs.getInt(ARTICLE_ID_SNAKE),
+                rs.getString(WRITER),
+                rs.getString(TITLE),
+                rs.getString(CONTENTS),
+                rs.getObject(CREATED_DATE, LocalDateTime.class),
+                count ? rs.getInt(REPLY_COUNT) : null
+            );
+    }
+
 }
