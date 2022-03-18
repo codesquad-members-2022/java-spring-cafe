@@ -63,4 +63,8 @@ public class Article {
         Assert.hasText(contents, "글 내용은 공백이어선 안 됩니다.");
         this.contents = contents;
     }
+
+    public boolean hasId() {
+        return id != null;
+    }
 }

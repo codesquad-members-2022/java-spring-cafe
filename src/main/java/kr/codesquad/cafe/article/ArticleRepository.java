@@ -14,6 +14,8 @@ public class ArticleRepository {
 
     private static final String SQL_SAVE_ARTICLE =
             "INSERT INTO ARTICLE(WRITER_USERID, WRITER_NAME, TITLE, CONTENTS) VALUES(?, ?, ?, ?)";
+    private static final String SQL_UPDATE_ARTICLE =
+            "UPDATE ARTICLE SET WRITER_NAME=?, TITLE=?, CONTENTS=? WHERE ID=?";
     private static final String SQL_FIND_ARTICLE = "SELECT * FROM ARTICLE WHERE ID = ?";
     private static final String SQL_FIND_ARTICLE_ALL = "SELECT * FROM ARTICLE";
     private final JdbcTemplate jdbcTemplate;
@@ -24,6 +26,11 @@ public class ArticleRepository {
     }
 
     public void save(Article article) {
+        if (article.hasId()) {
+            jdbcTemplate.update(SQL_UPDATE_ARTICLE,
+                    article.getWriterName(), article.getTitle(), article.getContents(), article.getId());
+            return;
+        }
         jdbcTemplate.update(SQL_SAVE_ARTICLE,
                 article.getWriterUserId(), article.getWriterName(), article.getTitle(), article.getContents());
     }

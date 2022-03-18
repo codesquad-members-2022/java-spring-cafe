@@ -2,6 +2,7 @@ package kr.codesquad.cafe.system;
 
 import kr.codesquad.cafe.system.intercepter.LoginRequiredInterceptor;
 import kr.codesquad.cafe.system.intercepter.UserAuthenticationInterceptor;
+import kr.codesquad.cafe.system.intercepter.WriterAuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -30,6 +31,9 @@ public class MvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(userAuthenticationInterceptor())
                 .addPathPatterns("/users/*/form");
+
+        registry.addInterceptor(writerAuthenticationInterceptor())
+                .addPathPatterns("/questions/*/form");
     }
 
     @Bean
@@ -40,5 +44,10 @@ public class MvcConfig implements WebMvcConfigurer {
     @Bean
     public UserAuthenticationInterceptor userAuthenticationInterceptor() {
         return new UserAuthenticationInterceptor();
+    }
+
+    @Bean
+    public WriterAuthenticationInterceptor writerAuthenticationInterceptor() {
+        return new WriterAuthenticationInterceptor();
     }
 }

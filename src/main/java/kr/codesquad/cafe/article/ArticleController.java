@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.servlet.http.HttpSession;
 
@@ -47,4 +48,29 @@ public class ArticleController {
         return "qna/show";
     }
 
+    @GetMapping("/questions/{id}/form")
+    public String viewUpdateForm(@PathVariable("id") long id, Model model) {
+        model.addAttribute("article", service.retrieve(id));
+
+        return "qna/updateForm";
+    }
+
+    @PutMapping("/questions/{id}/update")
+    public String processUpdateForm(@PathVariable("id") long id, ArticleCreationForm form, HttpSession session) {
+        User currentUser = (User) session.getAttribute("currentUser");
+        String writerUserId = service.retrieve(id).getWriterUserId();
+
+        if (!currentUser.userIdIs(writerUserId)) {
+            return "redirect:/badRequest";
+        }
+
+        Article article = new Article();
+        article.setId(id);
+        article.setWriterName(currentUser.getName());
+        article.setTitle(form.getTitle());
+        article.setContents(form.getContents());
+        service.update(article);
+
+        return "redirect:/questions/{id}";
+    }
 }
