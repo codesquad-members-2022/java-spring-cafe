@@ -92,7 +92,7 @@
                           </article>
                           <form class="submit-write" th:action="@{/questions/{id}/replies(id=${article.id})}"
                                 method="post">
-                              <input type="hidden" th:value="${session.SESSIONED_USER.userId}" name="userId">
+<!--                              <input type="hidden" th:value="${session.SESSIONED_USER.userId}" name="userId">-->
                               <div class="form-group" style="padding:14px;">
                                   <textarea class="form-control" placeholder="Update your status"
                                             name="contents"></textarea>

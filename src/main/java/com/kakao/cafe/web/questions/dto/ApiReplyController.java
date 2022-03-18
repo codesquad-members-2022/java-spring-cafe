@@ -1,28 +1,27 @@
-package com.kakao.cafe.web.questions;
+package com.kakao.cafe.web.questions.dto;
 
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.web.SessionConst;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@Controller
-@RequestMapping("/questions/{questionId}/replies")
-public class ReplyController {
+@RestController
+@RequestMapping("/api/questions/{questionId}/replies")
+public class ApiReplyController {
 
     private final ReplyService replyService;
 
-    public ReplyController(ReplyService replyService) {
+    public ApiReplyController(ReplyService replyService) {
         this.replyService = replyService;
     }
 
     @PostMapping
-    public String createReply(@RequestParam String contents, @PathVariable Long questionId, HttpSession session) {
+    public Reply createReply(@RequestParam String contents, @PathVariable Long questionId, HttpSession session) {
         User user = (User) session.getAttribute(SessionConst.SESSIONED_USER);
-        replyService.addReply(contents, questionId, user);
-        return "redirect:/questions/" + questionId;
+        return replyService.addReply(contents, questionId, user);
     }
 
     @DeleteMapping("/{id}")
