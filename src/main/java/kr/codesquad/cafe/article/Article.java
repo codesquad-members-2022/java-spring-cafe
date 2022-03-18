@@ -8,7 +8,8 @@ public class Article {
 
     private Long id;
     private LocalDateTime timestamp;
-    private String writer;
+    private String writerUserId;
+    private String writerName;
     private String title;
     private String contents;
 
@@ -28,13 +29,21 @@ public class Article {
         this.timestamp = timestamp;
     }
 
-    public String getWriter() {
-        return writer;
+    public String getWriterUserId() {
+        return writerUserId;
     }
 
-    public void setWriter(String writer) {
-        Assert.hasText(writer, "작성자는 공백이어선 안 됩니다.");
-        this.writer = writer;
+    public String getWriterName() {
+        return writerName;
+    }
+
+    public void setWriterName(String writerName) {
+        this.writerName = writerName;
+    }
+
+    public void setWriterUserId(String writerUserId) {
+        Assert.hasText(writerUserId, "작성자는 공백이어선 안 됩니다.");
+        this.writerUserId = writerUserId;
     }
 
     public String getTitle() {
