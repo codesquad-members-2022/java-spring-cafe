@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -65,14 +66,7 @@ public class ReplyJdbcRepository implements ReplyRepository {
         try {
             Reply reply = jdbcTemplate.queryForObject(sql,
                 new MapSqlParameterSource().addValue(REPLY_ID_CAMEL, replyId),
-                (rs, rowNum) ->
-                    new Reply(
-                        rs.getInt(REPLY_ID_SNAKE),
-                        rs.getInt(ARTICLE_ID_SNAKE),
-                        rs.getString(USER_ID_SNAKE),
-                        rs.getString(COMMENT),
-                        rs.getObject(CREATED_DATE, LocalDateTime.class)
-                    )
+                getReplyRowMapper()
             );
             return Optional.ofNullable(reply);
 
@@ -87,13 +81,7 @@ public class ReplyJdbcRepository implements ReplyRepository {
 
         return jdbcTemplate.query(sql,
             new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId),
-            (rs, rowNum) -> new Reply(
-                rs.getInt(REPLY_ID_SNAKE),
-                rs.getInt(ARTICLE_ID_SNAKE),
-                rs.getString(USER_ID_SNAKE),
-                rs.getString(COMMENT),
-                rs.getObject(CREATED_DATE, LocalDateTime.class)
-            )
+            getReplyRowMapper()
         );
     }
 
@@ -110,5 +98,15 @@ public class ReplyJdbcRepository implements ReplyRepository {
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource()
             .addValue(USER_ID_CAMEL, userId)
             .addValue(ARTICLE_ID_CAMEL, articleId), Integer.class);
+    }
+
+    private RowMapper<Reply> getReplyRowMapper() {
+        return (rs, rowNum) -> new Reply(
+            rs.getInt(REPLY_ID_SNAKE),
+            rs.getInt(ARTICLE_ID_SNAKE),
+            rs.getString(USER_ID_SNAKE),
+            rs.getString(COMMENT),
+            rs.getObject(CREATED_DATE, LocalDateTime.class)
+        );
     }
 }
