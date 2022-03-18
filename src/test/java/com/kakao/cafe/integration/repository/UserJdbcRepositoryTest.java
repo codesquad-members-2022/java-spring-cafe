@@ -42,10 +42,12 @@ public class UserJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 객체를 저장소에 저장한다")
+    @DisplayName("유저 객체를 저장소에 저장하고, 저장소에서 조회해 확인한다")
     public void savePersistTest() {
-        // when
+        // given
         User savedUser = userRepository.save(user);
+
+        // when
         Optional<User> findUser = userRepository.findByUserId(savedUser.getUserId());
 
         // then
@@ -59,15 +61,16 @@ public class UserJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("변경된 유저 객체를 저장한다")
+    @DisplayName("업데이트된 유저 객체를 저장하고, 저장소에서 조회해 확인한다")
     public void saveMergeTest() {
         // given
         userRepository.save(user);
 
         User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
 
-        // when
         User updatedUser = userRepository.save(changedUser);
+
+        // when
         Optional<User> findUser = userRepository.findByUserId(updatedUser.getUserId());
 
         // then
