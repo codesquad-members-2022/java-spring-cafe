@@ -33,7 +33,6 @@ public class JdbcArticleRepository implements CafeRepository<Article, Integer> {
         parameters.put("text", article.getText());
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        key.intValue();
         return new Article(key.intValue(), article.getTitle(), article.getText());
     }
 
