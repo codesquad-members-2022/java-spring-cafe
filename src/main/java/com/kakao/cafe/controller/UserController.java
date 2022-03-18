@@ -68,7 +68,7 @@ public class UserController {
 
     private void validateSessionUser(String userId, HttpSession session) {
         Object sessionUser = session.getAttribute("sessionUser");
-        if (sessionUser == null || !((User) sessionUser).getUserId().equals(userId)) {
+        if (sessionUser == null || !((User) sessionUser).isTheSameId(userId)) {
             throw new IllegalArgumentException("현재 로그인된 사용자만 수정 가능합니다");
         }
     }
