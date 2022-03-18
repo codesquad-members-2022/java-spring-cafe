@@ -1,5 +1,7 @@
 package com.kakao.cafe.dto;
 
+import com.kakao.cafe.domain.User;
+
 public class UserResponse {
 
     private Integer userNum;
@@ -8,9 +10,6 @@ public class UserResponse {
     private String name;
     private String email;
 
-    private UserResponse() {
-    }
-
     public UserResponse(Integer userNum, String userId, String password, String name,
         String email) {
         this.userNum = userNum;
@@ -18,6 +17,16 @@ public class UserResponse {
         this.password = password;
         this.name = name;
         this.email = email;
+    }
+
+    public static UserResponse from(User user) {
+        return new UserResponse(
+            user.getUserNum(),
+            user.getUserId(),
+            user.getPassword(),
+            user.getName(),
+            user.getEmail()
+        );
     }
 
     public String getUserId() {
