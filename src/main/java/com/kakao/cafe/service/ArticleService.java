@@ -24,13 +24,11 @@ public class ArticleService {
     }
 
     public ArticleDto read(int id) {
-        try {
-            Article article = articleRepository.findById(id);
-            article.addViewCount();
-            return new ArticleDto(article);
-        } catch (IndexOutOfBoundsException e) {
-            throw new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다.");
-        }
+        Article article = articleRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("해당 아이디를 가진 게시글이 존재하지 않습니다."));
+        article.addViewCount();
+        articleRepository.save(article);
+        return new ArticleDto(article);
     }
 
     public List<ArticleDto> findPosts() {
