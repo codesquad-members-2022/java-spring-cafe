@@ -32,10 +32,14 @@ public class SessionUser {
 	}
 
 	public boolean isDifferentFrom(String userId) {
-		return !this.userName.equals(userId);
+		return !this.userId.equals(userId);
 	}
 
 	public boolean isValidated() {
 		return this.isAuthenticated;
+	}
+
+	public boolean isEquals(String replier) {
+		return this.userId.equals(replier);
 	}
 }

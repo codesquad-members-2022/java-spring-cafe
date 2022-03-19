@@ -12,7 +12,8 @@ public class ArticleFactory {
 								String title,
 								String content,
 								Long cafeUserId,
-								LocalDate writingDate){
-		return Article.loadOf(articleId, writer, title, content, cafeUserId, writingDate);
+								LocalDate writingDate,
+								boolean deleted){
+		return Article.loadOf(articleId, writer, title, content, cafeUserId, writingDate, deleted);
 	}
 }

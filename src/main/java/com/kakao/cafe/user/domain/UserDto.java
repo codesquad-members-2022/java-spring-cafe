@@ -39,7 +39,6 @@ public class UserDto {
 
 		public void isValid(Logger logger) {
 			if (isOneMoreBlank()) {
-				logger.warn("request : {}", this);
 				throw new IllegalArgumentException(ERROR_OF_WHITE_SPACE);
 			}
 		}

@@ -8,20 +8,24 @@
 
 ## URL convention
 
-| URL                     | 기능        |
-|-------------------------|-----------|
-| GET /login              | 로그인 화면    |
-| POST /do_login          | 로그인       |
-| GET /logout             | 로그아웃      |
-| GET /users              | 회원 목록 조회  |
-| POST /users             | 회원 가입     |
-| GET /users/:id          | 회원 프로필 조회 |
-| GET /users/:id/form     | 회원 정보 수정  |
-| GET /                   | 글 목록 조회하기 |
-| GET /questions/         | 질문하기      |
-| POST /questions/        | 글쓰기       |
-| GET /questions/:id      | 게시글 상세보기  |
-| GET /questions/:id/form | 게시글 수정하기  |
+| URL                                         | 기능        |
+|---------------------------------------------|-----------|
+| GET /login                                  | 로그인 화면    |
+| POST /do_login                              | 로그인       |
+| GET /logout                                 | 로그아웃      |
+| GET /users                                  | 회원 목록 조회  |
+| POST /users                                 | 회원 가입     |
+| GET /users/:id                              | 회원 프로필 조회 |
+| GET /users/:id/form                         | 회원 정보 수정  |
+| GET /                                       | 글 목록 조회하기 |
+| GET /questions/                             | 질문하기      |
+| POST /questions/                            | 글쓰기       |
+| GET /questions/:id                          | 게시글 상세보기  |
+| GET /questions/:id/form                     | 게시글 수정 화면 |
+| PUT /questions/:id                      | 게시글 수정    |
+| DELETE /questions/:id                      | 게시글 삭제    |
+| POST /questions/:questionId/reply           | 댓글추가      |
+| DELETE /questions/:questionId/reply/:replyId | 댓글삭제      |
 
 
 #### 프로그래밍 요구사항
@@ -105,5 +109,19 @@
 - PUT 메서드로 요청
   - 멱등성
   - 리소스 생성 또는 수정
+
+</details>
+
+
+<br>
+
+
+<details>
+<summary>👻 댓글</summary>
+
+- 로그인 사용자만이 게시글 접근 가능
+- 로그인 사용자만이 댓글 달기 가능
+- 답변은 게시글에 종속
+  - REPLY 접근 URL : questions/{questionId}/reply
 
 </details>

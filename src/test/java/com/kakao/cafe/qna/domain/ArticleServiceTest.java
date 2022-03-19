@@ -16,8 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.kakao.cafe.user.domain.UserService;
 
 @ExtendWith(MockitoExtension.class)
-public
-class ArticleServiceTest {
+public class ArticleServiceTest {
 	public static final String TEST_WRITER = "작성자";
 	public static final String TEST_TITLE = "제목";
 	public static final String TEST_CONTENT = "내용";
