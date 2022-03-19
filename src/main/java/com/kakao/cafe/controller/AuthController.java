@@ -34,4 +34,10 @@ public class AuthController {
         httpSession.setAttribute("sessionedUserId", user);
         return "redirect:/";
     }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
+    }
 }
