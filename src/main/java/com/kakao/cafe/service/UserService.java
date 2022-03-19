@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.web.dto.user.LoginUserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -34,5 +35,18 @@ public class UserService {
 
     public void updateUser(String userId, User user) {
         userRepository.update(userId, user);
+    }
+
+    public User login(String loginUserId, String loginPassword) {
+        User loginUser = userRepository.findByUserId(loginUserId);
+        if (loginUser == null) {
+            return null;
+        }
+
+        if (loginUser.getPassword().equals(loginPassword)) {
+            return loginUser;
+        }
+
+        return null;
     }
 }

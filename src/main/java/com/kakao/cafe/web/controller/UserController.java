@@ -2,6 +2,7 @@ package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.dto.user.LoginUserDto;
 import com.kakao.cafe.web.dto.user.SignUpUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,5 +80,21 @@ public class UserController {
         log.info("after  userId={}, name={}, email={}", after.getUserId(), after.getName(), after.getEmail());
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/login")
+    public String loginForm() {
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String login(@ModelAttribute(name = "user")LoginUserDto loginUserDto) {
+        User loginUser = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
+
+        if (loginUser == null) {
+            return "user/login_failed";
+        }
+
+        return "redirect:/";
     }
 }
