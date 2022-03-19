@@ -1,5 +1,6 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 
@@ -51,4 +52,20 @@ public class UserService {
         });
     }
 
+    /**
+     * 회원 정보 업데이트
+     */
+    public User updateUser(UserForm userForm) {
+        User newUser = new User(userForm);
+        User savedUser = this.findOne(newUser.getUserId());
+        validatePassword(savedUser, userForm.getPassword());
+        return userRepository.update(savedUser, newUser);
+    }
+
+    private boolean validatePassword(User savedUser, String newUserPassword) {
+        if (savedUser.isCorrectPassword(newUserPassword)) {
+            return true;
+        }
+        throw new IllegalStateException("패스워드가 틀렸습니다.");
+    }
 }

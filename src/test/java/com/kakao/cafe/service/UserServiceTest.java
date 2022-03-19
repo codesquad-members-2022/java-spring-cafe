@@ -2,27 +2,29 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.UserForm;
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.MemoryUserRepository;
 import com.kakao.cafe.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
-    private UserRepository userRepository;
 
-    @BeforeEach
-    void beforeEach() {
-        userRepository = new MemoryUserRepository();
-        userService = new UserService(userRepository);
-    }
+    @Mock
+    private UserRepository userRepository;
 
     User createUser(int number) {
         UserForm userForm = new UserForm("userId" + number,
@@ -39,23 +41,26 @@ class UserServiceTest {
         //given
         User user1 = createUser(1);
 
+        given(userRepository.findById(user1.getUserId()))
+                .willReturn(Optional.of(user1));
+
         //when
         String user1Id = userService.join(user1);
 
         //then
         User foundUser = userService.findOne(user1Id);
-        assertThat(user1Id).isEqualTo(foundUser.getUserId());
+        assertThat(user1.getUserId())
+                .isEqualTo(foundUser.getUserId());
     }
 
     @Test
     @DisplayName("회원가입하는 유저의 Id가 중복된다면, 중복 오류 메시지가 나와야 한다.")
     void joinDuplicateUser() {
         //given
-        User user1 = createUser(1);
         User duplicatedUser = createUser(1);
 
-        //when
-        userService.join(user1);
+        given(userRepository.findByName(duplicatedUser.getName()))
+                .willReturn(Optional.of(duplicatedUser));
 
         //then
         assertThatThrownBy(() -> userService.join(duplicatedUser))
@@ -70,13 +75,17 @@ class UserServiceTest {
         User user1 = createUser(1);
         User user2 = createUser(2);
 
+        given(userRepository.findById(user1.getUserId()))
+                .willReturn(Optional.of(user1));
+
         //when
         String user1Id = userService.join(user1);
         String user2Id = userService.join(user2);
 
         //then
         User foundUser = userService.findOne(user1Id);
-        assertThat(user1Id).isEqualTo(foundUser.getUserId());
+        assertThat(user1.getUserId())
+                .isEqualTo(foundUser.getUserId());
     }
 
     @Test
@@ -84,6 +93,9 @@ class UserServiceTest {
     void findNonexistentUser() {
         //when
         String nonexistentUser = "user1";
+
+        given(userRepository.findById(nonexistentUser))
+                .willReturn(Optional.empty());
 
         //then
         assertThatThrownBy(() -> userService.findOne(nonexistentUser))
@@ -98,6 +110,9 @@ class UserServiceTest {
         User user1 = createUser(1);
         User user2 = createUser(2);
         User user3 = createUser(3);
+
+        given(userRepository.findAll())
+                .willReturn(List.of(user1, user2, user3));
 
         //when
         userService.join(user1);

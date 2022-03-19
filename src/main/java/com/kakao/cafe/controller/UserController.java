@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -22,19 +24,22 @@ public class UserController {
     }
 
     @GetMapping("/user/create")
-    public String form() {
+    public String joinForm() {
         return "user/form";
     }
 
     @PostMapping("/user/create")
-    public String create(UserForm form) {
+    public ModelAndView joinUser(UserForm form) {
         User user = new User(form);
         userService.join(user);
-        return "redirect:/list/show";
+
+        ModelAndView modelAndView = new ModelAndView("redirect:/list/show");
+        modelAndView.addObject("user", user);
+        return modelAndView;
     }
 
     @GetMapping("/list/show")
-    public String list(Model model) {
+    public String allUsers(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
@@ -46,5 +51,17 @@ public class UserController {
         model.addAttribute("userId", user.getUserId());
         model.addAttribute("email", user.getEmail());
         return "user/profile";
+    }
+
+    @GetMapping("/user/{userId}/form")
+    public String updateForm(@PathVariable String userId, Model model) {
+        model.addAttribute("userId", userId);
+        return "user/updateForm";
+    }
+
+    @PutMapping("/user/{userId}/form")
+    public String updateUser(UserForm userForm) {
+        userService.updateUser(userForm);
+        return "redirect:/list/show";
     }
 }
