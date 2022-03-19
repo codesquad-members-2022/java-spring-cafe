@@ -14,7 +14,7 @@ import com.kakao.cafe.service.ArticleService;
 @Controller
 public class ArticleController {
 
-    private final Logger logger = LoggerFactory.getLogger(ArticleController.class);
+    private final Logger log = LoggerFactory.getLogger(ArticleController.class);
 
     private final ArticleService articleService;
 
@@ -24,21 +24,21 @@ public class ArticleController {
 
     @GetMapping("/")
     public String index(Model model) {
-        logger.info("GET /");
+        log.info("GET /");
         model.addAttribute("articles", articleService.showAllArticles());
         return "index";
     }
 
     @PostMapping("/questions")
     public String addQuestion(Article article) {
-        logger.info("POST /questions");
+        log.info("POST /questions");
         articleService.save(article);
         return "redirect:/";
     }
 
     @GetMapping("/articles/{index}")
     public String showArticles(@PathVariable int index, Model model) {
-        logger.info("GET /articles/{}", index);
+        log.info("GET /articles/{}", index);
         model.addAttribute("article", articleService.showArticle(index));
         return "qna/showQna";
     }
