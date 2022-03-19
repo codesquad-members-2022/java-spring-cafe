@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.6.2'
+	id 'org.springframework.boot' version '2.6.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 }
@@ -15,9 +15,16 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	runtimeOnly 'com.h2database:h2'
+	implementation 'junit:junit:4.13.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test {
+tasks.named('test') {
 	useJUnitPlatform()
+}
+
+bootJar {
+	destinationDirectory = file("./target")
 }
