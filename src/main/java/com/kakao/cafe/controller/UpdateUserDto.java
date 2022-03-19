@@ -1,6 +1,6 @@
-package com.kakao.cafe.domain;
+package com.kakao.cafe.controller;
 
-public class User {
+public class UpdateUserDto {
 
     private int id;
     private String userId;
@@ -8,7 +8,8 @@ public class User {
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
+    public UpdateUserDto(int id, String userId, String password, String name, String email) {
+        this.id = id;
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -17,10 +18,6 @@ public class User {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUserId() {
@@ -39,19 +36,4 @@ public class User {
         return email;
     }
 
-    public boolean hasId() {
-        return id > 0;
-    }
-
-    public void changeEmail(String email) {
-        this.email = email;
-    }
-
-    public void changeName(String name) {
-        this.name = name;
-    }
-
-    public void changePassword(String password) {
-        this.password = password;
-    }
 }
