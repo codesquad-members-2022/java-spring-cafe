@@ -1,7 +1,8 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.dto.user.SignUpUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,9 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String signUp(@ModelAttribute User user) {
-        userService.signUp(user);
+    public String signUp(@ModelAttribute(name= "user") SignUpUserDto signUpUserDto) {
+        User signUpUser = new User(signUpUserDto.getUserId(), signUpUserDto.getPassword(), signUpUserDto.getName(), signUpUserDto.getEmail());
+        userService.signUp(signUpUser);
         return "redirect:/users";
     }
 

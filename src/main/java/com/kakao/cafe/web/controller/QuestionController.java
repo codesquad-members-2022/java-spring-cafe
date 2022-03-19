@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.domain.Question;
 import com.kakao.cafe.service.QuestionService;
