@@ -53,7 +53,6 @@ public class User {
 
     public void updateProfile(UserUpdateDto userUpdateDto) {
         this.name = userUpdateDto.getName();
-        this.password = userUpdateDto.getPassword();
         this.email = userUpdateDto.getEmail();
     }
 }

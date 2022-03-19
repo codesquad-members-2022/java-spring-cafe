@@ -29,11 +29,19 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void userUpdate(Long id, UserUpdateDto userUpdateDto) {
-        userRepository.updateUser(id, userUpdateDto);
+    public void userUpdate(Long id, User user) {
+        userRepository.updateUser(id, user);
     }
 
     public User findById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public User login(String userId, String password) {
+        User loginUser = userRepository.findByLoginId(userId);
+        if (loginUser.getPassword().equals(password)) {
+            return loginUser;
+        }
+        return null;
     }
 }

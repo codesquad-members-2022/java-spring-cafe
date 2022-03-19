@@ -68,9 +68,11 @@ class UserServiceTest {
     @DisplayName("회원 업데이트")
     void update() {
         //given 준비
-        UserUpdateDto dto = new UserUpdateDto("update", "updateName", "updateEmail");
+        User user = userService.findById(1L);
+        UserUpdateDto dto = new UserUpdateDto("updateName", "updateEmail");
+        user.updateProfile(dto);
         //when 실행
-        userService.userUpdate(1L, dto);
+        userService.userUpdate(user.getId(), user);
         User updateUser = userRepository.findByUserId("test1");
         //then 검증
         assertThat(updateUser.getName()).isEqualTo("updateName");

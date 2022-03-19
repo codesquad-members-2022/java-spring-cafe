@@ -1,6 +1,5 @@
 package com.kakao.cafe.domain.user;
 
-import com.kakao.cafe.web.dto.UserUpdateDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -17,8 +16,10 @@ public class JdbcUserRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    private final static String FIND_ID_SQL = "select id, user_id, password, name, email from user where id = ?";
+    private final static String FIND_USERID_SQL = "select id, user_id, password, name, email from user where user_id = ?";
     public void save(User user) {
-        String sql = "insert into user(user_id, password, name, email) values(?,?,?,?)";
+        final String sql = "insert into user(user_id, password, name, email) values(?,?,?,?)";
 
         jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
@@ -26,7 +27,7 @@ public class JdbcUserRepository {
     public User findById(Long id) {
         User user = null;
         try {
-            user = jdbcTemplate.query("select * from user where id = ?", userRowMapper(), id)
+            user = jdbcTemplate.query(FIND_ID_SQL, userRowMapper(), id)
                     .stream()
                     .findAny()
                     .orElseThrow(SQLException::new);
@@ -39,7 +40,7 @@ public class JdbcUserRepository {
     public User findByUserId(String userId) {
         User user = null;
         try {
-            user = jdbcTemplate.query("select * from user where user_id = ?", userRowMapper(), userId)
+            user = jdbcTemplate.query(FIND_USERID_SQL, userRowMapper(), userId)
                     .stream()
                     .findAny()
                     .orElseThrow(SQLException::new);
@@ -50,13 +51,24 @@ public class JdbcUserRepository {
     }
 
     public List<User> findAll() {
-        return jdbcTemplate.query("select * from user", userRowMapper());
+        return jdbcTemplate.query("select id, user_id, password, name, email" +
+                " from user", userRowMapper());
     }
 
-    public void updateUser(Long id, UserUpdateDto userUpdateDto) {
-        String sql = "update user set password = ?, name = ?, email = ? where id = ?";
-        jdbcTemplate.update(sql, userUpdateDto.getPassword(), userUpdateDto.getName(),
-                userUpdateDto.getEmail(), id);
+    public void updateUser(Long id, User user) {
+        final String sql = "update user set name = ?, email = ? where id = ?";
+        jdbcTemplate.update(sql, user.getName(), user.getEmail(), id);
+    }
+
+    public User findByLoginId(String userId) {
+        User user = null;
+        try {
+            user = jdbcTemplate.query(FIND_USERID_SQL, userRowMapper(), userId)
+                    .stream().findAny().orElseThrow(SQLException::new);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     private RowMapper<User> userRowMapper() {
