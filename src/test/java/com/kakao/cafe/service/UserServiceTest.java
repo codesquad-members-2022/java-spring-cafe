@@ -114,12 +114,8 @@ public class UserServiceTest {
     @DisplayName("사용자가 사용자 정보를 수정 시 사용자에 대한 세션이 존재하지 않는 경우 UserIncorrectAccessException 예외가 발생한다.")
     @Test
     void 사용자_세션_존재_유무_검증() {
-        // given
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionUser", null);
-
         // when, then
-        assertThatThrownBy(() -> userService.validateSessionOfUser("ikjo", session))
+        assertThatThrownBy(() -> userService.validateSessionOfUser("ikjo", null))
             .isInstanceOf(UserIncorrectAccessException.class)
             .hasMessageContaining("로그인이 정상적으로 되어있지 않습니다.");
     }
@@ -127,12 +123,8 @@ public class UserServiceTest {
     @DisplayName("사용자가 사용자 정보를 수정 시 사용자에 대한 세션 상 ID와 입력받은 사용자 ID 값(파라미터)이 일치하지 않는 경우 UserIncorrectAccessException 예외가 발생한다.")
     @Test
     void 사용자_세션_아이디_검증() {
-        // given
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionUser", userRequestDto.convertToDomain().convertToDto());
-
         // when, then
-        assertThatThrownBy(() -> userService.validateSessionOfUser("honux", session))
+        assertThatThrownBy(() -> userService.validateSessionOfUser("honux", userRequestDto.convertToDomain().convertToDto()))
             .isInstanceOf(UserIncorrectAccessException.class)
             .hasMessageContaining("해당 계정의 정보는 수정할 수 없습니다.");
     }

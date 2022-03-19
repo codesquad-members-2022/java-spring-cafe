@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ExceptionController {
 
     @ExceptionHandler(UserIncorrectAccessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView handleDuplicateUserException(UserIncorrectAccessException exception) {
         ModelAndView modelAndView = new ModelAndView("error/error");
         modelAndView.addObject("errorMessage", exception.getMessage());
@@ -21,7 +21,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(LoginFailedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ModelAndView handleLoginFailException(LoginFailedException exception) {
         ModelAndView modelAndView = new ModelAndView("error/login_failed");
         modelAndView.addObject("errorMessage", exception.getMessage());

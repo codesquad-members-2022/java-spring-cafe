@@ -85,7 +85,7 @@ public class UserControllerTest {
         UserResponseDto userResponseDto = user.convertToDto();
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionUser", userResponseDto);
-        doNothing().when(userService).validateSessionOfUser("ikjo", session);
+        doNothing().when(userService).validateSessionOfUser("ikjo", userResponseDto);
 
         given(userService.findOne("ikjo")).willReturn(userResponseDto);
 
@@ -93,7 +93,7 @@ public class UserControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form").session(session));
 
         // then
-        verify(userService).validateSessionOfUser("ikjo", session);
+        verify(userService).validateSessionOfUser("ikjo", userResponseDto);
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("user/updateForm"))
             .andExpect(model().attribute("user", userResponseDto));

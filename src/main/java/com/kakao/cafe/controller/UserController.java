@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.service.UserService;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,8 @@ public class UserController {
 
     @GetMapping("/users/{id}/form")
     public String getUpdateForm(@PathVariable String id, HttpSession session, Model model) {
-        userService.validateSessionOfUser(id, session);
+        UserResponseDto sessionOfUser = (UserResponseDto) session.getAttribute("sessionUser");
+        userService.validateSessionOfUser(id, sessionOfUser);
         model.addAttribute("user", userService.findOne(id));
 
         return "user/updateForm";

@@ -46,13 +46,12 @@ public class UserService {
         }
     }
 
-    public void validateSessionOfUser(String id, HttpSession session) {
-        Object sessionUser = session.getAttribute("sessionUser");
-        if (sessionUser == null) {
+    public void validateSessionOfUser(String id, UserResponseDto sessionOfUser) {
+        if (sessionOfUser == null) {
             throw new UserIncorrectAccessException("로그인이 정상적으로 되어있지 않습니다.");
         }
 
-        if (!((UserResponseDto) sessionUser).hasSameUserId(id)) {
+        if (!sessionOfUser.hasSameUserId(id)) {
             throw new UserIncorrectAccessException("해당 계정의 정보는 수정할 수 없습니다.");
         }
     }
