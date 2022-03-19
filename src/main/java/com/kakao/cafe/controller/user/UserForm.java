@@ -1,4 +1,4 @@
-package com.kakao.cafe.controller;
+package com.kakao.cafe.controller.user;
 
 public class UserForm {
     private String name;

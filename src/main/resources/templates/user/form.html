@@ -24,7 +24,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="../user/list.html">멤버 리스트</a></li>
                 <li><a class="black-component" href="login.html" role="button">로그인</a></li>
-                <li><a class="black-component" href="/user/new" role="button">회원가입</a></li>
+                <li><a class="black-component" href="/user/signup" role="button">회원가입</a></li>
             </ul>
         </div>
     </nav>
@@ -33,7 +33,7 @@
         <header class="post-header">
             <p class="title">회원가입</p>
         </header>
-        <form name="question" class="info-container" th:action="@{/user/new}"method="post" action="/users">
+        <form name="question" class="info-container" th:action="@{/users/signup}"method="post" action="/users">
             <div class="form-group">
                 <label for="email">이메일</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요">

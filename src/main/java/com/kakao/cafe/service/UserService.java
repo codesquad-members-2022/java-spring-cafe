@@ -1,7 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.user.MemoryUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.NoSuchElementException;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final MemoryUserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(MemoryUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
