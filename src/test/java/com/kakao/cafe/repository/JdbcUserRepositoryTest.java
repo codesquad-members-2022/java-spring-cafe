@@ -67,7 +67,7 @@ public class JdbcUserRepositoryTest {
     @Test
     void 모든_사용자_정보_조회() {
         // given
-        jdbcUserRepository.clear();
+        jdbcUserRepository.deleteAll();
         jdbcUserRepository.save(user);
         jdbcUserRepository.save(new User("ikjo93", "1234", "조명익", "auddlr100@naver.com"));
 

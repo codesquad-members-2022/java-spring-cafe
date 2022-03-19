@@ -25,7 +25,7 @@ class MemoryUserRepositoryTest {
 
     @AfterEach
     void close() {
-        userRepository.clear();
+        userRepository.deleteAll();
     }
 
     @DisplayName("주어진 user 객체의 사용자 정보 데이터를 저장한다.")

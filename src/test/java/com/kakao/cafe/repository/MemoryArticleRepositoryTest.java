@@ -20,12 +20,12 @@ public class MemoryArticleRepositoryTest {
 
     @BeforeEach
     void setup() {
-        article = new Article(1, "ikjo", "java", "java is fun", LocalDateTime.now());
+        article = new Article(1, "ikjo", "조명익","java", "java is fun", LocalDateTime.now());
     }
 
     @AfterEach
     void close() {
-        articleRepository.clear();
+        articleRepository.deleteAll();
     }
 
     @DisplayName("주어진 article 객체의 사용자 정보 데이터를 저장한다.")
@@ -57,7 +57,7 @@ public class MemoryArticleRepositoryTest {
     void 모든_사용자_정보_조회() {
         // given
         articleRepository.save(article);
-        articleRepository.save(new Article(2, "ikjo", "python", "python is fun", LocalDateTime.now()));
+        articleRepository.save(new Article(2, "ikjo", "조명익","python", "python is fun", LocalDateTime.now()));
 
         // when
         List<Article> result = articleRepository.findAll();
