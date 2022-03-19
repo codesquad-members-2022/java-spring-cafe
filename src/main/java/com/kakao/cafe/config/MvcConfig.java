@@ -37,9 +37,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns(
                         "/articles/form",
-                        "/articles/write",
-                        "/articles/{id}",
-                        "/articles/{id}/*"
+                        "/articles/{id}"
                 );
     }
 }

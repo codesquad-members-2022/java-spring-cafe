@@ -3,6 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
 import com.kakao.cafe.repository.CrudRepository;
+import com.kakao.cafe.session.SessionUser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,14 +34,15 @@ public class LoginServiceUnitTest {
         String password = "password";
         LoginParam loginParam = new LoginParam(userId, password);
         User user = new User(1, userId, password, "name", "email");
+        SessionUser sessionUser = new SessionUser(user);
 
         given(repository.findById(userId)).willReturn(Optional.of(user));
 
         // when
-        User result = loginService.checkInfo(loginParam);
+        SessionUser result = loginService.checkInfo(loginParam);
 
         // then
-        assertThat(result).usingRecursiveComparison().isEqualTo(user);
+        assertThat(result).usingRecursiveComparison().isEqualTo(sessionUser);
 
         verify(repository).findById(userId);
     }

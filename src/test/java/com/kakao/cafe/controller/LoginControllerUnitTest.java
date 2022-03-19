@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.LoginParam;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.service.LoginService;
+import com.kakao.cafe.session.SessionUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -47,8 +48,9 @@ public class LoginControllerUnitTest {
         // given
         LoginParam loginParam = new LoginParam("userId", "password");
         User user = new User(1, "userId", "password", "name", "email");
+        SessionUser sessionUser = new SessionUser(user);
 
-        given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
+        given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(sessionUser);
 
         // when
         mvc.perform(post("/login")
@@ -70,8 +72,9 @@ public class LoginControllerUnitTest {
         // given
         LoginParam loginParam = new LoginParam("userId", "Inconsistency");
         User user = new User(1, "userId", "password", "name", "email");
+        SessionUser sessionUser = new SessionUser(user);
 
-        given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(user);
+        given(service.checkInfo(ArgumentMatchers.refEq(loginParam))).willReturn(sessionUser);
 
         // when
         mvc.perform(post("/login")
