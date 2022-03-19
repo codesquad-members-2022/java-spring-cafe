@@ -58,7 +58,7 @@ public class LoginControllerUnitTest {
 
                 // then
                 .andExpectAll(
-                        request().sessionAttribute("userInfo", user),
+                        request().sessionAttribute("sessionUser", sessionUser),
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
                 );

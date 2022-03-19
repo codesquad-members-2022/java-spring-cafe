@@ -7,9 +7,11 @@ import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.NoSuchArticleException;
 import com.kakao.cafe.exception.article.RemoveArticleException;
 import com.kakao.cafe.exception.article.SaveArticleException;
+import com.kakao.cafe.exception.common.AccessRestrictionException;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.session.SessionUser;
 import com.kakao.cafe.util.DomainMapper;
-import org.apache.logging.log4j.util.Strings;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,10 +34,10 @@ import java.util.stream.Stream;
 
 import static com.kakao.cafe.message.ArticleDomainMessage.*;
 import static com.kakao.cafe.util.Convertor.convertToMultiValueMap;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ArticleController.class)
@@ -48,11 +50,18 @@ public class ArticleControllerUnitTest {
     @MockBean
     ArticleService service;
 
+    static User user;
+
     MockHttpSession session;
 
     List<Article> articles;
 
     DomainMapper<Article> articleMapper = new DomainMapper<>();
+
+    @BeforeAll
+    static void init() {
+        user = new User(1, "writer", "password", "name", "email");
+    }
 
     @BeforeEach
     void setUp() {
@@ -75,8 +84,8 @@ public class ArticleControllerUnitTest {
         Article article = articleMapper.convertToDomain(newArticleParam, Article.class);
         given(service.add(newArticleParam)).willReturn(article);
 
-        session.setAttribute("userInfo",
-                new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
         mvc.perform(post("/articles")
@@ -85,6 +94,7 @@ public class ArticleControllerUnitTest {
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         status().is3xxRedirection(),
                         redirectedUrl("/")
                 );
@@ -120,7 +130,7 @@ public class ArticleControllerUnitTest {
     /*
         getDetail
      */
-    @DisplayName("로그인한 클라이언트의 글 상세 보기 요청이 오고 파라미터 값인 id 에 해당하는 글을 찾아 'qna/show' 에서 출력한다.")
+    @DisplayName("로그인한 클라이언트의 글 상세 보기 요청이 오면 파라미터 값인 id 에 해당하는 글을 찾아 'qna/show' 에서 출력한다.")
     @Test
     void getDetailSuccess() throws Exception {
         // given
@@ -128,15 +138,15 @@ public class ArticleControllerUnitTest {
         Article article = articles.get(id - 1);
         given(service.search(id)).willReturn(article);
 
-        session.setAttribute("userInfo",
-                new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
-        mvc.perform(get("/articles/" + id)
-                        .session(session))
+        mvc.perform(get("/articles/" + id).session(session))
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         model().attributeExists("article"),
                         model().attribute("article", article),
                         content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
@@ -155,8 +165,8 @@ public class ArticleControllerUnitTest {
         int id = 4;
         given(service.search(id)).willThrow(new NoSuchArticleException(HttpStatus.OK, NO_SUCH_ARTICLE_MESSAGE));
 
-        session.setAttribute("userInfo",
-                new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
         mvc.perform(get("/articles/" + id)
@@ -164,6 +174,7 @@ public class ArticleControllerUnitTest {
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         content().string(NO_SUCH_ARTICLE_MESSAGE),
                         status().isOk()
                 );
@@ -186,8 +197,8 @@ public class ArticleControllerUnitTest {
         Article article = articleMapper.convertToDomain(modifiedArticleParam, Article.class);
         given(service.update(modifiedArticleParam)).willReturn(article);
 
-        session.setAttribute("userInfo",
-                new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
         mvc.perform(put("/articles/" + id).params(convertToMultiValueMap(modifiedArticleParam))
@@ -195,6 +206,7 @@ public class ArticleControllerUnitTest {
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         status().is3xxRedirection(),
                         redirectedUrl("/")
                 );
@@ -216,8 +228,8 @@ public class ArticleControllerUnitTest {
         given(service.update(ArgumentMatchers.refEq(modifiedArticleParam)))
                 .willThrow(new SaveArticleException(HttpStatus.BAD_GATEWAY, UPDATE_FAIL_MESSAGE));
 
-        session.setAttribute("userInfo",
-                new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
         mvc.perform(put("/articles/" + id)
@@ -226,6 +238,7 @@ public class ArticleControllerUnitTest {
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         content().string(UPDATE_FAIL_MESSAGE),
                         status().isBadGateway()
                 );
@@ -233,7 +246,7 @@ public class ArticleControllerUnitTest {
         verify(service).update(ArgumentMatchers.refEq(modifiedArticleParam));
     }
 
-    @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 수정 요청이 오면 '/error/403' 로 리다이렉트한다.")
+    @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 수정 요청이 오면 '/error/4xx' 뷰를 반환한다.")
     @Test
     void modifyArticleFail2() throws Exception {
         // given
@@ -242,8 +255,11 @@ public class ArticleControllerUnitTest {
         ModifiedArticleParam modifiedArticleParam
                 = new ModifiedArticleParam(3, "otherUser", "title", "contents", currentDate);
 
-        session.setAttribute("userInfo",
-                new User(1, "user", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        given(service.update(modifiedArticleParam))
+                .willThrow(new AccessRestrictionException(HttpStatus.FORBIDDEN, "error/4xx", MODIFY_ACCESS_RESTRICTION_MESSAGE));
+
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
         mvc.perform(put("/articles/" + id)
@@ -252,8 +268,11 @@ public class ArticleControllerUnitTest {
 
                 // then
                 .andExpectAll(
-                        status().is3xxRedirection(),
-                        redirectedUrl("/error/403")
+                        request().sessionAttribute("sessionUser", sessionUser),
+                        content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
+                        content().encoding(StandardCharsets.UTF_8),
+                        status().isForbidden(),
+                        view().name("error/4xx")
                 );
     }
 
@@ -286,22 +305,25 @@ public class ArticleControllerUnitTest {
     void deleteArticleSuccess() throws Exception {
         // given
         int articleId = 1;
-        String writer = "writer";
+        Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
+
+        given(service.search(articleId)).willReturn(article);
         doNothing().when(service).remove(articleId);
 
-        session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
-        mvc.perform(delete("/articles/" + articleId)
-                        .param("writer", writer)
-                        .session(session))
+        mvc.perform(delete("/articles/" + articleId).session(session))
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         status().is3xxRedirection(),
                         redirectedUrl("/")
                 );
 
+        verify(service).search(articleId);
         verify(service).remove(articleId);
     }
 
@@ -310,18 +332,20 @@ public class ArticleControllerUnitTest {
     void deleteArticleFail() throws Exception {
         // given
         int articleId = 1;
-        String writer = "writer";
+        Article article = new Article(1, "writer", "title", "contents", LocalDate.now());
+
+        given(service.search(articleId)).willReturn(article);
         doThrow(new RemoveArticleException(HttpStatus.BAD_GATEWAY, REMOVE_FAIL_MESSAGE)).when(service).remove(articleId);
 
-        session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
-        mvc.perform(delete("/articles/" + articleId)
-                        .param("writer", writer)
-                        .session(session))
+        mvc.perform(delete("/articles/" + articleId).session(session))
 
                 // then
                 .andExpectAll(
+                        request().sessionAttribute("sessionUser", sessionUser),
                         content().string(REMOVE_FAIL_MESSAGE),
                         status().isBadGateway()
                 );
@@ -329,22 +353,28 @@ public class ArticleControllerUnitTest {
         verify(service).remove(articleId);
     }
 
-    @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 삭제 요청이 오면 '/error/403' 로 리다이렉트한다.")
+    @DisplayName("로그인한 클라이언트의 본인이 작성하지 않은 게시글에 대한 삭제 요청이 오면 '/error/4xx' 뷰를 반환한다.")
     @Test
     void deleteArticleFail2() throws Exception {
         // given
         int articleId = 1;
-        session.setAttribute("userInfo", new User(1, "writer", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
+
+        doThrow(new AccessRestrictionException(HttpStatus.FORBIDDEN, "error/4xx", MODIFY_ACCESS_RESTRICTION_MESSAGE))
+                .when(service).search(articleId);
+
+        SessionUser sessionUser = new SessionUser(user);
+        session.setAttribute("sessionUser", sessionUser);
 
         // when
-        mvc.perform(delete("/articles/" + articleId)
-                        .param("writer", "otherWriter")
-                        .session(session))
+        mvc.perform(delete("/articles/" + articleId).session(session))
 
                 // then
                 .andExpectAll(
-                        status().is3xxRedirection(),
-                        redirectedUrl("/error/403")
+                        request().sessionAttribute("sessionUser", sessionUser),
+                        content().contentTypeCompatibleWith(MediaType.TEXT_HTML),
+                        content().encoding(StandardCharsets.UTF_8),
+                        status().isForbidden(),
+                        view().name("error/4xx")
                 );
     }
 

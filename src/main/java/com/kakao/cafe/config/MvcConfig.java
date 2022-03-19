@@ -33,6 +33,7 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor())
                 .addPathPatterns(
+                        "/articles",
                         "/articles/form",
                         "/articles/{id}"
                 );
