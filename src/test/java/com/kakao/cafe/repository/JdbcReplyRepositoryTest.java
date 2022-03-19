@@ -22,7 +22,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
 @Import(QueryLoader.class)
-@Sql({"classpath:/schema.sql", "classpath:/data.sql"})
+@Sql({"classpath:/schema-h2.sql", "classpath:/data.sql"})
 public class JdbcReplyRepositoryTest {
     private final DbReplyRepository repository;
 

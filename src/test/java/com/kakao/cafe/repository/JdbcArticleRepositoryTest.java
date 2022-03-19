@@ -20,7 +20,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
 @Import(QueryLoader.class)
-@Sql("classpath:/schema.sql")
+@Sql("classpath:/schema-h2.sql")
 public class JdbcArticleRepositoryTest {
     private final DbArticleRepository repository;
 
