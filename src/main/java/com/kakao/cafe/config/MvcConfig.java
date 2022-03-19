@@ -22,9 +22,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/users/login_failed").setViewName("user/login_failed");
 
         registry.addViewController("/articles/form").setViewName("qna/form");
-
-        registry.addViewController("/error/401").setViewName("error/401");
-        registry.addViewController("/error/403").setViewName("error/403");
     }
 
     @Override
