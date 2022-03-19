@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.user.LoginUserDto;
 import com.kakao.cafe.web.dto.user.SignUpUserDto;
+import com.kakao.cafe.web.session.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,18 +92,16 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute(name = "user")LoginUserDto loginUserDto, HttpServletRequest request) {
+    public String login(@ModelAttribute(name = "user")LoginUserDto loginUserDto, HttpSession httpSession) {
         User loginUser = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
 
         if (loginUser == null) {
             return "user/login_failed";
         }
 
-        HttpSession session = request.getSession();
-        session.setAttribute("loginUser", loginUser);
+        httpSession.setAttribute(SessionConst.LOGIN_SESSION_NAME, loginUser);
 
-
-        return "index_login";
+        return "index";
     }
 
     @GetMapping("/logout")
