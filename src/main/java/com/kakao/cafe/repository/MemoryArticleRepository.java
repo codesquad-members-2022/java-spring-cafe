@@ -1,14 +1,12 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public class MemoryArticleRepository implements ArticleRepository {
 
     private final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
@@ -26,10 +24,11 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public Optional<Article> findByArticleId(Integer id) {
-        return articles.stream()
-                .filter(article -> article.equalId(id))
-                .findAny();
+    public Optional<Article> findByArticleId(int id) {
+        if (articles.size() == 0) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(articles.get(id - 1));
     }
 
     public void clear() {

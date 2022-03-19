@@ -4,25 +4,16 @@ import java.util.Objects;
 
 public class User {
 
-    private Long id;
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    public User(UserJoinRequest userForm) {
-        this.userId = userForm.getUserId();
-        this.password = userForm.getPassword();
-        this.name = userForm.getName();
-        this.email = userForm.getEmail();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public User(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
     }
 
     public String getUserId() {
@@ -54,7 +45,7 @@ public class User {
         return Objects.hash(userId);
     }
 
-    public boolean equalId(String referUserId) {
+    public boolean isSameId(String referUserId) {
         return Objects.equals(userId, referUserId);
     }
 }

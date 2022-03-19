@@ -36,7 +36,7 @@ public class ArticleControllerTest {
 
     @BeforeEach
     void setUp() {
-        article = new Article(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
+        article = new ArticleWriteRequest("쿠킴1", "제목1", "본문1").toDomain();
         article.setId(1);
     }
 
@@ -72,7 +72,7 @@ public class ArticleControllerTest {
 
         actions.andExpect(status().isOk())
                 .andExpect(model().attribute("articles", List.of(article)))
-                .andExpect(view().name("/index"));
+                .andExpect(view().name("index"));
     }
 
     @Test

@@ -17,7 +17,7 @@ public class ArticleService {
     }
 
     public Article write(ArticleWriteRequest articleRequest) {
-        Article article = new Article(articleRequest);
+        Article article = articleRequest.toDomain();
         return articleRepository.save(article);
     }
 

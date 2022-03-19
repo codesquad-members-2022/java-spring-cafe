@@ -28,4 +28,8 @@ public class UserJoinRequest {
     public String getEmail() {
         return email;
     }
+
+    public User toDomain() {
+        return new User(userId, password, name, email);
+    }
 }

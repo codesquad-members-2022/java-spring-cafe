@@ -21,7 +21,7 @@ public class ArticleController {
     }
 
     @GetMapping("/questions")
-    public String createArticle() {
+    public String formCreateArticle() {
         return "qna/form";
     }
 
@@ -35,11 +35,11 @@ public class ArticleController {
     public String articles(Model model) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/articles/{articleId}")
-    public String article(@PathVariable(value = "articleId") Integer articleId, Model model) {
+    public String article(@PathVariable(value = "articleId") int articleId, Model model) {
         Article article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";

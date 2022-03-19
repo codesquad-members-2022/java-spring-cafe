@@ -33,7 +33,7 @@ class ArticleServiceTest {
     @Test
     void write_메서드_만약_article이_들어온다면_저장소에_저장한다() {
         ArticleWriteRequest articleWriteRequest = new ArticleWriteRequest("쿠킴", "제목1234", "본문1234");
-        article = new Article(new ArticleWriteRequest("쿠킴", "제목1234", "본문1234"));
+        article = new ArticleWriteRequest("쿠킴1", "제목1", "본문1").toDomain();
         article.setId(1);
 
         Article result = articleService.write(articleWriteRequest);

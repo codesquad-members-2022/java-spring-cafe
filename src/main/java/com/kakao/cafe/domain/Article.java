@@ -5,20 +5,20 @@ import java.util.Objects;
 
 public class Article {
 
-    private Integer id;
+    private int id;
     private final String writer;
     private final String title;
     private final String contents;
-    private final LocalDateTime createdTime;
+    private LocalDateTime createdTime;
 
-    public Article(ArticleWriteRequest articleWriteRequest) {
-        writer = articleWriteRequest.getWriter();
-        title = articleWriteRequest.getTitle();
-        contents = articleWriteRequest.getContents();
+    public Article(String writer, String title, String contents) {
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
         createdTime = LocalDateTime.now();
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
@@ -34,16 +34,18 @@ public class Article {
         return contents;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
+
+    public void setCreatedTime(LocalDateTime createdTime) { this.createdTime = createdTime; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return Objects.equals(id, article.id);
+        return id == article.id;
     }
 
     @Override
@@ -51,8 +53,7 @@ public class Article {
         return Objects.hash(id);
     }
 
-    public boolean equalId(Integer referId) {
-        return Objects.equals(this.id, referId);
+    public boolean isSameId(int referId) {
+        return this.id == referId;
     }
-
 }

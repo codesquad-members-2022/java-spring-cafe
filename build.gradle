@@ -4,6 +4,10 @@ plugins {
 	id 'java'
 }
 
+jar {
+	enabled = false
+}
+
 group = 'com.kakao'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -16,6 +20,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	runtimeOnly 'com.h2database:h2'
 }
 
 test {

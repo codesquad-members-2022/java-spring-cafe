@@ -40,10 +40,10 @@ class UserServiceTest {
             void it_save_user_and_return_userId() {
                 UserJoinRequest userJoinRequest = new UserJoinRequest("testId", "1234", "haha", "test@gmail.com");
 
-                Long result = userService.join(userJoinRequest);
+                String result = userService.join(userJoinRequest);
                 User user = userService.findUser("testId");
 
-                assertThat(result).isEqualTo(user.getId());
+                assertThat(result).isEqualTo(user.getUserId());
             }
         }
 
@@ -80,7 +80,7 @@ class UserServiceTest {
 
                 User sut = userService.findUser("testId");
 
-                assertThat(sut).isEqualTo(new User(userJoinRequest1));
+                assertThat(sut).isEqualTo(new User("testId", "1234", "haha", "test@gmail.com"));
             }
         }
 

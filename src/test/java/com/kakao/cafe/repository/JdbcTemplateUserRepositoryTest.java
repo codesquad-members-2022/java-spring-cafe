@@ -1,29 +1,28 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.domain.UserJoinRequest;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@JdbcTest
+class JdbcTemplateUserRepositoryTest {
 
-@DisplayName("MemoryUserRepository 클래스")
-class MemoryUserRepositoryTest {
-
-    MemoryUserRepository repository;
+    @Autowired DataSource dataSource;
+    private UserRepository userRepository;
 
     @BeforeEach
-    void setup() {
-        repository = new MemoryUserRepository();
-    }
-
-    @AfterEach
-    void clear() {
-        repository.clear();
+    void setUp() {
+        userRepository = new JdbcTemplateUserRepository(dataSource);
     }
 
     @Nested
@@ -39,12 +38,12 @@ class MemoryUserRepositoryTest {
             void it_store_user_and_return_user() {
                 User user = new User("testuserid", "1234", "haha", "test@gmail.com");
 
-                User sut = repository.save(user);
+                User saveUser = userRepository.save(user);
 
-                assertThat(sut.getUserId()).isEqualTo("testuserid");
-                assertThat(sut.getPassword()).isEqualTo("1234");
-                assertThat(sut.getName()).isEqualTo("haha");
-                assertThat(sut.getEmail()).isEqualTo("test@gmail.com");
+                assertThat(saveUser.getUserId()).isEqualTo("testuserid");
+                assertThat(saveUser.getPassword()).isEqualTo("1234");
+                assertThat(saveUser.getName()).isEqualTo("haha");
+                assertThat(saveUser.getEmail()).isEqualTo("test@gmail.com");
             }
         }
     }
@@ -61,13 +60,13 @@ class MemoryUserRepositoryTest {
             @DisplayName("모든 user 객체를 리스트로 리턴한다.")
             void it_store_user_and_return_user() {
                 User user = new User("testuserid", "1234", "haha", "test@gmail.com");
-                repository.save(user);
+                userRepository.save(user);
                 User user2 = new User("testuserid2", "1234", "haha2", "test@gmail.com");
-                repository.save(user2);
+                userRepository.save(user2);
 
-                List<User> sut = repository.findAll();
+                List<User> sut = userRepository.findAll();
 
-                assertThat(sut.size()).isEqualTo(2);
+                assertThat(sut).contains(user, user2);
             }
         }
     }
@@ -84,9 +83,9 @@ class MemoryUserRepositoryTest {
             @DisplayName("해당 유저의 옵셔널 객체를 리턴한다.")
             void it_return_user() {
                 User user = new User("testuserid", "1234", "haha", "test@gmail.com");
-                repository.save(user);
+                userRepository.save(user);
 
-                Optional<User> sut = repository.findByUserId("testuserid");
+                Optional<User> sut = userRepository.findByUserId("testuserid");
 
                 assertThat(sut).contains(user);
             }
@@ -99,13 +98,12 @@ class MemoryUserRepositoryTest {
             @DisplayName("비어있는 Optional을 리턴한다")
             void it_return_user() {
                 User user = new User("testuserid", "1234", "haha", "test@gmail.com");
-                repository.save(user);
+                userRepository.save(user);
 
-                Optional<User> sut = repository.findByUserId("not_exist");
+                Optional<User> sut = userRepository.findByUserId("not_exist");
 
                 assertThat(sut.isEmpty()).isTrue();
             }
         }
     }
-
 }
