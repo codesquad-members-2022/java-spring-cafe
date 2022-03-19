@@ -4,8 +4,10 @@
 
 ## Step07 ToDO-List
 - [x] footer 분리하기
-- [ ] Ajax 로 댓글 추가하기
-- [ ] Ajax 로 댓글 삭제하기
+- [x] Ajax 로 댓글 추가하기
+- [x] Ajax 로 댓글 삭제하기
+- [ ] DB MySQl 로 바꾸기
+- [ ] EC2 배포하기
 
 ## Step06 ToDO-List
 
