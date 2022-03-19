@@ -1,6 +1,7 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.domain.User;
+import com.ttasjwi.cafe.controller.request.UserJoinRequest;
+import com.ttasjwi.cafe.controller.response.UserResponse;
 import com.ttasjwi.cafe.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,29 +23,29 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/new")
+    @GetMapping("/join")
     public String createForm() {
         return "/users/createUserForm";
     }
 
-    @PostMapping("/new")
-    public String create(@ModelAttribute User user) {
-        userService.join(user);
-        log.info("new user={}", user);
+    @PostMapping("/join")
+    public String create(@ModelAttribute UserJoinRequest userJoinRequest) {
+        userService.join(userJoinRequest);
+        log.info("User Join Success : {}", userJoinRequest);
         return "redirect:/users";
     }
 
     @GetMapping("/{userName}")
     public String profile(@PathVariable String userName, Model model) {
-        User user = userService.findByUserName(userName);
-        model.addAttribute("user", user);
+        UserResponse userResponse = userService.findByUserName(userName);
+        model.addAttribute("user", userResponse);
         return "/users/userProfile";
     }
 
     @GetMapping
-    public String list(Model model) {
-        List<User> list = userService.findAll();
-        model.addAttribute("users", list);
+    public String userList(Model model) {
+        List<UserResponse> userList = userService.findAll();
+        model.addAttribute("users", userList);
         return "/users/userList";
     }
 }

@@ -241,3 +241,172 @@ HomeController 및 테스트 코드를 추가했다.
 - 기존의 LocalDate 필드를 LocalDateTime으로 변경함
 
 ---
+
+# Step3 DB에 저장하기
+
+- [x] H2 데이터베이스 의존성 추가 및 연동
+- [x] 게시글 데이터 저장(DB 연동)
+- [x] 게시글 목록 구현(DB 연동)
+- [x] 게시글 상세보기 구현(DB 연동)
+- [x] 사용자 정보 DB 저장
+- [ ] 배포
+
+---
+
+## 3.01 Gradle 의존 라이브러리 추가
+
+- jdbc 라이브러리 추가
+- h2 데이터베이스 관련 라이브러리 추가
+
+## 3.02 h2 데이터베이스 연동
+
+- h2 데이터베이스 설정 추가
+
+## 3.03 UserRepository 구현 분리
+
+- 데이터베이스 연동을 위해 확장 가능성을 열어야한다.
+- `UserRepository`를 인터페이스로 하고, 기존 사용하던 것은 구현체 MemoryUserRepository로 하였다.
+- 의존 계층에서 역할을 의존하도록 했다.
+- 이제부터 외부에서는 데이터 저장계층의 역할인 userRepository를 의존한다. 구현체의 상태가 바뀌어도 외부의 코드를 변경할 필요가 없다.
+
+## 3.04 회원 등록시 중복 검증책임을 UserService에게 넘김
+
+- UserRepository 구현체를 다른 구현체로 바꾸기엔, 기존의 UserRepository에서 수행해야 했던 중복 검증 로직을 또 다시 구현해야한다.
+- 이 책임을 UserService에게 위임하고, 데이터 접근계층인 UserRepository는 순수하게 값을 보관하도록 한다.
+- 이런 검증에 대한 테스트 코드는 이미 UserService에서 별도로 작성해두기도 했고, MemoryUserRepository에서 별도로 작성할 필요가 없으니 제거했다.
+
+## 3.05 JdbcUserRepository 추가 및 의존 관계 변경
+
+- 순수 Jdbc 방식의 JdbcUserRepository를 생성
+- UserRepository 구현체 변경 : MemoryUserRepository -> JdbcUserRepository
+- User 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
+
+## 3.06 Article에 id 부여, ArticleRepository 내부 구조 변경
+
+- 데이터베이스에 연동하기 위해서는 게시글이 스스로 글 번호를 가지고 있어야한다.
+- 게시글에게 id를 부여하고, 스스로 가진 id를 기준으로 접근할 수 있도록 ArticleRepository 내부적으로는 ConcurrentHashMap으로 구조 변경
+
+## 3.07 역할 : ArticleRepository / 구현 : MemoryArticleRepository 분리
+
+- 데이터베이스 연동의 확장성을 위해 ArticleRepository 인터페이스를 따로 분리함
+- 유효한 게시글인지 여부의 검증은 ArticleController 단에서 하도록 함
+- 고로, ArticleRepository의 검증 로직이 제대로 수행되는지에 대한 테스트는 제거했다.
+
+## 3.08 JdbcArticleRepository 추가 및 의존 관계 변경
+
+- 순수 Jdbc 방식의 JdbcArticleRepository를 생성
+- ArticleRepository 구현체 변경 : MemoryArticleRepository -> JdbcArticleRepository
+- article 테이블에 대한 DDL SQL을 별도로 루트 경로 하위의 sql폴더에 저장했다.
+
+## 3.09 ArticleService 분리
+
+- Article 등록, 검증 등에 대한 로직을 ArticleService 계층에 분리했다.
+- ArticleeController는 파라미터의 해석 및 뷰테 무엇을 넘길 것인지에 대해서만 초점을 두게 하고, ArticleService는 검증 비즈니스 로직을 수행하도록 한다.
+
+## 3.10  JdbcTemplateUserRepository 추가 및 의존관계 변경
+
+- JdbcTemplate 방식의 JdbcTemplateUserRepository를 생성
+- UserRepository 구현체 변경 : JdbcUserRepository -> JdbcTemplateUserRepository
+
+## 3.11 JdbcArticleRepository - 등록 article에 id를 set하지 않던 문제 수정
+
+- JdbcArticleRepository에서 save시 id를 db상에선 등록하였으나 등록 객체에 set하지 않았던 문제를 확인, 수정
+
+## 3.12 JdbcTemplateArticleRepository 추가 및 의존관계 변경
+
+- JdbcTemplate 방식의 JdbcTemplateArticleRepository를 생성
+- ArticleRepository 구현체 변경 : JdbcArticleRepository -> JdbcTemplateArticleRepository
+
+## 3.13 Repository 계층을 엔티티와 같은 패키지에 둠
+
+- 엔티티(데이터베이스에 맞닿는 객체)의 상태 변경은 레포지토리에서 이루어지므로, 이들을 같은 패키지에서 두는게 맞다는 생각에 같은 패키지에 두었다.
+
+## 3.14 User DDL 수정 - UNIQUE 제약 추가
+
+> UNIQUE (user_name, user_email)
+- 사용자 이름, 이메일에 유니크 제약 추가
+
+## 3.15 User 클래스 - Setter 제거, Builder패턴 적용
+
+- User클래스에서 Setter를 제거했다.
+- 생성을 한번에 하고 Builder 패턴을 적용하여 생성시 매개변수, 인자를 읽기 편하게 하였다.
+- 만약 변경을 해야한다면 setter 비슷한 역할을 하는 메서드를 생성해야하는데 이는 package-private로 처리할 예정이다. (Repository)
+- 가입 시, 외부에서 LocalDate를 주입했는데 생성시 자동 초기화되도록 했다.
+
+## 3.16 UserRepository 테스트 - 스프링 연동
+
+- UserRepository 테스트를 스프링부트 연동으로, 의존관계를 주입하여 하도록 함
+- @Transactional 어노테이션을 통해, 테스트할 때마다 롤백되도록 함
+- 기존의 MemoryUserRepositoryTest는 제거
+
+## 3.17 회원 가입시 폼의 내용이 UserJoinRequest에 맵핑되도록 함
+
+- 회원 가입시 바로 엔티티를 생성하지 않고 UserJoinRequest에 맵핑되도록 했다.
+- Service 계층에서는 UserJoinRequest를 인자로 하여 생성하도록 했다.
+
+## 3.18 URL 변경 - "users/new" -> "user/join"
+
+- 회원 가입 URL에서 전달되는 의미가 모호한 것 같아서, "user/join"으로 변경했다.
+
+## 3.19 유저 생성시, 선 검증 후 유저 엔티티 생성하도록 코드 순서 변경
+
+- UserJoinRequest를 검증후, 엔티티 생성하도록 코드 순서를 변경했다.
+
+## 3.20 URL 변경 - "articles/new" -> "articles/write"
+
+- 글 작성 URL에서 전달되는 의미가 모호한 것 같아서, "articles/write"으로 변경했다.
+
+## 3.21 Article - Setter 제거 및 글작성 요청 ArticleWriteRequest 맵핑
+
+1. setter 제거
+   - Article클래스에서 Setter를 웬만한건 다 제거했다.
+   - 아이디 초기화 해주는 부분은 setter가 필요한데 이 부분은 package-private로 지정하고 initArticleId로 생성함
+   - 생성을 한번에 하고 Builder 패턴을 적용하여 생성시 매개변수, 인자를 읽기 편하게 하였다.
+
+2. 글 작성 요청 -> ArticleWriteRequest 맵핑
+   - 가입 시, 외부에서 디폴트 작성자 및 LocalDateTime를 주입했는데 리퀘스트 생성시 자동 초기화되도록 했다.
+   - 글 작성시 바로 엔티티를 생성하지 않고 ArticleWriteRequest에 맵핑되도록 했다.
+   - Service 계층에서 ArticleWriteRequest를 기반으로 엔티티를 생성함.
+   - 이후 제어 흐름상 어떤 검증이나 중간 로직이 필요할 때, Request를 기반으로 검증하면 된다.
+
+## 3.22 - User 생성을 빌더를 통해서만 가능하도록 함
+
+- 요청 맵핑은 이제 UserJoinRequest를 통해서만 이루어지므로 생성자 호출을 통한 생성이 불필요하다.
+- 빌더를 통해서만 생성할 수 있음.
+
+## 3.23 - ArticleRepositoryTest 스프링부트 연동
+
+- MemoryArticleRepositoryTest -> ArticleRepositoryTests
+- 의존관계 주입을 SpringBoot 연동으로 하여 자동으로 하도록 함
+- 테스트를 트랜잭션 단위로 함
+
+## 3.24 userList, Profile 요청 시 UserResponse로 변환하여 반환
+
+- 기존엔 유저 엔티티를 그대로 Model에 담아 반환했는데, UserResponse로 변환하여 반환하도록 했다.
+- response에는 순전히 getter만 두도록 했다.
+
+## 3.25 request, response 객체들을 별도로 패키지에 분리
+
+- request, response 객체가 많아져서, controller 패키지가 너무 뚱뚱해지고 있다.
+- 내부적으로 따로 분리해버렸다.
+
+## 3.26 ArticleResponse 분리
+
+- Model에 Article 엔티티를 그대로 담지 않고, ArticleResponse로 변환하여 반환하도록 했다.
+
+## 3.27 ArticleController의 list메서드 -> articleList 메서드명 변경
+
+- list라는 메서드명이 모호해서, articleList로 메서드명 변경함.
+
+## 3.28 UserServiceTest - 스프링부트 연동
+
+- 스프링부트를 연동하여 의존관계를 자동 주입했다.
+- 테스트는 트랜잭션 단위로 진행된다.
+- list를 얻어오는 테스트는 단순히 값들을 전부 가져오는 것이고 테스트가 불필요할 것 같아서 제거했다. size를 통해 테스트하는 것은 메모리에서는 예측 가능하지, DB 연동 상황 등에서는 항상 성공한다는 것도 보장되지 않는다.
+
+## 3.29 ArticleWriteRequest의 생성자 접근레벨 수정
+
+- `ArticleWriteRequest(ArticleWriteRequestBuilder articleWriteRequestBuilder)`가 public으로 열려있어서, 게시글 작성 요청맵핑 시 ArticleWriteRequest 생성자를 특정하지 못 하는 문제가 있었다.
+- private로 접근 제어자 레벨을 낮춰서 게시글 작성을 다시 정상적으로 진행할 수 있도록 했다.
+
+---

@@ -1,6 +1,6 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.repository.ArticleRepository;
+import com.ttasjwi.cafe.service.ArticleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ class HomeControllerTest {
     private MockMvc mvc; // mockMvc
 
     @MockBean
-    private ArticleRepository articleRepository;
+    private ArticleService articleService;
 
     @Test
     @DisplayName("루트 경로에 요청하면 \"home\"이 return됨")

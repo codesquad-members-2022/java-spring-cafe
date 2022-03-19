@@ -1,51 +1,46 @@
 package com.ttasjwi.cafe.controller;
 
-import com.ttasjwi.cafe.domain.Article;
-import com.ttasjwi.cafe.repository.ArticleRepository;
+import com.ttasjwi.cafe.controller.request.ArticleWriteRequest;
+import com.ttasjwi.cafe.controller.response.ArticleResponse;
+import com.ttasjwi.cafe.service.ArticleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-
 @Controller
 @RequestMapping("/articles")
 public class ArticleController {
 
-    private final ArticleRepository articleRepository;
+    private final ArticleService articleService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    public ArticleController(ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
-    @GetMapping("/new")
+    @GetMapping("/write")
     public String createArticleForm() {
         return "/articles/createArticleForm";
     }
 
-    @PostMapping("/new")
-    public String createArticle(@ModelAttribute Article article) {
-        article.setWriter("anonymous User");
-        article.setRegDateTime(LocalDateTime.now());
-
-        int articleId = articleRepository.save(article);
-
-        log.info("New Article Created: articleId={}, {}", articleId , article);
+    @PostMapping("/write")
+    public String createArticle(@ModelAttribute ArticleWriteRequest articleWriteRequest) {
+        articleService.saveArticle(articleWriteRequest);
+        log.info("New Article Created: {}", articleWriteRequest);
         return "redirect:/";
     }
 
     @GetMapping("/{articleId}")
-    public String showArticle(@PathVariable int articleId, Model model) {
-        Article findArticle = articleRepository.findByArticleId(articleId);
-        model.addAttribute("article", findArticle);
+    public String showArticle(@PathVariable Long articleId, Model model) {
+        ArticleResponse showArticleResponse = articleService.findOne(articleId);
+        model.addAttribute("article", showArticleResponse);
         return "/articles/articleShow";
     }
 
     @GetMapping
-    public String list() {
+    public String articleList() {
         return "redirect:/";
     }
 
