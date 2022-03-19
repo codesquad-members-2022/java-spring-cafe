@@ -60,7 +60,7 @@ public class UserController {
         return mav;
     }
 
-    @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}")
     public String modifyProfile(ModifiedUserParam modifiedUserParam, HttpSession session) {
         User updateUser = userService.update(modifiedUserParam);
         session.setAttribute("userInfo", updateUser);

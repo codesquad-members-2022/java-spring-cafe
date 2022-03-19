@@ -79,7 +79,7 @@ public class ArticleControllerUnitTest {
                 new User(anyInt(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(post("/articles/write")
+        mvc.perform(post("/articles")
                         .params(convertToMultiValueMap(newArticleParam))
                         .session(session))
 
@@ -99,7 +99,7 @@ public class ArticleControllerUnitTest {
         NewArticleParam newArticleParam = new NewArticleParam("writer", "title", "contents");
 
         // when
-        mvc.perform(post("/articles/write").params(convertToMultiValueMap(newArticleParam))
+        mvc.perform(post("/articles").params(convertToMultiValueMap(newArticleParam))
                         .session(session))
 
                 // then
@@ -190,7 +190,7 @@ public class ArticleControllerUnitTest {
                 new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(put("/articles/" + id + "/update").params(convertToMultiValueMap(modifiedArticleParam))
+        mvc.perform(put("/articles/" + id).params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
 
                 // then
@@ -220,7 +220,7 @@ public class ArticleControllerUnitTest {
                 new User(anyInt(), article.getWriter(), Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(put("/articles/" + id + "/update")
+        mvc.perform(put("/articles/" + id)
                         .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
 
@@ -246,7 +246,7 @@ public class ArticleControllerUnitTest {
                 new User(1, "user", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(put("/articles/" + id + "/update")
+        mvc.perform(put("/articles/" + id)
                         .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
 
@@ -267,7 +267,7 @@ public class ArticleControllerUnitTest {
                 = new ModifiedArticleParam(1, "writer", "title", "contents", currentDate);
 
         // when
-        mvc.perform(put("/articles/" + id + "/update")
+        mvc.perform(put("/articles/" + id)
                         .params(convertToMultiValueMap(modifiedArticleParam))
                         .session(session))
 
@@ -292,7 +292,7 @@ public class ArticleControllerUnitTest {
         session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(delete("/articles/" + articleId + "/remove")
+        mvc.perform(delete("/articles/" + articleId)
                         .param("writer", writer)
                         .session(session))
 
@@ -316,7 +316,7 @@ public class ArticleControllerUnitTest {
         session.setAttribute("userInfo", new User(1, writer, Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(delete("/articles/" + articleId + "/remove")
+        mvc.perform(delete("/articles/" + articleId)
                         .param("writer", writer)
                         .session(session))
 
@@ -337,7 +337,7 @@ public class ArticleControllerUnitTest {
         session.setAttribute("userInfo", new User(1, "writer", Strings.EMPTY, Strings.EMPTY, Strings.EMPTY));
 
         // when
-        mvc.perform(delete("/articles/" + articleId + "/remove")
+        mvc.perform(delete("/articles/" + articleId)
                         .param("writer", "otherWriter")
                         .session(session))
 
@@ -356,7 +356,7 @@ public class ArticleControllerUnitTest {
         doNothing().when(service).remove(articleId);
 
         // when
-        mvc.perform(delete("/articles/" + articleId + "/remove")
+        mvc.perform(delete("/articles/" + articleId)
                         .param("writer", "writer")
                         .session(session))
 

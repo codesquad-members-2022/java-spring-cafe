@@ -4,7 +4,6 @@ import com.kakao.cafe.dto.ModifiedArticleParam;
 import com.kakao.cafe.dto.NewArticleParam;
 import com.kakao.cafe.exception.article.ArticleDomainException;
 import com.kakao.cafe.service.ArticleService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PostMapping("/write")
+    @PostMapping
     public String writeArticle(NewArticleParam newArticleParam) {
         articleService.add(newArticleParam);
         return "redirect:/";
@@ -40,13 +39,13 @@ public class ArticleController {
         return mav;
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/{id}")
     public String modifyArticle(ModifiedArticleParam modifiedArticleParam) {
         articleService.update(modifiedArticleParam);
         return "redirect:/";
     }
 
-    @DeleteMapping("/{id}/remove")
+    @DeleteMapping("/{id}")
     public String removeArticle(@PathVariable int id) {
         articleService.remove(id);
         return "redirect:/";

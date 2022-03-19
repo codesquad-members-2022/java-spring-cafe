@@ -193,7 +193,7 @@ public class UserControllerUnitTest {
         given(service.update(modifiedUserParam)).willReturn(user);
 
         // when
-        mvc.perform(put("/users/" + userId + "/update")
+        mvc.perform(put("/users/" + userId)
                         .params(convertToMultiValueMap(modifiedUserParam)))
 
                 // then
@@ -230,7 +230,7 @@ public class UserControllerUnitTest {
         given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
 
         // when
-        mvc.perform(put("/users/" + userId + "/update")
+        mvc.perform(put("/users/" + userId)
                         .params(convertToMultiValueMap(modifiedUserParam)))
 
                 // then
