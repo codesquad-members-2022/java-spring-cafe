@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryUserRepositoryTest {
-    UserRepository repository;
+    MemoryUserRepository repository;
 
     @BeforeEach
     public void beforeEach() {
@@ -29,7 +29,7 @@ class MemoryUserRepositoryTest {
 
         //when
         repository.save(user);
-        User result = repository.findByIndex(user.getIndex()-1) // index 0부터 저장
+        User result = repository.findById(user.getId()) // index 0부터 저장
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 회원입니다."));
 
         //then

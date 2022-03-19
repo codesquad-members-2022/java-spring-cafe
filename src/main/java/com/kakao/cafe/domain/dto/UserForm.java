@@ -19,6 +19,8 @@ public class UserForm {
     @NotBlank
     private String email;
 
+    private int id;
+
     public UserForm(String userId, String name, String password, String email) {
         this.userId = userId;
         this.name = name;
@@ -28,6 +30,14 @@ public class UserForm {
 
     public User createUser() {
         return new User(userId, name, password, email);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserId() {

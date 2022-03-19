@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.Article;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ArticleForm {
     @NotBlank
@@ -15,13 +16,20 @@ public class ArticleForm {
     @NotBlank
     private String contents;
 
-    private LocalDateTime dateTime;
+    private String dateTime;
 
-    public ArticleForm(String title, String writer, String contents) {
+    public ArticleForm(String title, String writer, String contents, String dateTime) {
         this.title = title;
         this.writer = writer;
         this.contents = contents;
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = checkDateTimeNull(dateTime);
+    }
+
+    private String checkDateTimeNull(String dateTime) {
+        if (dateTime == null){
+            return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+        return dateTime;
     }
 
     public String getTitle() {
@@ -32,7 +40,7 @@ public class ArticleForm {
         return writer;
     }
 
-    public LocalDateTime getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
     public String getContents() {

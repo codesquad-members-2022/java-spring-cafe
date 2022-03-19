@@ -1,11 +1,9 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
     private final List<User> userStore = Collections.synchronizedList(new ArrayList<>());
 
@@ -20,13 +18,13 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     private User store(User user, int index) {
-        user.setIndex(index);
+        user.setId(index);
         userStore.add(user);
         return user;
     }
 
     @Override
-    public Optional<User> findByIndex(int index) throws IndexOutOfBoundsException{
+    public Optional<User> findById(int index) throws IndexOutOfBoundsException{
         return Optional.ofNullable(userStore.get(index));
     }
 

@@ -30,7 +30,7 @@ public class ArticleController {
 
     @GetMapping("articles/{index}")
     public String detail(@PathVariable("index") int index, Model model) {
-        ArticleForm articleForm = articleService.findOneArticle(index-1);
+        ArticleForm articleForm = articleService.findOneArticle(index);
         model.addAttribute("article", articleForm);
         return "qna/show";
     }

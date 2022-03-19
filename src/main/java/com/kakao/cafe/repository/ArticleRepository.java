@@ -11,8 +11,4 @@ public interface ArticleRepository {
     Optional<Article> findByIndex(int index);
 
     List<Article> findAll();
-
-    void clearStore();
-
-    int size();
 }

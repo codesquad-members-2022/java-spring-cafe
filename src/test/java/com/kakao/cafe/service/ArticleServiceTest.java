@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class ArticleServiceTest {
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
     ArticleService articleService;
 
     @BeforeEach
@@ -31,7 +31,7 @@ class ArticleServiceTest {
     @Test
     @DisplayName("게시글이 잘 저장되는가")
     void post() {
-        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.");
+        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.", null);
         articleService.post(articleForm1);
         ArticleForm savedArticleForm = articleService.findOneArticle(0);
 
@@ -41,9 +41,9 @@ class ArticleServiceTest {
     @Test
     @DisplayName("모든 게시글이 잘 가져와지는가")
     void findArticles() {
-        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.");
-        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.");
-        ArticleForm articleForm3 = new ArticleForm("게시글 제목3", "크롱", "세번째 게시글입니다.");
+        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.", null);
+        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.", null);
+        ArticleForm articleForm3 = new ArticleForm("게시글 제목3", "크롱", "세번째 게시글입니다.", null);
         articleService.post(articleForm1);
         articleService.post(articleForm2);
         articleService.post(articleForm3);
@@ -59,8 +59,8 @@ class ArticleServiceTest {
     @Test
     @DisplayName("인덱스에 해당하는 ArticleForm이 잘 가져와지는가")
     void findOneArticle() {
-        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.");
-        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.");
+        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.", null);
+        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.", null);
         articleService.post(articleForm1);
         articleService.post(articleForm2);
 
@@ -70,8 +70,8 @@ class ArticleServiceTest {
     @Test
     @DisplayName("인덱스가 초과되면, IndexOutOfBoundsException이 뜨는가")
     void findOneArticleOverIndexBound() {
-        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.");
-        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.");
+        ArticleForm articleForm1 = new ArticleForm("게시글 제목1", "나단", "첫번째 게시글입니다.", null);
+        ArticleForm articleForm2 = new ArticleForm("게시글 제목2", "호눅스", "두번째 게시글입니다.", null);
         articleService.post(articleForm1);
         articleService.post(articleForm2);
 

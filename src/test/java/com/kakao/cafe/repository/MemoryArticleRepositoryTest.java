@@ -11,7 +11,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 
 class MemoryArticleRepositoryTest {
-    ArticleRepository articleRepository;
+    MemoryArticleRepository articleRepository;
 
     @BeforeEach
     public void beforeEach() {
