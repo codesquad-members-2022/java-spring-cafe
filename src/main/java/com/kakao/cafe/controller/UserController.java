@@ -65,7 +65,8 @@ public class UserController {
     @PutMapping("/{userId}")
     public String modifyProfile(ModifiedUserParam modifiedUserParam, HttpSession session) {
         User updateUser = userService.update(modifiedUserParam);
-        session.setAttribute("sessionUser", updateUser);
+        SessionUser sessionUser = new SessionUser(updateUser);
+        session.setAttribute("sessionUser", sessionUser);
         return "redirect:/users";
     }
 
