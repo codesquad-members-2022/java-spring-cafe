@@ -33,13 +33,6 @@ public class QuestionController {
         return "redirect:/";
     }
 
-    @GetMapping("/")
-    public String home(Model model) {
-        List<Question> questions = questionService.findQuestions();
-        model.addAttribute("questions", questions);
-        return "index";
-    }
-
     @GetMapping("/questions/{questionId}")
     public String question(@PathVariable Long questionId, Model model) {
         Question question = questionService.findOne(questionId);

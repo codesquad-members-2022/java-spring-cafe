@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -88,13 +90,17 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute(name = "user")LoginUserDto loginUserDto) {
+    public String login(@ModelAttribute(name = "user")LoginUserDto loginUserDto, HttpServletRequest request) {
         User loginUser = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
 
         if (loginUser == null) {
             return "user/login_failed";
         }
 
-        return "redirect:/";
+        HttpSession session = request.getSession();
+        session.setAttribute("loginUser", loginUser);
+
+
+        return "index_login";
     }
 }
