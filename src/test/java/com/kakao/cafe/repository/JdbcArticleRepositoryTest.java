@@ -7,9 +7,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
 @Import(QueryLoader.class)
-@Sql("classpath:/schema-h2.sql")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcArticleRepositoryTest {
     private final DbArticleRepository repository;
 
@@ -66,7 +66,7 @@ public class JdbcArticleRepositoryTest {
     @Test
     public void findNullTest() {
         // when
-        Optional<Article> findArticle = repository.findById(1L);
+        Optional<Article> findArticle = repository.findById(1000L);
 
         // then
         then(findArticle).isEqualTo(Optional.empty());
@@ -83,6 +83,6 @@ public class JdbcArticleRepositoryTest {
         List<Article> findArticles = repository.findAll();
 
         // then
-        then(findArticles).containsExactly(article, article2);
+        then(findArticles).contains(article, article2);
     }
 }

@@ -9,9 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
 @Import(QueryLoader.class)
-@Sql({"classpath:/schema-h2.sql", "classpath:/data.sql"})
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcReplyRepositoryTest {
     private final DbReplyRepository repository;
 
