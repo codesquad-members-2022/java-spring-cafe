@@ -8,18 +8,23 @@ public class ArticleDTO {
   private String writer;
   private String title;
   private String contents;
+  private String createdTime;
   private LocalDateTime createdAt;
 
-  private ArticleDTO(String writer, String title, String contents, LocalDateTime createdAt) {
+
+  private ArticleDTO(String writer, String title, String contents, String createdTime,
+      LocalDateTime createdAt
+  ) {
     this.writer = writer;
     this.title = title;
     this.contents = contents;
+    this.createdTime = createdTime;
     this.createdAt = createdAt;
   }
 
   public static ArticleDTO from(Article article) {
     return new ArticleDTO(article.getWriter(), article.getTitle(), article.getContents(),
-        article.getCreatedAt());
+        article.getCreatedTime(), article.getCreatedAt());
   }
 
   public String getWriter() {
@@ -52,5 +57,13 @@ public class ArticleDTO {
 
   public void setLocalDateTime(LocalDateTime createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public String getCreatedTime() {
+    return createdTime;
+  }
+
+  public void setCreatedTime(String createdTime) {
+    this.createdTime = createdTime;
   }
 }

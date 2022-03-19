@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ArticleController {
 
-  private ArticleService articleService;
+  private final ArticleService articleService;
 
   public ArticleController(ArticleService articleService) {
     this.articleService = articleService;
@@ -19,7 +19,7 @@ public class ArticleController {
     return "qna/form";
   }
 
-  @PostMapping("/qnas")
+  @PostMapping("/qnaList")
   public String question(ArticleDTO form) {
     articleService.join(form);
 

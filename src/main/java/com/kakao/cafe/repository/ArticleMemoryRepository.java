@@ -3,6 +3,7 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArticleMemoryRepository implements ArticleRepository {
 
@@ -12,6 +13,11 @@ public class ArticleMemoryRepository implements ArticleRepository {
   public Article save(Article article) {
     store.add(article);
     return article;
+  }
+
+  @Override
+  public List<Article> findAll() {
+    return new ArrayList<>(store);
   }
 
   @Override
