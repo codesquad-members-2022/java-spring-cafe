@@ -14,9 +14,11 @@ DROP TABLE IF EXISTS article;
 CREATE TABLE article
 (
     id INT NOT NULL AUTO_INCREMENT,
+    user_id VARCHAR(255) NOT NULL,
     writer VARCHAR(255),
     title VARCHAR(255),
     contents VARCHAR(255),
     created_date TIMESTAMP,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
