@@ -1,9 +1,10 @@
-package com.kakao.cafe.service.user;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.repository.user.UserMemoryRepository;
 import com.kakao.cafe.repository.user.UserRepository;
+import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class UserServiceTest {
 
     UserRepository repository = new UserMemoryRepository();
-    UserService service = new UserServiceImpl(repository);
+    UserService service = new UserService(repository);
 
     @BeforeEach
     void clear() {
@@ -27,7 +28,7 @@ public class UserServiceTest {
         UserDto form = new UserDto("forky", "1111", "hello@spring.com", "퐄퐄퐄");
         service.createUser(form);
 
-        User user = service.findSingleUser("forky").get();
+        User user = service.findSingleUser("forky");
 
         assertThat(user.getUserId()).isEqualTo("forky");
         assertThat(user.getName()).isEqualTo("퐄퐄퐄");

@@ -13,18 +13,16 @@ import java.util.Optional;
 public class UserMemoryRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
-    private static Long id = 1L;
 
     @Override
     public User save(User user) {
-        user.setId(id++);
         store.add(user);
         return user;
     }
 
     @Override
     public Optional<User> findByUserId(String userId) {
-        return store.stream().filter((user -> user.equals(userId))).findAny();
+        return store.stream().filter((user -> user.getUserId().equals(userId))).findAny();
     }
 
     @Override
@@ -35,6 +33,5 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public void clear() {
         store.clear();
-        id = 1L;
     }
 }

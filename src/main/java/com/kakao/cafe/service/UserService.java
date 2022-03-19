@@ -1,4 +1,4 @@
-package com.kakao.cafe.service.user;
+package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
@@ -7,19 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService {
 
     private UserRepository repository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository repository) {
+    public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
-    @Override
     public void createUser(UserDto userDto) {
         String userId = userDto.getUserId();
         String password = userDto.getPassword();
@@ -28,24 +27,30 @@ public class UserServiceImpl implements UserService {
 
         User user = new User(userId, password, email, name);
 
-        validateUser(user);
+        isDuplicatedUser(user);
         repository.save(user);
     }
 
-    @Override
-    public Optional<User> findSingleUser(String userId) {
-        return repository.findByUserId(userId);
+    public User findSingleUser(String userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(()-> new NoSuchElementException("일치하는 유저가 존재하지 않습니다."));
     }
 
-    @Override
     public List<User> findAllUsers() {
         return repository.findAll();
     }
 
-    @Override
-    public void validateUser(User user) {
+    public void isDuplicatedUser(User user) {
         if (repository.findByUserId(user.getUserId()).isPresent()) {
             throw new IllegalStateException("사용자 ID가 중복됩니다.");
         }
+    }
+
+    public void updateUser(String userId, UserDto userDto) {
+        User user = findSingleUser(userId);
+
+        user.setPassword(userDto.getPassword());
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
     }
 }
