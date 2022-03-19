@@ -190,6 +190,35 @@ step1, 2의 리포지토리를 DB로 구현하고 배포합니다.
 </details>
 
 
+# Step 4 : 로그인 구현
+
+<details>
+<summary> 🖼📝 Step 3 결과와 설명 </summary>
+<div markdown="1">
+
+<details>
+<summary> View  </summary>
+<div markdown="1">
+
+- GET / : 홈
+![홈](https://i.imgur.com/Oi5OI3f.jpg)
+
+- GET /login : 로그인 포맷
+![로그인 페이지](https://i.imgur.com/9yjkTux.jpg)
+
+- POST /login : 잘못된 아이디 또는 비밀번호 입력 시
+![login_failed](https://i.imgur.com/xCB1uPY.jpg)
+
+- POST /login : 로그인 성공 시 -> "/" 리다이렉트
+![login_succed](https://i.imgur.com/DvvpXjM.jpg)
+
+
+</div>
+</details>
+
+
+</div>
+</details>
 
 ---
 
