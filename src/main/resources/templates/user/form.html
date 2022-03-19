@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{/fragment/head :: headFragment}">
+<head th:insert="~{fragment/head :: headFragment}">
 </head>
 <body>
-<div th:replace="~{/fragment/navigation :: navFragment}"></div>
+<div th:replace="~{fragment/navigation :: navFragment}"></div>
 
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
@@ -36,6 +36,6 @@
     </div>
 </div>
 
-<div th:replace="~{/fragment/footer :: footerFragment}"></div>
+<div th:replace="~{fragment/footer :: footerFragment}"></div>
 	</body>
 </html>
