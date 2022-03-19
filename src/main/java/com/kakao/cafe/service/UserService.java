@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.UserJoinRequest;
+import com.kakao.cafe.domain.UserLoginRequest;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,4 +56,9 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
     }
 
+    public User login(UserLoginRequest userLoginRequest) {
+        return userRepository.findByUserId(userLoginRequest.getUserId())
+                .filter(user -> user.getPassword().equals(userLoginRequest.getPassword()))
+                .orElse(null);
+    }
 }

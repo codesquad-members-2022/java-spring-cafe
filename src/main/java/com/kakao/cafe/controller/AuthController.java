@@ -25,4 +25,13 @@ public class AuthController {
         return "user/login";
     }
 
+    @PostMapping("/login")
+    public String login(UserLoginRequest loginRequest, HttpSession httpSession) {
+        User user = userService.login(loginRequest);
+        if (user == null) {
+            return "user/login_failed";
+        }
+        httpSession.setAttribute("sessionedUserId", user);
+        return "redirect:/";
+    }
 }
