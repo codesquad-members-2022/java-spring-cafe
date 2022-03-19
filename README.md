@@ -52,3 +52,16 @@
   - 꼭 필요한 getter, setter만 남겨놓음
 - H2 DB로 repository 변경
 
+<br>
+
+### 4단계
+
+- [x] 로그인, 로그아웃 구현
+- [ ] 추가구현사항 (개인정보 수정 기능)
+
+**한 일**
+
+- 버그(UserForm, Article에서 LocalDateTime 오류) 수정
+- 로그인, 로그아웃 기능 구현
+- html 페이지 로그인시, 비로그인 시 화면 출력 변경
+- UserDto package 변경

@@ -1,11 +1,9 @@
 package com.kakao.cafe.web.controller;
 
 import com.kakao.cafe.web.domain.user.User;
-import com.kakao.cafe.web.domain.user.UserDto;
 import com.kakao.cafe.web.service.UserService;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
