@@ -2,15 +2,15 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Article;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 @Primary
@@ -25,13 +25,15 @@ public class JdbcArticleRepository implements ArticleRepository {
 
     @Override
     public Article save(Article article) {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("writer", article.getWriter());
-        parameters.put("title", article.getTitle());
-        parameters.put("contents", article.getContents());
-        parameters.put("createdDate", article.getCreatedDate());
+        SqlParameterSource parameters = new BeanPropertySqlParameterSource(article);
+        Article articleInformation = findById(article.getId()).orElse(null);
 
-        jdbc.update("INSERT INTO article(writer, title, contents, created_date) VALUES(:writer, :title, :contents, :createdDate)", parameters);
+        if (articleInformation == null) {
+            jdbc.update("INSERT INTO article (user_id, writer, title, contents, created_date) VALUES (:userId, :writer, :title, :contents, :createdDate)", parameters);
+            return article;
+        }
+
+        jdbc.update("UPDATE article SET title = :title, contents = :contents, created_date = :createdDate WHERE id = :id", parameters);
 
         return article;
     }
@@ -39,8 +41,7 @@ public class JdbcArticleRepository implements ArticleRepository {
     @Override
     public Optional<Article> findById(int id) {
         try {
-            Map<String, Integer> parameters = Collections.singletonMap("id", id);
-            return Optional.ofNullable(jdbc.queryForObject("SELECT * FROM article WHERE id = :id", parameters, articleRowMapper()));
+            return Optional.ofNullable(jdbc.queryForObject("SELECT * FROM article WHERE id = :id", Collections.singletonMap("id", id), articleRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -52,7 +53,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void clear() {
+    public void deleteById(int id) {
+        jdbc.update("DELETE FROM article WHERE id = :id", Collections.singletonMap("id", id));
+    }
+
+    @Override
+    public void deleteAll() {
         jdbc.update("DELETE FROM article", Collections.emptyMap());
         jdbc.update("ALTER TABLE article ALTER COLUMN id RESTART WITH 1", Collections.emptyMap());
     }
@@ -60,10 +66,12 @@ public class JdbcArticleRepository implements ArticleRepository {
     private RowMapper<Article> articleRowMapper() {
         return (rs, rowNum) -> {
             Article article = new Article(rs.getObject("id", Integer.class),
+                                          rs.getString("user_id"),
                                           rs.getString("writer"),
                                           rs.getString("title"),
                                           rs.getString("contents"),
                                           rs.getTimestamp("created_date").toLocalDateTime());
+
             return article;
         };
     }

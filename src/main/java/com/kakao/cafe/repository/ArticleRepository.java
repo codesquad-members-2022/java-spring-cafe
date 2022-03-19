@@ -9,6 +9,7 @@ public interface ArticleRepository {
     Article save(Article article);
     Optional<Article> findById(int id);
     List<Article> findAll();
-    void clear();
+    void deleteById(int id);
+    void deleteAll();
 
 }

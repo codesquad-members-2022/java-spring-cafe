@@ -30,7 +30,12 @@ public class MemoryArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public void clear() {
+    public void deleteById(int id) {
+
+    }
+
+    @Override
+    public void deleteAll() {
         articles.clear();
     }
 }
