@@ -1,9 +1,11 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.service.ArticleService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Controller
 public class ArticleController {
 
   private ArticleService articleService;
@@ -17,7 +19,7 @@ public class ArticleController {
     return "qna/form";
   }
 
-  @PostMapping("/qna")
+  @PostMapping("/qnas")
   public String question(ArticleDTO form) {
     articleService.join(form);
 
