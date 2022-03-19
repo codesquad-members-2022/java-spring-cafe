@@ -1,9 +1,10 @@
-package com.kakao.cafe.web.questions.dto;
+package com.kakao.cafe.web.questions;
 
 import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.web.SessionConst;
+import com.kakao.cafe.web.questions.dto.Result;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -25,9 +26,9 @@ public class ApiReplyController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteReply(@PathVariable Long questionId, @PathVariable Long id, HttpSession session) {
+    public Result deleteReply(@PathVariable Long questionId, @PathVariable Long id, HttpSession session) {
         User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
         replyService.deleteReply(id, sessionedUser); // 댓글 번호와 로그인 사용자 넘기기
-        return "redirect:/questions/" + questionId;
+        return Result.ok();
     }
 }
