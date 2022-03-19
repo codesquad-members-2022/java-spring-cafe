@@ -2,12 +2,17 @@
   <div class="wrap">
     <div class="main">
       <strong class="subject">
+        {{^sessionUser}}
+        <a style="cursor: default; text-decoration: none;">{{title}}</a>
+        {{/sessionUser}}
+        {{#sessionUser}}
         <a href="/articles/{{id}}">{{title}}</a>
+        {{/sessionUser}}
       </strong>
       <div class="auth-info">
         <i class="icon-add-comment"></i>
         <span class="time">{{createdDate}}</span>
-        <a href="/users/{{writer}}" class="author">{{writer}}</a>
+        <a href="/users/{{userId}}" class="author">{{writer}}</a>
       </div>
       <div class="reply" title="댓글">
         <i class="icon-reply"></i>
