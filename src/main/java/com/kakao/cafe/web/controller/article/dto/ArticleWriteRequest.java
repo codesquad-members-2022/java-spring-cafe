@@ -1,15 +1,13 @@
 package com.kakao.cafe.web.controller.article.dto;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.core.repository.SequenceGenerator;
 
 import java.time.LocalDateTime;
 
-import static com.kakao.cafe.config.DataGenerator.getRandomLocalDateTime;
 
 public class ArticleWriteRequest {
 
-    private static final int ZERO = 0;
+    private static final Integer ZERO = 0;
     private String title;
     private String content;
     private String writer;
@@ -42,7 +40,7 @@ public class ArticleWriteRequest {
     public Article toEntity() {
         LocalDateTime createAt = getRandomLocalDateTime();
         return new Article.Builder()
-                .id(SequenceGenerator.getArticleSequence())
+                .id(null)
                 .title(title)
                 .content(content)
                 .writer(writer)
@@ -50,5 +48,9 @@ public class ArticleWriteRequest {
                 .lastModifiedAt(null)
                 .viewCount(ZERO)
                 .build();
+    }
+
+    private LocalDateTime getRandomLocalDateTime() {
+        return LocalDateTime.now();
     }
 }

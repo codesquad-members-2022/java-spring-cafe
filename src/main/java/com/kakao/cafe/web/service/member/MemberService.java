@@ -1,11 +1,13 @@
 package com.kakao.cafe.web.service.member;
 
 import com.kakao.cafe.core.domain.member.Member;
-import com.kakao.cafe.core.repository.member.MemberRepository;
+import com.kakao.cafe.core.repository.MemberRepository;
 import com.kakao.cafe.web.controller.member.dto.ProfileChangeRequest;
-import com.kakao.cafe.web.controller.member.dto.ProfileChangeResponse;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+@Service
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -14,31 +16,23 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    /**
-     * 임시 조회를 위해 만든 메서드
-     */
-    public List<Member> findAll() {
-        return memberRepository.findAll();
-    }
-
-    public Member findById(int userId) {
-        return memberRepository.findById(userId).orElseThrow();
+    public Member findById(Integer id) {
+        return memberRepository.findById(id).orElseThrow();
     }
 
     public Member join(Member member) {
-        return memberRepository.insert(member);
+        return memberRepository.save(member);
     }
 
     public Member editProfile(ProfileChangeRequest request) {
         Member findMember = memberRepository.findById(request.getId()).orElseThrow();
         findMember.changeNickName(request.getNickName());
         findMember.changeEmail(request.getEmail());
+        memberRepository.save(findMember);
         return findMember;
     }
 
-    public ProfileChangeResponse getMemberDetails(int id, ProfileChangeRequest request) {
-        Member findMember = memberRepository.findById(id).orElseThrow();
-        request.enrollInformation(findMember);
-        return new ProfileChangeResponse(request);
+    public List<Member> findAll() {
+        return memberRepository.findAll();
     }
 }

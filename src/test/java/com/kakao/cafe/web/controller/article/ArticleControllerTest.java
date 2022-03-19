@@ -1,6 +1,7 @@
 package com.kakao.cafe.web.controller.article;
 
 import com.kakao.cafe.core.domain.article.Article;
+import com.kakao.cafe.web.controller.article.dto.ArticleResponse;
 import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
 import com.kakao.cafe.web.service.article.ArticleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,6 +38,7 @@ class ArticleControllerTest {
 
     Article article;
     ArticleWriteRequest articleWriteRequest;
+    ArticleResponse articleResponse;
 
     @BeforeEach
     void init() {
@@ -44,6 +46,7 @@ class ArticleControllerTest {
         articleWriteRequest = getArticleWriteRequest();
         bindingResult = mock(BindingResult.class);
         when(bindingResult.hasErrors()).thenReturn(true);
+        articleResponse = getArticleResponse();
     }
 
     private Article getArticle() {
@@ -57,6 +60,12 @@ class ArticleControllerTest {
                 .viewCount(getFixedViewCount())
                 .build();
     }
+
+    private ArticleResponse getArticleResponse() {
+        return new ArticleResponse(getArticle());
+    }
+
+
 
     @Test
     @DisplayName("/articles/write로 이동하면 article/write view를 반환한다.")
@@ -86,12 +95,12 @@ class ArticleControllerTest {
     @DisplayName("/articles/{id} 이동하면 article/detail view를 반환한다.")
     void post_detail_view_반환() throws Exception {
 
-        given(articleService.findById(anyInt())).willReturn(article);
+        given(articleService.findById(anyInt())).willReturn(getArticle());
 
         mockMvc.perform(get("/articles/" + anyInt()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("findArticle"))
-                .andExpect(model().attribute("findArticle", article))
+                .andExpect(model().attribute("findArticle", getArticleResponse()))
                 .andExpect(view().name("article/detail"));
     }
 
@@ -99,7 +108,7 @@ class ArticleControllerTest {
     @DisplayName("모든 게시글을 조회회하면 article/list로 이동하게 된다.")
     void 전체_게시글_조회_페이지_이동() throws Exception {
 
-        List<Article> articles = List.of();
+        List<ArticleResponse> articles = List.of();
 
         mockMvc.perform(get("/articles"))
                 .andExpect(status().isOk())

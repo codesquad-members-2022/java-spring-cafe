@@ -1,7 +1,7 @@
 package com.kakao.cafe.web.service.article;
 
 import com.kakao.cafe.core.domain.article.Article;
-import com.kakao.cafe.core.repository.article.ArticleRepository;
+import com.kakao.cafe.core.repository.ArticleRepository;
 import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,6 @@
 package com.kakao.cafe.web.controller.article;
 
-import com.kakao.cafe.core.domain.article.Article;
+import com.kakao.cafe.web.controller.article.dto.ArticleResponse;
 import com.kakao.cafe.web.controller.article.dto.ArticleWriteRequest;
 import com.kakao.cafe.web.service.article.ArticleService;
 import org.springframework.stereotype.Controller;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("articles")
 @Controller
@@ -28,9 +29,9 @@ public class ArticleController {
         return "article/write";
     }
 
-    @PostMapping("write")
+    @PostMapping("")
     public String write(ArticleWriteRequest request, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "list";
         }
         articleService.write(request.toEntity());
@@ -39,14 +40,17 @@ public class ArticleController {
 
     @GetMapping("")
     public String getArticles(Model model) {
-        List<Article> articles = articleService.findAll();
+        List<ArticleResponse> articles = articleService.findAll()
+                .stream()
+                .map(ArticleResponse::new)
+                .collect(Collectors.toList());
         model.addAttribute("articles", articles);
         return "article/list";
     }
 
     @GetMapping("{id}")
-    public String getArticleDetails(@PathVariable("id") int id, Model model) {
-        Article findArticle = articleService.findById(id);
+    public String getArticleDetails(@PathVariable("id") Integer id, Model model) {
+        ArticleResponse findArticle = new ArticleResponse(articleService.findById(id));
         model.addAttribute("findArticle", findArticle);
         return "article/detail";
     }

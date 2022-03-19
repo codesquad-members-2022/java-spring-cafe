@@ -6,17 +6,17 @@ import java.util.Objects;
 
 public class Member {
 
-    private int id;
+    private Integer id;
     private String email;
     private String password;
     private String nickName;
     private LocalDateTime createAt;
 
-    public Member(int id) {
+    public Member(Integer id) {
         this.id = id;
     }
 
-    public Member(int id, String email, String password, String nickName) {
+    public Member(Integer id, String email, String password, String nickName) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -24,21 +24,35 @@ public class Member {
         this.createAt = getSignUpDate();
     }
 
-    public Member(String email, String nickName) {
+    public Member(Integer id, String email, String password, String nickName, LocalDateTime createAt) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.nickName = nickName;
+        this.createAt = createAt;
+    }
+
+    public Member(Integer id, String email, String nickName, LocalDateTime createAt) {
+        this.id = id;
         this.email = email;
         this.nickName = nickName;
+        this.createAt = createAt;
     }
 
     private LocalDateTime getSignUpDate() {
         return LocalDateTime.now();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getNickName() {
@@ -58,7 +72,7 @@ public class Member {
     }
 
     public static class Builder {
-        private int id;
+        private Integer id;
         private String email;
         private String password;
         private String nickName;
@@ -87,8 +101,13 @@ public class Member {
             return this;
         }
 
+        public Builder createAt(LocalDateTime createAt) {
+            this.createAt = createAt;
+            return this;
+        }
+
         public Member build() {
-            return new Member(id);
+            return new Member(id, email, nickName, createAt);
         }
     }
 
@@ -97,11 +116,11 @@ public class Member {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Member member = (Member) o;
-        return id == member.id && Objects.equals(email, member.email) && Objects.equals(password, member.password) && Objects.equals(nickName, member.nickName) && Objects.equals(createAt, member.createAt);
+        return Objects.equals(id, member.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, password, nickName, createAt);
+        return Objects.hash(id);
     }
 }

@@ -19,4 +19,3 @@ public class ErrorPageConfig implements WebServerFactoryCustomizer<ConfigurableW
         factory.addErrorPages(errorPage401, errorPage403, errorPage404, errorPage500, errorPageRuntime);
     }
 }
-
