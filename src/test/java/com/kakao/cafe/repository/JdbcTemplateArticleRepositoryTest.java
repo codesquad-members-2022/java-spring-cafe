@@ -5,25 +5,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.kakao.cafe.domain.Article;
 import java.util.List;
 import javax.sql.DataSource;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+@JdbcTest
 class JdbcTemplateArticleRepositoryTest {
 
     ArticleRepository articleRepository;
-    DataSource dataSource;
 
-    @BeforeEach
-    void setup() {
-        // "sql/data.sql" 파일의 아래 SQL 문을 통해 테스트 데이터 2개 추가
-        //  INSERT INTO ARTICLES (writer, title, contents, created_time) VALUES ('writer1', 'title1', 'content1', '2011-11-11 11:11');
-        //  INSERT INTO ARTICLES (writer, title, contents, created_time) VALUES ('writer2', 'title2', 'content2', '2022-02-22 02:22');
-        dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-            .addScripts("classpath:sql/schema.sql", "classpath:sql/data.sql")
-            .build();
+    @Autowired
+    public JdbcTemplateArticleRepositoryTest(DataSource dataSource) {
         articleRepository = new JdbcTemplateArticleRepository(dataSource);
     }
 

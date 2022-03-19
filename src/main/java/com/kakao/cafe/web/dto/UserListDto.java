@@ -11,7 +11,7 @@ public class UserListDto {
     private final String email;
 
     public UserListDto(User user, int userNum) {
-        userId = user.getUserId();
+        userId = user.getId();
         password = user.getPassword();
         name = user.getName();
         email = user.getEmail();

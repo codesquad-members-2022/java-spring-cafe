@@ -15,4 +15,8 @@ public class ArticleListDto {
         this.createdTime = article.getCreatedTime();
         this.articleId = articleId;
     }
+
+    public static ArticleListDto from(Article article, int articleId) {
+        return new ArticleListDto(article, articleId);
+    }
 }

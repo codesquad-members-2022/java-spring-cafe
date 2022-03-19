@@ -6,26 +6,19 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.domain.User.UserBuilder;
 import java.util.List;
 import javax.sql.DataSource;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+@JdbcTest
 class JdbcTemplateUserRepositoryTest {
 
     UserRepository userRepository;
-    DataSource dataSource;
 
-    @BeforeEach
-    void setup() {
-        // "sql/data.sql" 파일의 아래 SQL 문을 통해 테스트 데이터 2개 추가
-        //  INSERT INTO USERS VALUES ('ID1','PW1','NAME1','1@1.com');
-        //  INSERT INTO USERS VALUES ('ID2','PW2','NAME2','2@2.com');
-        dataSource = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2)
-            .addScripts("classpath:sql/schema.sql", "classpath:sql/data.sql")
-            .build();
-        userRepository = new JdbcTemplateUserRepository(dataSource);
+    @Autowired
+    public JdbcTemplateUserRepositoryTest(DataSource dataSource) {
+        this.userRepository = new JdbcTemplateUserRepository(dataSource);
     }
 
     @Test
@@ -41,7 +34,7 @@ class JdbcTemplateUserRepositoryTest {
         User resultUser = userRepository.findById(userId).get();
 
         // then
-        assertThat(resultUser.getUserId()).isEqualTo(userId);
+        assertThat(resultUser.getId()).isEqualTo(userId);
         assertThat(resultUser.getPassword()).isEqualTo(password);
         assertThat(resultUser.getName()).isEqualTo(name);
         assertThat(resultUser.getEmail()).isEqualTo(email);
@@ -61,7 +54,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         User resultUser = userRepository.findById("ID3").get();
-        assertThat(resultUser.getUserId()).isEqualTo("ID3");
+        assertThat(resultUser.getId()).isEqualTo("ID3");
         assertThat(resultUser.getPassword()).isEqualTo("PW3");
         assertThat(resultUser.getName()).isEqualTo("NAME3");
         assertThat(resultUser.getEmail()).isEqualTo("3@3.com");
@@ -85,7 +78,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         User resultUser = userRepository.findById("ID2").get();
-        assertThat(resultUser.getUserId()).isEqualTo("ID2");
+        assertThat(resultUser.getId()).isEqualTo("ID2");
         assertThat(resultUser.getPassword()).isEqualTo("pw2");
         assertThat(resultUser.getName()).isEqualTo("name2");
         assertThat(resultUser.getEmail()).isEqualTo("2@2.net");
@@ -103,7 +96,7 @@ class JdbcTemplateUserRepositoryTest {
 
         // then
         assertThat(resultUserList).hasSize(2);
-        assertThat(resultUserList.get(0).getUserId()).isEqualTo(userId1);
-        assertThat(resultUserList.get(1).getUserId()).isEqualTo(userId2);
+        assertThat(resultUserList.get(0).getId()).isEqualTo(userId1);
+        assertThat(resultUserList.get(1).getId()).isEqualTo(userId2);
     }
 }

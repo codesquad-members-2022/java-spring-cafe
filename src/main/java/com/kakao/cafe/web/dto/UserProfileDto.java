@@ -7,7 +7,7 @@ public class UserProfileDto {
     private final String email;
 
     public UserProfileDto(User user) {
-        this.userId = user.getUserId();
+        this.userId = user.getId();
         this.email = user.getEmail();
     }
 

@@ -2,13 +2,13 @@ package com.kakao.cafe.domain;
 
 public class User {
 
-    private String userId;
+    private String id;
     private String password;
     private String name;
     private String email;
 
     private User(UserBuilder builder) {
-        this.userId = builder.userId;
+        this.id = builder.id;
         this.password = builder.password;
         this.name = builder.name;
         this.email = builder.email;
@@ -20,8 +20,8 @@ public class User {
         this.email = user.getEmail();
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
     public String getPassword() {
@@ -39,13 +39,13 @@ public class User {
     // Builder pattern
     public static class UserBuilder {
 
-        private String userId;
+        private String id;
         private String password;
         private String name;
         private String email;
 
         public UserBuilder(String userId, String password) {
-            this.userId = userId;
+            this.id = userId;
             this.password = password;
         }
 
