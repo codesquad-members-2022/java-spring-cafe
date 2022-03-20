@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.UserSaveDto;
-import com.kakao.cafe.controller.dto.UserUpdateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,16 +42,5 @@ class UserServiceTest {
                 .hasMessage("이미 존재하는 이메일입니다.");
     }
 
-    @Test
-    @DisplayName("사용자 정보를 수정할 때 비밀번호가 틀렸다면 예외가 발생한다.")
-    void validateUserUpdateDto() {
-        UserSaveDto userSaveDto = new UserSaveDto("validUserUpdateDto", "password", "name", "validUserUpdateDto1@gamil.com");
-        UserUpdateDto userUpdateDto = new UserUpdateDto(userSaveDto.getUserId(), "isNotCurrentPassword", "newPassword", "name", "validUserUpdateDto2@gmail.com");
 
-        userService.save(userSaveDto);
-
-        assertThatThrownBy(() -> userService.update(userUpdateDto))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("비밀번호가 틀렸습니다.");
-    }
 }

@@ -1,7 +1,6 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.UserSaveDto;
-import com.kakao.cafe.controller.dto.UserUpdateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -30,22 +29,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void update(UserUpdateDto userUpdateDto) {
-        validateUserUpdateDto(userUpdateDto);
-        User user = userUpdateDto.toEntity();
-        userRepository.save(user);
+    public User loginUser(String userId, String password) {
+        return userRepository.findByUserIdAndPassword(userId, password);
     }
 
     private void validateUserSaveDto(UserSaveDto userSaveDto) {
         validateUserId(userSaveDto.getUserId());
         validateEmail(userSaveDto.getEmail());
-    }
-
-    private void validateUserUpdateDto(UserUpdateDto userUpdateDto) {
-        User findUser = userRepository.findByUserId(userUpdateDto.getUserId());
-        if (findUser.isNotEqualsPassword(userUpdateDto.getCurrentPassword())) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-        }
     }
 
     private void validateUserId(String userId) {
