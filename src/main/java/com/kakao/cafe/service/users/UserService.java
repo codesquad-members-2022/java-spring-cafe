@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-	MemoryUserRepository userRepository = new MemoryUserRepository();
+	private MemoryUserRepository userRepository;
+
+	public UserService(MemoryUserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
 	public void save(Users user) {
 		userRepository.save(user);
