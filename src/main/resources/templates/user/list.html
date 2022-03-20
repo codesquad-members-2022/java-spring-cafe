@@ -22,14 +22,16 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, index : ${users}">
+                <tr th:each="userResponseDto, index : ${users}">
                     <td th:text="${index.count}"></td>
                     <td style="cursor: pointer"
-                        th:onclick="|location.href = '@{/users/profile/{userId}(userId=${user.getUserId()})}'|"
-                        th:text="${user.getUserId()}"></td>
-                    <td th:text="${user.getName()}"></td>
-                    <td th:text="${user.getEmail()}"></td>
-                    <td><a class="btn btn-success" role="button" th:href="@{/users/login}">수정</a></td>
+                        th:onclick="|location.href = '@{/users/profile/{userId}(userId=${userResponseDto.getUserId()})}'|"
+                        th:text="${userResponseDto.getUserId()}"></td>
+                    <td th:text="${userResponseDto.getName()}"></td>
+                    <td th:text="${userResponseDto.getEmail()}"></td>
+                    <td><a class="btn btn-success" role="button"
+                           th:onclick="|location.href = '@{/users/{userId}/update(userId=${userResponseDto.getUserId()})}'|">수정</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

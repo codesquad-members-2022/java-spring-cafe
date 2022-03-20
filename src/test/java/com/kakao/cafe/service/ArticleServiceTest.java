@@ -33,7 +33,7 @@ class ArticleServiceTest {
     }
 
     @AfterEach
-    void SetDown() {
+    void tearDown() {
         userRepository.clearStore();
         articleRepository.clearStore();
     }
@@ -45,7 +45,7 @@ class ArticleServiceTest {
         String actualTitle = "titleA";
         userRepository.userSave(user);
         // when
-        String expectedTitle = articleService.generateArticle(articleA);
+        String expectedTitle = articleService.registerArticle(articleA);
         // then
         Assertions.assertThat(actualTitle).isEqualTo(expectedTitle);
     }
@@ -55,7 +55,7 @@ class ArticleServiceTest {
     void generateArticleException() {
         // then
         assertThatThrownBy(() -> {
-            articleService.generateArticle(articleA);
+            articleService.registerArticle(articleA);
         }).isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("등록되지 않은 유저는 글을 작성할 수 없습니다.");
     }
@@ -68,7 +68,7 @@ class ArticleServiceTest {
         userRepository.userSave(user);
         Article[] articles = {articleA, articleB};
         for (var article : articles) {
-            articleService.generateArticle(article);
+            articleService.registerArticle(article);
         }
         // when
         Article article = articleService.findArticleById(articleIdA);
@@ -83,7 +83,7 @@ class ArticleServiceTest {
         userRepository.userSave(user);
         Article[] articles = {articleA, articleB};
         for (var article : articles) {
-            articleService.generateArticle(article);
+            articleService.registerArticle(article);
         }
         // when
         int articleId = 3;

@@ -1,47 +1,62 @@
 package com.kakao.cafe.service;
 
+import com.kakao.cafe.dto.UserRequestDto;
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 import com.kakao.cafe.repository.UserRepository;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public String signUp(User user) {
-        validateDuplicatedUser(user);
+    public UserResponseDto signUp(User user) {
+        UserResponseDto userResponseDto = user.of();
+        validateDuplicatedUser(userResponseDto);
         userRepository.userSave(user);
-        log.info("가입 성공: {}", user.getEmail());
-        return user.getUserId();
+        return userResponseDto;
     }
 
-    public List<User> findUsers() {
-        return userRepository.findAllUser();
+    public List<UserResponseDto> findUsers() {
+        return userRepository.findAllUser()
+                .stream()
+                .map(User::of)
+                .collect(Collectors.toList());
     }
 
-    public User findIdUser(String userId) {
+    public UserResponseDto update(UserRequestDto userUpdateDto) {
+        User user = userRepository.findUserId(userUpdateDto.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+        if (user.isSameUserPassword(userUpdateDto)) {
+            User updatedUser = userRepository.userUpdate(userUpdateDto.of());
+            return updatedUser.of();
+        }
+        throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+    }
+
+    public UserResponseDto findIdUser(String userId) {
         return userRepository.findUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .of();
     }
 
-    public User findEmailUser(String userEmail) {
+    public UserResponseDto findEmailUser(String userEmail) {
         return userRepository.findEmail(userEmail)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."))
+                .of();
     }
 
-    private void validateDuplicatedUser(User user) {
-        userRepository.findEmail(user.getEmail()).ifPresent(s -> {
+    private void validateDuplicatedUser(UserResponseDto userResponseDto) {
+        userRepository.findEmail(userResponseDto.getEmail()).ifPresent(s -> {
             throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         });
     }

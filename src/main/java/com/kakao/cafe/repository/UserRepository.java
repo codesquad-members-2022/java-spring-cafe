@@ -13,4 +13,6 @@ public interface UserRepository {
     Optional<User> findEmail(String userEmail);
 
     List<User> findAllUser();
+
+    User userUpdate(User user);
 }

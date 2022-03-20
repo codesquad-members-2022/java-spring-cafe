@@ -2,6 +2,7 @@ package com.kakao.cafe.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.entity.User;
 
 import org.junit.jupiter.api.AfterEach;
@@ -13,12 +14,14 @@ class UserMemorySaveRepositoryTest {
 
     private UserMemorySaveRepository userRepository;
     private User userA, userB;
+    private UserResponseDto userResponseDtoA;
 
     @BeforeEach
     void testSetUp() {
         // given
         userRepository = new UserMemorySaveRepository();
         userA = new User("emailA", "userIdA", "nameA", "pawA");
+        userResponseDtoA = userA.of();
         userB = new User("emailB", "userIdB", "nameB", "pawB");
     }
 
@@ -42,7 +45,7 @@ class UserMemorySaveRepositoryTest {
         // when
         User saveUserA = userRepository.userSave(userA);
         // then
-        assertThat(saveUserA.isSameUserId(userA.getUserId())).isTrue();
+        assertThat(saveUserA.isSameUserId(userResponseDtoA.getUserId())).isTrue();
     }
 
     @DisplayName("유저 저장소에 일치하는 UserEmail이 있는 경우 true를 반환해야 한다.")
@@ -51,7 +54,7 @@ class UserMemorySaveRepositoryTest {
         // when
         User saveUserA = userRepository.userSave(userA);
         // then
-        assertThat(saveUserA.isSameUserEmail(userA.getEmail())).isTrue();
+        assertThat(saveUserA.isSameUserEmail(userResponseDtoA.getEmail())).isTrue();
     }
 
     @DisplayName("유저 저장소에 저장되어 있는 유저 수를 반환해야 한다.")
@@ -60,11 +63,12 @@ class UserMemorySaveRepositoryTest {
         // given
         User[] users = {userA, userB};
         int userCount = users.length;
-        // when
         for (var user : users) {
             userRepository.userSave(user);
         }
+        // when
+        int sizeOfUserList = userRepository.findAllUser().size();
         // then
-        assertThat(userCount).isEqualTo(userRepository.findAllUser().size());
+        assertThat(userCount).isEqualTo(sizeOfUserList);
     }
 }

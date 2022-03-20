@@ -9,7 +9,7 @@
 <div th:replace="fragment.html::subnav"></div>
 
 
-<div class="container" id="main" th:each="article : ${articles}">
+<div class="container" id="main">
     <div class="col-md-12 col-sm-12 col-lg-12">
         <div class="panel panel-default">
             <header class="qna-header">
@@ -27,7 +27,8 @@
                             <a class="article-author-name" style="cursor: pointer"
                                th:onclick="|location.href = '@{/users/profile/{userId}(userId=${article.getWriter()})}'|"
                                th:text="${article.getWriter()}"></a>
-                            <a class="article-header-time" th:text="${article.getDateOfIssue()}">
+                            <a class="article-header-time"
+                               th:text="${#temporals.format(article.getDate(), 'yyyy-MM-dd HH:mm:ss')}">
                                 <i class="icon-link"></i>
                             </a>
                         </div>
