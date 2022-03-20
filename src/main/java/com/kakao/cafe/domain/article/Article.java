@@ -35,6 +35,8 @@ public class Article {
     }
 
     public ArticleDto convertToDto() {
-        return new ArticleDto(id, writer, title, contents);
+        ArticleDto articleDto = new ArticleDto(writer, title, contents);
+        articleDto.setId(id);
+        return articleDto;
     }
 }

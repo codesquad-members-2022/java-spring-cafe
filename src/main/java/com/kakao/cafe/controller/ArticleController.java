@@ -18,7 +18,7 @@ public class ArticleController {
         this.service = service;
     }
 
-    @PostMapping("/questions/")
+    @PostMapping("/questions")
     public String createArticle(ArticleDto articleDto) {
         service.createArticle(articleDto);
         return "redirect:/";

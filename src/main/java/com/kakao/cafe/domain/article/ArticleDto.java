@@ -8,11 +8,6 @@ public class ArticleDto {
     private final String contents;
 
     public ArticleDto(String writer, String title, String contents) {
-        this(null, writer, title, contents);
-    }
-
-    public ArticleDto(Long id, String writer, String title, String contents) {
-        this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -29,6 +24,10 @@ public class ArticleDto {
 
     public String getContents() {
         return contents;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void isEmpty() {
