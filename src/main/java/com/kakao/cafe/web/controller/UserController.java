@@ -3,7 +3,7 @@ package com.kakao.cafe.web.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.user.LoginUserDto;
-import com.kakao.cafe.web.dto.user.SignUpUserDto;
+import com.kakao.cafe.web.dto.user.UserDto;
 import com.kakao.cafe.web.session.SessionConst;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -41,17 +37,24 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String newForm(@ModelAttribute(name="user") SignUpUserDto signUpUserDto) {
+    public String newForm(@ModelAttribute(name="user") UserDto userDto) {
         return "user/form";
     }
 
     @PostMapping("/new")
-    public String signUp(@Validated @ModelAttribute(name = "user") SignUpUserDto signUpUserDto,
+    public String signUp(@Validated @ModelAttribute(name = "user") UserDto userDto,
                          BindingResult bindingResult) {
+        if (userService.findOne(userDto.getUserId()) != null) {
+            bindingResult.rejectValue("userId","duplicatedUserId");
+            log.info("errors={}", bindingResult);
+            return "user/form";
+        }
+
         if (bindingResult.hasErrors()) {
             return "user/form";
         }
-        User signUpUser = new User(signUpUserDto.getUserId(), signUpUserDto.getPassword(), signUpUserDto.getName(), signUpUserDto.getEmail());
+
+        User signUpUser = new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
         userService.signUp(signUpUser);
         return "redirect:/users";
     }

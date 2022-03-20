@@ -3,7 +3,7 @@ package com.kakao.cafe.web.dto.user;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class SignUpUserDto {
+public class UserDto {
     @NotBlank
     private String userId;
     @NotBlank
@@ -12,6 +12,16 @@ public class SignUpUserDto {
     private String name;
     @Email
     private String email;
+
+    public UserDto() {
+    }
+
+    public UserDto(String userId, String password, String name, String email) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.email = email;
+    }
 
     public void setUserId(String userId) {
         this.userId = userId;
