@@ -30,22 +30,13 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public void update(UserUpdateDto userUpdateDto) {
-        validateUserUpdateDto(userUpdateDto);
-        User user = userUpdateDto.toEntity();
-        userRepository.save(user);
+    public User loginUser(String userId, String password) {
+        return userRepository.findByUserIdAndPassword(userId, password);
     }
 
     private void validateUserSaveDto(UserSaveDto userSaveDto) {
         validateUserId(userSaveDto.getUserId());
         validateEmail(userSaveDto.getEmail());
-    }
-
-    private void validateUserUpdateDto(UserUpdateDto userUpdateDto) {
-        User findUser = userRepository.findByUserId(userUpdateDto.getUserId());
-        if (findUser.isNotEqualsPassword(userUpdateDto.getCurrentPassword())) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
-        }
     }
 
     private void validateUserId(String userId) {
@@ -60,5 +51,15 @@ public class UserService {
         if (isExistEmail) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
+    }
+
+    public boolean update(UserUpdateDto userUpdateDto) {
+        User user = userRepository.findByUserIdAndPassword(userUpdateDto.getUserId(), userUpdateDto.getPassword());
+        if (user == null) {
+            return false;
+        }
+
+        userRepository.update(userUpdateDto.toEntity());
+        return true;
     }
 }

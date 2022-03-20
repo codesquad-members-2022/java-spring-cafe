@@ -12,7 +12,11 @@ public interface UserRepository {
 
     List<User> findAll();
 
+    User findByUserIdAndPassword(String userId, String password);
+
     boolean isExistUserId(String userId);
 
     boolean isExistEmail(String email);
+
+    void update(User user);
 }

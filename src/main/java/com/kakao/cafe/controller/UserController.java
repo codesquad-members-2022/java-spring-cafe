@@ -11,7 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/users")
@@ -56,10 +59,17 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable String userId, Model model) {
-        User user = userService.findOne(userId);
-        UserUpdateDto userUpdateDto = new UserUpdateDto(user);
-        model.addAttribute("userUpdateDto", userUpdateDto);
+    public String updateForm(@PathVariable String userId, HttpSession session, Model model, HttpServletResponse response) throws IOException {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        if (loginUser.isNotEqualsUserId(userId)) {
+            response.sendError(403, "다른 사용자의 정보를 수정할 수 없습니다.");
+        }
+
+        model.addAttribute("userUpdateDto", new UserUpdateDto(loginUser));
         return "user/updateForm";
     }
 
@@ -69,7 +79,13 @@ public class UserController {
             logger.error("errors={}", bindingResult);
             return "user/updateForm";
         }
-        userService.update(userUpdateDto);
-        return "redirect:/users";
+
+        boolean checkUpdate = userService.update(userUpdateDto);
+        if (!checkUpdate) {
+            bindingResult.reject("isNotCorrectUserInfo", "회원 정보가 일치하지 않습니다.");
+            return "user/updateForm";
+        }
+
+        return "redirect:/users/" + userUpdateDto.getUserId();
     }
 }

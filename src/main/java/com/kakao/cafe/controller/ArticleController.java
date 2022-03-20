@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class ArticleController {
     }
 
     @GetMapping("/")
-    public String showArticles(Model model) {
+    public String showArticles(Model model, HttpSession session) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "index";
