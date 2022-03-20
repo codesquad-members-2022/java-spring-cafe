@@ -4,11 +4,12 @@ import com.kakao.cafe.domain.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class VolatilityUserRepository implements DomainRepository<User, String> {
+public class MemoryUserRepository implements CrudRepository<User, String> {
 
-    private final List<User> users = Collections.synchronizedList(new ArrayList<>());
+    private final List<User> users = new CopyOnWriteArrayList<>();
 
     @Override
     public List<User> findAll() {
@@ -17,7 +18,7 @@ public class VolatilityUserRepository implements DomainRepository<User, String> 
 
     @Override
     public synchronized Optional<User> save(User user) {
-        findOne(user.getUserId()).ifPresentOrElse(
+        findById(user.getUserId()).ifPresentOrElse(
                 (other) -> merge(other.getId(), user),
                 () -> persist(user)
         );
@@ -34,7 +35,13 @@ public class VolatilityUserRepository implements DomainRepository<User, String> 
     }
 
     @Override
-    public Optional<User> findOne(String userId) {
+    public Optional<User> findById(String userId) {
         return users.stream().filter(user -> user.ownerOf(userId)).findAny();
+    }
+
+    @Override
+    public int deleteById(String userId) {
+        /* In memory version, I can't find a good way.. 😂 */
+        return 0;
     }
 }

@@ -2,7 +2,7 @@ package com.kakao.cafe.exception.common;
 
 import org.springframework.http.HttpStatus;
 
-public class CommonException extends Exception {
+public class CommonException extends RuntimeException {
 
     private HttpStatus httpStatus;
     private String viewName;

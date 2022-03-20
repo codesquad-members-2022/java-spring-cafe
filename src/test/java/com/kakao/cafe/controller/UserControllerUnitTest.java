@@ -61,9 +61,14 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForSignUpSuccess")
     void signUpSuccess(NewUserParam newUserParam) throws Exception {
+        // given
         given(service.add(newUserParam)).willReturn(userMapper.convertToDomain(newUserParam, User.class));
 
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
+        // when
+        mvc.perform(post("/users")
+                        .params(convertToMultiValueMap(newUserParam)))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -85,9 +90,14 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForSignUpFail")
     void signUpFail(NewUserParam newUserParam) throws Exception {
+        // given
         given(service.add(ArgumentMatchers.refEq(newUserParam))).willThrow(new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE));
 
-        mvc.perform(post("/users/register").params(convertToMultiValueMap(newUserParam)))
+        // when
+        mvc.perform(post("/users")
+                        .params(convertToMultiValueMap(newUserParam)))
+
+                // then
                 .andExpectAll(
                         content().string(DUPLICATE_USER_MESSAGE),
                         status().isOk())
@@ -108,9 +118,13 @@ public class UserControllerUnitTest {
     @DisplayName("회원목록 페이지를 요청하면 사용자 목록을 출력한다.")
     @Test
     void getUsers() throws Exception {
+        // given
         given(service.searchAll()).willReturn(users);
 
+        // when
         mvc.perform(get("/users"))
+
+                // then
                 .andExpectAll(
                         model().attributeExists("users"),
                         model().attribute("users", users),
@@ -126,11 +140,15 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForSignUpFail")
     void getUserProfileSuccess(NewUserParam newUserParam) throws Exception {
+        // given
         User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
         given(service.search(userId)).willReturn(user);
 
+        // when
         mvc.perform(get("/users/" + userId))
+
+                // then
                 .andExpectAll(
                         model().attributeExists("user"),
                         model().attribute("user", user),
@@ -146,11 +164,15 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForSignUpSuccess")
     void getUserProfileFail(NewUserParam newUserParam) throws Exception {
+        // given
         User user = userMapper.convertToDomain(newUserParam, User.class);
         String userId = user.getUserId();
-
         given(service.search(userId)).willThrow(new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
+
+        // when
         mvc.perform(get("/users/" + userId))
+
+                // then
                 .andExpectAll(
                         content().string(NO_SUCH_USER_MESSAGE),
                         status().isOk()
@@ -163,12 +185,18 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForModifiedProfileSuccess")
     void modifyProfileSuccess(ModifiedUserParam modifiedUserParam) throws Exception {
+        // given
         modifiedUserParam.switchPassword();
         User user = userMapper.convertToDomain(modifiedUserParam, User.class);
         String userId = user.getUserId();
 
         given(service.update(modifiedUserParam)).willReturn(user);
-        mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
+
+        // when
+        mvc.perform(put("/users/" + userId)
+                        .params(convertToMultiValueMap(modifiedUserParam)))
+
+                // then
                 .andExpectAll(
                         status().is3xxRedirection(),
                         redirectedUrl("/users")
@@ -194,13 +222,18 @@ public class UserControllerUnitTest {
     @ParameterizedTest(name = "{index} {displayName} user={0}")
     @MethodSource("paramsForModifiedProfileFail")
     void modifyProfileFail(ModifiedUserParam modifiedUserParam) throws Exception {
+        // given
         modifiedUserParam.switchPassword();
         User user = userMapper.convertToDomain(modifiedUserParam, User.class);
 
         String userId = user.getUserId();
-
         given(service.update(ArgumentMatchers.refEq(modifiedUserParam))).willThrow(new UnMatchedPasswordException(HttpStatus.OK, UNMATCHED_PASSWORD_MESSAGE));
-        mvc.perform(put("/users/" + userId + "/update").params(convertToMultiValueMap(modifiedUserParam)))
+
+        // when
+        mvc.perform(put("/users/" + userId)
+                        .params(convertToMultiValueMap(modifiedUserParam)))
+
+                // then
                 .andExpectAll(
                         content().string(UNMATCHED_PASSWORD_MESSAGE),
                         status().isOk()

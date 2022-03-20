@@ -2,7 +2,7 @@ package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.User;
 import org.springframework.context.annotation.Primary;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,7 +15,7 @@ import java.util.*;
 
 @Primary
 @Repository
-public class JdbcUserRepository implements DomainRepository<User, String> {
+public class JdbcUserRepository implements CrudRepository<User, String> {
 
     private final SimpleJdbcInsert insertJdbc;
     private final NamedParameterJdbcTemplate jdbc;
@@ -42,7 +42,7 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
 
     @Override
     public Optional<User> save(User user) {
-        findOne(user.getUserId()).ifPresentOrElse(
+        findById(user.getUserId()).ifPresentOrElse(
                 (other) -> merge(user),
                 () -> persist(user)
         );
@@ -60,15 +60,16 @@ public class JdbcUserRepository implements DomainRepository<User, String> {
     }
 
     @Override
-    public Optional<User> findOne(String userId) {
-        try {
-            Map<String, ?> params = Collections.singletonMap("userId", userId);
-            User user = jdbc.queryForObject(
-                    "select id, user_id, password, name, email from member where user_id = :userId", params, rowMapper);
+    public Optional<User> findById(String userId) {
+        User user = DataAccessUtils.singleResult(jdbc.query(
+                "select id, user_id, password, name, email from member where user_id = :userId",
+                Collections.singletonMap("userId", userId), rowMapper));
 
-            return Optional.ofNullable(user);
-        } catch (EmptyResultDataAccessException e) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public int deleteById(String userId) {
+        return jdbc.update("delete article where userId = :userId", Collections.singletonMap("userId", userId));
     }
 }

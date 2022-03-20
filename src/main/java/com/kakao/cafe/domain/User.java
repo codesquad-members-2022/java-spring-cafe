@@ -15,7 +15,7 @@ public class User {
     public User(@JsonProperty("id") int id, @JsonProperty("userId") String userId,
                 @JsonProperty("password") String password, @JsonProperty("name") String name,
                 @JsonProperty("email") String email) {
-        
+
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -50,11 +50,7 @@ public class User {
     public boolean ownerOf(String userId) {
         return userId.equals(this.userId);
     }
-
-    public boolean confirmPassword(String password) {
-        return password.equals(this.password);
-    }
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

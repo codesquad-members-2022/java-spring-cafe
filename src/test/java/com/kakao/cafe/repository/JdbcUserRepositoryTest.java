@@ -14,7 +14,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @JdbcTest
-@Sql(scripts = {"classpath:h2_ddl.sql "})
+@Sql(scripts = {"classpath:schema.sql"})
 class JdbcUserRepositoryTest {
 
     @Autowired
@@ -29,62 +29,62 @@ class JdbcUserRepositoryTest {
 
     @Test
     @DisplayName("전체 사용자 목록을 반환한다.")
-    void findAll() {
-        //given
-        User user1 = new User(-1, "user1", "1234", "name1", "user1@gmail.com");
+    void findAllSuccess() {
+        // given
+        User user1 = new User(1, "user1", "1234", "name1", "user1@gmail.com");
         repository.save(user1);
 
-        User user2 = new User(-1, "user2", "1234", "name2", "user2@gmail.com");
+        User user2 = new User(2, "user2", "1234", "name2", "user2@gmail.com");
         repository.save(user2);
 
-        //when
+        // when
         List<User> users = repository.findAll();
 
-        //then
+        // then
         assertThat(users.size()).isEqualTo(2);
     }
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 저장한다.")
-    void persist() {
-        //given
+    void persistSuccess() {
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
 
-        //when
+        // when
         repository.save(user);
 
-        //then
-        User result = repository.findOne(user.getUserId()).get();
+        // then
+        User result = repository.findById(user.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 
     @Test
     @DisplayName("인자로 주어진 사용자를 저장소에 업데이트한다.")
-    void merge() {
-        //given
+    void mergeSuccess() {
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
-        //when
+        // when
         User modifiedUser = new User(1, "user", "4321", "newName", "user@gmail.com");
         repository.save(modifiedUser);
 
-        //then
-        User result = repository.findOne(modifiedUser.getUserId()).get();
+        // then
+        User result = repository.findById(modifiedUser.getUserId()).get();
         assertThat(result).usingRecursiveComparison().isEqualTo(modifiedUser);
     }
 
     @Test
     @DisplayName("인자로 주어진 ID를 가진 사용자를 저장소에서 찾아 반환한다.")
-    void findOne() {
-        //given
+    void findByIdSuccess() {
+        // given
         User user = new User(1, "user", "1234", "name", "user@gmail.com");
         repository.save(user);
 
-        //when
-        User result = repository.findOne(user.getUserId()).get();
+        // when
+        User result = repository.findById(user.getUserId()).get();
 
-        //then
+        // then
         assertThat(result).usingRecursiveComparison().isEqualTo(user);
     }
 }

@@ -4,11 +4,12 @@ import com.kakao.cafe.domain.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class VolatilityArticleRepository implements DomainRepository<Article, Integer> {
+public class MemoryArticleRepository implements CrudRepository<Article, Integer> {
 
-    private final List<Article> articles = Collections.synchronizedList(new ArrayList<>());
+    private final List<Article> articles = new CopyOnWriteArrayList<>();
 
     @Override
     public List<Article> findAll() {
@@ -23,7 +24,12 @@ public class VolatilityArticleRepository implements DomainRepository<Article, In
     }
 
     @Override
-    public Optional<Article> findOne(Integer index) {
+    public Optional<Article> findById(Integer index) {
         return Optional.ofNullable(articles.get(index - 1));
+    }
+
+    @Override
+    public int deleteById(Integer index) {
+        return articles.remove(index - 1).getId();
     }
 }

@@ -6,7 +6,7 @@ import com.kakao.cafe.dto.NewUserParam;
 import com.kakao.cafe.exception.user.DuplicateUserException;
 import com.kakao.cafe.exception.user.NoSuchUserException;
 import com.kakao.cafe.exception.user.SaveUserException;
-import com.kakao.cafe.repository.DomainRepository;
+import com.kakao.cafe.repository.CrudRepository;
 import com.kakao.cafe.util.DomainMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ import static com.kakao.cafe.message.UserDomainMessage.*;
 @Service
 public class UserService {
 
-    private final DomainRepository<User, String> userRepository;
+    private final CrudRepository<User, String> userRepository;
     private final DomainMapper<User> userMapper = new DomainMapper<>();
 
-    public UserService(DomainRepository<User, String> userRepository) {
+    public UserService(CrudRepository<User, String> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -38,7 +38,7 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        userRepository.findOne(user.getUserId())
+        userRepository.findById(user.getUserId())
                 .ifPresent(id -> {
                     throw new DuplicateUserException(HttpStatus.OK, DUPLICATE_USER_MESSAGE);
                 });
@@ -54,7 +54,7 @@ public class UserService {
     }
 
     public User search(String userId) {
-        return userRepository.findOne(userId)
+        return userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchUserException(HttpStatus.OK, NO_SUCH_USER_MESSAGE));
     }
 }

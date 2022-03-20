@@ -3,10 +3,12 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ModifiedUserParam;
 import com.kakao.cafe.dto.NewUserParam;
+import com.kakao.cafe.exception.common.AccessRestrictionException;
+import com.kakao.cafe.exception.common.CommonException;
 import com.kakao.cafe.exception.user.UserDomainException;
 import com.kakao.cafe.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.kakao.cafe.session.SessionUser;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public String signUp(NewUserParam newUserParam) {
         userService.add(newUserParam);
         return "redirect:/users";
@@ -47,30 +49,37 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public ModelAndView goUpdateForm(@PathVariable String userId, HttpSession session,
+    public ModelAndView goUpdateForm(@PathVariable String userId,
+                                     @SessionAttribute("sessionUser") SessionUser sessionUser,
                                      ModelAndView mav) {
 
-        User user = (User) session.getAttribute("userInfo");
         mav.setViewName("user/updateForm");
-        mav.addObject("user", user);
 
-        if (!user.ownerOf(userId)) {
-            mav.setViewName("error/4xx");
-            mav.addObject("message", UPDATE_ACCESS_RESTRICTION_MESSAGE);
+        if (!sessionUser.ownerOf(userId)) {
+            throw new AccessRestrictionException(HttpStatus.FORBIDDEN, "error/4xx", UPDATE_ACCESS_RESTRICTION_MESSAGE);
         }
 
         return mav;
     }
 
-    @PutMapping("/{userId}/update")
+    @PutMapping("/{userId}")
     public String modifyProfile(ModifiedUserParam modifiedUserParam, HttpSession session) {
         User updateUser = userService.update(modifiedUserParam);
-        session.setAttribute("userInfo", updateUser);
+        SessionUser sessionUser = new SessionUser(updateUser);
+        session.setAttribute("sessionUser", sessionUser);
         return "redirect:/users";
     }
 
     @ExceptionHandler({UserDomainException.class})
     private ResponseEntity<String> except(UserDomainException ex) {
         return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
+    }
+
+    @ExceptionHandler({CommonException.class})
+    private ModelAndView goErrorPage(CommonException ex) {
+        ModelAndView mav = new ModelAndView(ex.getViewName());
+        mav.setStatus(ex.getHttpStatus());
+        mav.addObject("message", ex.getMessage());
+        return mav;
     }
 }

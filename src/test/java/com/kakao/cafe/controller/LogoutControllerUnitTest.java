@@ -33,10 +33,15 @@ public class LogoutControllerUnitTest {
     @DisplayName("로그아웃 요청이 들어오면 세션에 저장된 사용자 정보를 삭제하고 질문 글 목록으로 리다이렉트한다.")
     @Test
     void loginSuccess() throws Exception {
+        // given
         User user = new User(1, "userId", "password", "name", "email");
         session.setAttribute("user", user);
 
-        mvc.perform(get("/logout").session(session))
+        // when
+        mvc.perform(get("/logout")
+                        .session(session))
+
+                // then
                 .andExpectAll(
                         request().sessionAttributeDoesNotExist("userInfo"),
                         status().is3xxRedirection(),
