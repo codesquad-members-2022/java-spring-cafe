@@ -2,7 +2,6 @@ package kr.codesquad.cafe.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -18,7 +17,6 @@ public class UserService {
     }
 
     public void join(User user) {
-        validateNotNull(user);
         validateNoDuplicateUserId(user);
         validateNoDuplicateName(user);
         validateNoDuplicateEmail(user);
@@ -27,7 +25,6 @@ public class UserService {
     }
 
     public void update(User user, String oldPassword) {
-        validateNotNull(user);
         validateUserAlreadyExists(user);
         validateOldPassword(user, oldPassword);
         validateNoDuplicateName(user);
@@ -42,10 +39,6 @@ public class UserService {
         }
 
         throw new IllegalArgumentException("잘못된 패스워드입니다.");
-    }
-
-    private void validateNotNull(User user) {
-        Assert.notNull(user, "유저는 null이어서는 안 됩니다.");
     }
 
     private void validateUserAlreadyExists(User user) {

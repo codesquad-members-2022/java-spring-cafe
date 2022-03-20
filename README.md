@@ -73,3 +73,45 @@
 ### 구현과정 
 
 - 스프링 부트 2.2 업데이트 이후로 `application.properties` 파일에 `spring.mvc.hiddenmethod.filter.enabled=true`를 추가해야 브라우저가 form의 히든값으로 put 요청을 보내는 것을 인식할 수 있다. 
+
+## 미션 3 - DB에 저장하기
+
+### 요구사항
+
+- [x] H2 데이터베이스 의존성을 추가하고 연동한다.
+  - Spring JDBC를 사용한다.
+  - DB 저장 및 조회에 필요한 SQL은 직접 작성한다.
+  - ORM은 사용하지 않는다.
+- [x] 게시글 데이터 저장하기
+  - Article 클래스를 DB 테이블에 저장할 수 있게 구현한다.
+  - Article 테이블이 적절한 Primary Key를 가지도록 구현한다.
+- [x] 게시글 목록 구현하기
+  - 전체 게시글 목록 데이터를 DB에서 조회하도록 구현한다.
+- [x] 게시글 상세보기 구현하기
+  - 게시글의 세부 내용을 DB에서 가져오도록 구현한다.
+- [x] 사용자 정보 DB에 저장
+  - 회원가입을 통해 등록한 사용자 정보를 DB에 저장한다.
+- [x] Heroku로 배포를 진행한다. 
+  - README에 배포 URL을 기술한다.
+  - https://astraum-spring-cafe.herokuapp.com/
+
+### 전단계 피드백 반영
+
+- [x] UserService::validateNotNull을 제거한다
+- [ ] User 중복에 대한 검증에 Validator를 사용하고 UserService의 책임과 분리한다.
+  - Validator에 대해 학습한다. 
+  - 중복에 대한 검증을 Repository 또는 DB 쪽에서 처리하는 방법을 찾아본다. 
+
+### 구현과정
+
+- 인텔리제이에서 실행했을 때에는 문제가 없는데 Heroku에서는 문제가 되는 경우가 있다.
+  - Mustache partial 템플릿의 경로 맨 앞에 역슬래시가 붙어 있으면 참조 위치가 templates//{경로}가 되어 오류가 난다. 
+  - 컨트롤러에서 뷰 이름 맨 앞에 역슬래시가 붙어 있으면 템플릿이 아니라 URL로 인식하여 리다이렉션 또는 404 오류가 난다.
+- Heroku에 스프링 부트 앱을 push할 때 기본 설정은 자바 1.8 기준이다. `systems.properties` 설정 파일을 만들고 `java.runtime.version=11` 설정을 추가하였다. 
+- 의존성이 포함되지 않은 *plain.jar 파일로 인해 앱이 정상적으로 실행되지 않는 현상이 있었다. `build.gradle` 파일에 `jar {enabled = false}` 설정을 추가하여 *plain.jar 파일이 생성되지 않게 하였다.
+  - bootJar 및 jar의 classifier 속성을 바꾸어 bootJar로 생성된 executable jar가 우선적으로 실행되게 하는 방식으로도 해결할 수 있다. (https://docs.spring.io/spring-boot/docs/2.5.1/gradle-plugin/reference/htmlsingle/#packaging-executable.and-plain-archives) 
+  - Procfile을 만들고 어느 jar를 실행시킬 것인지 경로를 명시하여 해결하는 방법도 있다 (https://devcenter.heroku.com/articles/deploying-gradle-apps-on-heroku#the-procfile)
+- timestamp가 서울 시간 기준으로 생성되도록 config vars에 (키=TZ, 값=Asia/Seoul)을 추가하였다.
+- Heroku는 H2 데이터베이스 애드온을 지원하지 않는다. 
+  - db 파일을 프로젝트 폴더에 포함시켜서 같이 push하거나 spring.sql.init 계열 설정을 이용하여 테이블과 초기 데이터를 세팅해 줄 수는 있지만, 웹 상에서 저장하거나 변경한 데이터가 지속되지 않고 일정 주기로 초기화된다.
+  - H2 대신 PosgreSQL 등 Heroku가 지원하는 DB를 사용하거나, 만약 필요하다면 별도의 h2 서버를 띄워서 해결할 수도 있을 것이다.

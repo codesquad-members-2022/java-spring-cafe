@@ -20,8 +20,8 @@ public class ArticleService {
         repository.save(article);
     }
 
-    public Article retrieve(int index) {
-        return repository.findOne(index)
+    public Article retrieve(long id) {
+        return repository.findOne(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시물입니다."));
     }
 
