@@ -39,7 +39,7 @@ public class User {
         return email;
     }
 
-    public boolean checkIfTheSameOrNot(String userId){
+    public boolean isSame(String userId){
         return this.userId.equals(userId);
     }
 }

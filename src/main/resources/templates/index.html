@@ -10,12 +10,12 @@
                   <div class="wrap">
                       <div class="main">
                           <strong class="subject">
-                              <a th:href="@{/articles/{index}(index=${article.getId()})}" th:text="${article.title}"></a>
+                              <a th:href="@{/article/{index}(index=${article.getId()})}" th:text="${article.title}"></a>
                           </strong>
                           <div class="auth-info">
                               <i class="icon-add-comment"></i>
                               <span class="time" th:text="${#temporals.format(article.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-                              <a href="user/profile.html" class="author" th:text="${article.writer}"></a>
+                              <a th:href="@{/users/{userId}(userId=${article.writer})}" class="author" th:text="${article.writer}"></a>
                           </div>
                           <div class="reply" title="댓글">
                               <i class="icon-reply"></i>
@@ -39,7 +39,7 @@
                 </ul>
               </div>
               <div class="col-md-3 qna-write">
-                  <a href="qna/question" class="btn btn-primary pull-right" role="button">질문하기</a>
+                  <a href="/article" class="btn btn-primary pull-right" role="button">질문하기</a>
               </div>
           </div>
         </div>

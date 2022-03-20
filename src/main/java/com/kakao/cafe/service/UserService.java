@@ -5,6 +5,7 @@ import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class UserService {
@@ -26,6 +27,7 @@ public class UserService {
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원입니다.");
                 });
+
     }
 
     public List<User> findUsers() {
@@ -33,7 +35,7 @@ public class UserService {
     }
 
     public User findById(String userId) {
-        return userRepository.findById(userId).get();
+        return userRepository.findById(userId).orElseThrow(()-> new NoSuchElementException("해당하는 회원이 존재 하지 않습니다"));
     }
 
 }

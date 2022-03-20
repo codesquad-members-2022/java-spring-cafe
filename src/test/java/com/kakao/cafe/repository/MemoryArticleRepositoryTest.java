@@ -15,8 +15,7 @@ public class MemoryArticleRepositoryTest {
         Article article = new Article(
                 "케이",
                 "테스트",
-                "테스트입니다.",
-                null);
+                "테스트입니다.");
 
         assertThat(article.getWriter()).isEqualTo("케이");
         assertThat(article.getTitle()).isEqualTo("테스트");

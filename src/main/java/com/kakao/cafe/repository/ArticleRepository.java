@@ -3,10 +3,11 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
 
     Article saveArticle(Article article);
     List<Article> loadAllArticles();
-    Article loadOneArticle(int index);
+    Optional<Article> loadOneArticle(Long index);
 }

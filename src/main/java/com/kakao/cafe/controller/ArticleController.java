@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.LocalDateTime;
 
 @Controller
 public class ArticleController {
@@ -19,20 +18,20 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/qna/question")
+    @GetMapping("/article")
     public String quaForm() {
         return "qna/form";
     }
 
-    @PostMapping("/qna/question")
+    @PostMapping("/article")
     public String createQuestion(ArticleForm form) {
-        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents(), LocalDateTime.now());
+        Article article = new Article(form.getWriter(), form.getTitle(), form.getContents());
         articleService.saveArticle(article);
         return "redirect:/";
     }
 
-    @GetMapping("/articles/{index}")
-    public String loadOneArticle(@PathVariable int index, Model model) {
+    @GetMapping("/article/{index}")
+    public String loadOneArticle(@PathVariable Long index, Model model) {
         Article article = articleService.loadOneArticle(index);
         model.addAttribute("article", article);
         return "qna/show";
