@@ -16,7 +16,13 @@ public class UserMemoryRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        store.add(user);
+        Optional<User> existingData = findByUserId(user.getUserId());
+        if (existingData.isPresent()) {
+            existingData.get().updateUser(user.getName(), user.getEmail(), user.getPassword());
+        } else {
+            store.add(user);
+        }
+
         return user;
     }
 

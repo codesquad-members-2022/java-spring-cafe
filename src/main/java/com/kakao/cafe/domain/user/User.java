@@ -22,19 +22,21 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void updateUser(String name, String email, String password) {
         this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public UserDto convertToUserDto() {
+        return new UserDto(userId, password, email, name);
     }
 }
