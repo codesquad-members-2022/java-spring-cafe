@@ -1,9 +1,16 @@
 package com.kakao.cafe.web.dto.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class SignUpUserDto {
+    @NotBlank
     private String userId;
+    @NotBlank
     private String password;
+    @NotBlank
     private String name;
+    @Email
     private String email;
 
     public void setUserId(String userId) {

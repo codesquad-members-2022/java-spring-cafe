@@ -41,12 +41,16 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String newForm() {
+    public String newForm(@ModelAttribute(name="user") SignUpUserDto signUpUserDto) {
         return "user/form";
     }
 
     @PostMapping("/new")
-    public String signUp(@ModelAttribute(name = "user") SignUpUserDto signUpUserDto) {
+    public String signUp(@Validated @ModelAttribute(name = "user") SignUpUserDto signUpUserDto,
+                         BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user/form";
+        }
         User signUpUser = new User(signUpUserDto.getUserId(), signUpUserDto.getPassword(), signUpUserDto.getName(), signUpUserDto.getEmail());
         userService.signUp(signUpUser);
         return "redirect:/users";
