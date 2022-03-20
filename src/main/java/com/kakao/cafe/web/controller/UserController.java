@@ -95,6 +95,12 @@ public class UserController {
             return "user/update";
         }
 
+        User userBefore = userService.findOne(userId);
+        if (!userBefore.getPassword().equals(userDto.getPassword())) {
+            bindingResult.rejectValue("userId","differentPassword");
+            return "user/update";
+        }
+
         User userAfter = new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
         userService.updateUser(userId, userAfter);
 
