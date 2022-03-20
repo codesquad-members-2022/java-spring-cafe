@@ -31,7 +31,7 @@ public class ArticleController {
 
     @GetMapping("/articles/{index}")
     public String detailArticlePage(@PathVariable Long index, Model model) {
-        Article article = service.findSingleArticle(index);
+        ArticleDto article = service.findSingleArticle(index);
         model.addAttribute("article", article);
         return "qna/show";
     }

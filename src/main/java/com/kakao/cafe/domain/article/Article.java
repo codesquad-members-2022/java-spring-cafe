@@ -33,4 +33,8 @@ public class Article {
     public String getContents() {
         return contents;
     }
+
+    public ArticleDto convertToDto() {
+        return new ArticleDto(id, writer, title, contents);
+    }
 }
