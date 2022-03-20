@@ -1,8 +1,11 @@
 package com.kakao.cafe.article.domain;
 
 import com.kakao.cafe.article.controller.dto.ArticleWriteRequest;
+import com.kakao.cafe.exception.domain.InvalidFieldLengthException;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
+import com.kakao.cafe.users.domain.User;
 import com.kakao.cafe.utils.DateUtils;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,6 +39,16 @@ class ArticleTest {
                         .isInstanceOf(RequiredFieldNotFoundException.class)
                         .hasMessageContaining(RequiredFieldNotFound);
             }
+        }
+
+        @Test
+        void title_의_길이가_100_이상이면_생성에_실패한다() {
+            // arrange
+            String titleOverLength = "a".repeat(102);
+
+            // assert
+            Assertions.assertThatThrownBy(() -> new Article(titleOverLength, null, null, null))
+                    .isInstanceOf(InvalidFieldLengthException.class);
         }
     }
 }

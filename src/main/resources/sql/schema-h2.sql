@@ -9,3 +9,14 @@ CREATE TABLE `cafe_users` (
     created_date DATETIME NOT NULL,
     modified_date DATETIME NOT NULL
 );
+
+DROP TABLE IF EXISTS `article`;
+
+CREATE TABLE `article` (
+  id BIGINT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  title VARCHAR(100) NOT NULL,
+  content TEXT,
+  view_count BIGINT NOT NULL DEFAULT (0),
+  created_date DATETIME NOT NULL,
+  modified_date DATETIME NOT NULL
+);

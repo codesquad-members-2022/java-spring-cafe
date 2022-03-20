@@ -1,5 +1,6 @@
 package com.kakao.cafe.users.domain;
 
+import com.kakao.cafe.exception.domain.InvalidFieldLengthException;
 import com.kakao.cafe.exception.domain.RequiredFieldNotFoundException;
 import com.kakao.cafe.users.controller.dto.UserJoinRequest;
 
@@ -26,6 +27,7 @@ public class User {
         this.modifiedDate = getOrDefault(modifiedDate, LocalDateTime.now());
 
         validateRequiredField(this);
+        validateFieldLength(this);
     }
 
     public static User createWithJoinRequest(UserJoinRequest joinRequest) {
@@ -76,6 +78,15 @@ public class User {
                 user.getName() == null ||
                 user.getEmail() == null ) {
             throw new RequiredFieldNotFoundException();
+        }
+    }
+
+    private void validateFieldLength(User user) {
+        if (user.getUserId().length() > 20 ||
+                user.getPasswd().length() > 41 ||
+                user.getName().length() > 40 ||
+                user.getEmail().length() > 320 ) {
+            throw new InvalidFieldLengthException();
         }
     }
 

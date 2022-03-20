@@ -5,7 +5,7 @@ import com.kakao.cafe.utils.DateUtils;
 
 public class ArticleDetail {
 
-    private Integer id;
+    private Long id;
     private String title;
     private String content;
     private String createdDate;
@@ -22,11 +22,11 @@ public class ArticleDetail {
         return detail;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

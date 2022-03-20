@@ -3,6 +3,9 @@ package com.kakao.cafe.article.repository;
 import com.kakao.cafe.article.domain.Article;
 import com.kakao.cafe.article.exception.ArticleNotFoundException;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,9 +16,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @DisplayName("ArticleRepository 단위 테스트")
+@SpringBootTest
 class ArticleRepositoryTest {
 
-    private final ArticleRepository articleRepository = new MemoryArticleRepository();
+    @Autowired
+    private ArticleRepository articleRepository;
 
     @BeforeEach
     void setup() {
@@ -93,7 +98,7 @@ class ArticleRepositoryTest {
                 Article findArticle = articleRepository.findById(savedArticle.getId()).orElseThrow();
 
                 // assert
-                assertThat(findArticle).isEqualTo(savedArticle);
+                assertThat(findArticle.equals(savedArticle)).isTrue();
             }
         }
 
@@ -103,7 +108,7 @@ class ArticleRepositoryTest {
             @Test
             void 글을_찾을수없다() {
                 // arrange
-                int unsavedId = 1;
+                Long unsavedId = 1L;
 
                 // assert
                 articleRepository.findById(unsavedId)
@@ -148,13 +153,13 @@ class ArticleRepositoryTest {
     }
 
     private Article getIdNullArticle() {
-        LocalDateTime datetime = LocalDateTime.MIN;
+        LocalDateTime datetime = LocalDateTime.of(1970,1,1,0,0,0);
         return new Article("제목 입니다.","내용 입니다.", datetime, datetime);
     }
 
     private Article getArticle() {
         Article article = getIdNullArticle();
-        article.setId(1);
+        article.setId(1L);
 
         return article;
     }

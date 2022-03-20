@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -178,6 +179,7 @@ class ArticleControllerTest {
     }
 
     private Article getArticleMock() {
-        return new Article("", null, null, null);
+        LocalDateTime datetime = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
+        return new Article("", null, datetime, datetime);
     }
 }

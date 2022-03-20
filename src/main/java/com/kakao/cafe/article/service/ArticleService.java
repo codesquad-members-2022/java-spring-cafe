@@ -32,7 +32,7 @@ public class ArticleService {
                 .orElse(Collections.emptyList());
     }
 
-    public Article viewArticle(Integer id) {
+    public Article viewArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(ArticleNotFoundException::new);
 
