@@ -11,10 +11,7 @@ public class UserUpdateDto {
     private String userId;
 
     @NotBlank
-    private String currentPassword;
-
-    @NotBlank
-    private String newPassword;
+    private String password;
 
     @NotBlank
     private String name;
@@ -25,22 +22,10 @@ public class UserUpdateDto {
     public UserUpdateDto() {
     }
 
-    public UserUpdateDto(User user) {
-        userId = user.getUserId();
-        name = user.getName();
-        email = user.getEmail();
-    }
-
-    public UserUpdateDto(String userId, String currentPassword, String newPassword, String name, String email) {
-        this.userId = userId;
-        this.currentPassword = currentPassword;
-        this.newPassword = newPassword;
-        this.name = name;
-        this.email = email;
-    }
-
-    public User toEntity() {
-        return new User(userId, newPassword, name, email);
+    public UserUpdateDto(User loginUser) {
+        this.userId = loginUser.getUserId();
+        this.name = loginUser.getName();
+        this.email = loginUser.getEmail();
     }
 
     public void setUserId(String userId) {
@@ -51,20 +36,12 @@ public class UserUpdateDto {
         return userId;
     }
 
-    public String getCurrentPassword() {
-        return currentPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
-    }
-
-    public String getNewPassword() {
-        return newPassword;
-    }
-
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -81,5 +58,9 @@ public class UserUpdateDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User toEntity() {
+        return new User(userId, password, name, email);
     }
 }

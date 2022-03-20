@@ -1,6 +1,7 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.controller.dto.UserSaveDto;
+import com.kakao.cafe.controller.dto.UserUpdateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -50,5 +51,15 @@ public class UserService {
         if (isExistEmail) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
+    }
+
+    public boolean update(UserUpdateDto userUpdateDto) {
+        User user = userRepository.findByUserIdAndPassword(userUpdateDto.getUserId(), userUpdateDto.getPassword());
+        if (user == null) {
+            return false;
+        }
+
+        userRepository.update(userUpdateDto.toEntity());
+        return true;
     }
 }

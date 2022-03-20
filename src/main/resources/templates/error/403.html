@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>403 Error Page</title>
+</head>
+<body>
+<div>
+    <h2>403 오류 화면 입니다.</h2>
+</div>
+<ul>
+    <li th:text="|현재 시간 : ${timestamp}|"></li>
+    <li th:text="|에러 메시지: ${message}|"></li>
+</ul>
+</body>
+</html>

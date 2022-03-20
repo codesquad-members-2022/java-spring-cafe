@@ -20,15 +20,8 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        boolean existUserId = isExistUserId(user.getUserId());
-        if (existUserId) {
-            jdbcTemplate.update(
-                    "update USER set PASSWORD = ?, NAME = ?, EMAIL = ? where USER_ID = ?",
-                    user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
-        } else {
-            jdbcTemplate.update("insert into USER(USER_ID, PASSWORD, NAME, EMAIL) values (?, ?, ?, ?)",
-                    user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
-        }
+        jdbcTemplate.update("insert into USER(USER_ID, PASSWORD, NAME, EMAIL) values (?, ?, ?, ?)",
+                user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
         return user;
     }
 
@@ -63,6 +56,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public boolean isExistEmail(String email) {
         return jdbcTemplate.queryForObject("select EXISTS (SELECT * FROM USER where EMAIL = ?)", boolean.class, email);
+    }
+
+    @Override
+    public void update(User user) {
+        jdbcTemplate.update(
+                "update USER set NAME = ?, EMAIL = ? where USER_ID = ?",
+                user.getName(), user.getEmail(), user.getUserId());
     }
 
     private RowMapper<User> userRowMapper() {

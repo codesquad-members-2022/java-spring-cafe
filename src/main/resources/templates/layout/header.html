@@ -80,7 +80,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/">Posts</a></li>
                     <li><a href="/logout" role="button">로그아웃</a></li>
-                    <li><a href="#" role="button">개인정보수정</a></li>
+                    <li><a th:href="@{/users/{userId}/form(userId=${session.loginUser.userId})}" role="button">개인정보수정</a></li>
                 </ul>
             </div>
         </div>

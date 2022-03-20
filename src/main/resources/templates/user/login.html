@@ -10,7 +10,7 @@
        <div class="col-md-6 col-md-offset-3">
           <div class="panel panel-default content-main">
               <form name="question" th:object="${loginDto}" method="post" action="/login">
-                  <div class="form-group">
+                  <div th:if="${#fields.hasGlobalErrors()}">
                       <p class="field-error" th:each="error : ${#fields.globalErrors()}" th:text="${error}">
                           글로벌 오류 메시지
                       </p>

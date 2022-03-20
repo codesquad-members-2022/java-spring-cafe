@@ -53,7 +53,6 @@ public class ArticleController {
     public String showArticles(Model model, HttpSession session) {
         List<Article> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
-        logger.info("loginUser session ={}", session.getAttribute("loginUser"));
         return "index";
     }
 

@@ -1,6 +1,7 @@
 package com.kakao.cafe.controller;
 
 import com.kakao.cafe.controller.dto.UserSaveDto;
+import com.kakao.cafe.controller.dto.UserUpdateDto;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import org.slf4j.Logger;
@@ -8,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RequestMapping("/users")
@@ -57,4 +58,34 @@ public class UserController {
         return "user/profile";
     }
 
+    @GetMapping("/{userId}/form")
+    public String updateForm(@PathVariable String userId, HttpSession session, Model model, HttpServletResponse response) throws IOException {
+        User loginUser = (User) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+
+        if (loginUser.isNotEqualsUserId(userId)) {
+            response.sendError(403, "다른 사용자의 정보를 수정할 수 없습니다.");
+        }
+
+        model.addAttribute("userUpdateDto", new UserUpdateDto(loginUser));
+        return "user/updateForm";
+    }
+
+    @PutMapping("/{userId}")
+    public String update(@Valid UserUpdateDto userUpdateDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            logger.error("errors={}", bindingResult);
+            return "user/updateForm";
+        }
+
+        boolean checkUpdate = userService.update(userUpdateDto);
+        if (!checkUpdate) {
+            bindingResult.reject("isNotCorrectUserInfo", "회원 정보가 일치하지 않습니다.");
+            return "user/updateForm";
+        }
+
+        return "redirect:/users/" + userUpdateDto.getUserId();
+    }
 }

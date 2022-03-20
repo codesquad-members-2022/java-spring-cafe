@@ -11,11 +11,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        if (isExistUserId(user.getUserId())) {
-            updateUser(user);
-        } else {
-            users.add(user);
-        }
+        users.add(user);
         return user;
     }
 
@@ -53,12 +49,12 @@ public class MemoryUserRepository implements UserRepository {
                 .anyMatch(user -> user.isEqualsEmail(email));
     }
 
-    private void updateUser(User user) {
+    @Override
+    public void update(User user) {
         for (int i = 0; i < users.size(); i++) {
             if (user.isEqualsUserId(users.get(i).getUserId())) {
                 users.set(i, user);
             }
         }
     }
-
 }
