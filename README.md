@@ -129,6 +129,12 @@
 - [x] (선택) 로그인한 사용자는 자신의 정보를 수정할 수 있어야 한다. 
   - 다른 사용자의 정보를 수정하려고 하면 에러 페이지를 출력한다. 
 
+### 전단계 피드백 반영
+
+- [x] DB에서 한 건만 조회할 때 리스트로 가져오지 말고 하나의 객체만 반환하는 JdbcTemplate 메서드를 이용한다. 
+  - query 대신 queryForObject를 사용한다. 
+- [ ] DbConfig에서 JdbcTemplate을 생성한다. 
+
 ### 구현과정
 
 - `application.properties`
