@@ -50,3 +50,42 @@
 
 ## 이벤트 흐름도
 > ![image](https://user-images.githubusercontent.com/82401504/158037575-7b20e55f-adb7-4b23-b8e0-fdcb53bb0fdf.png)
+
+<br/>
+
+## 프로젝트 디렉토리 구조
+```
+.
+|-- main
+|   |-- java
+|   |   `-- com
+|   |       `-- kakao
+|   |           `-- cafe
+|   |               |-- config
+|   |               |-- controller
+|   |               |-- domain
+|   |               |-- dto
+|   |               |-- exception
+|   |               |-- repository
+|   |               `-- service
+|   `-- resources
+|       |-- static
+|       |   |-- css
+|       |   |-- fonts
+|       |   |-- images
+|       |   `-- js
+|       `-- templates
+|           |-- error
+|           |-- partial
+|           |-- qna
+|           `-- user
+`-- test
+    `-- java
+        `-- com
+            `-- kakao
+                `-- cafe
+                    |-- controller
+                    |-- domain
+                    |-- repository
+                    `-- service
+```
