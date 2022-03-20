@@ -1,10 +1,24 @@
 package com.kakao.cafe.domain;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class User {
+
     private Long id;
+
+    @NotBlank
     private String userId;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String name;
+
+    @Email
     private String email;
 
     public User() {}

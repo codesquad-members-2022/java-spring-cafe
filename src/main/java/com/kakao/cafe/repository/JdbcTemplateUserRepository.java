@@ -24,13 +24,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
     @Override
     public User findByUserId(String userId) {
         List<User> result = jdbcTemplate.query("select * from userTbl where userId = ?", userRowMapper(), userId);
-        return result.stream().findAny().get();
+        return result.stream().findAny().orElse(null);
     }
 
     @Override
     public User findById(Long id) {
         List<User> result = jdbcTemplate.query("select * from userTbl where id = ?", userRowMapper(), id);
-        return result.stream().findAny().get();
+        return result.stream().findAny().orElse(null);
     }
 
     private RowMapper<User> userRowMapper() {

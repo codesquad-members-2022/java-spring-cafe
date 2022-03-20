@@ -1,8 +1,12 @@
 package com.kakao.cafe.web.dto.user;
 
+import javax.validation.constraints.NotBlank;
+
 public class LoginUserDto {
 
+    @NotBlank
     private String userId;
+    @NotBlank
     private String password;
 
     public String getUserId() {
