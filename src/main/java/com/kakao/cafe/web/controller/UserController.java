@@ -132,7 +132,7 @@ public class UserController {
 
         httpSession.setAttribute(SessionConst.LOGIN_SESSION_NAME, loginUser);
 
-        return "index";
+        return "redirect:/";
     }
 
 
