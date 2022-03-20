@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(@ModelAttribute(name="user") LoginUserDto loginUserDto) {
         return "user/login";
     }
 
@@ -97,16 +97,17 @@ public class UserController {
     public String login(@Validated @ModelAttribute(name = "user") LoginUserDto loginUserDto,
                         BindingResult bindingResult, HttpSession httpSession) {
 
+        // field error 출력
         if (bindingResult.hasErrors()) {
-            log.info("errors={}", bindingResult);
-            return "user/login_failed";
+            return "user/login";
         }
 
         User loginUser = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
+
+        // global error 출력
         if (loginUser == null) {
             bindingResult.reject("loginFailed");
-            log.info("errors={}", bindingResult);
-            return "user/login_failed";
+            return "user/login";
         }
 
         httpSession.setAttribute(SessionConst.LOGIN_SESSION_NAME, loginUser);
