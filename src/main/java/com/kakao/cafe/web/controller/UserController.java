@@ -77,20 +77,27 @@ public class UserController {
     @GetMapping("{userId}/update")
     public String updateForm(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
-        model.addAttribute("user", user);
+        UserDto userDto = new UserDto(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        model.addAttribute("user", userDto);
         return "user/update";
     }
 
     @PutMapping("{userId}/update")
-    public String updateUser(@PathVariable String userId, @ModelAttribute User user) {
-        User before = userService.findOne(userId);
-        log.info("before userId={}, name={}, email={}", before.getUserId(), before.getName(), before.getEmail());
-        log.info("input  userId={}, name={}, email={}", user.getUserId(), user.getName(), user.getEmail());
+    public String updateUser(@PathVariable String userId, @Validated @ModelAttribute("user") UserDto userDto,
+                             BindingResult bindingResult) {
 
-        userService.updateUser(userId, user);
+        if (bindingResult.hasErrors()) {
+            return "user/update";
+        }
 
-        User after = userService.findOne(userId);
-        log.info("after  userId={}, name={}, email={}", after.getUserId(), after.getName(), after.getEmail());
+        if (!userId.equals(userDto.getUserId())) {
+            bindingResult.rejectValue("userId","changeUserId");
+            return "user/update";
+        }
+
+        User userAfter = new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
+        userService.updateUser(userId, userAfter);
+
 
         return "redirect:/users";
     }
