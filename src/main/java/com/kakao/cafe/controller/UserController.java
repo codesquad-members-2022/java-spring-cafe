@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Controller
@@ -54,5 +56,35 @@ public class UserController {
         model.addAttribute("user", user);
 
         return "user/profile";
+    }
+
+    @GetMapping("{userId}/update")
+    public String updateForm(@PathVariable String userId, Model model) {
+        User user = userService.findOne(userId);
+        model.addAttribute("user", user);
+        return "user/update";
+    }
+
+    @PutMapping("{userId}/update")
+    public String updateUser(@PathVariable String userId, @ModelAttribute User user) {
+        User before = userService.findOne(userId);
+        log.info("before userId={}, name={}, email={}", before.getUserId(), before.getName(), before.getEmail());
+        log.info("input  userId={}, name={}, email={}", user.getUserId(), user.getName(), user.getEmail());
+
+        userService.updateUser(userId, user);
+
+        User after = userService.findOne(userId);
+        log.info("after  userId={}, name={}, email={}", after.getUserId(), after.getName(), after.getEmail());
+
+        return "redirect:/users";
+    }
+
+    @PostConstruct
+    public void forTest() {
+        User user1 = new User("kimkim", "123123", "김김김", "user1@example.com");
+        User user2 = new User("leelee", "456456", "이이이", "user2@example.com");
+
+        userService.signUp(user1);
+        userService.signUp(user2);
     }
 }

@@ -35,6 +35,7 @@ public class MemoryUserRepository implements UserRepository{
     public void update(String userId, User updateParam) {
         User findUser = store.get(userId);
         findUser.setEmail(updateParam.getEmail());
+        findUser.setName(updateParam.getName());
         findUser.setUserId(updateParam.getUserId());
         findUser.setPassword(updateParam.getPassword());
     }
