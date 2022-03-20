@@ -43,7 +43,6 @@ public class UserService {
         }
     }
 
-
     public void updateUser(UserDto userDto) {
         repository.save(userDto.convertToUser());
     }
