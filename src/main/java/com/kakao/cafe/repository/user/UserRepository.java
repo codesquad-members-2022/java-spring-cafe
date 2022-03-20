@@ -12,6 +12,4 @@ public interface UserRepository {
     Optional<User> findByUserId(String userId);
 
     List<User> findAll();
-
-    void clear();
 }

@@ -9,14 +9,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+//@Repository
 public class UserMemoryRepository implements UserRepository {
 
     private static List<User> store = new ArrayList<>();
 
     @Override
     public User save(User user) {
-        store.add(user);
+        Optional<User> existingData = findByUserId(user.getUserId());
+        if (existingData.isPresent()) {
+            existingData.get().updateUser(user.getName(), user.getEmail(), user.getPassword());
+        } else {
+            store.add(user);
+        }
+
         return user;
     }
 
@@ -28,10 +34,5 @@ public class UserMemoryRepository implements UserRepository {
     @Override
     public List<User> findAll() {
         return Collections.unmodifiableList(store);
-    }
-
-    @Override
-    public void clear() {
-        store.clear();
     }
 }

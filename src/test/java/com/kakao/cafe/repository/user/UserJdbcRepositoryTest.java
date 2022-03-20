@@ -4,19 +4,25 @@ import com.kakao.cafe.domain.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 
+import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@JdbcTest
+public class UserJdbcRepositoryTest {
 
-public class UserRepositoryTest {
-
-    UserRepository repository = new UserMemoryRepository();
+    @Autowired
+    DataSource dataSource;
+    UserRepository repository;
 
     @BeforeEach
-    void clear() {
-        repository.clear();
+    void before() {
+        repository = new UserJdbcRepository(dataSource);
     }
 
     @Test
@@ -24,9 +30,11 @@ public class UserRepositoryTest {
     void save() {
         User user = new User("forky", "1111", "hello@spring.com", "퐄퐄퐄");
 
-        User searchedUser = repository.save(user);
+        User result = repository.save(user);
 
-        assertThat(user).isSameAs(searchedUser);
+        assertThat(result.getUserId()).isEqualTo("forky");
+        assertThat(result.getEmail()).isEqualTo("hello@spring.com");
+        assertThat(result.getName()).isEqualTo("퐄퐄퐄");
     }
 
     @Test
@@ -35,7 +43,7 @@ public class UserRepositoryTest {
         User user = new User("forky", "1111", "hello@spring.com", "퐄퐄퐄");
         repository.save(user);
 
-        User result = repository.findByUserId("forky").get();
+        User result = repository.findByUserId("forky").orElse(null);
 
         assertThat(result.getUserId()).isEqualTo("forky");
         assertThat(result.getName()).isEqualTo("퐄퐄퐄");

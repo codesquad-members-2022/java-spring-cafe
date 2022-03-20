@@ -2,6 +2,7 @@ package com.kakao.cafe.domain.article;
 
 public class ArticleDto {
 
+    private Integer id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -11,6 +12,7 @@ public class ArticleDto {
         this.title = title;
         this.contents = contents;
     }
+
 
     public String getWriter() {
         return writer;
@@ -22,6 +24,16 @@ public class ArticleDto {
 
     public String getContents() {
         return contents;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void isEmpty() {
+        if (title.isEmpty() || contents.isEmpty()) {
+            throw new IllegalArgumentException("제목 혹은 컨텐츠가 비어있습니다.");
+        }
     }
 
     public Article convertToArticle() {
