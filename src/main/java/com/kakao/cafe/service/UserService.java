@@ -3,12 +3,11 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.repository.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -26,13 +25,16 @@ public class UserService {
         repository.save(user);
     }
 
-    public User findSingleUser(String userId) {
-        return repository.findByUserId(userId)
-                .orElseThrow(()-> new NoSuchElementException("일치하는 유저가 존재하지 않습니다."));
+    public UserDto findSingleUser(String userId) {
+        User user = repository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("일치하는 유저가 존재하지 않습니다."));
+        return user.convertToUserDto();
     }
 
-    public List<User> findAllUsers() {
-        return repository.findAll();
+    public List<UserDto> findAllUsers() {
+        return repository.findAll().stream()
+                .map(User::convertToUserDto)
+                .collect(Collectors.toList());
     }
 
     public void isDuplicatedUser(User user) {
@@ -41,7 +43,8 @@ public class UserService {
         }
     }
 
-    public void updateUser(String userId, UserDto userDto) {
+
+    public void updateUser(UserDto userDto) {
         repository.save(userDto.convertToUser());
     }
 }

@@ -1,9 +1,7 @@
 package com.kakao.cafe.controller;
 
-import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserDto;
 import com.kakao.cafe.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +21,7 @@ public class UserController {
 
     @GetMapping("")
     public String searchUserList(Model model) {
-        List<User> users = userService.findAllUsers();
+        List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
 
         return "user/list";
@@ -31,7 +29,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
-        User user = userService.findSingleUser(userId);
+        UserDto user = userService.findSingleUser(userId);
         model.addAttribute("user", user);
 
         return "user/profile";
@@ -44,16 +42,16 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, Model model){
-        User user = userService.findSingleUser(userId);
+    public String updateForm(@PathVariable("userId") String userId, Model model) {
+        UserDto user = userService.findSingleUser(userId);
         model.addAttribute("user", user);
 
         return "user/updateForm";
     }
 
     @PutMapping("/{userId}/update")
-    public String update(@PathVariable("userId") String userId, UserDto userDto) {
-        userService.updateUser(userId, userDto);
+    public String update(UserDto userDto) {
+        userService.updateUser(userDto);
         return "redirect:/users";
     }
 

@@ -27,7 +27,7 @@ public class ArticleServiceTest {
     void createArticle() {
         ArticleDto articleDto = new ArticleDto("포키", "질문있어요", "포키포키");
 
-        Article article = service.createArticle(articleDto);
+        ArticleDto article = service.createArticle(articleDto);
 
         assertThat(article.getWriter()).isEqualTo("포키");
         assertThat(article.getTitle()).isEqualTo("질문있어요");
