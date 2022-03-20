@@ -7,6 +7,8 @@ public interface ArticleRepository {
 
   Article save(Article article);
 
+  Article findByIndex(Integer id);
+
   List<Article> findAll();
 
   void delete();

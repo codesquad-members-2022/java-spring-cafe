@@ -28,4 +28,8 @@ public class ArticleService {
     }
     return articleDTOList;
   }
+
+  public ArticleDTO findOneByIndex(Integer id) {
+    return ArticleDTO.from(articleRepository.findByIndex(id));
+  }
 }

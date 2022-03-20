@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 public class ArticleDTO {
 
+  private Integer id = 0;
   private String writer;
   private String title;
   private String contents;
@@ -12,9 +13,9 @@ public class ArticleDTO {
   private LocalDateTime createdAt;
 
 
-  private ArticleDTO(String writer, String title, String contents, String createdTime,
-      LocalDateTime createdAt
-  ) {
+  private ArticleDTO(Integer id, String writer, String title, String contents, String createdTime,
+      LocalDateTime createdAt) {
+    this.id = id;
     this.writer = writer;
     this.title = title;
     this.contents = contents;
@@ -23,8 +24,16 @@ public class ArticleDTO {
   }
 
   public static ArticleDTO from(Article article) {
-    return new ArticleDTO(article.getWriter(), article.getTitle(), article.getContents(),
-        article.getCreatedTime(), article.getCreatedAt());
+    return new ArticleDTO(article.getId(), article.getWriter(), article.getTitle(),
+        article.getContents(), article.getCreatedTime(), article.getCreatedAt());
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public String getWriter() {
