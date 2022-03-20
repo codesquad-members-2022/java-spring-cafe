@@ -7,8 +7,8 @@
 - [x] Ajax 로 댓글 추가하기
 - [x] Ajax 로 댓글 삭제하기
 - [x] properties 파일 local, online 으로 분리
-- [ ] DB MySQl 로 바꾸기
-- [ ] EC2 배포하기
+- [x] DB MySQl 로 바꾸기
+- [x] EC2 배포하기
 
 ## Step06 ToDO-List
 
