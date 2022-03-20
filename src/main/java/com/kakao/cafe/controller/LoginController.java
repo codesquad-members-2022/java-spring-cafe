@@ -24,13 +24,13 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @GetMapping("/users/login")
+    @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("loginDto", new LoginDto());
         return "user/login";
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public String login(@Valid LoginDto loginDto, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "user/login";
@@ -42,6 +42,12 @@ public class LoginController {
             return "user/login";
         }
         session.setAttribute("loginUser", user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/";
     }
 }
