@@ -133,7 +133,7 @@
 
 - [x] DB에서 한 건만 조회할 때 리스트로 가져오지 말고 하나의 객체만 반환하는 JdbcTemplate 메서드를 이용한다. 
   - query 대신 queryForObject를 사용한다. 
-- [ ] DbConfig에서 JdbcTemplate을 생성한다. 
+- [x] DbConfig에서 JdbcTemplate을 생성한다. 
 
 ### 구현과정
 

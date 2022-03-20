@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +18,8 @@ public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ArticleRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ArticleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void save(Article article) {
