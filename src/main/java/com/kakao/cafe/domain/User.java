@@ -20,8 +20,12 @@ public class User {
         return this.userId.equals(userId);
     }
 
+    public boolean isEqualsPassword(String password) {
+        return this.password.equals(password);
+    }
+
     public boolean isNotEqualsPassword(String password) {
-        return !this.password.equals(password);
+        return !isEqualsPassword(password);
     }
 
     public boolean isEqualsEmail(String email) {

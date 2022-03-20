@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -41,6 +40,19 @@ class UserRepositoryTest {
         assertThatThrownBy(() -> userRepository.findByUserId("isNotFindUserId"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("사용자가 존재하지 않습니다.");
+    }
+
+    @Test
+    @DisplayName("아이디와 비밀번호가 일치하면 True를 반환한다.")
+    void loginUser() {
+        User user = new User("userId1", "password1", "name", "find@gmail.com");
+        userRepository.save(user);
+
+        User result1 = userRepository.findByUserIdAndPassword("userId1", "password1");
+        User result2 = userRepository.findByUserIdAndPassword("userId1", "password11");
+
+        assertThat(result1).isNotNull();
+        assertThat(result2).isNull();
     }
 
     @Test

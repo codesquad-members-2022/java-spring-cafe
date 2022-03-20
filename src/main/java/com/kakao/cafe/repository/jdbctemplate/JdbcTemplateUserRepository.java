@@ -47,6 +47,15 @@ public class JdbcTemplateUserRepository implements UserRepository {
     }
 
     @Override
+    public User findByUserIdAndPassword(String userId, String password) {
+        try {
+            return jdbcTemplate.queryForObject("select * from USER where USER_ID = ? and PASSWORD = ?", userRowMapper(), userId, password);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
     public boolean isExistUserId(String userId) {
         return jdbcTemplate.queryForObject("select EXISTS (SELECT * FROM USER where USER_ID = ?)", boolean.class, userId);
     }
