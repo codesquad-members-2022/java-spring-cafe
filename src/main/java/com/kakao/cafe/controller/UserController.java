@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/create")
     public String createForm(Model model) {
-        model.addAttribute("UserSaveDto", new UserSaveDto());
+        model.addAttribute("userSaveDto", new UserSaveDto());
         return "user/form";
     }
 
@@ -70,7 +70,6 @@ public class UserController {
             return "user/updateForm";
         }
         userService.update(userUpdateDto);
-        logger.info("user={}", userService.findOne(userUpdateDto.getUserId()));
         return "redirect:/users";
     }
 }

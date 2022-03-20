@@ -27,7 +27,7 @@
                           </div>
                       </div>
                       <div class="article-doc">
-                          <p th:each="content : ${article.contents}" th:text="${content}">게시글 내용</p>
+                          <p th:utext="${#strings.replace(article.content, lineSeparator, '&lt;br /&gt;')}">게시글 내용</p>
                       </div>
                       <div class="article-util">
                           <ul class="article-util-list">

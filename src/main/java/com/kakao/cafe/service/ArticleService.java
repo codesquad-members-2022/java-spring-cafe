@@ -21,7 +21,7 @@ public class ArticleService {
 
     public void save(ArticleDto articleDto) {
         User user = userRepository.findByUserId(articleDto.getUserId());
-        Article article = new Article(user, articleDto.getTitle(), articleDto.getContents());
+        Article article = new Article(user, articleDto.getTitle(), articleDto.getContent());
         articleRepository.save(article);
     }
 

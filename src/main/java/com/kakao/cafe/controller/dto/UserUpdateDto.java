@@ -31,6 +31,14 @@ public class UserUpdateDto {
         email = user.getEmail();
     }
 
+    public UserUpdateDto(String userId, String currentPassword, String newPassword, String name, String email) {
+        this.userId = userId;
+        this.currentPassword = currentPassword;
+        this.newPassword = newPassword;
+        this.name = name;
+        this.email = email;
+    }
+
     public User toEntity() {
         return new User(userId, newPassword, name, email);
     }

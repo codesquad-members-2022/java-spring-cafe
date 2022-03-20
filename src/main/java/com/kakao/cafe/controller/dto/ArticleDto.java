@@ -1,9 +1,6 @@
 package com.kakao.cafe.controller.dto;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ArticleDto {
 
@@ -13,7 +10,8 @@ public class ArticleDto {
     @NotBlank
     private String title;
 
-    private List<String> contents;
+    @NotBlank
+    private String content;
 
     public String getUserId() {
         return userId;
@@ -23,8 +21,8 @@ public class ArticleDto {
         return title;
     }
 
-    public List<String> getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 
     public void setUserId(String userId) {
@@ -35,8 +33,8 @@ public class ArticleDto {
         this.title = title;
     }
 
-    public void setContents(String contents) {
-        this.contents = Arrays.stream(contents.split("\n")).collect(Collectors.toList());
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
@@ -44,7 +42,7 @@ public class ArticleDto {
         return "ArticleSaveDto{" +
                 "userId='" + userId + '\'' +
                 ", title='" + title + '\'' +
-                ", contents=" + contents +
+                ", content=" + content +
                 '}';
     }
 }

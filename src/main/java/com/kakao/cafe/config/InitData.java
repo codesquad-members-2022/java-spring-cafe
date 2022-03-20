@@ -4,12 +4,10 @@ import com.kakao.cafe.controller.dto.ArticleDto;
 import com.kakao.cafe.controller.dto.UserSaveDto;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.UserService;
-import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Random;
 
-@Component
+//@Component
 public class InitData {
 
     private final UserService userService;
@@ -21,7 +19,7 @@ public class InitData {
         this.articleService = articleService;
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
         for (int i = 1; i <= 10; i++) {
             UserSaveDto userSaveDto = createRandomUser(i);
@@ -55,7 +53,7 @@ public class InitData {
         }
         ArticleDto articleDto = new ArticleDto();
         articleDto.setUserId(userId);
-        articleDto.setContents(contents);
+        articleDto.setContent(contents);
         articleDto.setTitle(title);
         return articleDto;
     }

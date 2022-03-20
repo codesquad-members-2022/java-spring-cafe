@@ -49,7 +49,7 @@ public class ControllerExceptionHandler {
         ArticleDto articleDto = new ArticleDto();
         articleDto.setUserId(request.getParameter("userId"));
         articleDto.setTitle(request.getParameter("title"));
-        articleDto.setContents(request.getParameter("contents"));
+        articleDto.setContent(request.getParameter("contents"));
         return articleDto;
     }
 
