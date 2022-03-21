@@ -19,8 +19,6 @@ import com.kakao.cafe.domain.user.User;
 @Repository
 public class H2UserRepository implements UserRepository {
 
-    private final Logger log = LoggerFactory.getLogger(H2UserRepository.class);
-
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     public H2UserRepository(NamedParameterJdbcTemplate jdbcTemplate) {

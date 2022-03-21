@@ -11,6 +11,8 @@ import com.kakao.cafe.repository.article.ArticleRepository;
 @Service
 public class ArticleService {
 
+    private static final String NOT_FOUNDED_ARTICLE_ID = "[ERROR] 존재하지 않는 Article 입니다.";
+
     private final ArticleRepository articleRepository;
 
     public ArticleService(ArticleRepository articleRepository) {
@@ -33,5 +35,12 @@ public class ArticleService {
 
     public void clear() {
         articleRepository.deleteAll();
+    }
+
+    public void update(Long index, Article updateArticle) {
+        articleRepository.findById(index)
+            .orElseThrow(() -> new IllegalArgumentException(NOT_FOUNDED_ARTICLE_ID));
+        updateArticle.setId(index);
+        articleRepository.save(updateArticle);
     }
 }

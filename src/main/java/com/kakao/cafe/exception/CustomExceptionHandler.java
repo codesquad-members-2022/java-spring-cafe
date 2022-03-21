@@ -9,8 +9,11 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ModelAndView catchAndHandleException(RuntimeException exception) {
-        ModelAndView modelAndView = new ModelAndView("/error/error");
+
+        ModelAndView modelAndView = new ModelAndView("error/error");
         modelAndView.addObject("message", exception.getMessage());
         return modelAndView;
+        // 5xx
+        // @ResponseStatus
     }
 }

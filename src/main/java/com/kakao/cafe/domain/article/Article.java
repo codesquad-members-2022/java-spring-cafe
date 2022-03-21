@@ -42,4 +42,8 @@ public class Article {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public boolean isYourWriter(String userId) {
+        return writer.equals(userId);
+    }
 }

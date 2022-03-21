@@ -23,11 +23,11 @@ class FormControllerTest {
             .andExpect(view().name("user/form"));
     }
 
-    @DisplayName("/qnaForm으로 GET 요청이 오면 /qna/formQna view가 반환된다.")
+    @DisplayName("로그인되지 않은 상태에서 /qnaForm으로 GET 요청이 오면 /login으로 redirect된다.")
     @Test
     void get_qnaForm() throws Exception {
         mvc.perform(get("/qnaForm"))
-            .andExpect(status().isOk())
-            .andExpect(view().name("qna/formQna"));
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/login"));
     }
 }
