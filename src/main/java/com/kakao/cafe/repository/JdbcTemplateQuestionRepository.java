@@ -24,7 +24,7 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
     @Override
     public Question findById(Long id) {
         List<Question> questions = jdbcTemplate.query("select * from questionTbl where id = ?", questionRowMapper(), id);
-        return questions.stream().findAny().get();
+        return questions.stream().findAny().orElse(null);
     }
 
     private RowMapper<Question> questionRowMapper() {
