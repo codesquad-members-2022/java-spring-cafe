@@ -17,7 +17,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc'
 	implementation group: 'com.h2database', name: 'h2', version: '2.0.206'
-	implementation group: 'na.net.ultraq.thymeleaf', name: 'thymeleaf-layout-dialect', version:'2.5.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
