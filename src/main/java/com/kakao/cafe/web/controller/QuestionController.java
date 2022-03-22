@@ -27,7 +27,7 @@ public class QuestionController {
         return "qna/form";
     }
 
-    @PostMapping("/questions/new")
+    @PostMapping("/questions")
     public String createQuestion(@ModelAttribute Question question) {
         questionService.create(question);
         return "redirect:/";

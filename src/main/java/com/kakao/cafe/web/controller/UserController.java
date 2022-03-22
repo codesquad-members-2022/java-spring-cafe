@@ -41,7 +41,7 @@ public class UserController {
         return "user/form";
     }
 
-    @PostMapping("/new")
+    @PostMapping
     public String signUp(@Validated @ModelAttribute(name = "user") UserDto userDto,
                          BindingResult bindingResult) {
         if (userService.findOne(userDto.getUserId()) != null) {
@@ -82,7 +82,7 @@ public class UserController {
         return "user/update";
     }
 
-    @PutMapping("{userId}/update")
+    @PutMapping("/{userId}")
     public String updateUser(@PathVariable String userId, @Validated @ModelAttribute("user") UserDto userDto,
                              BindingResult bindingResult) {
 

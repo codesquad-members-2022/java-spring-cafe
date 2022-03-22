@@ -10,7 +10,7 @@
             <div th:if="${#fields?.hasAnyErrors()}" class="alert alert-danger" role="alert">
                 <p th:each="err : ${#fields.allErrors()}" th:text="${err}">전체 오류 메세지</p>
             </div>
-            <form name="question" method="post" action="/user/new" th:action="@{/users/new}">
+            <form name="question" method="post" action="/user/new" th:action="@{/users}">
                 <div class="form-group">
                     <label for="userId">사용자 아이디</label>
                     <input class="form-control" id="userId" name="userId" th:field="*{userId}" placeholder="User ID">
