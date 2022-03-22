@@ -22,19 +22,19 @@ public class QuestionController {
         this.questionService = questionService;
     }
 
-    @GetMapping("/questions")
-    public String qnaForm() {
+    @GetMapping("/questions/new")
+    public String showQnaRegisterForm() {
         return "qna/form";
     }
 
-    @PostMapping("/questions")
+    @PostMapping("/questions/new")
     public String createQuestion(@ModelAttribute Question question) {
         questionService.create(question);
         return "redirect:/";
     }
 
     @GetMapping("/questions/{questionId}")
-    public String question(@PathVariable Long questionId, Model model) {
+    public String showQuestionContent(@PathVariable Long questionId, Model model) {
         Question question = questionService.findOne(questionId);
         model.addAttribute("question", question);
         return "qna/show";

@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/new")
-    public String newForm(@ModelAttribute(name="user") UserDto userDto) {
+    public String showSignUpForm(@ModelAttribute(name="user") UserDto userDto) {
         return "user/form";
     }
 
@@ -60,14 +60,14 @@ public class UserController {
     }
 
     @GetMapping
-    public String users(Model model) {
+    public String showUserList(Model model) {
         List<User> users = userService.findUsers();
         model.addAttribute("users", users);
         return "user/list";
     }
 
     @GetMapping("/{userId}")
-    public String userProfile(@PathVariable String userId, Model model) {
+    public String showUserProfile(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
         model.addAttribute("user", user);
 
@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @GetMapping("{userId}/update")
-    public String updateForm(@PathVariable String userId, Model model) {
+    public String showUserUpdateForm(@PathVariable String userId, Model model) {
         User user = userService.findOne(userId);
         UserDto userDto = new UserDto(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
         model.addAttribute("user", userDto);
@@ -109,7 +109,7 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute(name="user") LoginUserDto loginUserDto) {
+    public String showLoginForm(@ModelAttribute(name="user") LoginUserDto loginUserDto) {
         return "user/login";
     }
 

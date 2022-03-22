@@ -1,6 +1,8 @@
 package com.kakao.cafe.repository;
 
 import com.kakao.cafe.domain.Question;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,6 +16,8 @@ import java.util.Map;
 
 @Repository
 public class JdbcTemplateQuestionRepository implements QuestionRepository{
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -52,8 +56,9 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
         parameters.put("title", question.getTitle());
         parameters.put("contents", question.getContents());
 
-        Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
-        question.setId(key.longValue());
+        Long key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters)).longValue();
+        log.info("key={}", key);
+        question.setId(key);
         return question;
     }
 }
