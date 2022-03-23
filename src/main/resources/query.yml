@@ -5,19 +5,24 @@ INSERT_ARTICLE: >
   VALUES (:writer, :title, :contents, :createdDate)
 
 SELECT_ARTICLES: >
-  SELECT * FROM article
+  SELECT article.*, COUNT(reply.reply_id) AS reply_count FROM article
+  LEFT JOIN reply
+    ON article.article_id = reply.article_id 
+    AND reply.deleted = FALSE
+  WHERE article.deleted = FALSE
+  GROUP BY article.article_id
 
 SELECT_ARTICLE: >
-  SELECT * FROM article WHERE article_id = :articleId
-
-DELETE_ARTICLES: >
-  DELETE FROM article
+  SELECT * FROM article
+  WHERE article_id = :articleId AND deleted = FALSE
 
 UPDATE_ARTICLE: >
-  UPDATE article SET title = :title, contents = :contents WHERE article_id = :articleId
+  UPDATE article SET title = :title, contents = :contents
+  WHERE article_id = :articleId
 
 DELETE_ARTICLE: >
-  DELETE FROM article WHERE article_id = :articleId
+  UPDATE article SET deleted = TRUE
+  WHERE article_id = :articleId
 
 ### user ###
 
@@ -29,7 +34,8 @@ INSERT_USER: >
   VALUES (:userId, :password, :name, :email)
 
 UPDATE_USER: >
-  UPDATE `user` SET `name` = :name, email = :email WHERE user_id = :userId
+  UPDATE `user` SET `name` = :name, email = :email
+  WHERE user_id = :userId
 
 SELECT_USERS: >
   SELECT * FROM `user`
@@ -39,3 +45,29 @@ SELECT_USER: >
 
 DELETE_USERS: >
   DELETE FROM `user`
+
+### reply ###
+
+INSERT_REPLY: >
+  INSERT INTO reply (article_id, user_id, comment, created_date)
+  VALUES (:articleId, :userId, :comment, :createdDate)
+
+SELECT_REPLY: >
+  SELECT * FROM reply
+  WHERE reply_id = :replyId AND deleted = FALSE
+
+SELECT_REPLIES: >
+  SELECT * FROM reply
+  WHERE article_id = :articleId AND deleted = FALSE
+
+UPDATE_REPLY: >
+  UPDATE reply SET comment = :comment
+  WHERE reply_id = :replyId
+
+DELETE_REPLY: >
+  UPDATE reply SET deleted = TRUE
+  WHERE reply_id = :replyId
+
+COUNT_REPLY_BY_ARTICLE_AND_NOT_USER: >
+  SELECT COUNT(*) FROM reply
+  WHERE user_id != :userId AND article_id = :articleId

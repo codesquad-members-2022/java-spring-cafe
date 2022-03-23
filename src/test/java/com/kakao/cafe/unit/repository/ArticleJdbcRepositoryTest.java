@@ -47,7 +47,7 @@ public class ArticleJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "contents");
+        article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
 
         given(queryProps.get(any()))
             .willReturn("");
@@ -57,10 +57,10 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("질문 객체를 저장소에 저장한다")
     public void savePersistTest() {
         // given
-        KeyHolder keyHolder = new GeneratedKeyHolder(List.of(Map.of("articleId", 1)));
+        article = new Article("writer", "title", "contents");
 
         given(keyHolderFactory.newKeyHolder())
-            .willReturn(keyHolder);
+            .willReturn(new GeneratedKeyHolder(List.of(Map.of("article_id", 1))));
 
         given(jdbcTemplate.update(any(String.class), any(BeanPropertySqlParameterSource.class),
             any(KeyHolder.class)))
@@ -124,8 +124,6 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트한다")
     public void saveMergeTest() {
         // given
-        Article article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
-
         given(jdbcTemplate.update(any(String.class), any(BeanPropertySqlParameterSource.class)))
             .willReturn(1);
 
@@ -147,7 +145,7 @@ public class ArticleJdbcRepositoryTest {
             .willReturn(1);
 
         // when
-        articleRepository.deleteById(any(Integer.class));
+        articleRepository.deleteById(article.getArticleId());
     }
 
 }

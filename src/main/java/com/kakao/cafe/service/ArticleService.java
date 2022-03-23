@@ -1,15 +1,15 @@
 package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.session.SessionUser;
-import com.kakao.cafe.util.Mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
-    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleService(ArticleRepository articleRepository, ReplyRepository replyRepository) {
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
+        this.replyRepository = replyRepository;
     }
 
     public ArticleResponse write(SessionUser user, ArticleSaveRequest request) {
@@ -30,17 +30,13 @@ public class ArticleService {
         request.setWriter(user.getUserId());
 
         // ArticleSaveRequest DTO 객체를 Article 도메인 객체로 변환
-        Article article = Mapper.map(request, Article.class);
-
-        // 회원가입하지 않은 유저 이름으로 글을 작성 시 예외 처리
-        userRepository.findByUserId(article.getWriter())
-            .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND));
+        Article article = request.toEntity();
 
         // Article 도메인 객체를 저장소에 저장
         Article savedArticle = articleRepository.save(article);
 
         // Article 도메인 객체로부터 ArticleResponse DTO 객체로 변환
-        return Mapper.map(savedArticle, ArticleResponse.class);
+        return ArticleResponse.from(savedArticle);
     }
 
     public List<ArticleResponse> findArticles() {
@@ -49,7 +45,7 @@ public class ArticleService {
 
         // List<Article> 도메인 객체를 List<ArticleResponse> DTO 객체로 변환
         return articles.stream()
-            .map(article -> Mapper.map(article, ArticleResponse.class))
+            .map(ArticleResponse::from)
             .collect(Collectors.toList());
     }
 
@@ -58,15 +54,17 @@ public class ArticleService {
         Article article = articleRepository.findById(articleId)
             .orElseThrow(() -> new NotFoundException(ErrorCode.ARTICLE_NOT_FOUND));
 
-        // Article 도메인 객체를 ArticleResponse 도메인 객체로 변환
-        return Mapper.map(article, ArticleResponse.class);
+        List<Reply> replies = replyRepository.findByArticleId(articleId);
+
+        // Article 도메인 객체와 Reply 도메인 객체 컬렉션을 ArticleResponse 도메인 객체로 변환
+        return ArticleResponse.of(article, replies);
     }
 
     public ArticleResponse mapUserArticle(SessionUser user, Integer articleId) {
         Article article = findUserArticle(user, articleId);
 
         // Article 도메인 객체를 ArticleResponse DTO 로 변환
-        return Mapper.map(article, ArticleResponse.class);
+        return ArticleResponse.from(article);
     }
 
     public ArticleResponse updateArticle(SessionUser user, ArticleSaveRequest request,
@@ -80,13 +78,16 @@ public class ArticleService {
         Article savedArticle = articleRepository.save(updatedArticle);
 
         // Article 도메인 객체를 ArticleResponse 객체로 변환
-        return Mapper.map(savedArticle, ArticleResponse.class);
+        return ArticleResponse.from(savedArticle);
     }
 
 
     public void deleteArticle(SessionUser user, Integer articleId) {
         findUserArticle(user, articleId);
 
+        if (!isDeletable(user.getUserId(), articleId)) {
+            throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_DELETE);
+        }
         articleRepository.deleteById(articleId);
     }
 
@@ -101,9 +102,13 @@ public class ArticleService {
     }
 
     private void validateUser(SessionUser user, Article article) {
-        if (!article.checkWriter(user.getUserId())) {
+        if (!article.equalsUserId(user.getUserId())) {
             throw new InvalidRequestException(ErrorCode.INVALID_ARTICLE_WRITER);
         }
+    }
+
+    private boolean isDeletable(String userId, Integer articleId) {
+        return replyRepository.countByArticleIdAndNotUserId(userId, articleId) == 0;
     }
 
 }

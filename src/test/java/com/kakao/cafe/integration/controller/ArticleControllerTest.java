@@ -11,10 +11,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import com.kakao.cafe.domain.Article;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.repository.UserRepository;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
@@ -55,6 +57,8 @@ public class ArticleControllerTest {
     private MockHttpSession session;
 
     private Article article;
+    private User user;
+    private Reply reply;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
     private SessionUser sessionOther;
@@ -64,10 +68,13 @@ public class ArticleControllerTest {
 
         private final ArticleRepository articleRepository;
         private final UserRepository userRepository;
+        private final ReplyRepository replyRepository;
 
-        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository) {
+        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository,
+            ReplyRepository replyRepository) {
             this.articleRepository = articleRepository;
             this.userRepository = userRepository;
+            this.replyRepository = replyRepository;
         }
 
         public User saveUser(User user) {
@@ -76,6 +83,10 @@ public class ArticleControllerTest {
 
         public Article saveArticle(Article article) {
             return articleRepository.save(article);
+        }
+
+        public Reply saveReply(Reply reply) {
+            return replyRepository.save(reply);
         }
 
         public void rollback() {
@@ -88,6 +99,8 @@ public class ArticleControllerTest {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
         article = new Article("writer", "title", "contents");
+        user = new User("writer", "userPassword", "userName", "user@example.com");
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
@@ -324,14 +337,14 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("세션 정보와 존재하지 않는 질문 id 로 유저의 질문을 삭제하면 에러 페이지로 이동한다")
+    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 질문 id 로 유저의 질문을 삭제하면 에러 페이지로 이동한다")
     public void deleteArticleValidateTest() throws Exception {
         // given
-        articleSetUp.saveArticle(article);
+        Article savedArticle = articleSetUp.saveArticle(this.article);
         session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 
         // when
-        ResultActions actions = mockMvc.perform(delete("/articles/1")
+        ResultActions actions = mockMvc.perform(delete("/articles/" + savedArticle.getArticleId())
             .session(session)
             .accept(MediaType.TEXT_HTML));
 
@@ -340,6 +353,133 @@ public class ArticleControllerTest {
             .andExpect(
                 model().attribute("status", ErrorCode.INVALID_ARTICLE_WRITER.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_WRITER.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("유저가 작성한 댓글만 달린 질문을 삭제하고 메인 페이지로 이동한다")
+    public void deleteArticleReplyUserOnlyTest() throws Exception {
+        // given
+        User savedUser = articleSetUp.saveUser(user);
+        Article savedArticle = articleSetUp.saveArticle(article);
+        Reply savedReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+
+        // when
+        ResultActions actions = mockMvc.perform(delete("/articles/" + savedArticle.getArticleId())
+            .session(session)
+            .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("다른 유저가 작성한 댓글이 달린 질문을 삭제할 경우 에러 페이지로 이동한다")
+    public void deleteArticleReplyOtherTest() throws Exception {
+        // given
+        User savedUser = articleSetUp.saveUser(user);
+        User savedOther = articleSetUp.saveUser(
+            new User("otherId", "otherPassword", "otherName", "other@exasmple.com"));
+
+        Article savedArticle = articleSetUp.saveArticle(article);
+
+        Reply userReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "userComment"));
+        Reply otherReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedOther.getUserId(), "otherComment"));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            delete("/articles/" + article.getArticleId())
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(
+                model().attribute("status", ErrorCode.INVALID_ARTICLE_DELETE.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_ARTICLE_DELETE.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("댓글을 작성하고 저장한 후 메인 페이지로 이동한다")
+    public void createAnswerTest() throws Exception {
+        // given
+        articleSetUp.saveArticle(article);
+        articleSetUp.saveUser(user);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            post("/articles/" + article.getArticleId() + "/answers")
+                .session(session)
+                .param("comment", "comment")
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제한 후 메인 페이지로 이동한다")
+    public void deleteAnswerTest() throws Exception {
+        // given
+        Article savedArticle = articleSetUp.saveArticle(article);
+        User savedUser = articleSetUp.saveUser(user);
+        Reply savedReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            delete("/articles/" + article.getArticleId() + "/answers/" + savedReply.getReplyId())
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().is3xxRedirection())
+            .andExpect(view().name("redirect:/"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 존재하지 않는 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    public void deleteAnswerNotFoundTest() throws Exception {
+        // when
+        ResultActions actions = mockMvc.perform(
+            delete("/articles/" + article.getArticleId() + "/answers/0")
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.REPLY_NOT_FOUND.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.REPLY_NOT_FOUND.getMessage()))
+            .andExpect(view().name("error/index"));
+    }
+
+    @Test
+    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    public void deleteAnswerValidateTest() throws Exception {
+        // given
+        Article savedArticle = articleSetUp.saveArticle(this.article);
+        User savedUser = articleSetUp.saveUser(this.user);
+        Reply savedReply = articleSetUp.saveReply(
+            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+
+        session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+            delete("/articles/" + article.getArticleId() + "/answers/" + savedReply.getReplyId())
+                .session(session)
+                .accept(MediaType.TEXT_HTML));
+
+        // then
+        actions.andExpect(status().isOk())
+            .andExpect(model().attribute("status", ErrorCode.INVALID_REPLY_WRITER.getHttpStatus()))
+            .andExpect(model().attribute("message", ErrorCode.INVALID_REPLY_WRITER.getMessage()))
             .andExpect(view().name("error/index"));
     }
 }

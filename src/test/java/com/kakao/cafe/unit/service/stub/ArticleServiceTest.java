@@ -4,13 +4,13 @@ import static org.assertj.core.api.BDDAssertions.catchThrowable;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
@@ -56,6 +56,8 @@ public class ArticleServiceTest {
         }
     }
 
+    /*
+
     private static class UserStubRepository implements UserRepository {
 
         @Override
@@ -82,12 +84,44 @@ public class ArticleServiceTest {
         }
     }
 
+     */
+
+    private static class ReplyStubRepository implements ReplyRepository {
+
+        Reply reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
+
+        @Override
+        public Reply save(Reply reply) {
+            return null;
+        }
+
+        @Override
+        public Optional<Reply> findById(Integer replyId) {
+            return Optional.empty();
+        }
+
+        @Override
+        public List<Reply> findByArticleId(Integer articleId) {
+            return List.of(reply);
+        }
+
+        @Override
+        public void deleteById(Integer replyId) {
+
+        }
+
+        @Override
+        public Integer countByArticleIdAndNotUserId(String userId, Integer articleId) {
+            return null;
+        }
+    }
+
     private ArticleService articleService;
     private ArticleResponse articleResponse;
 
     @BeforeEach
     public void setUp() {
-        articleService = new ArticleService(new ArticleStubRepository(), new UserStubRepository());
+        articleService = new ArticleService(new ArticleStubRepository(), new ReplyStubRepository());
 
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
@@ -108,6 +142,9 @@ public class ArticleServiceTest {
         then(savedArticle).isEqualTo(articleResponse);
     }
 
+    /*
+    유저아이디가 일치하지 않는 경우는 불가능하므로 제거 필요
+
     @Test
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
     public void writeValidationTest() {
@@ -125,6 +162,7 @@ public class ArticleServiceTest {
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
+     */
 
     @Test
     @DisplayName("저장소에 저장된 모든 질문을 조회한다")

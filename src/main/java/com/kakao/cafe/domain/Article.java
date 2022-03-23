@@ -11,8 +11,8 @@ public class Article {
     private String contents;
     private LocalDateTime createdDate;
 
-    private Article() {
-    }
+    // derived
+    private Integer replyCount;
 
     public Article(String writer, String title, String contents) {
         this(null, writer, title, contents, LocalDateTime.now());
@@ -20,11 +20,17 @@ public class Article {
 
     public Article(Integer articleId, String writer, String title, String contents,
         LocalDateTime createdDate) {
+        this(articleId, writer, title, contents, createdDate, null);
+    }
+
+    public Article(Integer articleId, String writer, String title, String contents,
+        LocalDateTime createdDate, Integer replyCount) {
         this.articleId = articleId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.createdDate = createdDate;
+        this.replyCount = replyCount;
     }
 
     public Integer getArticleId() {
@@ -47,6 +53,10 @@ public class Article {
         return createdDate;
     }
 
+    public Integer getReplyCount() {
+        return replyCount;
+    }
+
     public void setArticleId(Integer articleId) {
         this.articleId = articleId;
     }
@@ -62,7 +72,7 @@ public class Article {
         return Objects.equals(this.articleId, articleId);
     }
 
-    public boolean checkWriter(String userId) {
+    public boolean equalsUserId(String userId) {
         return writer.equals(userId);
     }
 

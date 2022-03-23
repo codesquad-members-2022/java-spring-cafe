@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.session.SessionUser;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -17,13 +18,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 @Controller
 public class ArticleController {
 
-
     private final ArticleService articleService;
+    private final ReplyService replyService;
 
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, ReplyService replyService) {
         this.articleService = articleService;
+        this.replyService = replyService;
     }
 
+    // question
     @GetMapping("/questions")
     public String formCreateQuestion() {
         return "qna/form";
@@ -36,6 +39,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
+    // article
     @GetMapping("/")
     public String listQuestions(Model model) {
         List<ArticleResponse> articles = articleService.findArticles();
@@ -72,6 +76,22 @@ public class ArticleController {
         HttpSession session) {
         SessionUser user = SessionUser.from(session);
         articleService.deleteArticle(user, articleId);
+        return "redirect:/";
+    }
+
+    // reply
+    @PostMapping("articles/{id}/answers")
+    public String createAnswer(@PathVariable(value = "id") Integer articleId,
+        String comment, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        replyService.comment(user, articleId, comment);
+        return "redirect:/";
+    }
+
+    @DeleteMapping("articles/{questionId}/answers/{id}")
+    public String deleteAnswer(@PathVariable(value = "id") Integer replyId, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        replyService.deleteReply(user, replyId);
         return "redirect:/";
     }
 

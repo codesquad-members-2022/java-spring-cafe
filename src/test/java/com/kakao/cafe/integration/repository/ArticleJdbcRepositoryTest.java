@@ -38,7 +38,7 @@ public class ArticleJdbcRepositoryTest {
             queryProps);
     }
 
-    Article article;
+    private Article article;
 
     @BeforeEach
     public void setUp() {
@@ -47,10 +47,12 @@ public class ArticleJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("질문 객체를 저장소에 저장한다")
+    @DisplayName("질문 객체를 저장소에 저장하고, 저장소에서 조회해 확인한다")
     public void saveTest() {
-        // when
+        // given
         Article savedArticle = articleRepository.save(article);
+
+        // when
         Optional<Article> findArticle = articleRepository.findById(savedArticle.getArticleId());
 
         // then
@@ -99,7 +101,7 @@ public class ArticleJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트한다")
+    @DisplayName("질문 id 를 포함한 질문 객체를 저장해 업데이트하고, 저장소에서 조회해 확인한다")
     public void saveMergeTest() {
         // given
         articleRepository.save(article);
@@ -107,8 +109,9 @@ public class ArticleJdbcRepositoryTest {
         Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents",
             LocalDateTime.now());
 
-        // when
         articleRepository.save(changedArticle);
+
+        // when
         Optional<Article> findArticle = articleRepository.findById(changedArticle.getArticleId());
 
         // then
@@ -122,13 +125,14 @@ public class ArticleJdbcRepositoryTest {
     }
 
     @Test
-    @DisplayName("질문 id 로 질문 객체를 삭제한다")
+    @DisplayName("질문 id 로 질문 객체를 삭제하고, 저장소에서 조회해 확인한다")
     public void deleteByArticleIdTest() {
         // given
         articleRepository.save(article);
 
-        // when
         articleRepository.deleteById(article.getArticleId());
+
+        // when
         Optional<Article> findArticle = articleRepository.findById(article.getArticleId());
 
         // then

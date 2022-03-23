@@ -63,7 +63,7 @@ public class UserServiceTest {
             .willReturn(Optional.empty());
 
         // when
-        UserResponse savedUser = userService.register(request);
+        SessionUser savedUser = userService.register(request);
 
         // then
         then(savedUser.getUserId()).isEqualTo("userId");

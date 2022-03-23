@@ -6,14 +6,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.domain.User;
+import com.kakao.cafe.domain.Reply;
 import com.kakao.cafe.dto.ArticleResponse;
 import com.kakao.cafe.dto.ArticleSaveRequest;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
+import com.kakao.cafe.repository.ReplyRepository;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
@@ -38,9 +38,10 @@ public class ArticleServiceTest {
     private ArticleRepository articleRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private ReplyRepository replyRepository;
 
     private Article article;
+    private Reply reply;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
     private SessionUser sessionOther;
@@ -49,6 +50,8 @@ public class ArticleServiceTest {
     @BeforeEach
     public void setUp() {
         article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+        reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
+
         articleResponse = new ArticleResponse(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
@@ -64,10 +67,6 @@ public class ArticleServiceTest {
         // given
         ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
 
-        given(userRepository.findByUserId(any(String.class)))
-            .willReturn(
-                Optional.of(new User("userId", "userPassword", "userName", "user@example.com")));
-
         given(articleRepository.save(any(Article.class)))
             .willReturn(article);
 
@@ -77,6 +76,9 @@ public class ArticleServiceTest {
         // then
         then(savedArticle).isEqualTo(articleResponse);
     }
+
+    /*
+    유저 아이디가 존재하지 않는 경우는 불가능하므로 제거 필요
 
     @Test
     @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
@@ -95,6 +97,8 @@ public class ArticleServiceTest {
             .isInstanceOf(NotFoundException.class)
             .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
     }
+
+     */
 
     @Test
     @DisplayName("저장소에 저장된 모든 질문을 조회한다")
@@ -116,6 +120,9 @@ public class ArticleServiceTest {
         // given
         given(articleRepository.findById(any()))
             .willReturn(Optional.of(article));
+
+        given(replyRepository.findByArticleId(any()))
+            .willReturn(List.of(reply));
 
         // when
         ArticleResponse findArticle = articleService.findArticle(1);
@@ -258,6 +265,9 @@ public class ArticleServiceTest {
         given(articleRepository.findById(any()))
             .willReturn(Optional.of(article));
 
+        given(replyRepository.countByArticleIdAndNotUserId(any(), any()))
+            .willReturn(0);
+
         // when
         articleService.deleteArticle(sessionUser, article.getArticleId());
     }
@@ -294,5 +304,25 @@ public class ArticleServiceTest {
         then(throwable)
             .isInstanceOf(InvalidRequestException.class)
             .hasMessage(ErrorCode.INVALID_ARTICLE_WRITER.getMessage());
+    }
+
+    @Test
+    @DisplayName("다른 유저의 댓글이 있는 질문 삭제 시 예외를 반환한다")
+    public void deleteArticleOthersReplyTest() {
+        // given
+        given(articleRepository.findById(any()))
+            .willReturn(Optional.of(article));
+
+        given(replyRepository.countByArticleIdAndNotUserId(any(), any()))
+            .willReturn(1);
+
+        // when
+        Throwable throwable = catchThrowable(
+            () -> articleService.deleteArticle(sessionUser, article.getArticleId()));
+
+        // then
+        then(throwable)
+            .isInstanceOf(InvalidRequestException.class)
+            .hasMessage(ErrorCode.INVALID_ARTICLE_DELETE.getMessage());
     }
 }
