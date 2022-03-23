@@ -70,4 +70,11 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public void update(User updateParam) {
+        setEmail(updateParam.getEmail());
+        setName(updateParam.getName());
+        setUserId(updateParam.getUserId());
+        setPassword(updateParam.getPassword());
+    }
 }
