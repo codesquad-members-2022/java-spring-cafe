@@ -36,10 +36,6 @@ public class User {
         return name;
     }
 
-    private void setName(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
@@ -52,31 +48,19 @@ public class User {
         return email;
     }
 
-    private void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    private void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getPassword() {
         return password;
     }
 
-    private void setPassword(String password) {
-        this.password = password;
-    }
-
     public void update(User updateParam) {
-        setEmail(updateParam.getEmail());
-        setName(updateParam.getName());
-        setUserId(updateParam.getUserId());
-        setPassword(updateParam.getPassword());
+        email = updateParam.getEmail();
+        name = updateParam.getName();
+        userId = updateParam.getUserId();
+        password = updateParam.getPassword();
     }
 
     @Override
