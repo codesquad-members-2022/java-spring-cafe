@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class JdbcTemplateQuestionRepository implements QuestionRepository{
+public class JdbcTemplateQuestionRepository implements QuestionRepository {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -32,14 +32,14 @@ public class JdbcTemplateQuestionRepository implements QuestionRepository{
     }
 
     private RowMapper<Question> questionRowMapper() {
-        return ((rs, rowNum) -> {
-            Question question = new Question();
-            question.setId(rs.getLong("id"));
-            question.setWriter(rs.getString("writer"));
-            question.setTitle(rs.getString("title"));
-            question.setContents(rs.getString("contents"));
-            return question;
-        });
+        return ((rs, rowNum) ->
+                Question.builder()
+                        .id(rs.getLong("id"))
+                        .writer(rs.getString("writer"))
+                        .title(rs.getString("title"))
+                        .contents(rs.getString("contents"))
+                        .build()
+        );
     }
 
     @Override
