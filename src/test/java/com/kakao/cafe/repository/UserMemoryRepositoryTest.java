@@ -16,8 +16,7 @@ class UserMemoryRepositoryTest {
 
     @Test
     void save() {
-        User user = new User();
-        user.setEmail("abc123@gmail.com");
+        User user = new User("abc123@gmail.com","ABC","abc");
         repository.save(user);
 
         User result = repository.findByEmail(user.getEmail()).get();
@@ -27,19 +26,17 @@ class UserMemoryRepositoryTest {
 
     @Test
     void findByUserId() {
-        User user = new User();
-        user.setUserId("스프링");
+        User user = new User("abc123@gmail.com","ABC","abc");
         repository.save(user);
 
-        User result = repository.findByUserId("스프링").get();
+        User result = repository.findByUserId("ABC").get();
 
         assertThat(result).isEqualTo(user);
     }
 
     @Test
     void findByEmail() {
-        User user = new User();
-        user.setEmail("abc123@gmail.com");
+        User user = new User("abc123@gmail.com","ABC","abc");
         repository.save(user);
 
         User result = repository.findByEmail("abc123@gmail.com").get();
@@ -49,12 +46,10 @@ class UserMemoryRepositoryTest {
 
     @Test
     void findAll() {
-        User user1 = new User();
-        user1.setEmail("abc123@gmail.com");
+        User user1 = new User("abc123@gmail.com","ABC","abc");
         repository.save(user1);
 
-        User user2 = new User();
-        user2.setEmail("def123@gmail.com");
+        User user2 = new User("def123@gmail.com","DEF","def");
         repository.save(user2);
 
         List<User>result = repository.findAll();
@@ -64,12 +59,10 @@ class UserMemoryRepositoryTest {
 
     @Test
     void clearStore() {
-        User user1 = new User();
-        user1.setEmail("abc123@gmail.com");
+        User user1 = new User("abc123@gmail.com","ABC","abc");
         repository.save(user1);
 
-        User user2 = new User();
-        user2.setEmail("def123@gmail.com");
+        User user2 = new User("def123@gmail.com","DEF","def");
         repository.save(user2);
 
         repository.clearStore();

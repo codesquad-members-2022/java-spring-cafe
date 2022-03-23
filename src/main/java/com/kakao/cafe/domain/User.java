@@ -3,40 +3,40 @@ package com.kakao.cafe.domain;
 import java.time.LocalDateTime;
 
 public class User {
-    private String email;
-    private String userId;
-    private String password;
-    private LocalDateTime createdAt;
 
-    public LocalDateTime getCreatedDate() {
-        return createdAt;
-    }
+  private String email;
+  private String userId;
+  private String password;
+  private LocalDateTime createdAt;
 
-    public void setCreatedDate(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+  public User(String email, String userId, String password) {
+    this.email = email;
+    this.userId = userId;
+    this.password = password;
+    this.createdAt = LocalDateTime.now();
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public String getUserId() {
-        return userId;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public boolean isSameEmail(String email) {
+    return this.email.equals(email);
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public boolean isSameUserId(String userId) {
+    return this.userId.equals(userId);
+  }
 }

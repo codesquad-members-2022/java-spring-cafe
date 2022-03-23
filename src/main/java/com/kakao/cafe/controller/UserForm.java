@@ -1,21 +1,34 @@
 package com.kakao.cafe.controller;
 
+import com.kakao.cafe.domain.User;
+
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class UserForm {
-    private String userId;
     private String email;
-    private String passward;
+    private String userId;
+    private String password;
+    private LocalDateTime createdAt;
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    private UserForm(String email, String userId, String password, LocalDateTime createdAt) {
+        this.email = email;
+        this.userId = userId;
+        this.password = password;
+        this.createdAt = createdAt;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public static UserForm from(User user) {
+        return new UserForm(user.getEmail(), user.getUserId(), user.getPassword(), user.getCreatedAt());
     }
 
-    private LocalDateTime createdDate;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public String getUserId() {
         return userId;
@@ -33,11 +46,19 @@ public class UserForm {
         this.email = email;
     }
 
-    public String getPassward() {
-        return passward;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPassward(String passward) {
-        this.passward = passward;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserForm userForm = (UserForm) o;
+        return Objects.equals(email, userForm.email) && Objects.equals(userId, userForm.userId) && Objects.equals(password, userForm.password) && Objects.equals(createdAt, userForm.createdAt);
     }
 }
