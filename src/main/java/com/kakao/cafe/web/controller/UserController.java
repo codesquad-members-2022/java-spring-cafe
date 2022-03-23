@@ -1,6 +1,5 @@
 package com.kakao.cafe.web.controller;
 
-import com.kakao.cafe.domain.User;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.user.LoginUserDto;
 import com.kakao.cafe.web.dto.user.UserDto;
@@ -54,30 +53,26 @@ public class UserController {
             return "user/form";
         }
 
-        User signUpUser = new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
-        userService.signUp(signUpUser);
+        userService.signUp(userDto);
         return "redirect:/users";
     }
 
     @GetMapping
     public String showUserList(Model model) {
-        List<User> users = userService.findUsers();
-        model.addAttribute("users", users);
+        model.addAttribute("users", userService.findUsers());
         return "user/list";
     }
 
     @GetMapping("/{userId}")
     public String showUserProfile(@PathVariable String userId, Model model) {
-        User user = userService.findOne(userId);
-        model.addAttribute("user", user);
+        model.addAttribute("user", UserDto.from(userService.findOne(userId)));
 
         return "user/profile";
     }
 
     @GetMapping("{userId}/update")
     public String showUserUpdateForm(@PathVariable String userId, Model model) {
-        User user = userService.findOne(userId);
-        UserDto userDto = new UserDto(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+        UserDto userDto = UserDto.from(userService.findOne(userId));
         model.addAttribute("user", userDto);
         return "user/update";
     }
@@ -90,19 +85,17 @@ public class UserController {
             return "user/update";
         }
 
-        if (!userId.equals(userDto.getUserId())) {
+        if (!userService.isIdSame(userId, userDto)) {
             bindingResult.rejectValue("userId","changeUserId");
             return "user/update";
         }
 
-        User userBefore = userService.findOne(userId);
-        if (!userBefore.getPassword().equals(userDto.getPassword())) {
+        if (!userService.isPasswordMatch(userId, userDto)) {
             bindingResult.rejectValue("userId","differentPassword");
             return "user/update";
         }
 
-        User userAfter = new User(userDto.getUserId(), userDto.getPassword(), userDto.getName(), userDto.getEmail());
-        userService.updateUser(userId, userAfter);
+        userService.updateUser(userId, userDto);
 
 
         return "redirect:/users";
@@ -122,15 +115,15 @@ public class UserController {
             return "user/login";
         }
 
-        User loginUser = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
+        String loginUserId = userService.login(loginUserDto.getUserId(), loginUserDto.getPassword());
 
         // global error 출력
-        if (loginUser == null) {
+        if (loginUserId == null) {
             bindingResult.reject("loginFailed");
             return "user/login";
         }
 
-        httpSession.setAttribute(SessionConst.LOGIN_SESSION_NAME, loginUser);
+        httpSession.setAttribute(SessionConst.LOGIN_SESSION_NAME, loginUserId);
 
         return "redirect:/";
     }

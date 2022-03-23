@@ -35,13 +35,13 @@ public class JdbcTemplateUserRepository implements UserRepository {
 
     private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            User user = new User();
-            user.setId(rs.getLong("id"));
-            user.setUserId(rs.getString("userId"));
-            user.setPassword(rs.getString("password"));
-            user.setName(rs.getString("name"));
-            user.setEmail(rs.getString("email"));
-            return user;
+            return User.builder()
+                    .id(rs.getLong("id"))
+                    .userId(rs.getString("userId"))
+                    .password(rs.getString("password"))
+                    .name(rs.getString("name"))
+                    .email(rs.getString("email"))
+                    .build();
         };
     }
 
@@ -69,7 +69,7 @@ public class JdbcTemplateUserRepository implements UserRepository {
     public void update(String userId, User updateParam) {
         User savedUser = findByUserId(userId);
         jdbcTemplate.update("update userTbl set password = ?, name = ?, email = ? where id = ?",
-        updateParam.getPassword(), updateParam.getName(), updateParam.getEmail(), savedUser.getId());
+                updateParam.getPassword(), updateParam.getName(), updateParam.getEmail(), savedUser.getId());
     }
 
     @Override
