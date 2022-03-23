@@ -68,14 +68,14 @@
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a href="index.html" th:href="@{/}">Posts</a></li>
-                <li><a th:if="${session.loginUserSession == null}" href="user/login.html" th:href="@{/users/login}"
+                <li><a th:if="${session.UserSessionUserId == null}" href="user/login.html" th:href="@{/users/login}"
                        role="button">로그인</a></li>
-                <li><a th:if="${session.loginUserSession != null}" href="user/login.html" th:href="@{/users/logout}"
+                <li><a th:if="${session.UserSessionUserId != null}" href="user/login.html" th:href="@{/users/logout}"
                        role="button">로그아웃</a></li>
-                <li><a th:if="${session.loginUserSession == null}" href="user/form.html" th:href="@{/users/new}"
+                <li><a th:if="${session.UserSessionUserId == null}" href="user/form.html" th:href="@{/users/new}"
                        role="button">회원가입</a></li>
-                <li><a th:if="${session.loginUserSession != null}" href="user/form.html"
-                       th:href="@{/users/{userId}/update(userId=${session.loginUserSession.userId})}"
+                <li><a th:if="${session.UserSessionUserId != null}" href="user/form.html"
+                       th:href="@{/users/{userId}/update(userId=${session.UserSessionUserId})}"
                        role="button">개인정보수정</a></li>
             </ul>
         </div>
