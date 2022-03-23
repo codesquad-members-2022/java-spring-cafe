@@ -58,16 +58,15 @@ public class UserService {
         return user;
     }
 
-    public UserResponseDto login(LoginDto loginDto) {
+    public Optional<UserResponseDto> login(LoginDto loginDto) {
         return userRepository.findById(loginDto.getUserId())
                 .filter(user -> user.isSamePassword(loginDto.getPassword()))
-                .map(UserResponseDto::new)
-                .orElse(null);
+                .map(UserResponseDto::new);
     }
 
     public void logout(HttpSession httpSession) {
         httpSession.invalidate();
-        //httpSession.removeAttribute("sessionedUser");
+
     }
 
 

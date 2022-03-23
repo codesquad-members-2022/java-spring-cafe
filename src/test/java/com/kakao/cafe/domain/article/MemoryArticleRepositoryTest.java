@@ -19,7 +19,7 @@ class MemoryArticleRepositoryTest {
     @BeforeEach
     void setUp() {
         articleRepository = new MemoryArticleRepository();
-        article = new Article("작성자", "제목", "본문");
+        article = new Article(null,"작성자", "제목", "본문");
     }
 
     @AfterEach
@@ -41,7 +41,7 @@ class MemoryArticleRepositoryTest {
     @DisplayName("Article을 저장하면 id를 셋팅한다. id는 저장 전 저장소의 사이즈에서 +1한 값이고 id로 article을 조회할 수 있다.")
     void generateId_and_setId_test() {
 
-        assertThat(article.getId()).isEqualTo(0);
+        assertThat(article.getId()).isNull();
         int targetId = articleRepository.findAll().size()+1;
 
         articleRepository.save(article);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ class JdbcTemplateArticleRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        article = new Article("writer","title","contents");
+        article = new Article(null,"writer","title","contents");
     }
 
     @Test
@@ -80,6 +81,40 @@ class JdbcTemplateArticleRepositoryTest {
         assertThat(all.size()).isEqualTo(1);
         assertThat(all).contains(actual);
 
+    }
+
+    @Test
+    @DisplayName("id가 같은 article은 save했을 때, update된다.")
+    void updateTest() {
+
+        Article previousArticle = jdbcTemplateArticleRepository.save(article);
+        Article updateArticle = new Article(previousArticle.getId(), "writer", "newTitle", "newContents", LocalDateTime.now());
+        Article updated = jdbcTemplateArticleRepository.save(updateArticle);
+
+        Optional<Article> updatedArticleOptional = jdbcTemplateArticleRepository.findById(previousArticle.getId());
+        assertThat(updatedArticleOptional.isPresent()).isTrue();
+        Article actual = updatedArticleOptional.get();
+
+        assertThat(actual).isEqualTo(updated);
+        assertThat(actual.getWriter()).isEqualTo(previousArticle.getWriter());
+        assertThat(actual.getTitle()).isEqualTo("newTitle");
+        assertThat(actual.getContents()).isEqualTo("newContents");
+        assertThat(actual.getWrittenTime()).isEqualTo(previousArticle.getWrittenTime());
+
+    }
+
+    @Test
+    @DisplayName("delte 시 해당 게시글을 삭제한다.")
+    void deleteTest() {
+
+        Article saved = jdbcTemplateArticleRepository.save(article);
+        Integer id = saved.getId();
+
+        assertThat(jdbcTemplateArticleRepository.findById(id)).isNotEmpty();
+        boolean deleted = jdbcTemplateArticleRepository.deleteOne(id);
+
+        assertThat(deleted).isTrue();
+        assertThat(jdbcTemplateArticleRepository.findById(id)).isEmpty();
     }
 
 }

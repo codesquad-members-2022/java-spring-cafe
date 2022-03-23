@@ -8,20 +8,13 @@ import java.util.Objects;
 public class ArticleDto {
 
     @NotBlank
-    private final String writer;
-    @NotBlank
     private final String title;
     @NotBlank
     private final String contents;
 
-    public ArticleDto(String writer, String title, String contents) {
-        this.writer = writer;
+    public ArticleDto(String title, String contents) {
         this.title = title;
         this.contents = contents;
-    }
-
-    public String getWriter() {
-        return writer;
     }
 
     public String getTitle() {
@@ -32,8 +25,12 @@ public class ArticleDto {
         return contents;
     }
 
-    public Article toEntity() {
-        return new Article(this.writer, this.title, this.contents);
+    public Article toEntityWithWriter(String writer) {
+        return new Article(null, writer, this.title, this.contents);
+    }
+
+    public Article toUpdateEntity(Integer articleId, String writer) {
+        return new Article(articleId, writer, this.title, this.contents);
     }
 
     @Override
@@ -41,19 +38,18 @@ public class ArticleDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleDto that = (ArticleDto) o;
-        return Objects.equals(writer, that.writer) && Objects.equals(title, that.title) && Objects.equals(contents, that.contents);
+        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContents(), that.getContents());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(writer, title, contents);
+        return Objects.hash(getTitle(), getContents());
     }
 
     @Override
     public String toString() {
         return "ArticleDto{" +
-                "writer='" + writer + '\'' +
-                ", title='" + title + '\'' +
+                "title='" + title + '\'' +
                 ", contents='" + contents + '\'' +
                 '}';
     }

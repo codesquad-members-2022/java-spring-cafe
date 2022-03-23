@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class ArticleResponseDto {
 
-    private final int id;
+    private final Integer id;
     private final String writer;
     private final String title;
     private final String contents;
@@ -21,7 +21,11 @@ public class ArticleResponseDto {
         this.writtenTime = article.getWrittenTime();
     }
 
-    public int getId() {
+    public boolean isSameWriter(String writer) {
+        return this.writer.equals(writer);
+    }
+
+    public Integer getId() {
         return id;
     }
 
@@ -46,7 +50,7 @@ public class ArticleResponseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleResponseDto that = (ArticleResponseDto) o;
-        return id == that.id && Objects.equals(writer, that.writer) && Objects.equals(title, that.title) && Objects.equals(contents, that.contents) && Objects.equals(writtenTime, that.writtenTime);
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getWriter(), that.getWriter()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContents(), that.getContents()) && Objects.equals(getWrittenTime(), that.getWrittenTime());
     }
 
     @Override

@@ -138,7 +138,7 @@ class UserServiceTest {
         given(userRepository.findById("ron2")).willReturn(Optional.of(user));
 
         //when
-        UserResponseDto login = userService.login(loginUser);
+        UserResponseDto login = userService.login(loginUser).orElse(null);
 
         //then
         assertThat(login.getUserId()).isEqualTo(loginUser.getUserId());
@@ -156,10 +156,10 @@ class UserServiceTest {
         given(userRepository.findById(any())).willReturn(Optional.empty());
 
         //when
-        UserResponseDto login = userService.login(loginUser);
+        Optional<UserResponseDto> loginUserOptional = userService.login(loginUser);
 
         //then
-        assertThat(login).isNull();
+        assertThat(loginUserOptional).isEmpty();
     }
 
     @Test
@@ -170,10 +170,10 @@ class UserServiceTest {
         given(userRepository.findById("ron2")).willReturn(Optional.of(user));
 
         //when
-        UserResponseDto login = userService.login(loginUser);
+        Optional<UserResponseDto> loginUserOptional = userService.login(loginUser);
 
         //then
-        assertThat(login).isNull();
+        assertThat(loginUserOptional).isEmpty();
 
     }
 

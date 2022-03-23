@@ -1,8 +1,8 @@
 package com.kakao.cafe.web;
 
+import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
-import com.kakao.cafe.web.dto.LoginDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
@@ -36,7 +37,7 @@ class UserControllerTest {
     private UserResponseDto userResponseDto;
 
     @BeforeEach
-    void setUP() {
+    void setUp() {
         User user = new User("ron2", "1234", "ron2", "ron2@gmail.com");
         userResponseDto = new UserResponseDto(user);
     }
@@ -62,9 +63,7 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .content("userId=ron2&password=1234&name=ron2&email=ron2@gmail.com"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/users"))
-                .andExpect(redirectedUrl("/users"))
-                .andDo(print());
+                .andExpect(redirectedUrl("/users"));
 
     }
 
@@ -84,10 +83,10 @@ class UserControllerTest {
     @Test
     @DisplayName("GetMapping UserResponseDTO를 모델로 받아서 뷰에서 보여준다.")
     void showProfile() throws Exception {
-
+        httpSession.setAttribute("sessionedUser",userResponseDto);
         given(userService.findUser(any())).willReturn(userResponseDto);
 
-        mockMvc.perform(get("/users/ron2"))
+        mockMvc.perform(get("/users/ron2").session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("user", userResponseDto))
                 .andExpect(view().name("user/profile"));
@@ -190,7 +189,7 @@ class UserControllerTest {
     @DisplayName("/user/login post 요청시 user/login을 반환한다.")
     void loginPostTest() throws Exception {
         //given
-        given(userService.login(any())).willReturn(userResponseDto);
+        given(userService.login(any())).willReturn(Optional.ofNullable(userResponseDto));
 
         //when
         mockMvc.perform(post("/user/login")
@@ -206,15 +205,16 @@ class UserControllerTest {
     @DisplayName("/user/login post 요청시, 회원가입되어있지않은 아이디 혹은 잘못된 비밀번호를 입력했을때 user/login_failed를 반환한다.")
     void loginPostTest_wrongId_and_wrongPassword_test() throws Exception {
         //given
-        given(userService.login(any())).willReturn(null);
+        given(userService.login(any())).willReturn(Optional.empty());
 
         //when
         mockMvc.perform(post("/user/login")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .content("userId=wrongId&password=wrongPassword"))
                 //then
-                .andExpect(status().isUnauthorized())
-                .andExpect(view().name("user/login_failed"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/login"))
+                .andExpect(flash().attribute(LoginConstants.LOGIN_FAILED,"아이디 또는 비밀번호가 틀립니다. 다시 로그인 해주세요."));
     }
 
     @Test
