@@ -8,6 +8,10 @@ import java.util.Optional;
 @Repository
 public interface ArticleRepository {
     void save(Article article);
+
     List<Article> findAllDesc();
+
     Optional<Article> findById(Long id);
+
+    void deleteById(Long id);
 }

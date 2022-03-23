@@ -1,19 +1,20 @@
 spring:
+  profiles:
+    active: ${profile}
   mustache:
     cache: false
     expose-session-attributes: true
   devtools:
     livereload:
       enabled: true
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/springcafe
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  sql:
+    init:
+      schema-locations: classpath:sql/ddl.sql
+      mode: always
 server:
   servlet:
     session:
