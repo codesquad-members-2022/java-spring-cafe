@@ -7,23 +7,26 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.springframework.stereotype.Repository;
-
 import com.kakao.cafe.domain.User;
 
-@Repository
 public class MemoryUserRepository implements UserRepository {
     private final List<User> users = new CopyOnWriteArrayList<>();
     private final AtomicInteger sequence = new AtomicInteger();
 
     @Override
-    public void save(User user) {
+    public int save(User user) {
         sequence.compareAndSet(users.size(), users.size() + 1);
         int id = sequence.get();
         user.setId(id);
         user.setDate(LocalDate.now());
         users.add(user);
+        return id;
     }
+
+    @Override
+    public void update(User user) {
+    }
+    // TODO: H2UserRepository 에서는 쓰이지만 여기서는 쓸 일이 없어서 어떻게 처리해야할지 모르겠다.
 
     @Override
     public Optional<User> findById(int id) {

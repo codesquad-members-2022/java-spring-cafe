@@ -2,10 +2,12 @@ package com.kakao.cafe.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.exception.ErrorMessage;
+import com.kakao.cafe.exception.ArticleException;
+import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.repository.ArticleRepository;
 
 @Service
@@ -13,6 +15,7 @@ public class ArticleService {
 
     private final ArticleRepository articleRepository;
 
+    @Autowired
     public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
     }
@@ -28,6 +31,6 @@ public class ArticleService {
 
     public Article findById(int index) {
         return articleRepository.findById(index).orElseThrow(() ->
-            new IllegalArgumentException(ErrorMessage.NO_MATCH_ARTICLE.message));
+            new ArticleException(ErrorCode.NO_MATCH_ARTICLE));
     }
 }

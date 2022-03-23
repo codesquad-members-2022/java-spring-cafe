@@ -2,34 +2,33 @@ package com.kakao.cafe.service;
 
 import static org.assertj.core.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.UserException;
-import com.kakao.cafe.repository.MemoryUserRepository;
+import com.kakao.cafe.repository.UserRepository;
 
-class UserServiceTest {
-    MemoryUserRepository userRepository;
+@SpringBootTest
+@Transactional
+public class UserServiceIntegrationTest {
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
     UserService userService;
 
-    @BeforeEach
-    public void beforeEach() {
-        userRepository = new MemoryUserRepository();
-        userService = new UserService(userRepository);
-    }
-
     @Test
-    @DisplayName("회원가입을 하면 회원 정보가 MemoryUserRepository에 저장된다")
+    @DisplayName("회원가입을 하면 회원 정보가 UserRepository에 저장된다")
     void join_success() {
         User user1 = new User("BC", "BC@gmail.com", "1234");
-        userService.join(user1);
+        int id = userService.join(user1);
+        User user = userService.findById(id);
 
-        User user = userService.findByNickname("BC");
         assertThat(user.getNickname()).isEqualTo(user1.getNickname());
-        assertThat(user.getPassword()).isEqualTo(user1.getPassword());
     }
 
     @Test
@@ -51,15 +50,14 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("회원가입을 하면 id가 1부터 오름차순으로 배정된다")
+    @DisplayName("회원가입을 하면 id가 오름차순으로 배정된다")
     void join_assign_id() {
         User user1 = new User("bc", "HARRY@gmail.com", "1234");
-        userService.join(user1);
+        int id1 = userService.join(user1);
 
         User user2 = new User("BBBB", "BC@gmail.com", "1234");
-        userService.join(user2);
+        int id2 = userService.join(user2);
 
-        assertThat(user1.matchesId(1)).isTrue();
-        assertThat(user2.matchesId(2)).isTrue();
+        assertThat(id1 + 1).isEqualTo(id2);
     }
 }

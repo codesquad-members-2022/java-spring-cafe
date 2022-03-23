@@ -6,7 +6,9 @@ import java.util.Optional;
 import com.kakao.cafe.domain.User;
 
 public interface UserRepository {
-    void save(User user);
+    int save(User user);
+
+    void update(User user);
 
     Optional<User> findById(int id);
 
