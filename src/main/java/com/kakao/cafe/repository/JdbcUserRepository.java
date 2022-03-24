@@ -3,7 +3,6 @@ package com.kakao.cafe.repository;
 import com.kakao.cafe.domain.User;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Primary;
@@ -27,7 +26,15 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public User save(User user) {
         SqlParameterSource parameters = new BeanPropertySqlParameterSource(user);
-        jdbc.update("INSERT INTO user VALUES (:userId, :password, :name, :email) ON DUPLICATE KEY UPDATE name = :name, email = :email", parameters);
+        User userInformation = findByUserId(user.getUserId()).orElse(null);
+
+        if (userInformation == null) {
+            jdbc.update("INSERT INTO user VALUES (:userId, :password, :name, :email)", parameters);
+            return user;
+        }
+
+        jdbc.update("UPDATE user SET name = :name, email = :email WHERE user_id = :userId", parameters);
+        jdbc.update("UPDATE article SET writer = :name WHERE user_id = :userId", parameters);
 
         return user;
     }
@@ -35,8 +42,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     public Optional<User> findByUserId(String userId) {
         try {
-            Map<String, String> parameters = Collections.singletonMap("userId", userId);
-            return Optional.ofNullable(jdbc.queryForObject("SELECT * FROM user WHERE user_id = :userId", parameters, userRowMapper()));
+            return Optional.ofNullable(jdbc.queryForObject("SELECT * FROM user WHERE user_id = :userId", Collections.singletonMap("userId", userId), userRowMapper()));
         } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
@@ -48,7 +54,7 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public void clear() {
+    public void deleteAll() {
         jdbc.update("DELETE FROM user", Collections.emptyMap());
     }
 

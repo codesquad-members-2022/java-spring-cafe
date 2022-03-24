@@ -37,7 +37,7 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void clear() {
+    public void deleteAll() {
         users.clear();
     }
 }

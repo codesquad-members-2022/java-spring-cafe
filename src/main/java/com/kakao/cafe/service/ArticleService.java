@@ -4,7 +4,6 @@ import com.kakao.cafe.domain.Article;
 import com.kakao.cafe.dto.ArticleRequestDto;
 import com.kakao.cafe.dto.ArticleResponseDto;
 import com.kakao.cafe.repository.ArticleRepository;
-import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -14,18 +13,18 @@ import org.springframework.stereotype.Service;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final UserRepository userRepository;
 
-    public ArticleService(ArticleRepository articleRepository, UserRepository userRepository) {
+    public ArticleService(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.userRepository = userRepository;
     }
 
     public Article upload(ArticleRequestDto articleRequestDto) {
-        Article article = articleRequestDto.convertToDomain();
-        validateWriter(article.getWriter());
-
+        Article article = articleRequestDto.convertToDomain(0);
         return articleRepository.save(article);
+    }
+
+    public ArticleResponseDto findOne(int id) {
+        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")).convertToDto();
     }
 
     public List<ArticleResponseDto> findAll() {
@@ -33,13 +32,12 @@ public class ArticleService {
             Collectors.toList());
     }
 
-    public ArticleResponseDto findOne(int id) {
-        return articleRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 글이 없습니다.")).convertToDto();
+    public Article update(int id, ArticleRequestDto articleRequestDto) {
+        Article article = articleRequestDto.convertToDomain(id);
+        return articleRepository.save(article);
     }
 
-    private void validateWriter(String writer) {
-        userRepository.findByUserId(writer).orElseThrow(() -> {
-            throw new IllegalStateException("등록되지 않은 사용자입니다.");
-        });
+    public void delete(int id) {
+        articleRepository.deleteById(id);
     }
 }

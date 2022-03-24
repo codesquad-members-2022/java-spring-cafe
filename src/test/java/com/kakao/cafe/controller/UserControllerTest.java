@@ -3,6 +3,7 @@ package com.kakao.cafe.controller;
 import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
+import com.kakao.cafe.service.AuthService;
 import com.kakao.cafe.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -38,6 +39,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private AuthService authService;
 
     private User user;
 
@@ -85,7 +89,7 @@ public class UserControllerTest {
         UserResponseDto userResponseDto = user.convertToDto();
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("sessionUser", userResponseDto);
-        doNothing().when(userService).validateSessionOfUser("ikjo", userResponseDto);
+        doNothing().when(authService).validateUserIdOfSession("ikjo", userResponseDto);
 
         given(userService.findOne("ikjo")).willReturn(userResponseDto);
 
@@ -93,7 +97,7 @@ public class UserControllerTest {
         ResultActions resultActions = mockMvc.perform(get("/users/ikjo/form").session(session));
 
         // then
-        verify(userService).validateSessionOfUser("ikjo", userResponseDto);
+        verify(authService).validateUserIdOfSession("ikjo", userResponseDto);
         resultActions.andExpect(status().isOk())
             .andExpect(view().name("user/updateForm"))
             .andExpect(model().attribute("user", userResponseDto));
@@ -122,7 +126,7 @@ public class UserControllerTest {
     @Test
     void 사용자_정보_수정() throws Exception {
         // given
-        given(userService.update(eq("ikjo"), any(UserRequestDto.class))).willReturn(user);
+        given(userService.update(any(UserRequestDto.class))).willReturn(user);
 
         MultiValueMap<String, String> userParam = new LinkedMultiValueMap<>();
         userParam.add("userId", "ikjo");
@@ -135,42 +139,5 @@ public class UserControllerTest {
 
         // then
         resultActions.andExpect(redirectedUrl("/users"));
-    }
-
-    @DisplayName("사용자가 로그인 요청을 했을 때 정상 처리 시 /로 리다이렉트한다.")
-    @Test
-    void 사용자_로그인() throws Exception {
-        // given
-        MockHttpSession session = new MockHttpSession();
-        doNothing().when(userService).validateUser("ikjo", "1234");
-        UserResponseDto userResponseDto = user.convertToDto();
-        given(userService.findOne("ikjo")).willReturn(userResponseDto);
-
-        MultiValueMap<String, String> userParam = new LinkedMultiValueMap<>();
-        userParam.add("userId", "ikjo");
-        userParam.add("password", "1234");
-
-        // when
-        ResultActions resultActions = mockMvc.perform(post("/user/login").params(userParam).session(session));
-
-        // then
-        verify(userService).validateUser("ikjo", "1234");
-        assertThat(session.getAttribute("sessionUser")).isEqualTo(userResponseDto);
-        resultActions.andExpect(redirectedUrl("/"));
-    }
-
-    @DisplayName("사용자가 로그아웃 요청을 했을 때 정상 처리 시 /로 리다이렉트한다.")
-    @Test
-    void 사용자_로그아웃() throws Exception {
-        // given
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("sessionUser", user.convertToDto());
-
-        // when
-        ResultActions resultActions = mockMvc.perform(get("/user/logout").session(session));
-
-        // then
-        assertThat(session.isInvalid()).isTrue();
-        resultActions.andExpect(redirectedUrl("/"));
     }
 }

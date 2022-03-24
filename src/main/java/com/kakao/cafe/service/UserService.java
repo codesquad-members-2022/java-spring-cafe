@@ -5,11 +5,9 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.dto.UserRequestDto;
 import com.kakao.cafe.dto.UserResponseDto;
 import com.kakao.cafe.exception.UserIncorrectAccessException;
-import com.kakao.cafe.exception.LoginFailedException;
 import com.kakao.cafe.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,27 +31,9 @@ public class UserService {
         });
     }
 
-    public User update(String userId, UserRequestDto userRequestDto) {
+    public User update(UserRequestDto userRequestDto) {
         User user = userRequestDto.convertToDomain();
-        validateUser(userId, user.getPassword());
         return userRepository.save(user);
-    }
-
-    public void validateUser(String userId, String password) {
-        User user = userRepository.findByUserId(userId).orElse(null);
-        if (user == null || !user.hasSamePassword(password)) {
-            throw new LoginFailedException("아이디 또는 비밀번호가 틀립니다. 다시 로그인해주세요.");
-        }
-    }
-
-    public void validateSessionOfUser(String id, UserResponseDto sessionOfUser) {
-        if (sessionOfUser == null) {
-            throw new UserIncorrectAccessException("로그인이 정상적으로 되어있지 않습니다.");
-        }
-
-        if (!sessionOfUser.hasSameUserId(id)) {
-            throw new UserIncorrectAccessException("해당 계정의 정보는 수정할 수 없습니다.");
-        }
     }
 
     public List<UserResponseDto> findAll() {

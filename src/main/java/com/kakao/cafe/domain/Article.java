@@ -6,15 +6,25 @@ import java.time.LocalDateTime;
 public class Article {
 
     private Integer id;
-    private String writer;
+    private String userId;
+    private String writer; // writer = User's name (미션 5단계 프로그래밍 요구사항)
     private String title;
     private String contents;
     private LocalDateTime createdDate;
 
     private Article() { }
 
-    public Article(Integer id, String writer, String title, String contents, LocalDateTime createdDate) {
+    public Article(Integer id, String userId, String writer, String title, String contents, LocalDateTime createdDate) {
         this.id = id;
+        this.userId = userId;
+        this.writer = writer;
+        this.title = title;
+        this.contents = contents;
+        this.createdDate = createdDate;
+    }
+
+    public Article(String userId, String writer, String title, String contents, LocalDateTime createdDate) {
+        this.userId = userId;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
@@ -27,6 +37,10 @@ public class Article {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getWriter() {
@@ -46,6 +60,6 @@ public class Article {
     }
 
     public ArticleResponseDto convertToDto() {
-        return new ArticleResponseDto(id, writer, title, contents, createdDate);
+        return new ArticleResponseDto(id, userId, writer, title, contents, createdDate);
     }
 }

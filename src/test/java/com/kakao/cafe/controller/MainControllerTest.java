@@ -32,8 +32,8 @@ public class MainControllerTest {
     @Test
     void 모든_게시글_정보_조회() throws Exception {
         // given
-        ArticleResponseDto articleResponseDto1 = new ArticleResponseDto(1, "ikjo", "java", "java is fun", LocalDateTime.now());
-        ArticleResponseDto articleResponseDto2 = new ArticleResponseDto(2, "ikjo", "python", "python is fun", LocalDateTime.now());
+        ArticleResponseDto articleResponseDto1 = new ArticleResponseDto(1, "ikjo", "조명익","java", "java is fun", LocalDateTime.now());
+        ArticleResponseDto articleResponseDto2 = new ArticleResponseDto(2, "ikjo", "조명익","python", "python is fun", LocalDateTime.now());
         given(articleService.findAll()).willReturn(List.of(articleResponseDto1, articleResponseDto2));
 
         // when
