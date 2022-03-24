@@ -4,6 +4,7 @@ import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.service.UserService;
 import com.kakao.cafe.web.dto.LoginDto;
+import com.kakao.cafe.web.dto.SessionUser;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class UserController {
 
     @GetMapping("/users/{id}/update")
     public String updateForm(@PathVariable String id, Model model, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
         checkAccessPermission(id, sessionedUser);
 
         logger.info("[{}] in updateForm for update info", id);
@@ -82,7 +83,7 @@ public class UserController {
 
     @PutMapping("/users/{id}/update")
     public String updateInfo(@PathVariable String id, UserDto userDto, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
         checkAccessPermission(id, sessionedUser);
 
         logger.info("[{}] updated info [{}]", id, userDto);
@@ -123,9 +124,9 @@ public class UserController {
     }
 
     // session정보와 pathID 확인
-    private void checkAccessPermission(String id, UserResponseDto sessionedUser) {
+    private void checkAccessPermission(String id, SessionUser sessionedUser) {
         if(!sessionedUser.hasSameId(id)){
-            logger.info("[{}] tries access [{}]'s info", sessionedUser.getUserId(), id);
+            logger.error("[{}] tries access [{}]'s info", sessionedUser.getUserId(), id);
             throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
     }

@@ -45,18 +45,6 @@ public class ArticleResponseDto {
         return writtenTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ArticleResponseDto that = (ArticleResponseDto) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getWriter(), that.getWriter()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContents(), that.getContents()) && Objects.equals(getWrittenTime(), that.getWrittenTime());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, writer, title, contents, writtenTime);
-    }
 
     @Override
     public String toString() {

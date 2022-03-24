@@ -12,21 +12,22 @@ public class Article {
     private final String contents;
     private final LocalDateTime writtenTime;
 
-    public Article(Integer id, String writer, String title, String contents) {
-        this.id = id;
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.writtenTime = LocalDateTime.now();
-    }
-
-    public Article(Integer id, String writer, String title, String contents, LocalDateTime writtenTime) {
+    private Article(Integer id, String writer, String title, String contents, LocalDateTime writtenTime) {
         this.id = id;
         this.writer = writer;
         this.title = title;
         this.contents = contents;
         this.writtenTime = writtenTime;
     }
+
+    public static Article newInstance(Integer id, String writer, String title, String contents) {
+        return new Article(id, writer, title, contents, LocalDateTime.now());
+    }
+
+    public  static Article of(Integer id, String writer, String title, String contents, LocalDateTime writtenTime){
+        return new Article(id, writer, title, contents, writtenTime);
+    }
+
 
     public boolean hasId() {
         return this.id != null;
@@ -61,7 +62,7 @@ public class Article {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return Objects.equals(getId(), article.getId());
+        return this.id.equals(article.getId());
     }
 
     @Override
