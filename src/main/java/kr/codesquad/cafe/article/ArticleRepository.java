@@ -5,14 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings("SqlNoDataSourceInspection")
+@SuppressWarnings({"SqlNoDataSourceInspection", "SqlResolve"})
 @Repository
 public class ArticleRepository {
 
@@ -22,8 +18,8 @@ public class ArticleRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ArticleRepository(DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    public ArticleRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public void save(Article article) {
@@ -32,8 +28,7 @@ public class ArticleRepository {
     }
 
     public Optional<Article> findOne(long id) {
-        return jdbcTemplate.query(SQL_FIND_ARTICLE, articleRowMapper(), id)
-                .stream().findAny();
+        return Optional.ofNullable(jdbcTemplate.queryForObject(SQL_FIND_ARTICLE, articleRowMapper(), id));
     }
 
     public List<Article> findAll() {
