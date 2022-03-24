@@ -1,6 +1,8 @@
 package com.kakao.cafe.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User{
     private String userId;
     private String name;
     private String password;

@@ -46,27 +46,20 @@ public class UserController {
         return "user/profile";
     }
 
-    @GetMapping("/{index}/update")
-    public String createUpdateForm(@PathVariable("index") int index, Model model) {
-        UserForm userForm = userService.findOneUser(index);
-        model.addAttribute("user", userForm);
-        model.addAttribute("index", index);
-        return "user/updateForm";
-    }
-
-    @PutMapping("/{index}/update")
-    public String updateUser(@PathVariable("index") int index, @Valid UpdateUserForm updateUserForm) {
-        userService.update(updateUserForm, index);
+    @PutMapping("/{id}/update")
+    public String updateUser(@PathVariable("id") int id, @Valid UpdateUserForm updateUserForm) {
+        userService.update(updateUserForm, id);
         return "redirect:/users";
     }
 
-    @GetMapping("/login")
-    public String loginForm(){
-        return "user/login";
-    }
-
-    @PostMapping("/login")
-    public String login(String userId, String password, HttpSession session) {
+    @GetMapping("/{userId}/update")
+    public String createUpdateFormByLoginUser(@PathVariable("userId") String userId, HttpSession session, Model model) {
+        Object value = session.getAttribute("sessionedUser");
+        if (value != null) {
+            UserForm loginUserForm = userService.validateLoginUser(userId, value);
+            model.addAttribute("user", loginUserForm);
+            return "user/updateForm";
+        }
         return "redirect:/";
     }
 }

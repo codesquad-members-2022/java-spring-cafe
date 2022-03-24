@@ -2,6 +2,7 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragment/head::head"></head>
 <body>
+<nav th:replace="fragment/nav::nav"></nav>
 <div class="navbar navbar-default" id="subnav">
     <div class="col-md-12">
         <div th:replace="fragment/subnav::subnav"></div>
@@ -28,8 +29,14 @@
                     <td th:text="${user.userId}"></td>
                     <td th:text="${user.name}"></td>
                     <td th:text="${user.email}"></td>
-                    <td><a th:href="@{users/{index}(index=${user.id})}" class="btn btn-success" role="button">프로필 보기</a><td>
-                    <td><a th:href="@{users/{index}/update(index=${user.id})}" class="btn btn-success" role="button">수정하기</a><td>
+                    <td><a th:href="@{users/{index}(index=${user.id})}" class="btn btn-success" role="button">프로필 보기</a>
+                    <td>
+                    <td th:unless="${session.isEmpty()}">
+                        <a th:if="${session.get('sessionedUser').id == user.id}"
+                           th:href="@{users/{userId}/update(userId=${user.userId})}"
+                           class="btn btn-success" role="button">수정하기
+                        </a>
+                    <td>
                 </tr>
                 </tbody>
             </table>
