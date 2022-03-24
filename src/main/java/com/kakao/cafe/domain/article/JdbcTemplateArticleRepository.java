@@ -66,7 +66,7 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(rs.getInt("id"),
+        return (rs, rowNum) -> Article.of(rs.getInt("id"),
                     rs.getString("writer"),
                     rs.getString("title"),
                     rs.getString("contents"),
