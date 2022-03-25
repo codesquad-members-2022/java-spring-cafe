@@ -40,6 +40,10 @@ public class ReplyService {
         throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
     }
 
+    public boolean isDeletableArticle(Integer articleId, String writer) {
+        return !replyRepository.hasReplyOfAnotherWriter(articleId, writer);
+    }
+
     private boolean checkWriter(String writer, Integer id) {
         String targetWriter = replyRepository.findWriterById(id)
                 .orElseThrow(() -> new ClientException(HttpStatus.NOT_FOUND, "댓글을 찾을 수 없습니다."));

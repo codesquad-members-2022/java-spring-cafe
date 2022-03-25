@@ -8,5 +8,6 @@ public interface ReplyRepository {
     Reply save(Reply reply);
     Optional<String> findWriterById(Integer id);
     List<Reply> findAllByArticleId(Integer articleId);
-    Boolean deleteOne(Integer id);
+    boolean deleteOne(Integer id);
+    boolean hasReplyOfAnotherWriter(Integer articleId, String writer);
 }

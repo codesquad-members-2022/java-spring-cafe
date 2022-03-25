@@ -10,9 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class JdbcTemplateReplyRepository implements ReplyRepository{
@@ -50,9 +48,20 @@ public class JdbcTemplateReplyRepository implements ReplyRepository{
     }
 
     @Override
-    public Boolean deleteOne(Integer id) {
+    public boolean deleteOne(Integer id) {
         String sql = "delete from cafe_reply where id = :id";
         return jdbcTemplate.update(sql, new MapSqlParameterSource("id", id)) == 1;
+    }
+
+    @Override
+    public boolean hasReplyOfAnotherWriter(Integer articleId, String writer) {
+        String sql = "select count(id) from cafe_reply where articleId = :articleId and writer != :writer";
+
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+        mapSqlParameterSource.addValue("articleId", articleId);
+        mapSqlParameterSource.addValue("writer", writer);
+
+        return jdbcTemplate.queryForObject(sql, mapSqlParameterSource, Integer.class) > 0;
     }
 
     private Reply insert(Reply reply) {

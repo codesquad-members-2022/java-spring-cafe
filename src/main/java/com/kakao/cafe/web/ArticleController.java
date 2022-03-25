@@ -39,7 +39,7 @@ public class ArticleController {
 
     @PostMapping("/write-qna")
     public String write(ArticleDto articleDto, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        SessionUser sessionedUser = SessionUser.from(httpSession);
         String sessionedUserId = sessionedUser.getUserId();
         logger.info("[{}] writing qna{}", sessionedUserId, articleDto);
         articleService.write(sessionedUserId, articleDto);
@@ -60,9 +60,10 @@ public class ArticleController {
         logger.info("Search for articleId{} to show client", id);
 
         ArticleResponseDto result = articleService.findOne(id);
-        List<ReplyResponseDto> replyResponseDtos = replyService.showAllInArticle(id);
         model.addAttribute("article", result);
-        model.addAttribute("size",replyResponseDtos.size());
+
+        List<ReplyResponseDto> replyResponseDtos = replyService.showAllInArticle(id);
+        model.addAttribute("size", replyResponseDtos.size());
         if(!replyResponseDtos.isEmpty()) {
             model.addAttribute("replies", replyResponseDtos);
         }
@@ -74,18 +75,18 @@ public class ArticleController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteArticle(@PathVariable Integer id, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
-        String sessionedUserUserId = sessionedUser.getUserId();
-
-        articleService.deleteOne(id, sessionedUserUserId);
-        logger.info("[{}] delete qna{}", sessionedUserUserId, id);
+        SessionUser sessionedUser = SessionUser.from(httpSession);
+        String sessionedUserId = sessionedUser.getUserId();
+        checkDeletable(id, sessionedUserId);
+        articleService.deleteOne(id, sessionedUserId);
+        logger.info("[{}] delete qna{}", sessionedUserId, id);
 
         return "redirect:/qna/all";
     }
 
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Integer id, HttpSession httpSession, Model model) {
-        SessionUser sessionedUser = (SessionUser) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        SessionUser sessionedUser = SessionUser.from(httpSession);
         logger.info("[{}] request updateForm qna{}", sessionedUser.getUserId(), id);
 
         ArticleResponseDto result = articleService.findOne(id);
@@ -97,7 +98,7 @@ public class ArticleController {
 
     @PutMapping("/update/{id}")
     public String updateArticle(@PathVariable Integer id, ArticleUpdateDto articleUpdateDto, HttpSession httpSession) {
-        UserResponseDto sessionedUser = (UserResponseDto) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+        SessionUser sessionedUser = SessionUser.from(httpSession);
         articleService.updateOne(sessionedUser.getUserId(), articleUpdateDto);
 
         return "redirect:/qna/show/" + id;
@@ -110,6 +111,12 @@ public class ArticleController {
         if(!sessionedUser.hasSameId(writer)){
             logger.info("[{}] tries access [{}]'s article[{}]", sessionedUser.getUserId(), writer, id);
             throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+        }
+    }
+
+    private void checkDeletable(Integer id, String userId) {
+        if(!replyService.isDeletableArticle(id, userId)) {
+            throw new ClientException(HttpStatus.CONFLICT, "다른 유저의 답변이 포함되어 있어서 질문을 삭제할 수 없습니다.");
         }
     }
 }

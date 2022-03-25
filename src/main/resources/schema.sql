@@ -21,6 +21,6 @@ create table cafe_reply (
                         contents varchar(255),
                         writtenTime timestamp,
                         primary key (id),
-                        foreign key (articleId) references cafe_article (id)
+                        foreign key (articleId) references cafe_article (id) on delete cascade
 )
 
