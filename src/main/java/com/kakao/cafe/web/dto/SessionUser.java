@@ -1,12 +1,25 @@
 package com.kakao.cafe.web.dto;
 
+import com.kakao.cafe.constants.LoginConstants;
+import com.kakao.cafe.domain.user.User;
+
+import javax.servlet.http.HttpSession;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SessionUser {
 
     private final String userId;
     private final String name;
     private final String email;
+
+    public static SessionUser from(User user) {
+        return new SessionUser(user.getUserId(), user.getName(), user.getEmail());
+    }
+
+    public static SessionUser from(HttpSession httpSession) {
+        return (SessionUser) httpSession.getAttribute(LoginConstants.SESSIONED_USER);
+    }
 
     public SessionUser(String userId, String name, String email) {
         this.userId = userId;

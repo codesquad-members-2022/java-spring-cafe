@@ -102,7 +102,7 @@ public class UserController {
     @PostMapping("/user/login")
     public String loginUser(LoginDto loginDto, HttpSession httpSession, HttpServletResponse httpServletResponse, RedirectAttributes redirectAttributes) {
         logger.info("[{}] request login", loginDto.getUserId());
-        Optional<UserResponseDto> loginUserOptional = userService.login(loginDto);
+        Optional<SessionUser> loginUserOptional = userService.login(loginDto);
 
         if(loginUserOptional.isPresent()) {
             logger.info("[{}] succeded login ", loginDto.getUserId());
