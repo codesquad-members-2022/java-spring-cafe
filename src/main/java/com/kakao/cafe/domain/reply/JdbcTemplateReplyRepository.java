@@ -1,5 +1,6 @@
 package com.kakao.cafe.domain.reply;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class JdbcTemplateReplyRepository implements ReplyRepository{
@@ -23,10 +25,22 @@ public class JdbcTemplateReplyRepository implements ReplyRepository{
 
     @Override
     public Reply save(Reply reply) {
-        if (reply.hasId()) {
+        if (!reply.hasId()) {
             return insert(reply);
         }
         return update(reply);
+    }
+
+    @Override
+    public Optional<String> findWriterById(Integer id) {
+        String sql = "select writer from cafe_reply where id = :id";
+        try {
+            String writer = jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("id", id), String.class);
+            return Optional.ofNullable(writer);
+
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -43,7 +57,7 @@ public class JdbcTemplateReplyRepository implements ReplyRepository{
 
     private Reply insert(Reply reply) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        String sql = "insert into cafe_reply (articleId, writer, contents, writtenTime) values (:writer, :title, :contents, :writtenTime);";
+        String sql = "insert into cafe_reply (articleId, writer, contents, writtenTime) values (:articleId, :writer, :contents, :writtenTime);";
         jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(reply), keyHolder);
         reply.setId(Objects.requireNonNull(keyHolder.getKey()).intValue());
         return reply;
