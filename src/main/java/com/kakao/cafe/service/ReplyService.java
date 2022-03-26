@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.reply.ReplyRepository;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.ReplyDto;
 import com.kakao.cafe.web.dto.ReplyResponseDto;
+import com.kakao.cafe.web.dto.ReplyUpdateDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,13 @@ public class ReplyService {
 
     public boolean isDeletableArticle(Integer articleId, String writer) {
         return !replyRepository.hasReplyOfAnotherWriter(articleId, writer);
+    }
+
+    public ReplyResponseDto update(ReplyUpdateDto replyUpdateDto, String writer) {
+        if(!replyUpdateDto.hasSameWriter(writer)) {
+            throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+        };
+        return ReplyResponseDto.from(replyRepository.save(replyUpdateDto.toEntity()));
     }
 
     private boolean checkWriter(String writer, Integer id) {

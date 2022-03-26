@@ -1,7 +1,5 @@
 package com.kakao.cafe.web;
 
-
-import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.service.ArticleService;
 import com.kakao.cafe.service.ReplyService;
@@ -68,7 +66,7 @@ public class ArticleController {
             model.addAttribute("replies", replyResponseDtos);
         }
 
-        logger.info("Show article{}", result);
+        logger.info("Show article[{}] with [{}] replies ", result, replyResponseDtos.size());
 
         return "qna/show";
     }
@@ -100,6 +98,7 @@ public class ArticleController {
     public String updateArticle(@PathVariable Integer id, ArticleUpdateDto articleUpdateDto, HttpSession httpSession) {
         SessionUser sessionedUser = SessionUser.from(httpSession);
         articleService.updateOne(sessionedUser.getUserId(), articleUpdateDto);
+        logger.info("[{}] update qna[{}]", sessionedUser.getUserId(), id);
 
         return "redirect:/qna/show/" + id;
     }
@@ -109,13 +108,14 @@ public class ArticleController {
         String writer = articleResponseDto.getWriter();
         Integer id = articleResponseDto.getId();
         if(!sessionedUser.hasSameId(writer)){
-            logger.info("[{}] tries access [{}]'s article[{}]", sessionedUser.getUserId(), writer, id);
+            logger.error("[{}] tries access [{}]'s article[{}]", sessionedUser.getUserId(), writer, id);
             throw new ClientException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
         }
     }
 
     private void checkDeletable(Integer id, String userId) {
         if(!replyService.isDeletableArticle(id, userId)) {
+            logger.error("[{}] failed to delete article[{}] with other user's replies", userId, id);
             throw new ClientException(HttpStatus.CONFLICT, "다른 유저의 답변이 포함되어 있어서 질문을 삭제할 수 없습니다.");
         }
     }
