@@ -63,37 +63,6 @@ public class ArticleControllerTest {
     private SessionUser sessionUser;
     private SessionUser sessionOther;
 
-    @Component
-    public static class ArticleSetUp {
-
-        private final ArticleRepository articleRepository;
-        private final UserRepository userRepository;
-        private final ReplyRepository replyRepository;
-
-        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository,
-            ReplyRepository replyRepository) {
-            this.articleRepository = articleRepository;
-            this.userRepository = userRepository;
-            this.replyRepository = replyRepository;
-        }
-
-        public User saveUser(User user) {
-            return userRepository.save(user);
-        }
-
-        public Article saveArticle(Article article) {
-            return articleRepository.save(article);
-        }
-
-        public Reply saveReply(Reply reply) {
-            return replyRepository.save(reply);
-        }
-
-        public void rollback() {
-            articleRepository.deleteAll();
-        }
-    }
-
     @BeforeEach
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
@@ -125,9 +94,9 @@ public class ArticleControllerTest {
 
     @Test
     @DisplayName("글을 작성하는 화면을 보여준다")
-    public void createQuestionTest() throws Exception {
+    public void createArticleTest() throws Exception {
         // when
-        ResultActions actions = performGet("/questions");
+        ResultActions actions = performGet("/articles/form");
 
         // then
         actions.andExpect(status().isOk())
@@ -141,7 +110,7 @@ public class ArticleControllerTest {
         articleSetUp.saveUser(new User("writer", "userPassword", "userName", "user@example.com"));
 
         // when
-        ResultActions actions = mockMvc.perform(post("/questions")
+        ResultActions actions = mockMvc.perform(post("/articles")
             .session(session)
             .param("writer", "writer")
             .param("title", "title")
@@ -481,5 +450,36 @@ public class ArticleControllerTest {
             .andExpect(model().attribute("status", ErrorCode.INVALID_REPLY_WRITER.getHttpStatus()))
             .andExpect(model().attribute("message", ErrorCode.INVALID_REPLY_WRITER.getMessage()))
             .andExpect(view().name("error/index"));
+    }
+
+    @Component
+    public static class ArticleSetUp {
+
+        private final ArticleRepository articleRepository;
+        private final UserRepository userRepository;
+        private final ReplyRepository replyRepository;
+
+        public ArticleSetUp(ArticleRepository articleRepository, UserRepository userRepository,
+            ReplyRepository replyRepository) {
+            this.articleRepository = articleRepository;
+            this.userRepository = userRepository;
+            this.replyRepository = replyRepository;
+        }
+
+        public User saveUser(User user) {
+            return userRepository.save(user);
+        }
+
+        public Article saveArticle(Article article) {
+            return articleRepository.save(article);
+        }
+
+        public Reply saveReply(Reply reply) {
+            return replyRepository.save(reply);
+        }
+
+        public void rollback() {
+            articleRepository.deleteAll();
+        }
     }
 }

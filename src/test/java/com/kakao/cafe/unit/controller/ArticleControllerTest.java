@@ -79,7 +79,7 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하는 화면을 보여준다")
     public void createArticleFormTest() throws Exception {
         // when
-        ResultActions actions = performGet("/questions");
+        ResultActions actions = performGet("/articles/form");
 
         // then
         actions.andExpect(status().isOk())
@@ -94,7 +94,7 @@ public class ArticleControllerTest {
             .willReturn(articleResponse);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/questions")
+        ResultActions actions = mockMvc.perform(post("/articles")
             .session(session)
             .param("writer", "writer")
             .param("title", "title")

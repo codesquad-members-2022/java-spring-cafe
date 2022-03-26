@@ -26,36 +26,35 @@ public class ArticleController {
         this.replyService = replyService;
     }
 
-    // question
-    @GetMapping("/questions")
-    public String formCreateQuestion() {
-        return "qna/form";
-    }
-
-    @PostMapping("/questions")
-    public String createQuestion(ArticleSaveRequest request, HttpSession session) {
-        SessionUser user = SessionUser.from(session);
-        articleService.write(user, request);
-        return "redirect:/";
-    }
-
     // article
     @GetMapping("/")
-    public String listQuestions(Model model) {
+    public String listArticles(Model model) {
         List<ArticleResponse> articles = articleService.findArticles();
         model.addAttribute("articles", articles);
         return "qna/list";
     }
 
     @GetMapping("articles/{id}")
-    public String showQuestion(@PathVariable(value = "id") Integer articleId, Model model) {
+    public String showArticle(@PathVariable(value = "id") Integer articleId, Model model) {
         ArticleResponse article = articleService.findArticle(articleId);
         model.addAttribute("article", article);
         return "qna/show";
     }
 
+    @GetMapping("/articles/form")
+    public String formCreateArticle() {
+        return "qna/form";
+    }
+
+    @PostMapping("/articles")
+    public String createArticle(ArticleSaveRequest request, HttpSession session) {
+        SessionUser user = SessionUser.from(session);
+        articleService.write(user, request);
+        return "redirect:/";
+    }
+
     @GetMapping("articles/{id}/form")
-    public String formUpdateQuestion(@PathVariable(value = "id") Integer articleId, Model model,
+    public String formUpdateArticle(@PathVariable(value = "id") Integer articleId, Model model,
         HttpSession session) {
         SessionUser user = SessionUser.from(session);
         ArticleResponse article = articleService.mapUserArticle(user, articleId);
@@ -64,7 +63,7 @@ public class ArticleController {
     }
 
     @PutMapping("articles/{id}")
-    public String updateQuestion(@PathVariable(value = "id") Integer articleId,
+    public String updateArticle(@PathVariable(value = "id") Integer articleId,
         ArticleSaveRequest request, HttpSession session) {
         SessionUser user = SessionUser.from(session);
         articleService.updateArticle(user, request, articleId);
@@ -72,7 +71,7 @@ public class ArticleController {
     }
 
     @DeleteMapping("articles/{id}")
-    public String deleteQuestion(@PathVariable(value = "id") Integer articleId,
+    public String deleteArticle(@PathVariable(value = "id") Integer articleId,
         HttpSession session) {
         SessionUser user = SessionUser.from(session);
         articleService.deleteArticle(user, articleId);
@@ -88,7 +87,7 @@ public class ArticleController {
         return "redirect:/";
     }
 
-    @DeleteMapping("articles/{questionId}/answers/{id}")
+    @DeleteMapping("articles/{articleId}/answers/{id}")
     public String deleteAnswer(@PathVariable(value = "id") Integer replyId, HttpSession session) {
         SessionUser user = SessionUser.from(session);
         replyService.deleteReply(user, replyId);
