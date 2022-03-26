@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.LoginDto;
+import com.kakao.cafe.web.dto.SessionUser;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -138,7 +139,7 @@ class UserServiceTest {
         given(userRepository.findById("ron2")).willReturn(Optional.of(user));
 
         //when
-        UserResponseDto login = userService.login(loginUser).orElse(null);
+        SessionUser login = userService.login(loginUser).orElse(null);
 
         //then
         assertThat(login.getUserId()).isEqualTo(loginUser.getUserId());
@@ -156,7 +157,7 @@ class UserServiceTest {
         given(userRepository.findById(any())).willReturn(Optional.empty());
 
         //when
-        Optional<UserResponseDto> loginUserOptional = userService.login(loginUser);
+        Optional<SessionUser> loginUserOptional = userService.login(loginUser);
 
         //then
         assertThat(loginUserOptional).isEmpty();
@@ -170,7 +171,7 @@ class UserServiceTest {
         given(userRepository.findById("ron2")).willReturn(Optional.of(user));
 
         //when
-        Optional<UserResponseDto> loginUserOptional = userService.login(loginUser);
+        Optional<SessionUser> loginUserOptional = userService.login(loginUser);
 
         //then
         assertThat(loginUserOptional).isEmpty();

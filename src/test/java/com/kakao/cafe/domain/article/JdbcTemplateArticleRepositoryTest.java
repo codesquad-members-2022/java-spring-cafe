@@ -30,7 +30,7 @@ class JdbcTemplateArticleRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        article = new Article(null,"writer","title","contents");
+        article = Article.newInstance(null,"writer","title","contents");
     }
 
     @Test
@@ -88,7 +88,7 @@ class JdbcTemplateArticleRepositoryTest {
     void updateTest() {
 
         Article previousArticle = jdbcTemplateArticleRepository.save(article);
-        Article updateArticle = new Article(previousArticle.getId(), "writer", "newTitle", "newContents", LocalDateTime.now());
+        Article updateArticle = Article.of(previousArticle.getId(), "writer", "newTitle", "newContents", LocalDateTime.now());
         Article updated = jdbcTemplateArticleRepository.save(updateArticle);
 
         Optional<Article> updatedArticleOptional = jdbcTemplateArticleRepository.findById(previousArticle.getId());

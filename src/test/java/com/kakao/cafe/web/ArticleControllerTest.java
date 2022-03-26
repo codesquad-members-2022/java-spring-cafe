@@ -88,7 +88,7 @@ class ArticleControllerTest {
     @DisplayName("/qna/all로 get 요청시 /qna/list 호출해서 게시글 목록을 보여준다.")
     void showAll() throws Exception {
 
-        Article article = new Article(1,"작성자","제목","본문");
+        Article article = Article.newInstance(1,"작성자","제목","본문");
         List<ArticleResponseDto> articleResponseDtos = List.of(new ArticleResponseDto(article));
 
         given(articleService.findAll()).willReturn(articleResponseDtos);
@@ -103,7 +103,7 @@ class ArticleControllerTest {
     @Test
     @DisplayName("/qna/show/{id} get 요청시 해당 id를 가지고 있는 게시글을 /qna/show에서 보여준다.")
     void showArticle() throws Exception {
-        Article article = new Article(1,"작성자","제목","본문");
+        Article article = Article.newInstance(1,"작성자","제목","본문");
         ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
 
         given(articleService.findOne(anyInt())).willReturn(articleResponseDto);
@@ -121,7 +121,7 @@ class ArticleControllerTest {
         //given
         Integer articleId = 1;
         String writer = "ron2";
-        Article article = new Article(articleId, writer, "제목","본문");
+        Article article = Article.newInstance(articleId, writer, "제목","본문");
         given(articleService.findOne(any())).willReturn(new ArticleResponseDto(article));
 
         //when
@@ -140,7 +140,7 @@ class ArticleControllerTest {
     void updateFormTest() throws Exception {
         //given
         Integer articleId = 1;
-        Article article = new Article(articleId, "ron2", "제목","본문");
+        Article article = Article.newInstance(articleId, "ron2", "제목","본문");
         ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
         given(articleService.findOne(any())).willReturn(articleResponseDto);
 
