@@ -92,7 +92,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
         jdbcTemplate.update(sql, new MapSqlParameterSource().addValue(ARTICLE_ID_CAMEL, articleId));
     }
 
-    private RowMapper<Article> getArticleRowMapper(boolean count) {
+    private RowMapper<Article> getArticleRowMapper(boolean isCountIncluded) {
         return (rs, rowNum) ->
             new Article(
                 rs.getInt(ARTICLE_ID_SNAKE),
@@ -100,7 +100,7 @@ public class ArticleJdbcRepository implements ArticleRepository {
                 rs.getString(TITLE),
                 rs.getString(CONTENTS),
                 rs.getObject(CREATED_DATE, LocalDateTime.class),
-                count ? rs.getInt(REPLY_COUNT) : null
+                isCountIncluded ? rs.getInt(REPLY_COUNT) : null
             );
     }
 
