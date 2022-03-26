@@ -104,7 +104,7 @@ class JdbcTemplateArticleRepositoryTest {
     }
 
     @Test
-    @DisplayName("delte 시 해당 게시글을 삭제한다.")
+    @DisplayName("delete 시 해당 게시글을 삭제한다.")
     void deleteTest() {
 
         Article saved = jdbcTemplateArticleRepository.save(article);

@@ -55,7 +55,7 @@ public class ArticleController {
 
     @GetMapping("/show/{id}")
     public String showArticle(@PathVariable Integer id, Model model) {
-        logger.info("Search for articleId{} to show client", id);
+        logger.info("Search for articleId[{}] to show client", id);
 
         ArticleResponseDto result = articleService.findOne(id);
         model.addAttribute("article", result);
@@ -77,7 +77,7 @@ public class ArticleController {
         String sessionedUserId = sessionedUser.getUserId();
         checkDeletable(id, sessionedUserId);
         articleService.deleteOne(id, sessionedUserId);
-        logger.info("[{}] delete qna{}", sessionedUserId, id);
+        logger.info("[{}] delete qna[{}]", sessionedUserId, id);
 
         return "redirect:/qna/all";
     }
@@ -85,7 +85,7 @@ public class ArticleController {
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Integer id, HttpSession httpSession, Model model) {
         SessionUser sessionedUser = SessionUser.from(httpSession);
-        logger.info("[{}] request updateForm qna{}", sessionedUser.getUserId(), id);
+        logger.info("[{}] request updateForm qna[{}]", sessionedUser.getUserId(), id);
 
         ArticleResponseDto result = articleService.findOne(id);
         checkAccessPermission(result, sessionedUser);

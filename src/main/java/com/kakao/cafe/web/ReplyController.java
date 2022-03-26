@@ -29,7 +29,7 @@ public class ReplyController {
         String sessionedUserId = sessionedUser.getUserId();
         logger.info("[{}] write reply[{}] in [article{}]", sessionedUserId, contents, articleId);
 
-        ReplyResponseDto replyResponseDto = replyService.write(articleId, sessionedUserId, contents);
+        replyService.write(articleId, sessionedUserId, contents);
 
         return "redirect:/qna/show/" + articleId;
     }
