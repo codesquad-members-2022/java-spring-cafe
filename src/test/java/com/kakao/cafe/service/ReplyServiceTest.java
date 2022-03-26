@@ -3,9 +3,7 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.reply.ReplyRepository;
 import com.kakao.cafe.exception.ClientException;
-import com.kakao.cafe.web.dto.ReplyDto;
 import com.kakao.cafe.web.dto.ReplyResponseDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -32,14 +29,12 @@ class ReplyServiceTest {
     @Mock
     private ReplyRepository replyRepository;
 
-    private ReplyDto replyDto;
     private String writer;
     private Reply reply;
 
     @BeforeEach
     void setUp() {
         writer = "writer";
-        replyDto = new ReplyDto(1, "contents");
         reply = Reply.of(1, 1, writer, "contents", LocalDateTime.now());
     }
 
@@ -50,7 +45,7 @@ class ReplyServiceTest {
         given(replyRepository.save(any())).willReturn(reply);
 
         //when
-        ReplyResponseDto replyResponseDto = replyService.write(writer, replyDto);
+        ReplyResponseDto replyResponseDto = replyService.write(1, writer, "contents");
 
         //then
         assertThat(replyResponseDto.getId()).isEqualTo(reply.getId());

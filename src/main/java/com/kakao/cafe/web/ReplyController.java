@@ -1,7 +1,6 @@
 package com.kakao.cafe.web;
 
 import com.kakao.cafe.service.ReplyService;
-import com.kakao.cafe.web.dto.ReplyDto;
 import com.kakao.cafe.web.dto.ReplyResponseDto;
 import com.kakao.cafe.web.dto.ReplyUpdateDto;
 import com.kakao.cafe.web.dto.SessionUser;
@@ -25,14 +24,14 @@ public class ReplyController {
     }
 
     @PostMapping("/write")
-    public String write(ReplyDto replyDto, HttpSession httpSession) {
+    public String write(@PathVariable Integer articleId, String contents, HttpSession httpSession) {
         SessionUser sessionedUser = SessionUser.from(httpSession);
         String sessionedUserId = sessionedUser.getUserId();
-        logger.info("[{}] write reply[{}] in [article{}]", sessionedUserId, replyDto.getContents(), replyDto.getArticleId());
+        logger.info("[{}] write reply[{}] in [article{}]", sessionedUserId, contents, articleId);
 
-        ReplyResponseDto replyResponseDto = replyService.write(sessionedUserId, replyDto);
+        ReplyResponseDto replyResponseDto = replyService.write(articleId, sessionedUserId, contents);
 
-        return "redirect:/qna/show/" + replyResponseDto.getArticleId();
+        return "redirect:/qna/show/" + articleId;
     }
 
     @DeleteMapping("/{id}/delete")

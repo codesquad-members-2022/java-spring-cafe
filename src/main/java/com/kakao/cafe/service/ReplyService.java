@@ -3,7 +3,6 @@ package com.kakao.cafe.service;
 import com.kakao.cafe.domain.reply.Reply;
 import com.kakao.cafe.domain.reply.ReplyRepository;
 import com.kakao.cafe.exception.ClientException;
-import com.kakao.cafe.web.dto.ReplyDto;
 import com.kakao.cafe.web.dto.ReplyResponseDto;
 import com.kakao.cafe.web.dto.ReplyUpdateDto;
 import org.springframework.http.HttpStatus;
@@ -21,8 +20,8 @@ public class ReplyService {
         this.replyRepository = replyRepository;
     }
 
-    public ReplyResponseDto write(String writer, ReplyDto replyDto) {
-        Reply reply = replyRepository.save(replyDto.toEntityWithWriter(writer));
+    public ReplyResponseDto write(Integer articleId, String writer, String contents) {
+        Reply reply = replyRepository.save(Reply.newInstance(articleId, writer, contents));
         return ReplyResponseDto.from(reply);
     }
 
