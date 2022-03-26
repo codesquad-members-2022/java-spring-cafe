@@ -57,8 +57,8 @@ public class ReplyControllerTest {
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        article = new Article("writer", "title", "contents");
-        user = new User("writer", "userPassword", "userName", "user@example.com");
+        article = Article.createWithInput("writer", "title", "contents");
+        user = User.createWithInput("writer", "userPassword", "userName", "user@example.com");
 
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
@@ -98,7 +98,7 @@ public class ReplyControllerTest {
         Article savedArticle = replySetUp.saveArticle(article);
         User savedUser = replySetUp.saveUser(user);
         Reply savedReply = replySetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -134,7 +134,7 @@ public class ReplyControllerTest {
         Article savedArticle = replySetUp.saveArticle(article);
         User savedUser = replySetUp.saveUser(user);
         Reply savedReply = replySetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
 
         session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 
