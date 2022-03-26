@@ -50,12 +50,12 @@ public class ArticleResponseDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ArticleResponseDto that = (ArticleResponseDto) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getWriter(), that.getWriter()) && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContents(), that.getContents()) && Objects.equals(getWrittenTime(), that.getWrittenTime());
+        return getId().equals(that.getId()) && getWriter().equals(that.getWriter()) && getTitle().equals(that.getTitle()) && getContents().equals(that.getContents()) && getWrittenTime().equals(that.getWrittenTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, writer, title, contents, writtenTime);
+        return Objects.hash(getId(), getWriter(), getTitle(), getContents(), getWrittenTime());
     }
 
     @Override

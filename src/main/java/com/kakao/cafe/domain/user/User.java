@@ -47,7 +47,7 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getUserId(), user.getUserId()) && Objects.equals(getPassword(), user.getPassword());
+        return getUserId().equals(user.getUserId()) && getPassword().equals(user.getPassword());
     }
 
     @Override

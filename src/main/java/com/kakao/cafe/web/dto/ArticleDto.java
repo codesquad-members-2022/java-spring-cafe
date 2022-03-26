@@ -26,24 +26,7 @@ public class ArticleDto {
     }
 
     public Article toEntityWithWriter(String writer) {
-        return new Article(null, writer, this.title, this.contents);
-    }
-
-    public Article toUpdateEntity(Integer articleId, String writer) {
-        return new Article(articleId, writer, this.title, this.contents);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ArticleDto that = (ArticleDto) o;
-        return Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getContents(), that.getContents());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getTitle(), getContents());
+        return Article.newInstance(null, writer, this.title, this.contents);
     }
 
     @Override

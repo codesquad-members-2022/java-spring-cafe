@@ -37,7 +37,7 @@ class ArticleServiceTest {
 
     @BeforeEach
     void setUp() {
-        article = new Article(1, "writer", "title", "contents", LocalDateTime.of(2022,03,11,11,25));
+        article = Article.of(1, "writer", "title", "contents", LocalDateTime.of(2022,03,11,11,25));
     }
 
     @Test
@@ -84,7 +84,7 @@ class ArticleServiceTest {
     }
 
     @Test
-    @DisplayName("모든 게시글을 조회하면 ArticleDto로 변환해서 반환한다.")
+    @DisplayName("모든 게시글을 조회하면 ArticleResponseDto로 변환해서 반환한다.")
     void findAllTest() {
 
         given(articleRepository.findAll()).willReturn(List.of(article));

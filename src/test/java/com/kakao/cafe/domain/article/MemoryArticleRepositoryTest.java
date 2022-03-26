@@ -19,7 +19,7 @@ class MemoryArticleRepositoryTest {
     @BeforeEach
     void setUp() {
         articleRepository = new MemoryArticleRepository();
-        article = new Article(null,"작성자", "제목", "본문");
+        article = Article.newInstance(null,"작성자", "제목", "본문");
     }
 
     @AfterEach

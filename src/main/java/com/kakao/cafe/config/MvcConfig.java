@@ -12,8 +12,11 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .order(1)
-                .addPathPatterns("/users/{id}", "/users/{id}/update",
-                        "/qna/write-qna", "/qna/show/{id}",
-                        "qna/update/{id}", "qna/delete/{id}" );
+                .addPathPatterns("/users/{id}", "/users/{id}/update")
+                .addPathPatterns("/qna/write-qna", "/qna/show/{id}")
+                .addPathPatterns("qna/update/{id}", "qna/delete/{id}")
+                .addPathPatterns("/qna/{articleId}/reply/write", "/qna/{articleId}/reply/{id}/delete");
+
+
     }
 }

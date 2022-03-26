@@ -4,6 +4,7 @@ import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.domain.user.UserRepository;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.LoginDto;
+import com.kakao.cafe.web.dto.SessionUser;
 import com.kakao.cafe.web.dto.UserDto;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,10 @@ public class UserService {
         return user;
     }
 
-    public Optional<UserResponseDto> login(LoginDto loginDto) {
+    public Optional<SessionUser> login(LoginDto loginDto) {
         return userRepository.findById(loginDto.getUserId())
                 .filter(user -> user.isSamePassword(loginDto.getPassword()))
-                .map(UserResponseDto::new);
+                .map(SessionUser::from);
     }
 
     public void logout(HttpSession httpSession) {

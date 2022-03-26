@@ -5,6 +5,7 @@ import com.kakao.cafe.domain.article.ArticleRepository;
 import com.kakao.cafe.exception.ClientException;
 import com.kakao.cafe.web.dto.ArticleDto;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
+import com.kakao.cafe.web.dto.ArticleUpdateDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -42,13 +43,12 @@ public class ArticleService {
 
     public boolean deleteOne(Integer articleId, String writer) {
         checkAuthorized(articleId, writer);
-        boolean deleted = articleRepository.deleteOne(articleId);
-        return deleted;
+        return articleRepository.deleteOne(articleId);
     }
 
-    public Article updateOne(String userId, Integer articleId, ArticleDto articleDto) {
-        checkAuthorized(articleId, userId);
-        return articleRepository.save(articleDto.toUpdateEntity(articleId, userId));
+    public Article updateOne(String userId,  ArticleUpdateDto articleUpdateDto) {
+        checkAuthorized(articleUpdateDto.getId(), userId);
+        return articleRepository.save(articleUpdateDto.toEntityWithWriter(userId));
     }
 
     private void checkAuthorized(Integer articleId, String writer) {

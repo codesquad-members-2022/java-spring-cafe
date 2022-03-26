@@ -62,15 +62,11 @@ public class JdbcTemplateArticleRepository implements ArticleRepository {
     @Override
     public boolean deleteOne(Integer id) {
         String sql = "delete from cafe_article where id = :id";
-        int result = jdbcTemplate.update(sql, new MapSqlParameterSource("id", id));
-        if(result == 1) {
-            return true;
-        }
-        return false;
+        return jdbcTemplate.update(sql, new MapSqlParameterSource("id", id)) == 1;
     }
 
     private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(rs.getInt("id"),
+        return (rs, rowNum) -> Article.of(rs.getInt("id"),
                     rs.getString("writer"),
                     rs.getString("title"),
                     rs.getString("contents"),
