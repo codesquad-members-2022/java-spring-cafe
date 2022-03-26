@@ -1,6 +1,6 @@
 -- DDL
 
-DROP TABLE IF EXISTS article;
+DROP TABLE IF EXISTS article CASCADE;
 
 CREATE TABLE article
 (
@@ -22,4 +22,17 @@ CREATE TABLE user_info
     name     VARCHAR(32) NOT NULL,
     email    VARCHAR(32),
     PRIMARY KEY (user_id)
-)
+);
+
+DROP TABLE IF EXISTS reply;
+
+CREATE TABLE reply
+(
+    id                INT         NOT NULL AUTO_INCREMENT,
+    parent_article_id INT         NOT NULL,
+    user_id           VARCHAR(32) NOT NULL,
+    contents          CLOB,
+    local_date_time   TIMESTAMP,
+    PRIMARY KEY (id),
+    CONSTRAINT reply_pk FOREIGN KEY (parent_article_id) REFERENCES article (id) ON DELETE CASCADE
+);

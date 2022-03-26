@@ -24,6 +24,7 @@ DELETE_USER: >
 SAVE_ARTICLE: >
   INSERT INTO article (user_id, title, contents, local_date_time) 
   VALUES (?, ?, ?, ?)
+
 SELECT_ARTICLE: >
   SELECT id, user_id, title, contents, local_date_time 
   FROM article 
@@ -39,4 +40,23 @@ UPDATE_ARTICLES: >
 
 DELETE_ARTICLE: >
   DELETE FROM article 
+  WHERE id = (?)
+
+# reply
+SAVE_REPLY: >
+  INSERT INTO reply (parent_article_id, user_id, contents, local_date_time)
+  VALUES (?, ?, ?, ?)
+
+SELECT_REPLY: >
+  SELECT id, parent_article_id, user_id, contents, local_date_time
+  FROM reply
+  WHERE id = (?)
+
+SELECT_REPLYS: >
+  SELECT id, parent_article_id, user_id, contents, local_date_time
+  FROM reply
+  WHERE parent_article_id = (?)
+
+DELETE_REPLY: >
+  DELETE FROM reply 
   WHERE id = (?)

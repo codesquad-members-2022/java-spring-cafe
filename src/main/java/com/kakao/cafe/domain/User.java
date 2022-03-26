@@ -71,6 +71,10 @@ public class User {
         return this.userId.equals(article.getUserId());
     }
 
+    public boolean isOwnReply(Reply reply) {
+        return this.userId.equals(reply.getUserId());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,4 +98,5 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
 }

@@ -2,6 +2,22 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+## Step06 ToDO-List
+
+- [x] Reply Class 만들기
+- [x] Reply JDBC 로 연결
+- [x] 답변 달기 기능 추가 (로그인 한 사용자만)
+- [x] 답변 목록 보여주기
+- [x] 자신이 쓴 댓글 삭제 가능 (히든필드 delete 매핑 이용)
+  추가 요구사항은 미 반영
+
+## Step05 리뷰 내용 수정 사항
+
+- [x] Save, Delete 시 Long 값을 반환하게 했던 이유 고민해보기
+- [x] SESSIONED_USER 는 상수로 관리하기
+- [x] sessioned_user 변수명 camelCase 로 변경 (변경을 좀 하자면요ㅠ,ㅠ 인텔리제이 자동완성...)
+- [ ] PUT 방식으로 변경해 보기
+
 ## Step05 ToDO-List
 
 - [x] 로그인을 하도록 interceptor 구현, 등록하기
@@ -12,7 +28,6 @@
 - [x] 예외를 처리하는 ControllerAdvice 추가
 
 ## Step04 리뷰 내용 수정 사항
-
 - [x] DbTemplate null 검증부분 고치기
 - [x] login메서드 하나만 public으로 만들기 -> Dto받는 메서드만 public으로
 - [x] UserController에 에러코드 400으로 수정
@@ -20,7 +35,6 @@
 - [x] UserControllerTest given절 다시 생각해보기
 
 ## Step04 ToDo-List
-
 - [x] LoginServce 만들기
   - [x] 아이디로 찾아온 User의 password가 사용자가 넘긴 password와 동일하다면 user 반환
   - [x] 동일하지 않다면 null 반환하기
