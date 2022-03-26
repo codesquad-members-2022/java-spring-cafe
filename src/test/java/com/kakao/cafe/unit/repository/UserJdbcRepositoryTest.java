@@ -40,7 +40,7 @@ public class UserJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "userPassword", "userName", "user@example.com");
+        user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
 
         given(queryProps.get(any()))
             .willReturn("");
@@ -71,7 +71,8 @@ public class UserJdbcRepositoryTest {
     @DisplayName("변경된 유저 객체를 저장한다")
     public void saveMergeTest() {
         // given
-        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
+        User changedUser = User.createWithInput("userId", "userPassword", "otherName",
+            "other@example.com");
 
         given(jdbcTemplate.queryForObject(any(String.class),
             any(BeanPropertySqlParameterSource.class), eq(Integer.class)))

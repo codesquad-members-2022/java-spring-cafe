@@ -42,7 +42,7 @@ public class ArticleJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "contents");
+        article = Article.createWithInput("writer", "title", "contents");
 
     }
 
@@ -106,8 +106,8 @@ public class ArticleJdbcRepositoryTest {
         // given
         articleRepository.save(article);
 
-        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents",
-            LocalDateTime.now());
+        Article changedArticle = Article.createWithoutReplyCount(1, "writer", "otherTitle",
+            "otherContents", LocalDateTime.now());
 
         articleRepository.save(changedArticle);
 

@@ -67,10 +67,10 @@ public class ArticleControllerTest {
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        article = new Article("writer", "title", "contents");
-        user = new User("writer", "userPassword", "userName", "user@example.com");
+        article = Article.createWithInput("writer", "title", "contents");
+        user = User.createWithInput("writer", "userPassword", "userName", "user@example.com");
 
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+        articleResponse = ArticleResponse.createWithArticle(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
@@ -107,7 +107,8 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하고 업로드한다")
     public void createTest() throws Exception {
         // given
-        articleSetUp.saveUser(new User("writer", "userPassword", "userName", "user@example.com"));
+        articleSetUp.saveUser(
+            User.createWithInput("writer", "userPassword", "userName", "user@example.com"));
 
         // when
         ResultActions actions = mockMvc.perform(post("/articles")
@@ -332,7 +333,8 @@ public class ArticleControllerTest {
         User savedUser = articleSetUp.saveUser(user);
         Article savedArticle = articleSetUp.saveArticle(article);
         Reply savedReply = articleSetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(),
+                "comment"));
 
         // when
         ResultActions actions = mockMvc.perform(delete("/articles/" + savedArticle.getArticleId())
@@ -350,14 +352,17 @@ public class ArticleControllerTest {
         // given
         User savedUser = articleSetUp.saveUser(user);
         User savedOther = articleSetUp.saveUser(
-            new User("otherId", "otherPassword", "otherName", "other@exasmple.com"));
+            User.createWithInput("otherId", "otherPassword", "otherName",
+                "other@exasmple.com"));
 
         Article savedArticle = articleSetUp.saveArticle(article);
 
         Reply userReply = articleSetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "userComment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(),
+                "userComment"));
         Reply otherReply = articleSetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedOther.getUserId(), "otherComment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedOther.getUserId(),
+                "otherComment"));
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -399,7 +404,8 @@ public class ArticleControllerTest {
         Article savedArticle = articleSetUp.saveArticle(article);
         User savedUser = articleSetUp.saveUser(user);
         Reply savedReply = articleSetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(),
+                "comment"));
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -435,7 +441,8 @@ public class ArticleControllerTest {
         Article savedArticle = articleSetUp.saveArticle(this.article);
         User savedUser = articleSetUp.saveUser(this.user);
         Reply savedReply = articleSetUp.saveReply(
-            new Reply(savedArticle.getArticleId(), savedUser.getUserId(), "comment"));
+            Reply.createWithInput(savedArticle.getArticleId(), savedUser.getUserId(),
+                "comment"));
 
         session.setAttribute(SessionUser.SESSION_KEY, sessionOther);
 

@@ -10,8 +10,8 @@ public class Reply {
     private String comment;
     private LocalDateTime createdDate;
 
-    public Reply(Integer articleId, String userId, String comment) {
-        this(null, articleId, userId, comment, LocalDateTime.now());
+    public static Reply createWithInput(Integer articleId, String userId, String comment) {
+        return new Reply(null, articleId, userId, comment, LocalDateTime.now());
     }
 
     public Reply(Integer replyId, Integer articleId, String userId, String comment,

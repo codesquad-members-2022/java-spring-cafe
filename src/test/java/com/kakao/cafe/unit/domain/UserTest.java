@@ -13,7 +13,7 @@ public class UserTest {
     @DisplayName("유저 아이디와 비밀번호가 일치하면 유저 객체의 속성을 변경한다")
     public void updateUserTest() {
         // given
-        User user = new User("userId", "userPassword", "userName", "user@example.com");
+        User user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
 
         // when
         User updatedUser = user.update("otherName", "other@example.com");

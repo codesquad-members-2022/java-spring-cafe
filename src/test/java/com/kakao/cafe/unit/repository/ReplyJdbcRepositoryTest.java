@@ -55,7 +55,7 @@ public class ReplyJdbcRepositoryTest {
     @DisplayName("댓글 객체를 저장소에 저장한다")
     public void savePersistTest() {
         // given
-        reply = new Reply(1, "userId", "comment");
+        reply = Reply.createWithInput(1, "userId", "comment");
 
         given(keyHolderFactory.newKeyHolder())
             .willReturn(new GeneratedKeyHolder(List.of(Map.of("reply_id", 1))));

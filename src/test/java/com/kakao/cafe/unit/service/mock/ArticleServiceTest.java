@@ -49,10 +49,11 @@ public class ArticleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+        article = Article.createWithoutReplyCount(1, "writer", "title", "contents",
+            LocalDateTime.now());
         reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
 
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+        articleResponse = ArticleResponse.createWithArticle(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
@@ -203,7 +204,7 @@ public class ArticleServiceTest {
     @Test
     @DisplayName("유저 정보, 질문 변경 사항과 질문 id 로 유저의 질문을 업데이트한다")
     public void updateArticleTest() {
-        Article result = new Article(1, "writer", "otherTitle", "otherContents",
+        Article result = Article.createWithoutReplyCount(1, "writer", "otherTitle", "otherContents",
             LocalDateTime.now());
 
         // given

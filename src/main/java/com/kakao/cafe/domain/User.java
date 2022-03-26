@@ -12,8 +12,9 @@ public class User {
     private String name;
     private String email;
 
-    public User(String userId, String password, String name, String email) {
-        this(null, userId, password, name, email);
+    public static User createWithInput(String userId, String password, String name,
+        String email) {
+        return new User(null, userId, password, name, email);
     }
 
     public User(Integer userNum, String userId, String password, String name, String email) {

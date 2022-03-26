@@ -35,6 +35,9 @@ public class ReplyJdbcRepositoryTest {
     private final ArticleJdbcRepository articleRepository;
     private final ReplyJdbcRepository replyRepository;
     private final UserJdbcRepository userRepository;
+    private Article article;
+    private Reply reply;
+    private User user;
 
     @Autowired
     public ReplyJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
@@ -45,17 +48,13 @@ public class ReplyJdbcRepositoryTest {
         this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
     }
 
-    private Article article;
-    private Reply reply;
-    private User user;
-
     @BeforeEach
     public void setUp() {
         user = userRepository.save(
-            new User("userId", "userPassword", "userName", "user@example.com"));
-        article = articleRepository.save(new Article("userId", "title", "contents"));
+            User.createWithInput("userId", "userPassword", "userName", "user@example.com"));
+        article = articleRepository.save(Article.createWithInput("userId", "title", "contents"));
 
-        reply = new Reply(article.getArticleId(), user.getUserId(), "comment");
+        reply = Reply.createWithInput(article.getArticleId(), user.getUserId(), "comment");
     }
 
     @Test

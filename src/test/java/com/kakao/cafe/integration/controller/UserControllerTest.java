@@ -53,7 +53,7 @@ public class UserControllerTest {
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        user = new User("userId", "userPassword", "userName", "user@example.com");
+        user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
         sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
@@ -207,7 +207,8 @@ public class UserControllerTest {
     @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserPasswordTest() throws Exception {
         // given
-        User other = new User("otherId", "userPassword", "otherName", "other@example.com");
+        User other = User.createWithInput("otherId", "userPassword", "otherName",
+            "other@example.com");
 
         userSetUp.saveUser(other);
 

@@ -47,7 +47,8 @@ public class ArticleJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+        article = Article.createWithoutReplyCount(1, "writer", "title", "contents",
+            LocalDateTime.now());
 
         given(queryProps.get(any()))
             .willReturn("");
@@ -57,7 +58,7 @@ public class ArticleJdbcRepositoryTest {
     @DisplayName("질문 객체를 저장소에 저장한다")
     public void savePersistTest() {
         // given
-        article = new Article("writer", "title", "contents");
+        article = Article.createWithInput("writer", "title", "contents");
 
         given(keyHolderFactory.newKeyHolder())
             .willReturn(new GeneratedKeyHolder(List.of(Map.of("article_id", 1))));

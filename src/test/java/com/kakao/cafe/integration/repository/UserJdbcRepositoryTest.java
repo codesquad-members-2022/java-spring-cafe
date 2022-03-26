@@ -37,7 +37,7 @@ public class UserJdbcRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "userPassword", "userName", "user@example.com");
+        user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
     }
 
     @Test
@@ -65,7 +65,8 @@ public class UserJdbcRepositoryTest {
         // given
         userRepository.save(user);
 
-        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
+        User changedUser = User.createWithInput("userId", "userPassword", "otherName",
+            "other@example.com");
 
         User updatedUser = userRepository.save(changedUser);
 

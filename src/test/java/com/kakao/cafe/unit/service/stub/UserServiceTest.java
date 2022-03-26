@@ -25,7 +25,7 @@ public class UserServiceTest {
 
     private static class UserStubRepository implements UserRepository {
 
-        private final User user = new User("userId", "userPassword", "userName",
+        private final User user = User.createWithInput("userId", "userPassword", "userName",
             "user@example.com");
 
         @Override

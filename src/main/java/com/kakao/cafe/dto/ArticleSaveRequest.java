@@ -15,11 +15,15 @@ public class ArticleSaveRequest {
     }
 
     public Article toEntity() {
-        return new Article(writer, title, contents);
+        return Article.createWithInput(writer, title, contents);
     }
 
     public String getWriter() {
         return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 
     public String getTitle() {
@@ -28,10 +32,6 @@ public class ArticleSaveRequest {
 
     public String getContents() {
         return contents;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     @Override
