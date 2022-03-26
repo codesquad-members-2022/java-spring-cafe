@@ -327,7 +327,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("유저가 작성한 댓글만 달린 질문을 삭제하고 메인 페이지로 이동한다")
+    @DisplayName("유저가 작성한 댓글만 달린 질문을 삭제하면 메인 페이지로 이동된다")
     public void deleteArticleReplyUserOnlyTest() throws Exception {
         // given
         User savedUser = articleSetUp.saveUser(user);
@@ -347,7 +347,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("다른 유저가 작성한 댓글이 달린 질문을 삭제할 경우 에러 페이지로 이동한다")
+    @DisplayName("다른 유저가 작성한 댓글이 달린 질문을 삭제하면 에러 페이지로 이동된다")
     public void deleteArticleReplyOtherTest() throws Exception {
         // given
         User savedUser = articleSetUp.saveUser(user);
@@ -379,7 +379,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("댓글을 작성하고 저장한 후 메인 페이지로 이동한다")
+    @DisplayName("댓글을 작성하고 저장하면 메인 페이지로 이동된다")
     public void createAnswerTest() throws Exception {
         // given
         articleSetUp.saveArticle(article);
@@ -398,7 +398,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제한 후 메인 페이지로 이동한다")
+    @DisplayName("세션 정보와 댓글 id 로 댓글을 삭제하면 메인 페이지로 이동된다")
     public void deleteAnswerTest() throws Exception {
         // given
         Article savedArticle = articleSetUp.saveArticle(article);
@@ -419,7 +419,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("세션 정보와 존재하지 않는 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    @DisplayName("세션 정보와 존재하지 않는 댓글 id 로 댓글을 삭제하면 에러 페이지로 이동된다")
     public void deleteAnswerNotFoundTest() throws Exception {
         // when
         ResultActions actions = mockMvc.perform(
@@ -435,7 +435,7 @@ public class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 댓글 id 로 댓글을 삭제할 경우 에러 페이지로 이동한다")
+    @DisplayName("세션 정보와 일치하지 않는 유저가 작성한 댓글 id 로 댓글을 삭제하면 에러 페이지로 이동된다")
     public void deleteAnswerValidateTest() throws Exception {
         // given
         Article savedArticle = articleSetUp.saveArticle(this.article);
