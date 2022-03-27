@@ -1,12 +1,12 @@
 package com.kakao.cafe.repository.article;
 
 import com.kakao.cafe.domain.Article;
-import com.kakao.cafe.repository.CafeRepository;
+import com.kakao.cafe.repository.Repository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -14,8 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
-public class JdbcArticleRepository implements CafeRepository<Article, Integer> {
+@Primary
+@org.springframework.stereotype.Repository
+public class JdbcArticleRepository implements Repository<Article, Integer> {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,13 +39,13 @@ public class JdbcArticleRepository implements CafeRepository<Article, Integer> {
 
     @Override
     public Optional<Article> findByName(Integer id) {
-        List<Article> result = jdbcTemplate.query("select * from article where id = ?", articleRowMapper(), id);
+        List<Article> result = jdbcTemplate.query("select title, text from article where id = ?", articleRowMapper(), id);
         return result.stream().findAny();
     }
 
     @Override
     public List<Article> findAll() {
-        return jdbcTemplate.query("select * from article", articleRowMapper());
+        return jdbcTemplate.query("select title, text from article", articleRowMapper());
     }
 
     private RowMapper<Article> articleRowMapper() {

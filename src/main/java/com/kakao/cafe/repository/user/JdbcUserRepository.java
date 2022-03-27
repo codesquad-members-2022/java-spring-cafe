@@ -1,11 +1,11 @@
 package com.kakao.cafe.repository.user;
 
 import com.kakao.cafe.domain.User;
-import com.kakao.cafe.repository.CafeRepository;
+import com.kakao.cafe.repository.Repository;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Repository
-public class JdbcUserRepository implements CafeRepository<User, String> {
+@Primary
+@org.springframework.stereotype.Repository
+public class JdbcUserRepository implements Repository<User, String> {
 
     private final JdbcTemplate jdbcTemplate;
 
