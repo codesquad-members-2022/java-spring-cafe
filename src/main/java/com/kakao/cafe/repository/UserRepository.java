@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface UserRepository {
     User findByUserId(String userId);
+    User findById(Long id);
     List<User> findAll();
     User save(User user);
     void update(String userId, User updateParam);
