@@ -30,7 +30,7 @@ public class LoginController {
     @GetMapping("/login")
     public String getLoginForm(@ModelAttribute("form") LoginDto form) {
         log.info("get login form");
-        return "/user/login";
+        return "user/login";
     }
 
     @PostMapping("/login")
@@ -42,7 +42,7 @@ public class LoginController {
         if (bindingResult.hasErrors()) {
             log.info("doLogin form error: {}", bindingResult.getAllErrors());
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "/user/login";
+            return "user/login";
         }
 
         User findUser = loginService.login(form);
@@ -51,7 +51,7 @@ public class LoginController {
             log.info("doLogin login error: {}", findUser);
             bindingResult.reject("notfound", "아이디 또는 비밀번호를 다시한번 확인해 주십시오.");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return "/user/login";
+            return "user/login";
         }
 
         // 세션이 필요한 시점에 생성하도록 배치

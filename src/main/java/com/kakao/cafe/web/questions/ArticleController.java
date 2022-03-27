@@ -35,14 +35,14 @@ public class ArticleController {
     public String requestForm(Model model) {
         log.info("create form 접근");
         model.addAttribute("article", new ArticleDto());
-        return "/qna/form";
+        return "qna/form";
     }
 
     @PostMapping
     public String saveForm(@Validated @ModelAttribute("article") ArticleDto dto, BindingResult bindingResult, HttpSession session) {
         if (bindingResult.hasErrors()) {
             log.info("saveForm Validation had Errors");
-            return "/qna/form";
+            return "qna/form";
         }
 
         User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
@@ -59,7 +59,7 @@ public class ArticleController {
         model.addAttribute("article", findArticle);
         model.addAttribute("replies", replies);
         log.info("get article title = {}, {}", findArticle.getTitle(), findArticle.getContents());
-        return "/qna/show";
+        return "qna/show";
     }
 
     @PostMapping("/{index}/delete")
@@ -76,7 +76,7 @@ public class ArticleController {
         log.info("get profile update form");
         User sessionedUser = (User) session.getAttribute(SessionConst.SESSIONED_USER);
         model.addAttribute("article", articleService.findArticleDtoById(index, sessionedUser));
-        return "/qna/updateForm";
+        return "qna/updateForm";
     }
 
     @PostMapping("/{index}/update")
