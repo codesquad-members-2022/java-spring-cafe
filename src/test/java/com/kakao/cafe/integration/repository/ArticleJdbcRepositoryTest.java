@@ -20,16 +20,19 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql("classpath:/schema.sql")
+@ActiveProfiles(profiles = "local")
+@Sql("classpath:/schema-h2.sql")
 @Import({GeneratedKeyHolderFactory.class, QueryProps.class})
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("ArticleJdbcRepository JDBC 통합 테스트")
 public class ArticleJdbcRepositoryTest {
 
     private final ArticleJdbcRepository articleRepository;
+    private Article article;
 
     @Autowired
     public ArticleJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
@@ -38,11 +41,9 @@ public class ArticleJdbcRepositoryTest {
             queryProps);
     }
 
-    private Article article;
-
     @BeforeEach
     public void setUp() {
-        article = new Article("writer", "title", "contents");
+        article = Article.createWithInput("writer", "title", "contents");
 
     }
 
@@ -106,8 +107,8 @@ public class ArticleJdbcRepositoryTest {
         // given
         articleRepository.save(article);
 
-        Article changedArticle = new Article(1, "writer", "otherTitle", "otherContents",
-            LocalDateTime.now());
+        Article changedArticle = Article.createWithoutReplyCount(1, "writer", "otherTitle",
+            "otherContents", LocalDateTime.now());
 
         articleRepository.save(changedArticle);
 

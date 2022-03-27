@@ -23,10 +23,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql("classpath:/schema.sql")
+@ActiveProfiles(profiles = "local")
+@Sql("classpath:/schema-h2.sql")
 @Import({GeneratedKeyHolderFactory.class, QueryProps.class})
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("ReplyJdbcRepository JDBC 통합 테스트")
@@ -35,6 +37,9 @@ public class ReplyJdbcRepositoryTest {
     private final ArticleJdbcRepository articleRepository;
     private final ReplyJdbcRepository replyRepository;
     private final UserJdbcRepository userRepository;
+    private Article article;
+    private Reply reply;
+    private User user;
 
     @Autowired
     public ReplyJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate,
@@ -45,17 +50,13 @@ public class ReplyJdbcRepositoryTest {
         this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
     }
 
-    private Article article;
-    private Reply reply;
-    private User user;
-
     @BeforeEach
     public void setUp() {
         user = userRepository.save(
-            new User("userId", "userPassword", "userName", "user@example.com"));
-        article = articleRepository.save(new Article("userId", "title", "contents"));
+            User.createWithInput("userId", "userPassword", "userName", "user@example.com"));
+        article = articleRepository.save(Article.createWithInput("userId", "title", "contents"));
 
-        reply = new Reply(article.getArticleId(), user.getUserId(), "comment");
+        reply = Reply.createWithInput(article.getArticleId(), user.getUserId(), "comment");
     }
 
     @Test

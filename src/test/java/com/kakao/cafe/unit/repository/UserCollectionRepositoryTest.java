@@ -23,7 +23,7 @@ class UserCollectionRepositoryTest {
     @BeforeEach
     public void setUp() {
         user = userRepository.save(
-            new User("userId", "userPassword", "userName", "user@example.com"));
+            User.createWithInput("userId", "userPassword", "userName", "user@example.com"));
     }
 
     @Test

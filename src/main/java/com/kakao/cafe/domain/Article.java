@@ -14,13 +14,13 @@ public class Article {
     // derived
     private Integer replyCount;
 
-    public Article(String writer, String title, String contents) {
-        this(null, writer, title, contents, LocalDateTime.now());
+    public static Article createWithInput(String writer, String title, String contents) {
+        return new Article(null, writer, title, contents, LocalDateTime.now(), null);
     }
 
-    public Article(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate) {
-        this(articleId, writer, title, contents, createdDate, null);
+    public static Article createWithoutReplyCount(Integer articleId, String writer, String title,
+        String contents, LocalDateTime createdDate) {
+        return new Article(articleId, writer, title, contents, createdDate, null);
     }
 
     public Article(Integer articleId, String writer, String title, String contents,
@@ -35,6 +35,10 @@ public class Article {
 
     public Integer getArticleId() {
         return articleId;
+    }
+
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
     }
 
     public String getWriter() {
@@ -53,16 +57,12 @@ public class Article {
         return createdDate;
     }
 
-    public Integer getReplyCount() {
-        return replyCount;
-    }
-
-    public void setArticleId(Integer articleId) {
-        this.articleId = articleId;
-    }
-
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Integer getReplyCount() {
+        return replyCount;
     }
 
     public boolean equalsId(Integer articleId) {

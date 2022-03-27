@@ -10,8 +10,8 @@ public class Reply {
     private String comment;
     private LocalDateTime createdDate;
 
-    public Reply(Integer articleId, String userId, String comment) {
-        this(null, articleId, userId, comment, LocalDateTime.now());
+    public static Reply createWithInput(Integer articleId, String userId, String comment) {
+        return new Reply(null, articleId, userId, comment, LocalDateTime.now());
     }
 
     public Reply(Integer replyId, Integer articleId, String userId, String comment,
@@ -25,6 +25,10 @@ public class Reply {
 
     public Integer getReplyId() {
         return replyId;
+    }
+
+    public void setReplyId(Integer replyId) {
+        this.replyId = replyId;
     }
 
     public Integer getArticleId() {
@@ -41,10 +45,6 @@ public class Reply {
 
     public LocalDateTime getCreatedDate() {
         return createdDate;
-    }
-
-    public void setReplyId(Integer replyId) {
-        this.replyId = replyId;
     }
 
     public void setCreatedDate(LocalDateTime createdDate) {

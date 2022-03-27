@@ -24,14 +24,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @SpringBootTest
+@ActiveProfiles(profiles = "local")
 @AutoConfigureMockMvc
-@Sql("classpath:/schema.sql")
+@Sql("classpath:/schema-h2.sql")
 @DisplayName("UserController 통합 테스트")
 public class UserControllerTest {
 
@@ -53,7 +55,7 @@ public class UserControllerTest {
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        user = new User("userId", "userPassword", "userName", "user@example.com");
+        user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
         userResponse = new UserResponse(1, "userId", "userPassword", "userName",
             "user@example.com");
         sessionUser = new SessionUser(1, "userId", "userPassword", "userName",
@@ -207,7 +209,8 @@ public class UserControllerTest {
     @DisplayName("유저 정보 업데이트 중 유저 아이디가 존재하지 않을 경우 에러 페이지를 출력한다")
     public void updateUserPasswordTest() throws Exception {
         // given
-        User other = new User("otherId", "userPassword", "otherName", "other@example.com");
+        User other = User.createWithInput("otherId", "userPassword", "otherName",
+            "other@example.com");
 
         userSetUp.saveUser(other);
 

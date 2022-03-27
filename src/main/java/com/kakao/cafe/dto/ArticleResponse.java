@@ -18,14 +18,9 @@ public class ArticleResponse {
     private List<ReplyResponse> replies;
     private Integer replyCount;
 
-    public ArticleResponse(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate) {
-        this(articleId, writer, title, contents, createdDate, 0);
-    }
-
-    public ArticleResponse(Integer articleId, String writer, String title, String contents,
-        LocalDateTime createdDate, Integer replyCount) {
-        this(articleId, writer, title, contents, createdDate, List.of(), replyCount);
+    public static ArticleResponse createWithArticle(Integer articleId, String writer,
+        String title, String contents, LocalDateTime createdDate) {
+        return new ArticleResponse(articleId, writer, title, contents, createdDate, List.of(), 0);
     }
 
     public ArticleResponse(Integer articleId, String writer, String title, String contents,
@@ -63,6 +58,7 @@ public class ArticleResponse {
             article.getTitle(),
             article.getContents(),
             article.getCreatedDate(),
+            List.of(),
             article.getReplyCount()
         );
     }

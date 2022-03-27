@@ -17,11 +17,15 @@ public class UserSaveRequest {
     }
 
     public User toEntity() {
-        return new User(userId, password, name, email);
+        return User.createWithInput(userId, password, name, email);
     }
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getPassword() {
@@ -34,10 +38,6 @@ public class UserSaveRequest {
 
     public String getEmail() {
         return email;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     @Override

@@ -49,10 +49,11 @@ public class ArticleServiceTest {
 
     @BeforeEach
     public void setUp() {
-        article = new Article(1, "writer", "title", "contents", LocalDateTime.now());
+        article = Article.createWithoutReplyCount(1, "writer", "title", "contents",
+            LocalDateTime.now());
         reply = new Reply(1, 1, "writer", "comment", LocalDateTime.now());
 
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+        articleResponse = ArticleResponse.createWithArticle(1, "writer", "title", "contents",
             LocalDateTime.now());
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
             "user@example.com");
@@ -76,29 +77,6 @@ public class ArticleServiceTest {
         // then
         then(savedArticle).isEqualTo(articleResponse);
     }
-
-    /*
-    유저 아이디가 존재하지 않는 경우는 불가능하므로 제거 필요
-
-    @Test
-    @DisplayName("질문을 작성할 때 유저아이디가 존재하지 않으면 예외 처리한다")
-    public void writeValidationTest() {
-        // given
-        ArticleSaveRequest request = new ArticleSaveRequest("writer", "title", "contents");
-
-        given(userRepository.findByUserId(any(String.class)))
-            .willThrow(new NotFoundException(ErrorCode.USER_NOT_FOUND));
-
-        // when
-        Throwable throwable = catchThrowable(() -> articleService.write(sessionUser, request));
-
-        // when
-        then(throwable)
-            .isInstanceOf(NotFoundException.class)
-            .hasMessage(ErrorCode.USER_NOT_FOUND.getMessage());
-    }
-
-     */
 
     @Test
     @DisplayName("저장소에 저장된 모든 질문을 조회한다")
@@ -203,7 +181,7 @@ public class ArticleServiceTest {
     @Test
     @DisplayName("유저 정보, 질문 변경 사항과 질문 id 로 유저의 질문을 업데이트한다")
     public void updateArticleTest() {
-        Article result = new Article(1, "writer", "otherTitle", "otherContents",
+        Article result = Article.createWithoutReplyCount(1, "writer", "otherTitle", "otherContents",
             LocalDateTime.now());
 
         // given

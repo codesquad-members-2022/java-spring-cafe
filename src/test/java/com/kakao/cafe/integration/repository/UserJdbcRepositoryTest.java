@@ -17,27 +17,28 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @JdbcTest
-@Sql("classpath:/schema.sql")
+@ActiveProfiles(profiles = "local")
+@Sql("classpath:/schema-h2.sql")
 @Import(QueryProps.class)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @DisplayName("UserJdbcRepository JDBC 통합 테스트")
 public class UserJdbcRepositoryTest {
 
     private final UserJdbcRepository userRepository;
+    User user;
 
     @Autowired
     public UserJdbcRepositoryTest(NamedParameterJdbcTemplate jdbcTemplate, QueryProps queryProps) {
         this.userRepository = new UserJdbcRepository(jdbcTemplate, queryProps);
     }
 
-    User user;
-
     @BeforeEach
     public void setUp() {
-        user = new User("userId", "userPassword", "userName", "user@example.com");
+        user = User.createWithInput("userId", "userPassword", "userName", "user@example.com");
     }
 
     @Test
@@ -65,7 +66,8 @@ public class UserJdbcRepositoryTest {
         // given
         userRepository.save(user);
 
-        User changedUser = new User("userId", "userPassword", "otherName", "other@example.com");
+        User changedUser = User.createWithInput("userId", "userPassword", "otherName",
+            "other@example.com");
 
         User updatedUser = userRepository.save(changedUser);
 

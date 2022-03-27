@@ -19,7 +19,7 @@ public class ReplyService {
 
     public ReplyResponse comment(SessionUser user, Integer articleId, String comment) {
         // 입력받은 인자를 모아 Reply 객체로 구성
-        Reply reply = new Reply(articleId, user.getUserId(), comment);
+        Reply reply = Reply.createWithInput(articleId, user.getUserId(), comment);
 
         // Reply 도메인 객체를 저장소에 저장
         Reply savedReply = replyRepository.save(reply);

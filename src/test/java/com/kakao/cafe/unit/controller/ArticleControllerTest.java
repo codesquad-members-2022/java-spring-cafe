@@ -13,12 +13,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.kakao.cafe.controller.ArticleController;
 import com.kakao.cafe.dto.ArticleResponse;
-import com.kakao.cafe.dto.ReplyResponse;
 import com.kakao.cafe.exception.ErrorCode;
 import com.kakao.cafe.exception.InvalidRequestException;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.service.ArticleService;
-import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.session.SessionUser;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,21 +45,15 @@ public class ArticleControllerTest {
     @MockBean
     private ArticleService articleService;
 
-    @MockBean
-    private ReplyService replyService;
-
     private MockHttpSession session;
     private ArticleResponse articleResponse;
     private SessionUser sessionUser;
-    private ReplyResponse replyResponse;
 
     @BeforeEach
     public void setUp() throws Exception {
         given(interceptor.preHandle(any(), any(), any())).willReturn(true);
 
-        replyResponse = new ReplyResponse(1, 1, "writer", "comment", LocalDateTime.now());
-
-        articleResponse = new ArticleResponse(1, "writer", "title", "contents",
+        articleResponse = ArticleResponse.createWithArticle(1, "writer", "title", "contents",
             LocalDateTime.now());
 
         sessionUser = new SessionUser(1, "writer", "userPassword", "userName",
@@ -79,7 +71,7 @@ public class ArticleControllerTest {
     @DisplayName("글을 작성하는 화면을 보여준다")
     public void createArticleFormTest() throws Exception {
         // when
-        ResultActions actions = performGet("/questions");
+        ResultActions actions = performGet("/articles/form");
 
         // then
         actions.andExpect(status().isOk())
@@ -94,7 +86,7 @@ public class ArticleControllerTest {
             .willReturn(articleResponse);
 
         // when
-        ResultActions actions = mockMvc.perform(post("/questions")
+        ResultActions actions = mockMvc.perform(post("/articles")
             .session(session)
             .param("writer", "writer")
             .param("title", "title")
@@ -326,21 +318,4 @@ public class ArticleControllerTest {
             .andExpect(view().name("error/index"));
     }
 
-    @Test
-    @DisplayName("댓글을 작성하고 저장한 후 해당 페이지를 새로고침한다")
-    public void createAnswerTest() throws Exception {
-        // given
-        given(replyService.comment(any(), any(), any()))
-            .willReturn(replyResponse);
-
-        // when
-        ResultActions actions = mockMvc.perform(post("/articles/1/answers")
-            .session(session)
-            .param("comment", "comment")
-            .accept(MediaType.TEXT_HTML));
-
-        // then
-        actions.andExpect(status().is3xxRedirection())
-            .andExpect(view().name("redirect:/"));
-    }
 }

@@ -10,33 +10,33 @@
   <div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
     <div class="panel panel-default content-main">
       {{#article}}
-      <form name="question" method="post" action="/articles/{{&articleId}}">
-        <input type="hidden" name="_method" value="PUT"/>
+      <form action="/articles/{{&articleId}}" method="post" name="question">
+        <input name="_method" type="hidden" value="PUT"/>
         <div class="form-group">
           <label for="title">제목</label>
-          <input type="text" class="form-control" id="title" name="title" placeholder="제목"
+          <input class="form-control" id="title" name="title" placeholder="제목" type="text"
                  value="{{&title}}"/>
         </div>
         <div class="form-group">
           <label for="contents">내용</label>
-          <textarea name="contents" id="contents" rows="5"
-                    class="form-control">{{contents}}</textarea>
+          <textarea class="form-control" id="contents" name="contents"
+                    rows="5">{{contents}}</textarea>
         </div>
-        <button type="submit" class="btn btn-success clearfix pull-right">수정하기</button>
+        <button class="btn btn-success clearfix pull-right" type="submit">수정하기</button>
         <div class="clearfix"/>
       </form>
       {{/article}}
       {{^article}}
-      <form name="question" method="post" action="/questions">
+      <form action="/articles" method="post" name="question">
         <div class="form-group">
           <label for="title_else">제목</label>
-          <input type="text" class="form-control" id="title_else" name="title" placeholder="제목"/>
+          <input class="form-control" id="title_else" name="title" placeholder="제목" type="text"/>
         </div>
         <div class="form-group">
           <label for="contents_else">내용</label>
-          <textarea name="contents" id="contents_else" rows="5" class="form-control"></textarea>
+          <textarea class="form-control" id="contents_else" name="contents" rows="5"></textarea>
         </div>
-        <button type="submit" class="btn btn-success clearfix pull-right">질문하기</button>
+        <button class="btn btn-success clearfix pull-right" type="submit">질문하기</button>
         <div class="clearfix"/>
       </form>
       {{/article}}
