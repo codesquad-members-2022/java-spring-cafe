@@ -3,8 +3,8 @@ package com.kakao.cafe.domain;
 public class Article {
 
     private int id;
-    private String title;
-    private String text;
+    private final String title;
+    private final String text;
 
     public Article(String title, String text) {
         this.title = title;

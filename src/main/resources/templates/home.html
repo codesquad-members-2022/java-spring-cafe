@@ -5,12 +5,11 @@
     <meta charset="utf-8">
     <title>kakao Java Web Programming</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link th:href="@{/css/home.css}"
-            href="css/reset.css" rel="stylesheet">
+    <link th:href="@{/css/home.css}" rel="stylesheet">
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="css/home.css" rel="stylesheet">
+    <link th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body>
 <div class="background">
@@ -54,7 +53,6 @@
                                th:text="${article.title}">
                         </a>
                         </td>
-                        <td th:text="${article.text}">text</td>
                     </tr>
                     </tbody>
                 </table>

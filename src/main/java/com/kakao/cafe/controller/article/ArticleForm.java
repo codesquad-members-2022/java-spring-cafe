@@ -3,13 +3,13 @@ package com.kakao.cafe.controller.article;
 import com.kakao.cafe.domain.Article;
 
 public class ArticleForm {
-    private String title;
 
+    private String title;
     private String text;
     private int id;
 
-    public static Article toEntity(ArticleForm form) {
-        return new Article(form.getTitle(), form.getText());
+    public Article toEntity() {
+        return new Article(title, text);
     }
 
     public String getTitle() {
