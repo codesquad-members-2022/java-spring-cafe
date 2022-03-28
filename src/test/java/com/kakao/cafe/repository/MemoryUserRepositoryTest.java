@@ -13,7 +13,7 @@ class MemoryUserRepositoryTest {
     MemoryUserRepository memoryUserRepository = new MemoryUserRepository();
 
     @AfterEach
-    void afterEach() {
+    void tearDown() {
         memoryUserRepository.clearStore();
     }
 
