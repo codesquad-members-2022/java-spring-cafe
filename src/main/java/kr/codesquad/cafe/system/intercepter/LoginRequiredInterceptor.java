@@ -13,6 +13,10 @@ public class LoginRequiredInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession();
 
         if (session.getAttribute("currentUser") == null) {
+            if ("POST".equals(request.getMethod())) {
+                return true;
+            }
+
             session.setAttribute("destinationAfterLogin", request.getRequestURI());
             response.sendRedirect("/login");
 
