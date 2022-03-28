@@ -12,9 +12,13 @@ import java.util.Optional;
 @Repository
 public class ArticleRepository {
 
-    private static final String SQL_SAVE_ARTICLE = "INSERT INTO ARTICLE(WRITER, TITLE, CONTENTS) VALUES(?, ?, ?)";
+    private static final String SQL_SAVE_ARTICLE =
+            "INSERT INTO ARTICLE(WRITER_USERID, WRITER_NAME, TITLE, CONTENTS) VALUES(?, ?, ?, ?)";
+    private static final String SQL_UPDATE_ARTICLE =
+            "UPDATE ARTICLE SET WRITER_NAME=?, TITLE=?, CONTENTS=? WHERE ID=?";
     private static final String SQL_FIND_ARTICLE = "SELECT * FROM ARTICLE WHERE ID = ?";
     private static final String SQL_FIND_ARTICLE_ALL = "SELECT * FROM ARTICLE";
+    private static final String SQL_DELETE_ARTICLE = "DELETE FROM ARTICLE WHERE ID=?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -23,8 +27,13 @@ public class ArticleRepository {
     }
 
     public void save(Article article) {
+        if (article.hasId()) {
+            jdbcTemplate.update(SQL_UPDATE_ARTICLE,
+                    article.getWriterName(), article.getTitle(), article.getContents(), article.getId());
+            return;
+        }
         jdbcTemplate.update(SQL_SAVE_ARTICLE,
-                article.getWriter(), article.getTitle(), article.getContents());
+                article.getWriterUserId(), article.getWriterName(), article.getTitle(), article.getContents());
     }
 
     public Optional<Article> findOne(long id) {
@@ -40,11 +49,16 @@ public class ArticleRepository {
             Article article = new Article();
             article.setId(rs.getLong("id"));
             article.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
-            article.setWriter(rs.getString("writer"));
+            article.setWriterUserId(rs.getString("writer_userid"));
+            article.setWriterName(rs.getString("writer_name"));
             article.setTitle(rs.getString("title"));
             article.setContents(rs.getString("contents"));
 
             return article;
         });
+    }
+
+    public void deleteById(long id) {
+        jdbcTemplate.update(SQL_DELETE_ARTICLE, id);
     }
 }

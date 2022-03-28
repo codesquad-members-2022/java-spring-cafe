@@ -3,15 +3,12 @@ package kr.codesquad.cafe.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class UserService {
 
-    private static final String CURRENT_USER = "currentUser";
     private final UserRepository repository;
 
     @Autowired
@@ -36,17 +33,7 @@ public class UserService {
         repository.save(user);
     }
 
-    public void login(String userId, String password, HttpSession session) {
-        User user = findByUserId(userId);
-        validatePassword(user, password);
-        session.setAttribute(CURRENT_USER, user);
-    }
-
-    public void logout(HttpSession session) {
-        session.removeAttribute(CURRENT_USER);
-    }
-
-    private void validatePassword(User user, String oldPassword) {
+    public void validatePassword(User user, String oldPassword) {
         if (findByUserId(user.getUserId()).passwordIs(oldPassword)) {
             return;
         }
@@ -93,21 +80,4 @@ public class UserService {
         return repository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원입니다."));
     }
-
-    public void validateCurrentUser(String userId, HttpSession session) {
-        if (getCurrentUser(session).userIdIs(userId)) {
-            return;
-        }
-
-        throw new IllegalStateException("사용자 ID가 일치하지 않습니다.");
-    }
-
-    public User getCurrentUser(HttpSession session) {
-        return (User) Optional.ofNullable(session.getAttribute(CURRENT_USER)).orElseThrow(
-                () -> {
-                    throw new IllegalStateException("로그인 상태가 아닙니다.");
-                }
-        );
-    }
-
 }

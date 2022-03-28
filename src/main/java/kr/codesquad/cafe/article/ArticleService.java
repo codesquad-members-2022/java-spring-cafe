@@ -20,6 +20,10 @@ public class ArticleService {
         repository.save(article);
     }
 
+    public void update(Article article) {
+        repository.save(article);
+    }
+
     public Article retrieve(long id) {
         return repository.findOne(id)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 게시물입니다."));
@@ -27,5 +31,9 @@ public class ArticleService {
 
     public List<Article> retrieveAll() {
         return repository.findAll();
+    }
+
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 }
