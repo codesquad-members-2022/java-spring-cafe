@@ -165,3 +165,7 @@
 - [x] 스프링 부트, 웹 MVC로 구현한다.
   - API로 구현하지 않고, 템플릿 기반으로 구현한다.
   - HttpSession을 활용해서 구현한다.
+
+### 전 단계 피드백 반영
+
+- [x] login 및 logout을 처리할 때 HttpSession 객체를 UserService 계층까지 전달하지 않도록 한다. 

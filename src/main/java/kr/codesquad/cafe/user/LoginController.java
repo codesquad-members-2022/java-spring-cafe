@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 public class LoginController {
 
+    private static final String CURRENT_USER = "currentUser";
     private final UserService userService;
 
     @Autowired
@@ -26,7 +26,9 @@ public class LoginController {
     @PostMapping("/login")
     public String processLogin(String userId, String password, HttpSession session) {
         try {
-            userService.login(userId, password, session);
+            User user = userService.findByUserId(userId);
+            userService.validatePassword(user, password);
+            session.setAttribute(CURRENT_USER, user);
 
             String destination = getDestination(session);
             return "redirect:" + destination;
@@ -49,7 +51,7 @@ public class LoginController {
 
     @PostMapping("/logout")
     public String processLogout(HttpSession session) {
-        userService.logout(session);
+        session.removeAttribute(CURRENT_USER);
 
         return "redirect:/";
     }
