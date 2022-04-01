@@ -5,6 +5,9 @@ create table users(
     name varchar(100) not null,
     email varchar(100) not null
 );
+INSERT INTO users (id, pw, name, email) VALUES ('id1', 'test1', '자바지기1', 'javajigi1@slipp.net');
+INSERT INTO users (id, pw, name, email) VALUES ('id2', 'test2', '자바지기2', 'javajigi2@slipp.net');
+
 DROP TABLE IF EXISTS ARTICLE;
 create table article(
     id int primary key auto_increment,

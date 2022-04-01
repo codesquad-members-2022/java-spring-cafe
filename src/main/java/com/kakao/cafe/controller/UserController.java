@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class UserController {
@@ -49,6 +52,31 @@ public class UserController {
             User user = userService.findOne(userId);
             model.addAttribute(user);
         return "user/profile";
+    }
+
+    @GetMapping("/user/login")
+    public String login() {
+        return "user/login";
+    }
+
+    @PostMapping("/user/login")
+    public String createLogin(HttpServletRequest request) {
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
+        if (userService.isCorrectIdAndPw(userId, password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute("userCookie", userService.findOne(userId));
+
+            return "redirect:/";
+        }
+        return "/user/login";
+    }
+
+    @GetMapping("/user/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
+        return "redirect:/";
     }
 
 }

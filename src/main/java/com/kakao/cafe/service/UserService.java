@@ -33,4 +33,13 @@ public class UserService {
     public User findOne(String userId) {
         return userRepository.findById(userId);
     }
+
+    public boolean isCorrectIdAndPw(String userId, String password) {
+        User user = findOne(userId);
+        if (user == null){
+            return false;
+        }
+        return user.matchPassword(password);
+    }
+
 }
