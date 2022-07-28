@@ -42,3 +42,10 @@
 - [ ] 댓글 수정기능
 
 > 댓글 수정 기능의 경우, softDeletion 혹은 수정하는 상태에 대한 필드를 추가해서 쿼리 및 로직을 수정해야 깔끔하게 구현할 수 있을 듯하다.
+
+## 테스트
+
+<img width="1074" alt="스크린샷 2022-07-28 오후 6 41 21" src="https://user-images.githubusercontent.com/81129309/181476198-c730bb6e-cb4d-4c9f-b393-bb2f79210e55.png">
+
+<img width="1014" alt="스크린샷 2022-07-28 오후 6 45 58" src="https://user-images.githubusercontent.com/81129309/181476227-fd5fb1c9-d129-45fc-b87c-6dd77d08ecd5.png">
+
