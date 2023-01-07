@@ -14,3 +14,13 @@ create table cafe_article (
                          writtenTime timestamp
 );
 
+create table cafe_reply (
+                        id int auto_increment,
+                        articleId int,
+                        writer varchar(255),
+                        contents varchar(255),
+                        writtenTime timestamp,
+                        primary key (id),
+                        foreign key (articleId) references cafe_article (id) on delete cascade
+)
+

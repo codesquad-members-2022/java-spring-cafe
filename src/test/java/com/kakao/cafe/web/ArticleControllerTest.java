@@ -4,8 +4,10 @@ import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.domain.article.Article;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.ArticleService;
+import com.kakao.cafe.service.ReplyService;
 import com.kakao.cafe.web.dto.ArticleResponseDto;
-import com.kakao.cafe.web.dto.UserResponseDto;
+import com.kakao.cafe.web.dto.ReplyResponseDto;
+import com.kakao.cafe.web.dto.SessionUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,12 +38,15 @@ class ArticleControllerTest {
     @MockBean
     ArticleService articleService;
 
+    @MockBean
+    ReplyService replyService;
+
     private MockHttpSession httpSession = new MockHttpSession();
 
     @BeforeEach
     void SetUp() {
         User user = new User("ron2", "1234", "로니", "ron2@gmail.com");
-        httpSession.setAttribute(LoginConstants.SESSIONED_USER, new UserResponseDto(user));
+        httpSession.setAttribute(LoginConstants.SESSIONED_USER, SessionUser.from(user));
     }
 
     @Test
@@ -88,7 +94,7 @@ class ArticleControllerTest {
     @DisplayName("/qna/all로 get 요청시 /qna/list 호출해서 게시글 목록을 보여준다.")
     void showAll() throws Exception {
 
-        Article article = new Article(1,"작성자","제목","본문");
+        Article article = Article.newInstance(1,"작성자","제목","본문");
         List<ArticleResponseDto> articleResponseDtos = List.of(new ArticleResponseDto(article));
 
         given(articleService.findAll()).willReturn(articleResponseDtos);
@@ -101,28 +107,34 @@ class ArticleControllerTest {
     }
 
     @Test
-    @DisplayName("/qna/show/{id} get 요청시 해당 id를 가지고 있는 게시글을 /qna/show에서 보여준다.")
+    @DisplayName("/qna/show/{id} get 요청시 해당 id를 가지고 있는 게시글을 /qna/show에서 댓글들과 함께 보여준다.")
     void showArticle() throws Exception {
-        Article article = new Article(1,"작성자","제목","본문");
+        Article article = Article.newInstance(1,"작성자","제목","본문");
         ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
+        ReplyResponseDto replyResponseDto = new ReplyResponseDto(1,1,"작성자", "본문", LocalDateTime.now());
+        List<ReplyResponseDto> replyResponseDtos = List.of(replyResponseDto);
 
         given(articleService.findOne(anyInt())).willReturn(articleResponseDto);
+        given(replyService.showAllInArticle(anyInt())).willReturn(replyResponseDtos);
 
         mockMvc.perform(get("/qna/show/"+anyInt()).session(httpSession))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("article"))
                 .andExpect(model().attribute("article", articleResponseDto))
+                .andExpect(model().attribute("size", 1))
+                .andExpect(model().attribute("replies", replyResponseDtos))
                 .andExpect(view().name("qna/show"));
     }
 
     @Test
-    @DisplayName("/qna/delete/{id} DELETE 요청시 로그인된 해당유저가 작성한 글이면 삭제하고, /qna/all로 리다이렉션한다.")
+    @DisplayName("/qna/delete/{id} DELETE 요청시 로그인된 해당유저가 작성한 글이고, 다른 사용자의 댓글이 없다면 삭제하고, /qna/all로 리다이렉션한다.")
     void deleteArticleTest() throws Exception {
         //given
         Integer articleId = 1;
         String writer = "ron2";
-        Article article = new Article(articleId, writer, "제목","본문");
+        Article article = Article.newInstance(articleId, writer, "제목","본문");
         given(articleService.findOne(any())).willReturn(new ArticleResponseDto(article));
+        given(replyService.isDeletableArticle(anyInt(), any())).willReturn(true);
 
         //when
         mockMvc.perform(delete("/qna/delete/"+articleId)
@@ -140,7 +152,7 @@ class ArticleControllerTest {
     void updateFormTest() throws Exception {
         //given
         Integer articleId = 1;
-        Article article = new Article(articleId, "ron2", "제목","본문");
+        Article article = Article.newInstance(articleId, "ron2", "제목","본문");
         ArticleResponseDto articleResponseDto = new ArticleResponseDto(article);
         given(articleService.findOne(any())).willReturn(articleResponseDto);
 

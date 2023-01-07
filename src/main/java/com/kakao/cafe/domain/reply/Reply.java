@@ -1,36 +1,33 @@
-package com.kakao.cafe.domain.article;
-
+package com.kakao.cafe.domain.reply;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Article {
+public class Reply {
 
     private Integer id;
+    private final Integer ArticleId;
     private final String writer;
-    private final String title;
     private final String contents;
     private final LocalDateTime writtenTime;
 
-    private Article(Integer id, String writer, String title, String contents, LocalDateTime writtenTime) {
+    private Reply(Integer id, Integer articleId, String writer, String contents, LocalDateTime writtenTime) {
         this.id = id;
+        ArticleId = articleId;
         this.writer = writer;
-        this.title = title;
         this.contents = contents;
         this.writtenTime = writtenTime;
     }
-
-    public static Article newInstance(Integer id, String writer, String title, String contents) {
-        return new Article(id, writer, title, contents, LocalDateTime.now());
+    public static Reply newInstance(Integer articleId, String writer, String contents) {
+        return new Reply(null, articleId, writer, contents, LocalDateTime.now());
     }
 
-    public  static Article of(Integer id, String writer, String title, String contents, LocalDateTime writtenTime){
-        return new Article(id, writer, title, contents, writtenTime);
+    public static Reply of(Integer id, Integer articleId, String writer, String contents, LocalDateTime writtenTime) {
+        return new Reply(id, articleId, writer, contents, writtenTime);
     }
-
 
     public boolean hasId() {
-        return this.id != null;
+        return id != null;
     }
 
     public Integer getId() {
@@ -41,12 +38,12 @@ public class Article {
         this.id = id;
     }
 
-    public String getWriter() {
-        return writer;
+    public Integer getArticleId() {
+        return ArticleId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getWriter() {
+        return writer;
     }
 
     public String getContents() {
@@ -61,8 +58,8 @@ public class Article {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Article article = (Article) o;
-        return this.id.equals(article.getId());
+        Reply reply = (Reply) o;
+        return getId().equals(reply.getId());
     }
 
     @Override

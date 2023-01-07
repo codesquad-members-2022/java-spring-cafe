@@ -3,6 +3,7 @@ package com.kakao.cafe.web;
 import com.kakao.cafe.constants.LoginConstants;
 import com.kakao.cafe.domain.user.User;
 import com.kakao.cafe.service.UserService;
+import com.kakao.cafe.web.dto.SessionUser;
 import com.kakao.cafe.web.dto.UserResponseDto;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,11 +36,13 @@ class UserControllerTest {
 
     private MockHttpSession httpSession = new MockHttpSession();
     private UserResponseDto userResponseDto;
+    private SessionUser sessionUser;
 
     @BeforeEach
     void setUp() {
         User user = new User("ron2", "1234", "ron2", "ron2@gmail.com");
         userResponseDto = new UserResponseDto(user);
+        sessionUser = new SessionUser(user.getUserId(), user.getName(), user.getEmail());
     }
 
     @AfterEach
@@ -96,11 +99,11 @@ class UserControllerTest {
     @DisplayName("GetMapping userId를 @PathVariable로 받아서 해당 유저 정보를 /user/update_form으로 넘겨준다.")
     void updateFormTest() throws Exception {
 
-        httpSession.setAttribute("sessionedUser",userResponseDto);
+        httpSession.setAttribute("sessionedUser", sessionUser);
 
         mockMvc.perform(get("/users/ron2/update").session(httpSession))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("user", userResponseDto))
+                .andExpect(model().attribute("user", sessionUser))
                 .andExpect(view().name("user/update_form"))
                 .andDo(print());
     }
@@ -120,7 +123,7 @@ class UserControllerTest {
     @DisplayName("updatform get 요청시, session과 id가 일치하지않으면 error-page/4xx을 반환한다.")
     void updateForm_another_user_access_Test() throws Exception {
         //given
-        httpSession.setAttribute("sessionedUser",userResponseDto);
+        httpSession.setAttribute("sessionedUser", sessionUser);
 
         //when
         mockMvc.perform(get("/users/anotherId/update").session(httpSession))
@@ -135,7 +138,7 @@ class UserControllerTest {
     @DisplayName("PutMapping 수정정보를 받아서 회원정보를 수정 후 /users로 리다이렉션한다.")
     void updateInfoTest() throws Exception {
         //given
-        httpSession.setAttribute("sessionedUser", userResponseDto);
+        httpSession.setAttribute("sessionedUser", sessionUser);
 
         //when
         mockMvc.perform(put("/users/ron2/update")
@@ -163,7 +166,7 @@ class UserControllerTest {
     @DisplayName("updateInfo put 요청시, 로그인된 유저가 아닌 다른 유저의 정보를 변경하려고 하면 ClientException이 발생한다. ")
     void updateInfo_another_user_access_Test() throws Exception {
         //given
-        httpSession.setAttribute("sessionedUser", userResponseDto);
+        httpSession.setAttribute("sessionedUser", sessionUser);
 
         //when
         mockMvc.perform(put("/users/anotherId/update")
@@ -189,7 +192,7 @@ class UserControllerTest {
     @DisplayName("/user/login post 요청시 user/login을 반환한다.")
     void loginPostTest() throws Exception {
         //given
-        given(userService.login(any())).willReturn(Optional.ofNullable(userResponseDto));
+        given(userService.login(any())).willReturn(Optional.ofNullable(sessionUser));
 
         //when
         mockMvc.perform(post("/user/login")
@@ -198,7 +201,7 @@ class UserControllerTest {
                 //then
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/qna/all"))
-                .andExpect(request().sessionAttribute("sessionedUser", userResponseDto));
+                .andExpect(request().sessionAttribute("sessionedUser", sessionUser));
     }
 
     @Test
