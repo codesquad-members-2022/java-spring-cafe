@@ -33,7 +33,7 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public String showWrite(@PathVariable int id, Model model){
-        model.addAttribute("article", articleService.findById(id));
+        model.addAttribute("article", articleService.findById(id).get());
         return "post/show";
     }
 }
