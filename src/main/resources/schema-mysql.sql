@@ -1,4 +1,5 @@
 -- DDL
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS article CASCADE;
 
@@ -7,7 +8,7 @@ CREATE TABLE article
     id              INT         NOT NULL AUTO_INCREMENT,
     user_id         VARCHAR(32) NOT NULL,
     title           VARCHAR(64),
-    contents        CLOB,
+    contents        TEXT,
     local_date_time TIMESTAMP,
     PRIMARY KEY (id)
 );
@@ -21,18 +22,20 @@ CREATE TABLE user_info
     password VARCHAR(32) NOT NULL,
     name     VARCHAR(32) NOT NULL,
     email    VARCHAR(32),
-    PRIMARY KEY (user_id)
+    PRIMARY KEY (id)
 );
 
-DROP TABLE IF EXISTS reply;
+DROP TABLE IF EXISTS reply CASCADE;
 
 CREATE TABLE reply
 (
     id                INT         NOT NULL AUTO_INCREMENT,
     parent_article_id INT         NOT NULL,
     user_id           VARCHAR(32) NOT NULL,
-    contents          CLOB,
+    contents          TEXT,
     local_date_time   TIMESTAMP,
     PRIMARY KEY (id),
     CONSTRAINT reply_pk FOREIGN KEY (parent_article_id) REFERENCES article (id) ON DELETE CASCADE
 );
+
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,11 +1,16 @@
 package com.kakao.cafe.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Objects;
 
 public class User {
     private Long id;
     private String userId;
+
+    @JsonIgnore
     private String password;
+
     private String name;
     private String email;
 

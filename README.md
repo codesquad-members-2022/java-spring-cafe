@@ -2,6 +2,14 @@
 
 2022년도 마스터즈 멤버스 백엔드 스프링 카페 프로젝트
 
+## Step07 ToDO-List
+- [x] footer 분리하기
+- [x] Ajax 로 댓글 추가하기
+- [x] Ajax 로 댓글 삭제하기
+- [x] properties 파일 local, online 으로 분리
+- [x] DB MySQl 로 바꾸기
+- [x] EC2 배포하기
+
 ## Step06 ToDO-List
 
 - [x] Reply Class 만들기

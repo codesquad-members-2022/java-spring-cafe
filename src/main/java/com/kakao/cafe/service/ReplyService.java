@@ -5,10 +5,10 @@ import com.kakao.cafe.domain.User;
 import com.kakao.cafe.exception.NotFoundException;
 import com.kakao.cafe.exception.UnAuthorizationException;
 import com.kakao.cafe.repository.ReplyRepository;
-import com.kakao.cafe.web.questions.dto.ReplyDto;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -21,9 +21,11 @@ public class ReplyService {
         this.repository = repository;
     }
 
-    public Long addReply(ReplyDto dto, Long questionId) {
-        Reply reply = new Reply(questionId, dto.getUserId(), dto.getContents(), LocalDateTime.now());
-        return repository.save(reply);
+    public Reply addReply(String contents, Long questionId, User user) {
+        Reply reply = new Reply(questionId, user.getUserId(), contents, LocalDateTime.now());
+        Long saveId = repository.save(reply);
+        reply.setId(saveId);
+        return reply;
     }
 
     private Reply findReplyById(Long id) {
@@ -31,7 +33,9 @@ public class ReplyService {
     }
 
     public List<Reply> findAllReplyOnArticle(Long articleId) {
-        return repository.findAllReplyOnArticle(articleId);
+        List<Reply> replies = repository.findAllReplyOnArticle(articleId);
+        Collections.reverse(replies);
+        return replies;
     }
 
     public Long deleteReply(Long id, User user) {

@@ -43,7 +43,8 @@ public class UserService {
         User findUser = findUserById(user.getUserId());
 
         if (findUser.isSamePassword(user.getPassword())) {
-            return repository.update(user.getUserId(), user);
+            repository.update(user.getUserId(), user);
+            return true;
         }
 
         return false;

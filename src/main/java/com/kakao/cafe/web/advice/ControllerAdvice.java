@@ -15,7 +15,7 @@ public class ControllerAdvice {
     public String authorizationHandler(UnAuthorizationException e, Model model) {
         log.error("UN_AUTHORIZATION_HANDLER {}", e.getMessage());
         model.addAttribute("errormessage", e.getMessage());
-        return "/error/authorization";
+        return "error/authorization";
     }
 
 }

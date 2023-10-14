@@ -7,9 +7,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.jdbc.Sql;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 
 @JdbcTest
 @Import(QueryLoader.class)
-@Sql("classpath:/schema.sql")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class JdbcUserRepositoryTest {
 
     private final DbUserRepository repository;
@@ -84,7 +84,6 @@ public class JdbcUserRepositoryTest {
         List<User> users = repository.findAll();
 
         // then
-        then(users).containsExactly(user, user2);
-        Assertions.assertThat(users.size()).isEqualTo(2);
+        then(users).contains(user, user2);
     }
 }

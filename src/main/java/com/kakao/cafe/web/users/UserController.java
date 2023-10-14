@@ -42,21 +42,21 @@ public class UserController {
         List<User> users = userService.findUsers();
         log.info("users list = {}", users);
         model.addAttribute("users", users);
-        return "/user/list";
+        return "user/list";
     }
 
     @GetMapping("/create")
     public String getUserForm(Model model) {
         log.info("create form 접근");
         model.addAttribute("user", new User());
-        return "/user/form";
+        return "user/form";
     }
 
     @PostMapping("/create")
     public String saveUser(@Validated @ModelAttribute User user, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "/user/form";
+            return "user/form";
         }
 
         userService.register(user);
@@ -69,7 +69,7 @@ public class UserController {
         User findUser = userService.findUserById(userId);
         log.info("user profile = {}", findUser);
         model.addAttribute("user", findUser);
-        return "/user/profile";
+        return "user/profile";
     }
 
     @GetMapping("/{userId}/form")
@@ -77,7 +77,7 @@ public class UserController {
         User findUser = userService.findUserById(userId);
         log.info("get profile update form");
         model.addAttribute("user", findUser);
-        return "/user/updateForm";
+        return "user/updateForm";
     }
 
     @PostMapping("/{userId}/update")
@@ -85,7 +85,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             log.info("업데이트 메서드 : 사용자 인자 오류");
-            return "/user/updateForm";
+            return "user/updateForm";
         }
 
         User sessionUser = (User) session.getAttribute(SessionConst.SESSIONED_USER); // 로그인한 사용자 만 수정 가능
@@ -100,7 +100,7 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             bindingResult.rejectValue("password", "notmatched", "비밀번호가 일치하지 않습니다.");
             log.info("업데이트 메서드 : 사용자 업데이트 실패");
-            return "/user/updateForm";
+            return "user/updateForm";
         }
 
         return "redirect:/users";
