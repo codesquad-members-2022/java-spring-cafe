@@ -2,6 +2,7 @@ package com.kakao.cafe.service;
 
 import com.kakao.cafe.domain.Question;
 import com.kakao.cafe.repository.QuestionRepository;
+import com.kakao.cafe.web.dto.question.QuestionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -16,8 +17,9 @@ public class QuestionService {
         this.questionRepository = questionRepository;
     }
 
-    public Long create(Question question) {
+    public Long create(QuestionDto questionDto) {
         // TODO : validate and format of writer, title, contents
+        Question question = questionDto.toEntity();
         questionRepository.save(question);
         return question.getId();
     }
